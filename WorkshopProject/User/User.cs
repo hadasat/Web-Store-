@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject
 {
-    class Class1
+    class User
     {
     }
 }

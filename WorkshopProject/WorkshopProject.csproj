@@ -43,12 +43,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Store\Category.cs" />
+    <Compile Include="Store\ConditionalDiscount.cs" />
+    <Compile Include="Store\DiscountPolicy.cs" />
+    <Compile Include="User\Member.cs" />
+    <Compile Include="User\Password.cs" />
+    <Compile Include="Store\Product.cs" />
+    <Compile Include="Store\PurchasePolicy.cs" />
+    <Compile Include="Store\RegularDiscount.cs" />
+    <Compile Include="Purchasing\Shopping Cart.cs" />
+    <Compile Include="Purchasing\ShoppingBasket.cs" />
+    <Compile Include="Store\Store.cs" />
+    <Compile Include="User\StoreManager.cs" />
+    <Compile Include="User\SystemAdmin.cs" />
+    <Compile Include="Purchasing\Tansaction.cs" />
+    <Compile Include="User\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
