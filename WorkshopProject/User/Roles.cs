@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkshopProject
+namespace Roles
 {
-    class Member
+    class SystemAdmin
+    {
+    }
+
+    class StoreManager
     {
     }
 }

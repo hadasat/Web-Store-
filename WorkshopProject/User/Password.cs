@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkshopProject
+namespace Password
 {
-    class Password
+    public class Password
     {
+
+
+       
     }
 }
