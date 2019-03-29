@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Examples\ClassForTestExample.cs" />
+    <Compile Include="Examples\LogExample.cs" />
     <Compile Include="Store\Category.cs" />
     <Compile Include="Store\ConditionalDiscount.cs" />
     <Compile Include="Store\DiscountPolicy.cs" />

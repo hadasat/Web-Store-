@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkshopProject.Examples;
 
 namespace WorkshopProject
 {
@@ -10,6 +11,15 @@ namespace WorkshopProject
     {
         static void Main(string[] args)
         {
+            
+            Examples();
         }
+
+
+        static void Examples()
+        {
+            LogExample.RunMe();
+        }
+        
     }
 }
