@@ -43,13 +43,11 @@ namespace Managment
     public class StoreManager
     {
         Store store;
-        Member myMember;
         Roles myRoles;
         public LinkedList<StoreManager> subManagers;
 
-        public StoreManager(Member member, Store store)
+        public StoreManager(Store store)
         {
-            this.myMember = member;
             this.store = store;
             this.subManagers = new LinkedList<StoreManager>();
         }
@@ -58,9 +56,9 @@ namespace Managment
         {
             if (myRoles.CompareRoles(roles))
             {
-                StoreManager newSubStoreManger = new StoreManager(member, this.store);
-                subManagers.AddFirst(newSubStoreManger);
-                return newSubStoreManger;
+                StoreManager newSubStoreManager = new StoreManager(this.store);
+                subManagers.AddFirst(newSubStoreManager);
+                return newSubStoreManager;
             }
             else
             {

@@ -31,10 +31,11 @@ namespace Users
 
         public static Member getMember(string username)
         {
+            string ID = "Robot123";
             if (isAnAdmin(username))
-                return new SystemAdmin(username);
+                return new SystemAdmin(username, ID);
             else
-                return new Member(username);
+                return new Member(username, ID);
         }
 
         public static void logout(string username)
@@ -54,18 +55,39 @@ namespace Users
             return false;
         }
 
+        public static ShoppingBasket loadShoppingBasket(string ID)
+        {
+            return new ShoppingBasket();
+        }
+
+        public static LinkedList<StoreManager> loadStoreManaging(string ID)
+        {
+            if (ID != "0")
+            {
+                Roles firstStore = new Roles(false, false, false, false, false, false);
+                Store store = new Store();
+                StoreManager st = new StoreManager(store);
+                LinkedList<StoreManager> storesManaging = new LinkedList<StoreManager>();
+                storesManaging.AddFirst(st);
+                return storesManaging;
+            } else
+            {
+                return null;
+            }
+        }
+
     }
 
 
 
     public class User
     {
-        public ShoppingBasket shoppingBasket;
+        public ShoppingBasket shoppingBasket;//is it this way or the opposite?
 
 
         public User()
         {
-
+            this.shoppingBasket = new ShoppingBasket();
         }
 
         public Member loginMember(string username, string password)
@@ -80,6 +102,7 @@ namespace Users
         public void registerNewUser(string username, string password)
         {
             ConnectionStubTemp.registerNewUser(username, password);
+            //need to deside whats happen in this senario
         }
 
     }
@@ -88,22 +111,18 @@ namespace Users
     {
         public string ID; //why do we need id?
         public string username;
-        public StoreManager storeManager;
+        public LinkedList<StoreManager> storeManaging;
         
 
-        public Member(string username)
+        public Member(string username, string ID)
         {
+            this.ID = ID;
             this.username = username;
-            this.storeManager = null;
+            this.storeManaging = ConnectionStubTemp.loadStoreManaging(ID);
+            this.shoppingBasket = ConnectionStubTemp.loadShoppingBasket(ID);
             
         }
 
-        public Member(string username, StoreManager storeManager)
-        {
-            this.username = username;
-            this.storeManager = storeManager;
-
-        }
 
         public void logOut()
         {
@@ -114,10 +133,7 @@ namespace Users
 
     public class SystemAdmin : Member
     {
-        public SystemAdmin(string username) : base(username)
-        {
-
-        }
+        public SystemAdmin(string username, string ID) : base(username, ID) { }
 
         public bool RemoveUser(string userName)
         {
