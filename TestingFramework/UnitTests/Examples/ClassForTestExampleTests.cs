@@ -12,7 +12,7 @@ namespace WorkshopProject.Tests
     public class ClassForTestExampleTests
     {
         [TestMethod()]
-        [TestCategory("Example")]
+        [TestCategory("Examples")]
         public void TestMeTest()
         {
             Assert.IsTrue(ClassForTestExample.TestMe());

@@ -51,7 +51,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTests\ClassForTestExampleTests.cs" />
+    <Compile Include="UnitTests\Examples\ClassForTestExampleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
