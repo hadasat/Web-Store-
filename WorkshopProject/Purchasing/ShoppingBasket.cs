@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject
 {
-    class ShoppingBasket
+    public class ShoppingBasket
     {
+
     }
+
+
+
 }

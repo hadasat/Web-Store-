@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Password;
+using Managment;
+using WorkshopProject;
 
 
 
@@ -13,7 +15,7 @@ namespace Users
     public static class ConnectionStubTemp
     {
 
-        public static Password.Password pHandler = new Password.Password();
+        public static PasswordHandler pHandler = new PasswordHandler();
 
         public static bool identifyUser(string username, string password)
         {
@@ -45,9 +47,9 @@ namespace Users
             return true;
         }
 
-        public static bool removeUser(string username, Member sy)
+        public static bool removeUser(string username, Member sa)
         {
-            if (sy is SystemAdmin)
+            if (sa is SystemAdmin)
                 return true;
             return false;
         }
@@ -58,6 +60,8 @@ namespace Users
 
     public class User
     {
+        public ShoppingBasket shoppingBasket;
+
 
         public User()
         {
@@ -84,10 +88,21 @@ namespace Users
     {
         public string ID; //why do we need id?
         public string username;
+        public StoreManager storeManager;
+        
 
         public Member(string username)
         {
             this.username = username;
+            this.storeManager = null;
+            
+        }
+
+        public Member(string username, StoreManager storeManager)
+        {
+            this.username = username;
+            this.storeManager = storeManager;
+
         }
 
         public void logOut()
