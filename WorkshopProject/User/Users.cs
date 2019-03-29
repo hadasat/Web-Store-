@@ -17,6 +17,8 @@ namespace Users
 
         public static PasswordHandler pHandler = new PasswordHandler();
 
+        /*** START - USER FUNCTIONS ***/
+
         public static bool identifyUser(string username, string password)
         {
             pHandler.hashPassword(password);
@@ -29,6 +31,7 @@ namespace Users
             return true;
         }
 
+        
         public static Member getMember(string username)
         {
             string ID = "Robot123";
@@ -38,21 +41,21 @@ namespace Users
                 return new Member(username, ID);
         }
 
-        public static void logout(string username)
-        {
-            
-        }
-
         public static bool isAnAdmin(string username)
         {
             return true;
         }
 
-        public static bool removeUser(string username, Member sa)
+
+        /*** END - USER FUNCTIONS ***/
+
+        /****************************************************************/
+
+        /*** START - MEMBER FUNCTIONS ***/
+
+        public static void logout(string username)
         {
-            if (sa is SystemAdmin)
-                return true;
-            return false;
+            
         }
 
         public static ShoppingBasket loadShoppingBasket(string ID)
@@ -64,17 +67,37 @@ namespace Users
         {
             if (ID != "0")
             {
-                Roles firstStore = new Roles(false, false, false, false, false, false);
+                Roles firstStoreRoles = new Roles(false, false, false, false, false, false);
                 Store store = new Store();
-                StoreManager st = new StoreManager(store);
+                StoreManager st = new StoreManager(store, firstStoreRoles);
                 LinkedList<StoreManager> storesManaging = new LinkedList<StoreManager>();
                 storesManaging.AddFirst(st);
                 return storesManaging;
-            } else
+            }
+            else
             {
                 return null;
             }
         }
+
+        /*** END - MEMBER FUNCTIONS ***/
+
+
+        /****************************************************************/
+
+        /*** START - SYSTEM ADMIN FUNCTIONS ***/
+
+        public static bool removeUser(string username, Member sa)
+        {
+            if (sa is SystemAdmin)
+                return true;
+            return false;
+        }
+
+
+        /*** END - SYSTEM ADMIN FUNCTIONS ***/
+
+
 
     }
 
@@ -89,6 +112,10 @@ namespace Users
         {
             this.shoppingBasket = new ShoppingBasket();
         }
+
+
+
+        /*** SERVICE LAYER FUNCTIONS***/
 
         public Member loginMember(string username, string password)
         {
@@ -105,7 +132,12 @@ namespace Users
             //need to deside whats happen in this senario
         }
 
+        /****************************************************************/
+
     }
+
+
+
 
     public class Member : User
     {
@@ -123,12 +155,24 @@ namespace Users
             
         }
 
-
+        /*** SERVICE LAYER FUNCTIONS***/
         public void logOut()
         {
             ConnectionStubTemp.logout(username);
         }
+
+        /************************/
+
+        /*** This function is the function that create Store Owner - STORE USE THIS IN THE CONSTRUCTOR ***/
+        public void addStore(Store store)
+        {
+            Roles storeOwner = new Roles(true, true, true, true, true, true);
+            StoreManager storeOwnerManager = new StoreManager(store, storeOwner);
+            storeManaging.AddFirst(storeOwnerManager);
+        }
     }
+
+
 
 
     public class SystemAdmin : Member
