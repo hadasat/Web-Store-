@@ -170,6 +170,11 @@ namespace Users
             StoreManager storeOwnerManager = new StoreManager(store, storeOwner);
             storeManaging.AddFirst(storeOwnerManager);
         }
+
+        public bool isStoresManagers()
+        {
+            return this.storeManaging.Count == 0;
+        }
     }
 
 
@@ -181,7 +186,16 @@ namespace Users
 
         public bool RemoveUser(string userName)
         {
-            return ConnectionStubTemp.removeUser(userName, this);
+            Member member = ConnectionStubTemp.getMember(userName);
+            if (member.isStoresManagers())
+            {
+                //talk with ofir!!!
+                return ConnectionStubTemp.removeUser(userName, this);
+            }
+            else
+            {
+                return ConnectionStubTemp.removeUser(userName, this);
+            }
         }
     }
 }
