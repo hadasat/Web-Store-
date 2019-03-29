@@ -9,15 +9,35 @@ namespace Password
 {
     public class PasswordHandler
     {
+
+        private Dictionary<string, byte[]> saltes = new Dictionary<string, byte[]>(); //TMP
+
         
-        public byte[] hashPassword(string password)
+        //CREATING
+
+        /** this is the byte[] that need to be stored **/
+        public byte[] hashPassword(string password, string ID)
         {
             byte[] bytesPass = Encoding.ASCII.GetBytes(password);
-            return GenerateSaltedHash(bytesPass, CreateSalt());
+            byte[] currSalt = CreateSalt(bytesPass.Length);
+            saltes.Add(ID, currSalt);
+            return GenerateSaltedHash(bytesPass, currSalt);
             
         }
+        /** salt needs to be stored as well alongside the hash**/
+        private byte[] CreateSalt(int size)
+        {
+            Random r = new Random();
+            byte[] bSalt = new byte[size];
+            for (int i = 0; i < size; i++)
+            {
+                bSalt[i] = (byte)r.Next(0, 255);
+            }
+            return bSalt;
+        }
 
-        static byte[] GenerateSaltedHash(byte[] plainText, byte[] salt)
+
+        private byte[] GenerateSaltedHash(byte[] plainText, byte[] salt)
         {
             HashAlgorithm algorithm = new SHA256Managed();
 
@@ -36,11 +56,9 @@ namespace Password
             return algorithm.ComputeHash(plainTextWithSaltBytes);
         }
 
-        public byte[] CreateSalt()
-        {
-            byte[] b = { };
-            return b;
-        }
+
+
+        //DECHIPERING
 
         public static bool CompareByteArrays(byte[] array1, byte[] array2)
         {
