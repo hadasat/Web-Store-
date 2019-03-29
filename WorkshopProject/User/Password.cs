@@ -13,7 +13,7 @@ namespace Password
         public byte[] hashPassword(string password)
         {
             byte[] bytesPass = Encoding.ASCII.GetBytes(password);
-            return GenerateSaltedHash(bytesPass, createSalt());
+            return GenerateSaltedHash(bytesPass, CreateSalt());
             
         }
 
@@ -29,7 +29,7 @@ namespace Password
                 plainTextWithSaltBytes[i] = plainText[i];
             }
             for (int i = 0; i < salt.Length; i++)
-            {
+            { 
                 plainTextWithSaltBytes[plainText.Length + i] = salt[i];
             }
 
