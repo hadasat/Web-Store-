@@ -7,23 +7,16 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
     [TestClass]
     public class Req_2_3 : AcceptanceTest
     {
-        private string user = "User";
-        private string password = "Password";
-        private string wrongPassword = "WrongPassword";
-        private string fakeUser = "FakeUser";
-        private string illegalUser = ";";
-
-
         [TestInitialize]
         public override void Init()
         {
-            bridge.Register(user, password);
+            addTestMemberToSystem();
         }
 
         [TestCleanup]
         public override void Cleanup()
         {
-            //TODO: remove added users
+            removeTestMemberFromSystem();
         }
 
         [TestMethod]

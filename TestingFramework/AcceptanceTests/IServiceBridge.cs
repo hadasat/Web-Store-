@@ -21,15 +21,15 @@ namespace TestingFramework.AcceptanceTests
         //List<int> GetProductsFromStore(string store);
 
         //Req 2_5
-        List<int> SearchProducts(string name, string category, string keyword, int startPrice, int endPrice, int storeRank);
+        List<int> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int storeRank);
         bool GetProductInfo(int id, ref string name, ref int price, ref string category, ref int rank);
 
         //Req 2_6
-        bool AddProductToCart(int id);
+        bool AddProductToCart(int productId, int amount);
 
         //Req 2_7
         int GetShoppingCart(string store);
-        Dictionary<int, int> GetProductsInShoppingCart(int id);
+        Dictionary<int, int> GetProductsInShoppingCart(int cartId);
         bool SetProductAmountInCart(int cartId, int productId, int amount);
 
         //Req 2_8

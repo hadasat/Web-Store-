@@ -45,7 +45,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         public void RegisterIllegalUser()
         {
             //illegal user name
-            string user = ";;";
+            string user = ";";
             string password = "123456";
 
             bool result = bridge.Register(user, password);
