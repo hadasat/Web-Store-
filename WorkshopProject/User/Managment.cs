@@ -39,6 +39,16 @@ namespace Managment
             return true;
         }
 
+        public bool isStoreOwner()
+        {
+            return  this.AddRemoveProducts &&
+                    this.addRemovePurchasing &&
+                    this.addRemoveDiscountPolicy &&
+                    this.addRemoveStoreManger &&
+                    this.closeStore &&
+                    this.customerCommunication;
+        }
+
         public bool AddRemoveProducts { get => addRemoveProducts; set => addRemoveProducts = value; }
         public bool AddRemovePurchasing { get => addRemovePurchasing; set => addRemovePurchasing = value; }
         public bool AddRemoveDiscountPolicy { get => addRemoveDiscountPolicy; set => addRemoveDiscountPolicy = value; }
