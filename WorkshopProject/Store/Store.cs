@@ -9,57 +9,117 @@ namespace WorkshopProject
     class Store
     {
 
-         string name;
-         int rank;
-         Boolean isActive;
+        public string name;
+        public int rank;
+        public Boolean isActive;
 
-        Dictionary<int, Product> products;
+        public Dictionary<int, Product> products { get; set; }
+        private PurchasePolicy purchase_policy;
 
-        public Store()
+        private Store(string name, int rank,Boolean isActive)
         {
+            this.name = name;
+            this.rank = rank;
+            this.isActive = isActive;
             products = new Dictionary<int, Product>();
 
         }
+        
 
-        Store createNewStore(User StoreOwner)
+        private Boolean addRemoveProductsPermission(Member member)
         {
-            return this;
+           Roles roles = member.getStoreManagerRoles(this).addRemoveProducts;
+            return roles != null && roles.addRemoveProducts;
+        }
+
+        private Boolean addRemoveDiscountPermission(Member member)
+        {
+            Roles roles = member.getStoreManagerRoles(this).addRemoveProducts;
+            return roles != null && roles.addRemoveDiscountPolicy;
+        }
+
+        private Boolean addRemovePurchasingPermission(Member member)
+        {
+            Roles roles = member.getStoreManagerRoles(this).addRemoveProducts;
+            return roles != null && roles.addRemovePurchasing;
+        }
+
+        private Boolean addRemoveStoreManagerPermission(Member member)
+        {
+            Roles roles = member.getStoreManagerRoles(this).addRemoveProducts;
+            return roles != null && roles.addRemoveStoreManager;
         }
 
         Boolean addProduct(User user,Product product)
         {
-            return true;
+            //Verify Premission
+            if(user is Member && addRemoveProductsPermission((Member)user)) //Verify Premission
+            {
+                products.Add(product.id, product);
+                return true;
+            }
+            return false;
+           
         }
 
         Boolean removeProduct(User user, Product product)
         {
-            return true;
+            //Verify Premission
+            if (user is Member && addRemoveProductsPermission((Member)user))   //Verify Premission
+            {
+                products.Remove(product.id);
+                return true;
+            }
+            return false;
         }
 
         Boolean addDiscount(User user, DiscountPolicy discount)
         {
-            return true;
+            if (user is Member && addRemoveDiscountPermission((Member)user))    //Verify Premission
+            {
+                return true;
+            }
+            return false;
         }
 
         Boolean removeDiscount(User user, DiscountPolicy discount)
         {
-            return true;
+            if (user is Member && addRemoveDiscountPermission((Member)user))    //Verify Premission
+            {
+                return true;
+            }
+            return false;
         }
 
-        Boolean addPurchasingPolicy(PurchasePolicy pPolicy)
+        Boolean addPurchasingPolicy(User user,PurchasePolicy pPolicy)
         {
-            return true;
+            if (user is Member && addRemovePurchasingPermission((Member)user))  //Verify Premission
+            {
+                purchase_policy = pPolicy;
+                return true;
+            }
+            return false;
         }
 
-        Boolean removePurchasingPolicy(PurchasePolicy pPolicy)
+        Boolean removePurchasingPolicy(User user,PurchasePolicy pPolicy)
         {
-            return true;
+            if (user is Member && addRemovePurchasingPermission((Member)user)) //Verify Premission
+            {
+                return true;
+            }
+            return false;
         }
 
-        Boolean addStoremanager(User user, User storeManager)
+
+
+       /* Boolean addStoreManager(User user, User storeManager)
         {
-            return true;
-        }
+            if (user is Member && addRemoveStoreManagerPermission((Member)user)) //Verify Premission
+            {
+                return true;
+            }
+            return false;
+        }*/
 
 
 

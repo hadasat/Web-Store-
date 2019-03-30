@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject
 {
-    class Category
+    public class Category
     {
+
+        public enum Categories
+        {
+            None,
+            category1,
+            category2,
+            category3
+        }
     }
 }

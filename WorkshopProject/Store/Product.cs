@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static WorkshopProject.Category;
 
 namespace WorkshopProject
 {
     class Product
     {
-        int id;
-        string name;
-        int price;
-        string category;
-        int rank;
+        public int id;
+        public string name;
+        public int price;
+        public Categories category;
+        public int rank;
 
-        public Product(int id, string name , int price,string category,int rank)
+        
+
+        public Product(int id, string name , int price, Categories category,int rank)
         {
             this.id = id;
             this.name = name;
@@ -23,9 +26,9 @@ namespace WorkshopProject
             this.rank = rank;
         }
 
-        List<Product> search(string name,string category,int priceRange,int ranking, int storeRanking)
+        /*List<Product> search(string name,string category,int priceRange,int ranking, int storeRanking)
         {
             return new List<Product>();
-        }
+        }*/
     }
 }
