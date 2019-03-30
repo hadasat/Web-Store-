@@ -111,5 +111,9 @@ namespace Managment
         {
             return store;
         }
+        public Roles GetRoles()
+        {
+            return myRoles;
+        }
     }
 }

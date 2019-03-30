@@ -19,16 +19,23 @@ namespace Users
 
         /*** START - USER FUNCTIONS ***/
 
-        public static bool identifyUser(string username, string password, string ID)
+        private static string getID()
         {
-            pHandler.hashPassword(password, ID);
-            return true;
+            return "A123";
         }
 
-        public static bool registerNewUser(string username, string password, string ID)
+        public static string identifyUser(string username, string password)
         {
+            string ID = getID();
             pHandler.hashPassword(password, ID);
-            return true;
+            return ID;
+        }
+
+        public static string registerNewUser(string username, string password)
+        {
+            string ID = getID();
+            pHandler.hashPassword(password, ID);
+            return ID;
         }
 
         
@@ -119,8 +126,8 @@ namespace Users
 
         public Member loginMember(string username, string password)
         {
-            bool tryToRegister = ConnectionStubTemp.identifyUser(username, password);
-            if (tryToRegister)
+            string tryToRegister = ConnectionStubTemp.identifyUser(username, password);
+            if (tryToRegister!="")
                 return ConnectionStubTemp.getMember(username);
             else
                 return null;
@@ -176,7 +183,7 @@ namespace Users
             return this.storeManaging.Count != 0;
         }
 
-        public StoreManager getStoreManager(Store store)
+        public Roles getStoreManagerRoles(Store store)
         {
             if (isStoresManagers())
             {
@@ -184,7 +191,7 @@ namespace Users
                 {
                     if (sm.GetStore() == store)
                     {
-                        return sm;
+                        return sm.GetRoles();
                     }
                 }
             }
