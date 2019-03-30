@@ -28,7 +28,7 @@ namespace TestingFramework.AcceptanceTests
         bool AddProductToCart(int productId, int amount);
 
         //Req 2_7
-        int GetShoppingCart(string store);
+        int GetShoppingCart(int storeId);
         Dictionary<int, int> GetProductsInShoppingCart(int cartId);
         bool SetProductAmountInCart(int cartId, int productId, int amount);
 

@@ -61,6 +61,7 @@
     <Compile Include="AcceptanceTests\IServiceBridge.cs" />
     <Compile Include="AcceptanceTests\Requirement_1\Req_1_1.cs" />
     <Compile Include="AcceptanceTests\AcceptanceTest.cs" />
+    <Compile Include="AcceptanceTests\Requirement_2\Req_2_7.cs" />
     <Compile Include="AcceptanceTests\Requirement_2\Req_2_6.cs" />
     <Compile Include="AcceptanceTests\Requirement_2\Req_2_5.cs" />
     <Compile Include="AcceptanceTests\Requirement_2\Req_2_3.cs" />

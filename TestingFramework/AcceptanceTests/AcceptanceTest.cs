@@ -15,6 +15,8 @@ namespace TestingFramework.AcceptanceTests
         protected string fakeUser = "FakeUser";
         protected string illegalUser = ";";
 
+        protected int storeId;
+        protected string storeName = "TestStore";
 
         protected int productId;
         protected string productName = "TestProduct";
@@ -56,7 +58,7 @@ namespace TestingFramework.AcceptanceTests
 
         virtual protected void addTestStoreToSystem()
         {
-            //TODO
+            storeId = -1; //TODO: change to return id from actually adding to system
         }
 
         virtual protected void removeTestStoreFromSystem()

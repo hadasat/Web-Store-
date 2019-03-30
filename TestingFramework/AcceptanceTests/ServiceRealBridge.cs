@@ -53,7 +53,7 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
-        public int GetShoppingCart(string store)
+        public int GetShoppingCart(int storeId)
         {
             throw new NotImplementedException();
         }
