@@ -6,17 +6,17 @@ namespace TestingFramework.AcceptanceTests
     [TestClass]
     public class AcceptanceTest
     {
-        private IServiceBridge bridge;
+        protected IServiceBridge bridge;
 
         [TestInitialize]
-        virtual public void init()
+        virtual public void Init()
         {
             bridge = Driver.getBridge();
         }
 
 
         [TestCleanup]
-        virtual public void cleanup()
+        virtual public void Cleanup()
         {
 
         }

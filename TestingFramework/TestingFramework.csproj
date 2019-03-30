@@ -59,9 +59,12 @@
   <ItemGroup>
     <Compile Include="AcceptanceTests\Driver.cs" />
     <Compile Include="AcceptanceTests\IServiceBridge.cs" />
-    <Compile Include="AcceptanceTests\Requirement_1\Req_1_Tests.cs" />
+    <Compile Include="AcceptanceTests\Requirement_1\Req_1_1.cs" />
     <Compile Include="AcceptanceTests\AcceptanceTest.cs" />
+    <Compile Include="AcceptanceTests\Requirement_2\Req_2_3.cs" />
+    <Compile Include="AcceptanceTests\Requirement_2\Req_2_2.cs" />
     <Compile Include="AcceptanceTests\ServiceProxyBridge.cs" />
+    <Compile Include="AcceptanceTests\ServiceRealBridge.cs" />
     <Compile Include="UnitTests\Examples\ClassForTestExampleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
