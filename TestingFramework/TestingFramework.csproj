@@ -65,6 +65,7 @@
     <Compile Include="AcceptanceTests\Requirement_2\Req_2_5.cs" />
     <Compile Include="AcceptanceTests\Requirement_2\Req_2_3.cs" />
     <Compile Include="AcceptanceTests\Requirement_2\Req_2_2.cs" />
+    <Compile Include="AcceptanceTests\Requirement_3\Req_3_1.cs" />
     <Compile Include="AcceptanceTests\ServiceProxyBridge.cs" />
     <Compile Include="AcceptanceTests\ServiceRealBridge.cs" />
     <Compile Include="UnitTests\Examples\ClassForTestExampleTests.cs" />
