@@ -19,15 +19,15 @@ namespace Users
 
         /*** START - USER FUNCTIONS ***/
 
-        public static bool identifyUser(string username, string password)
+        public static bool identifyUser(string username, string password, string ID)
         {
-            pHandler.hashPassword(password);
+            pHandler.hashPassword(password, ID);
             return true;
         }
 
-        public static bool registerNewUser(string username, string password)
+        public static bool registerNewUser(string username, string password, string ID)
         {
-            pHandler.hashPassword(password);
+            pHandler.hashPassword(password, ID);
             return true;
         }
 
