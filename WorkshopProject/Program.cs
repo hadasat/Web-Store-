@@ -12,7 +12,6 @@ namespace WorkshopProject
         static void Main(string[] args)
         {
             
-            Examples();
         }
 
 
