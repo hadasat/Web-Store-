@@ -183,7 +183,7 @@ namespace Users
             return this.storeManaging.Count != 0;
         }
         /*input: store
-         output: if this user is a store manager/ owner of the store return is roles
+         output: if this user is a store manager/ owner of the store return hes roles
                    else return null.
                  note = for store owner there is a function isStoreOwner to use */
         public Roles getStoreManagerRoles(Store store)
