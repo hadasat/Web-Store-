@@ -106,5 +106,10 @@ namespace Managment
                 }
             }
         }
+
+        public Store GetStore()
+        {
+            return store;
+        }
     }
 }

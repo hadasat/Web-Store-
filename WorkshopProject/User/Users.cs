@@ -173,7 +173,23 @@ namespace Users
 
         public bool isStoresManagers()
         {
-            return this.storeManaging.Count == 0;
+            return this.storeManaging.Count != 0;
+        }
+
+        public StoreManager getStoreManager(Store store)
+        {
+            if (isStoresManagers())
+            {
+                foreach(StoreManager sm in storeManaging)
+                {
+                    if (sm.GetStore() == store)
+                    {
+                        return sm;
+                    }
+                }
+            }
+            
+            return null;
         }
     }
 
