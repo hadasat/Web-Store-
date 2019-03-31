@@ -16,6 +16,14 @@ namespace Users
     {
 
         public static PasswordHandler pHandler = new PasswordHandler();
+        public static List<Member> membersOnline = new List<Member>();
+
+        public static void addMember(Member m)
+        {
+            membersOnline.Add(m);
+        }
+
+
 
         /*** START - USER FUNCTIONS ***/
 
@@ -30,11 +38,10 @@ namespace Users
             return pHandler.IdentifyPassword(password, ID);
         }
         //sign up
-        public static string registerNewUser(string username, string password)
+        public static void registerNewUser(string username, string password)
         {
             string ID = getID();
             pHandler.hashPassword(password, ID);
-            return ID;
         }
 
         
@@ -127,7 +134,11 @@ namespace Users
         {
             bool tryToRegister = ConnectionStubTemp.identifyUser(username, password);
             if (tryToRegister)
-                return ConnectionStubTemp.getMember(username);
+            {
+                Member m =  ConnectionStubTemp.getMember(username);
+                ConnectionStubTemp.addMember(m);
+                return m;
+            }
             else
                 return null;
         }
