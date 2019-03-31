@@ -214,7 +214,14 @@ namespace Users
             Member member = ConnectionStubTemp.getMember(userName);
             if (member.isStoresManagers())
             {
-                //talk with ofir!!!
+                foreach (StoreManager st in storeManaging)
+                {
+                    if (st.GetFather() == null)///change to super father
+                    {
+                        Store store = st.GetStore();
+                        //store.close();    //OFIR
+                    }
+                }
                 return ConnectionStubTemp.removeUser(userName, this);
             }
             else

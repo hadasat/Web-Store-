@@ -12,8 +12,6 @@ namespace Password
         // Dictionary<ID, Tuple <salt, pepper>
         private Dictionary<string, Tuple<byte[], byte[]>> saltesAndPepper = new Dictionary<string, Dictionary<byte[], byte[]>>;
 
-
-
         //CREATING
 
         /** this is the byte[] that need to be stored **/
@@ -72,12 +70,8 @@ namespace Password
 
 
 
-        //DECRYPTING
+        //compare
 
-        public static bool Decrypt(byte[] array1)
-        {
-
-        }
 
         public static bool CompareByteArrays(byte[] array1, byte[] array2)
         {

@@ -59,26 +59,29 @@ namespace Managment
 
     public class StoreManager
     {
-        Store store;
-        Roles myRoles;
-        public LinkedList<StoreManager> subManagers;
+        private readonly Store store;
+        private Roles myRoles;
+        private LinkedList<StoreManager> subManagers;
+        private StoreManager father;
 
         public StoreManager(Store store, Roles storeRoles)
         {
             this.store = store;
             this.myRoles = storeRoles;
             this.subManagers = new LinkedList<StoreManager>();
+            this.father = null; //change to super father
         }
 
 
 
         /*about roles: the client will choose what roles he wants to give the new
           manager (needs to be like hes and below) */
-        public StoreManager createNewManager(Member member, Roles roles)
+        public StoreManager CreateNewManager(Member member, Roles roles)
         {
             if (myRoles.CompareRoles(roles))
             {
                 StoreManager newSubStoreManager = new StoreManager(this.store, roles);
+                newSubStoreManager.setFather(this);
                 subManagers.AddFirst(newSubStoreManager);
                 return newSubStoreManager;
             }
@@ -88,7 +91,10 @@ namespace Managment
             }
         }
 
-
+        public void setFather(StoreManager father)
+        {
+            this.father = father;
+        }
 
 
 
