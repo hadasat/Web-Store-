@@ -23,14 +23,13 @@ namespace Users
         {
             return "A123";
         }
-
-        public static string identifyUser(string username, string password)
+        //sign in
+        public static bool identifyUser(string username, string password)
         {
             string ID = getID();
-            pHandler.hashPassword(password, ID);
-            return ID;
+            return pHandler.IdentifyPassword(password, ID);
         }
-
+        //sign up
         public static string registerNewUser(string username, string password)
         {
             string ID = getID();
@@ -126,8 +125,8 @@ namespace Users
 
         public Member loginMember(string username, string password)
         {
-            string tryToRegister = ConnectionStubTemp.identifyUser(username, password);
-            if (tryToRegister!="")
+            bool tryToRegister = ConnectionStubTemp.identifyUser(username, password);
+            if (tryToRegister)
                 return ConnectionStubTemp.getMember(username);
             else
                 return null;
