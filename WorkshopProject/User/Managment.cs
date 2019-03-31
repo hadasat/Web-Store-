@@ -131,5 +131,10 @@ namespace Managment
         {
             return myRoles;
         }
+
+        public StoreManager GetFather()
+        {
+            return father;
+        }
     }
 }
