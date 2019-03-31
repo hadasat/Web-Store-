@@ -59,26 +59,71 @@ namespace TestingFramework.AcceptanceTests
             //TODO
         }
 
-        virtual protected void addTestStoreOwnerToSystem()
+        virtual protected void addTestStoreOwner1ToSystem()
+        {
+            //TODO:
+            //also adds store
+        }
+
+        virtual protected void removeTestStoreOwner1FromSystem()
+        {
+            //TODO
+            //also removes store
+        }
+
+        virtual protected void addTestStoreOwner2ToSystem()
+        {
+            //TODO
+            
+        }
+
+        virtual protected void removeTestStoreOwner2FromSystem()
+        {
+            //TODO
+            
+        }
+
+        virtual protected void addTestStoreOwner3ToSystem()
+        {
+            //TODO
+
+        }
+
+        virtual protected void removeTestStoreOwner3FromSystem()
+        {
+            //TODO
+
+        }
+
+        virtual protected void addTestStoreManager1ToSystem()
         {
             //TODO
         }
 
-        virtual protected void removeTestStoreOwnerFromSystem()
+        virtual protected void removeTestStoreManager1FromSystem()
         {
             //TODO
         }
 
-        virtual protected void addTestStoreManagerToSystem()
+        virtual protected void addTestStoreManager2ToSystem()
         {
             //TODO
         }
 
-        virtual protected void removeTestStoreManagerFromSystem()
+        virtual protected void removeTestStoreManager2FromSystem()
         {
             //TODO
         }
 
+        virtual protected void addTestStoreManager3ToSystem()
+        {
+            //TODO
+        }
+
+        virtual protected void removeTestStoreManager3FromSystem()
+        {
+            //TODO
+        }
 
         virtual protected void addTestStoreToSystem()
         {

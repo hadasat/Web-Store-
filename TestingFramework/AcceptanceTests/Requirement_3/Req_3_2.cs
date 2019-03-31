@@ -10,14 +10,13 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
         [TestInitialize]
         public override void Init()
         {
-            addTestStoreOwnerToSystem();
+            addTestStoreOwner1ToSystem();
         }
 
         [TestCleanup]
         public override void Cleanup()
         {
-            removeTestStoreOwnerFromSystem();
-            removeTestStoreFromSystem();
+            removeTestStoreOwner1FromSystem();
         }
 
         [TestMethod]
