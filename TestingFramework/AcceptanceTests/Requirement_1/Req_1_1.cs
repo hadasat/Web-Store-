@@ -19,7 +19,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
             Assert.IsTrue(result);
         }
 
-        //TODO: test with existing admin?
+        //TODO: missing bad and sad - test with existing admin?
     }
 
 }

@@ -45,106 +45,107 @@ namespace TestingFramework.AcceptanceTests
         [TestCleanup]
         virtual public void Cleanup()
         {
-            //TODO
+            //TODO: AcceptanceTest method
         }
 
 
         virtual protected void addTestMemberToSystem()
         {
-            //TODO
+            //TODO: AcceptanceTest method
         }
 
         virtual protected void removeTestMemberFromSystem()
         {
-            //TODO
+            //TODO: AcceptanceTest method
         }
 
         virtual protected void addTestStoreOwner1ToSystem()
         {
-            //TODO:
+            //TODO: AcceptanceTest method
             //also adds store
         }
 
         virtual protected void removeTestStoreOwner1FromSystem()
         {
-            //TODO
+            //TODO: AcceptanceTest method
             //also removes store
         }
 
         virtual protected void addTestStoreOwner2ToSystem()
         {
-            //TODO
-            
+            //TODO: AcceptanceTest method
+
         }
 
         virtual protected void removeTestStoreOwner2FromSystem()
         {
-            //TODO
-            
+            //TODO: AcceptanceTest method
+
         }
 
         virtual protected void addTestStoreOwner3ToSystem()
         {
-            //TODO
+            //TODO: AcceptanceTest method
 
         }
 
         virtual protected void removeTestStoreOwner3FromSystem()
         {
-            //TODO
+            //TODO: AcceptanceTest method
 
         }
 
         virtual protected void addTestStoreManager1ToSystem()
         {
-            //TODO
+            //TODO: AcceptanceTest method
         }
 
         virtual protected void removeTestStoreManager1FromSystem()
         {
-            //TODO
+            //TODO: AcceptanceTest method
         }
 
         virtual protected void addTestStoreManager2ToSystem()
         {
-            //TODO
+            //TODO: AcceptanceTest method
         }
 
         virtual protected void removeTestStoreManager2FromSystem()
         {
-            //TODO
+            //TODO: AcceptanceTest method
         }
 
         virtual protected void addTestStoreManager3ToSystem()
         {
-            //TODO
+            //TODO: AcceptanceTest method
         }
 
         virtual protected void removeTestStoreManager3FromSystem()
         {
-            //TODO
+            //TODO: AcceptanceTest method
         }
 
         virtual protected void addTestStoreToSystem()
         {
+            //TODO: AcceptanceTest method
             storeId = -1; //TODO: change to return id from actually adding to system
         }
 
         virtual protected void removeTestStoreFromSystem()
         {
-            //TODO
+            //TODO: AcceptanceTest method
         }
 
 
         virtual protected void addTestProductToSystem()
         {
-            //TODO
+            //TODO: AcceptanceTest method
             productId = -1; //TODO: change to return id from actually adding to system
         }
 
         virtual protected void removeTestProductFromSystem()
         {
-            //TODO
+            //TODO: AcceptanceTest method
         }
     }
 }

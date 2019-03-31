@@ -83,7 +83,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
 
         //private bool compareProductInfo()
         //{
-        //    //TODO:
+        //    //TODO: add qeury to see results?
         //    return false;
         //}
     }
