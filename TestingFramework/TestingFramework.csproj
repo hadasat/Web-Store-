@@ -61,11 +61,13 @@
     <Compile Include="AcceptanceTests\IServiceBridge.cs" />
     <Compile Include="AcceptanceTests\Requirement_1\Req_1_1.cs" />
     <Compile Include="AcceptanceTests\AcceptanceTest.cs" />
+    <Compile Include="AcceptanceTests\Requirement_2\Req_2_8.cs" />
     <Compile Include="AcceptanceTests\Requirement_2\Req_2_7.cs" />
     <Compile Include="AcceptanceTests\Requirement_2\Req_2_6.cs" />
     <Compile Include="AcceptanceTests\Requirement_2\Req_2_5.cs" />
     <Compile Include="AcceptanceTests\Requirement_2\Req_2_3.cs" />
     <Compile Include="AcceptanceTests\Requirement_2\Req_2_2.cs" />
+    <Compile Include="AcceptanceTests\Requirement_3\Req_3_2.cs" />
     <Compile Include="AcceptanceTests\Requirement_3\Req_3_1.cs" />
     <Compile Include="AcceptanceTests\ServiceProxyBridge.cs" />
     <Compile Include="AcceptanceTests\ServiceRealBridge.cs" />

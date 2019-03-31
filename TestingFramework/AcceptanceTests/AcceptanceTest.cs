@@ -15,8 +15,14 @@ namespace TestingFramework.AcceptanceTests
         protected string fakeUser = "FakeUser";
         protected string illegalUser = ";";
 
+        protected string storeOwner1 = "StoreOwner1";
+        protected string storeOwner2 = "StoreOwner1";
+        protected string storeManager1 = "StoreManager1";
+        protected string storeManager2 = "StoreManager2";
+
         protected int storeId;
         protected string storeName = "TestStore";
+        protected int storeRank = 3;
 
         protected int productId;
         protected string productName = "TestProduct";
@@ -24,11 +30,9 @@ namespace TestingFramework.AcceptanceTests
         protected string productKeyword = "TestProduct";
         protected double startPrice = 10.0;
         protected double endPrice = 20.0;
-        protected int storeRank = 3;
+        protected int amount = 1;
         protected string fakeProductName = "TestFakeProduct";
         protected string illegalProductName = ";";
-
-
 
 
         [TestInitialize]
@@ -51,6 +55,26 @@ namespace TestingFramework.AcceptanceTests
         }
 
         virtual protected void removeTestMemberFromSystem()
+        {
+            //TODO
+        }
+
+        virtual protected void addTestStoreOwnerToSystem()
+        {
+            //TODO
+        }
+
+        virtual protected void removeTestStoreOwnerFromSystem()
+        {
+            //TODO
+        }
+
+        virtual protected void addTestStoreManagerToSystem()
+        {
+            //TODO
+        }
+
+        virtual protected void removeTestStoreManagerFromSystem()
         {
             //TODO
         }

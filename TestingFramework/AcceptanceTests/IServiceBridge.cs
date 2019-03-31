@@ -40,7 +40,7 @@ namespace TestingFramework.AcceptanceTests
         bool Logout();
 
         //Req 3_2
-        int AddStore();
+        int AddStore(string storeName);
 
         //Req 4_1
         int AddProductToStore(int storeId, string name, int price, string category, int rank);

@@ -18,7 +18,7 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
-        public int AddStore()
+        public int AddStore(string storeName)
         {
             throw new NotImplementedException();
         }
