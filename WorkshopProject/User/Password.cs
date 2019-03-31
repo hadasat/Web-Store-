@@ -10,7 +10,7 @@ namespace Password
     public class PasswordHandler
     {
         // Dictionary<ID, Tuple <salt, pepper>
-        private Dictionary<string, Tuple<byte[], byte[]>> saltesAndPepper = new Dictionary<string, Dictionary<byte[], byte[]>>();
+        private Dictionary<string, Tuple<byte[], byte[]>> saltesAndPepper = new Dictionary<string, Tuple<byte[], byte[]>>();
 
         //CREATING
 
