@@ -6,24 +6,7 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject
 {
-
-   /* class ProductAmount {
-        Product product;
-        int amount;
-
-        public ProductAmount(Product p, int amount)
-        {
-            this.amount = amount;
-            this.product = p;
-        } 
-
-
-       
-
-    }*/
-
-
-    class Store
+    public class Store
     {
 
         public string name;
