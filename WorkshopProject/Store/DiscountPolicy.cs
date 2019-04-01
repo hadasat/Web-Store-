@@ -8,5 +8,8 @@ namespace WorkshopProject
 {
     class DiscountPolicy
     {
+
+        int amount;
+
     }
 }
