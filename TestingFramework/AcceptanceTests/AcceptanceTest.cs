@@ -6,8 +6,7 @@ namespace TestingFramework.AcceptanceTests
     [TestClass]
     public class AcceptanceTest
     {
-        protected IServiceBridge bridge;
-
+        protected IServiceBridge bridge  = Driver.getBridge();
 
         protected string user = "User";
         protected string password = "Password";
@@ -26,8 +25,10 @@ namespace TestingFramework.AcceptanceTests
 
         protected int productId;
         protected string productName = "TestProduct";
+        protected string productDesc = "TestDescription";
         protected string productCategory = "TestCategory";
         protected string productKeyword = "TestProduct";
+        protected double productPrice = 10.0;
         protected double startPrice = 10.0;
         protected double endPrice = 20.0;
         protected int amount = 1;
@@ -37,8 +38,8 @@ namespace TestingFramework.AcceptanceTests
 
         [TestInitialize]
         virtual public void Init()
-        {
-            bridge = Driver.getBridge();
+        { 
+
         }
 
 
