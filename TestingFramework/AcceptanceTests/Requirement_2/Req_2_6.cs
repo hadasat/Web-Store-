@@ -27,6 +27,8 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             bool result = bridge.AddProductToCart(productId, 1);
             Assert.IsTrue(result);
+
+            //TODO: maybe check that product was added?
         }
 
         [TestMethod]

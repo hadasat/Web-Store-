@@ -17,6 +17,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
             bool result = bridge.Initialize(admin, password);
 
             Assert.IsTrue(result);
+
+            result = bridge.Login(admin, password);
+            Assert.IsTrue(result);
         }
 
         //TODO: missing bad and sad - test with existing admin?

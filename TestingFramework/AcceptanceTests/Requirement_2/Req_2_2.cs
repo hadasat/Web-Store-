@@ -25,6 +25,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             bool result = bridge.Register(user, password);
 
             Assert.IsTrue(result);
+
+            result = bridge.Login(user, password);
+            Assert.IsTrue(result);
         }
 
         [TestMethod]
