@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Managment;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users;
 
 namespace WorkshopProject
 {
@@ -13,42 +15,41 @@ namespace WorkshopProject
         public int rank;
         public Boolean isActive;
 
-        public Dictionary<int, Product> stock { get; set; }
-        //public Dictionary<int, int> products;
+        private Dictionary<int, Product> Stock;
         private PurchasePolicy purchase_policy;
 
-        private Store(string name, int rank,Boolean isActive)
+        public Store(string name, int rank,Boolean isActive)
         {
             this.name = name;
             this.rank = rank;
             this.isActive = isActive;
-            stock = new Dictionary<int, Product>();
+            Stock = new Dictionary<int, Product>();
 
         }
         
 
         private Boolean addRemoveProductsPermission(Member member)
         {
-           Roles roles = member.getStoreManagerRoles(this).addRemoveProducts;
-            return roles != null && roles.addRemoveProducts;
+           Roles roles = member.getStoreManagerRoles(this);
+            return roles != null && roles.AddRemoveProducts;
         }
 
         private Boolean addRemoveDiscountPermission(Member member)
         {
-            Roles roles = member.getStoreManagerRoles(this).addRemoveProducts;
-            return roles != null && roles.addRemoveDiscountPolicy;
+            Roles roles = member.getStoreManagerRoles(this);
+            return roles != null && roles.AddRemoveDiscountPolicy;
         }
 
         private Boolean addRemovePurchasingPermission(Member member)
         {
-            Roles roles = member.getStoreManagerRoles(this).addRemoveProducts;
-            return roles != null && roles.addRemovePurchasing;
+            Roles roles = member.getStoreManagerRoles(this);
+            return roles != null && roles.AddRemovePurchasing;
         }
 
         private Boolean addRemoveStoreManagerPermission(Member member)
         {
-            Roles roles = member.getStoreManagerRoles(this).addRemoveProducts;
-            return roles != null && roles.addRemoveStoreManager;
+            Roles roles = member.getStoreManagerRoles(this);
+            return roles != null && roles.AddRemoveStoreManger;
         }
 
         Boolean addProduct(User user,Product p,int amountToAdd)
@@ -57,10 +58,10 @@ namespace WorkshopProject
             if (!(user is Member) || !(addRemoveProductsPermission((Member)user)))   //Verify Premission
                 return false;
 
-            if (stock.ContainsKey(p.id))           
-                addTostock(stock[p.id],amountToAdd);     
+            if (Stock.ContainsKey(p.id))           
+                addTostock(Stock[p.id],amountToAdd);     
             else        
-                stock.Add(p.id, new Product(p,amountToAdd));
+                Stock.Add(p.id, new Product(p,amountToAdd));
             
             return true;
             
@@ -74,7 +75,7 @@ namespace WorkshopProject
             if (!(user is Member) || !(addRemoveProductsPermission((Member)user)))   //Verify Premission
                 return false;
 
-            stock.Remove(product.id);
+            Stock.Remove(product.id);
             return true;
             
         }
@@ -133,7 +134,7 @@ namespace WorkshopProject
             if (!(user is Member) || !(addRemoveProductsPermission((Member)user))) //Verify Premission
                 return false;
 
-            if (!stock.ContainsKey(p.id) || removeFromStock(stock[p.id],amountToBuy) == -1)
+            if (!Stock.ContainsKey(p.id) || removeFromStock(Stock[p.id],amountToBuy) == -1)
                 return false;
 
             return true;

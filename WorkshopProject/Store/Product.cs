@@ -35,28 +35,5 @@ namespace WorkshopProject
             rank = p.rank;
             this.amount = amount;
         }
-
-
-        /// <summary>
-        /// remove from stock numberToRemove products
-        /// </summary>
-        /// <param name="numberToRemove"></param>
-        /// <returns>new amount id succeed ,otherwise -1</returns>
-        public int removeFromStock(int numberToRemove)
-        {
-            if (amount >= numberToRemove)
-            {
-                amount -= numberToRemove;
-                return amount;
-            }
-            return -1;
-        }
-
-
-        public int addTostock(int amountToAdd)
-        {
-            amount += amountToAdd;
-            return amount;
-        }
     }
 }

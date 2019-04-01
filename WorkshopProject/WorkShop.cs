@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static WorkshopProject.Category;
+using Users;
 
 namespace WorkshopProject
 {
@@ -32,7 +33,7 @@ namespace WorkshopProject
             List<Product> matched_products = new List<Product>();
             foreach (Store store_id in stores)
             {
-                Store store = getStore(store_id);
+                /*Store store = getStore(store_id);*/
                 Dictionary<int, Product> products = store.stock;
                 foreach (Product item in products.Values) {
                     if ((name == null || name == item.name) && (category == Categories.None || category == item.category)
@@ -55,6 +56,11 @@ namespace WorkshopProject
         private Store getStore(Store store_id)
         {
             throw new NotImplementedException();
+        }
+
+        public void createNewStore(string name, int rank, Boolean isActive)
+        {
+            stores.Add(new Store(name, rank, isActive));
         }
     }
 }
