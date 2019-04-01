@@ -27,6 +27,11 @@ namespace WorkshopProject
             return -1;
         }
 
+        public int getProductAmount(Product product)
+        {
+            return products[product];
+        }
+
         public Dictionary<Product, int> getProducts()
         {
             return products;

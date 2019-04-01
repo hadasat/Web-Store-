@@ -21,6 +21,13 @@ namespace WorkshopProject
             return ((ShoppingCart)carts[store]).setProductAmount(product, amount);
         }
 
+        public int addProduct(Store store, Product product)
+        {
+            int curr_amount = carts[store].getProductAmount(product);
+            return carts[store].setProductAmount(product, curr_amount+1);
+        }
+
+
         public Dictionary<Store, ShoppingCart> getCarts()
         {
             return carts;
