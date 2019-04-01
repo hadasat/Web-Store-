@@ -6,6 +6,23 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject
 {
+
+   /* class ProductAmount {
+        Product product;
+        int amount;
+
+        public ProductAmount(Product p, int amount)
+        {
+            this.amount = amount;
+            this.product = p;
+        } 
+
+
+       
+
+    }*/
+
+
     class Store
     {
 
@@ -13,7 +30,8 @@ namespace WorkshopProject
         public int rank;
         public Boolean isActive;
 
-        public Dictionary<int, Product> products { get; set; }
+        public Dictionary<int, Product> stock { get; set; }
+        //public Dictionary<int, int> products;
         private PurchasePolicy purchase_policy;
 
         private Store(string name, int rank,Boolean isActive)
@@ -21,7 +39,7 @@ namespace WorkshopProject
             this.name = name;
             this.rank = rank;
             this.isActive = isActive;
-            products = new Dictionary<int, Product>();
+            stock = new Dictionary<int, Product>();
 
         }
         
@@ -50,27 +68,32 @@ namespace WorkshopProject
             return roles != null && roles.addRemoveStoreManager;
         }
 
-        Boolean addProduct(User user,Product product)
+        Boolean addProduct(User user,Product p,int amountToAdd)
         {
             //Verify Premission
-            if(user is Member && addRemoveProductsPermission((Member)user)) //Verify Premission
-            {
-                products.Add(product.id, product);
-                return true;
-            }
-            return false;
-           
+            if (!(user is Member) || !(addRemoveProductsPermission((Member)user)))   //Verify Premission
+                return false;
+
+            if (stock.ContainsKey(p.id))           
+                addTostock(stock[p.id],amountToAdd);     
+            else        
+                stock.Add(p.id, new Product(p,amountToAdd));
+            
+            return true;
+            
         }
+
+        
 
         Boolean removeProduct(User user, Product product)
         {
             //Verify Premission
-            if (user is Member && addRemoveProductsPermission((Member)user))   //Verify Premission
-            {
-                products.Remove(product.id);
-                return true;
-            }
-            return false;
+            if (!(user is Member) || !(addRemoveProductsPermission((Member)user)))   //Verify Premission
+                return false;
+
+            stock.Remove(product.id);
+            return true;
+            
         }
 
         Boolean addDiscount(User user, DiscountPolicy discount)
@@ -112,17 +135,49 @@ namespace WorkshopProject
 
 
 
-       /* Boolean addStoreManager(User user, User storeManager)
+        /* Boolean addStoreManager(User user, User storeManager)
+         {
+             if (user is Member && addRemoveStoreManagerPermission((Member)user)) //Verify Premission
+             {
+                 return true;
+             }
+             return false;
+         }*/
+
+        Boolean buyProduct(User user, Product p , int amountToBuy)
         {
-            if (user is Member && addRemoveStoreManagerPermission((Member)user)) //Verify Premission
-            {
-                return true;
-            }
-            return false;
-        }*/
+            
+            if (!(user is Member) || !(addRemoveProductsPermission((Member)user))) //Verify Premission
+                return false;
 
+            if (!stock.ContainsKey(p.id) || removeFromStock(stock[p.id],amountToBuy) == -1)
+                return false;
 
+            return true;
+                       
+        }
 
+        /// <summary>
+        /// Remove from stock 'amountToBuy' products
+        /// </summary>
+        /// <param name="numberToRemove"></param>
+        /// <returns>new amount id succeed ,otherwise -1</returns>
+        private int removeFromStock(Product p, int amountToBuy)
+        {
+            if (p.amount < amountToBuy)
+                return -1;
+            
+            p.amount -= amountToBuy;
+            return p.amount;                    
+        }
+
+        private int addTostock(Product p, int amountToAdd)
+        {
+            p.amount += amountToAdd;
+            return p.amount;
+        }
 
     }
+
+     
 }

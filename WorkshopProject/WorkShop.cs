@@ -33,7 +33,7 @@ namespace WorkshopProject
             foreach (Store store_id in stores)
             {
                 Store store = getStore(store_id);
-                Dictionary<int, Product> products = store.products;
+                Dictionary<int, Product> products = store.stock;
                 foreach (Product item in products.Values) {
                     if ((name == null || name == item.name) && (category == Categories.None || category == item.category)
                         && (priceRange == -1 || priceRange > item.price) && (storeRanking==-1 || storeRanking<store.rank))
