@@ -18,6 +18,11 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
+        public bool RemoveProductFromStore(int storeId, int productId)
+        {
+            throw new NotImplementedException();
+        }
+
         public int AddStore(string storeName)
         {
             throw new NotImplementedException();
@@ -43,7 +48,7 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
-        public bool ChangeProductInformation(int productId, string name, string desc, double price, string category, int amount)
+        public bool ChangeProductInfo(int productId, string name, string desc, double price, string category, int amount)
         {
             throw new NotImplementedException();
         }

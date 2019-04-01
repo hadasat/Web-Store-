@@ -45,7 +45,57 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             Assert.AreEqual(result, -1);
         }
 
+        [TestMethod]
+        [TestCategory("Req_4")]
+        public void RemoveNewProductSuccess()
+        {
+            AddNewProductSuccess();
+            bool result = bridge.RemoveProductFromStore(storeId, productId);
+            Assert.IsTrue(result);
+        }
 
+        [TestMethod]
+        [TestCategory("Req_4")]
+        public void RemoveNewProductThatWasAlreadyRemoved()
+        {
+            RemoveNewProductSuccess();
+            bool result = bridge.RemoveProductFromStore(storeId, productId);
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Req_4")]
+        public void RemoveIllegalProduct()
+        {
+            bool result = bridge.RemoveProductFromStore(storeId, -1);
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Req_4")]
+        public void UpdateProductSuccess()
+        {
+            AddNewProductSuccess();
+            bool result = bridge.ChangeProductInfo(productId, "", "", 50.0, "", -1);
+            Assert.AreNotEqual(result, -1);
+        }
+
+        [TestMethod]
+        [TestCategory("Req_4")]
+        public void UpdateProductThatWasRemoved()
+        {
+            RemoveNewProductSuccess();
+            bool result = bridge.ChangeProductInfo(productId, "", "", 50.0, "", -1);
+            Assert.AreNotEqual(result, -1);
+        }
+
+        [TestMethod]
+        [TestCategory("Req_4")]
+        public void UpdateIllegalProduct()
+        {
+            bool result = bridge.ChangeProductInfo(-1, "", "", 50.0, "", -1);
+            Assert.AreNotEqual(result, -1);
+        }
 
     }
 }

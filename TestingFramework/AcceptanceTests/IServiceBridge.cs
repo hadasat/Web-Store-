@@ -44,8 +44,8 @@ namespace TestingFramework.AcceptanceTests
 
         //Req 4_1
         int AddProductToStore(int storeId, string name, string desc, double price, string category);
-
-        bool ChangeProductInformation(int productId, string name, string desc, double price, string category, int amount);
+        bool RemoveProductFromStore(int storeId, int productId);
+        bool ChangeProductInfo(int productId, string name, string desc, double price, string category, int amount);
 
         //Req 4_3
         bool AddStoreOwner(int storeId, string user);
