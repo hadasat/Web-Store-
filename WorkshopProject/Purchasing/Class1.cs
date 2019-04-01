@@ -8,5 +8,6 @@ namespace WorkshopProject.Purchasing
 {
     class Class1
     {
+        //mmmm
     }
 }
