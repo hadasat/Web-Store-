@@ -35,7 +35,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
         public void LogoutWithNoLogin()
         {
             bool result = bridge.Logout();
-            Assert.IsTrue(result);
+            Assert.IsFalse(result);
         }
     }
 }
