@@ -32,5 +32,14 @@ namespace WorkshopProject
             return products;
         }
 
+
+        public int addProduct(Product product)
+        {
+            if (products.ContainsKey(product))
+                products[product]++;
+            products[product] = 1;
+            return 0;
+        }
+
     }
 }

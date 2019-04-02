@@ -9,7 +9,7 @@ namespace WorkshopProject
 {
     class ShoppingBasket
     {
-        Dictionary<Store,ShoppingCart> carts;
+        Dictionary<Store,ShoppingCart> carts{get;}
 
         public ShoppingBasket()
         {
