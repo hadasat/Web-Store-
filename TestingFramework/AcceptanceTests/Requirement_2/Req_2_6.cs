@@ -28,7 +28,11 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             bool result = bridge.AddProductToCart(productId, 1);
             Assert.IsTrue(result);
 
-            //TODO: maybe check that product was added?
+            int tmp_amount;
+            int cart = bridge.GetShoppingCart(storeId);
+            Dictionary<int, int> products = bridge.GetProductsInShoppingCart(cart);
+            Assert.IsTrue(products.TryGetValue(productId, out tmp_amount));
+            Assert.AreEqual(tmp_amount, 1);
         }
 
         [TestMethod]

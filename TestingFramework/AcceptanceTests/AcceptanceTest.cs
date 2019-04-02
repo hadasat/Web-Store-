@@ -140,6 +140,7 @@ namespace TestingFramework.AcceptanceTests
 
         virtual protected void addTestProductToSystem()
         {
+            addTestStoreToSystem();
             //TODO: AcceptanceTest method
             productId = -1; //TODO: change to return id from actually adding to system
         }
@@ -147,6 +148,8 @@ namespace TestingFramework.AcceptanceTests
         virtual protected void removeTestProductFromSystem()
         {
             //TODO: AcceptanceTest method
+
+            removeTestStoreFromSystem();
         }
     }
 }

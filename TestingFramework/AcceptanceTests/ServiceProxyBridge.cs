@@ -43,7 +43,7 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
-        public bool GetProductInfo(int id, ref string name, ref string productDesc, ref double price, ref string category, ref int rank)
+        public bool GetProductInfo(int id, out string name, out string productDesc, out double price, out string category, out int rank)
         {
             throw new NotImplementedException();
         }
@@ -64,6 +64,11 @@ namespace TestingFramework.AcceptanceTests
         }
 
         public int GetShoppingCart(int storeId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<int> getProductsInCart(int cartId)
         {
             throw new NotImplementedException();
         }
