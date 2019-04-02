@@ -46,7 +46,6 @@
     <Compile Include="Store\Category.cs" />
     <Compile Include="Store\ConditionalDiscount.cs" />
     <Compile Include="Store\DiscountPolicy.cs" />
-    <Compile Include="User\Member.cs" />
     <Compile Include="User\Password.cs" />
     <Compile Include="Store\Product.cs" />
     <Compile Include="Store\PurchasePolicy.cs" />
@@ -54,10 +53,9 @@
     <Compile Include="Purchasing\Shopping Cart.cs" />
     <Compile Include="Purchasing\ShoppingBasket.cs" />
     <Compile Include="Store\Store.cs" />
-    <Compile Include="User\StoreManager.cs" />
-    <Compile Include="User\SystemAdmin.cs" />
+    <Compile Include="User\Managment.cs" />
     <Compile Include="Purchasing\Tansaction.cs" />
-    <Compile Include="User\User.cs" />
+    <Compile Include="User\Users.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

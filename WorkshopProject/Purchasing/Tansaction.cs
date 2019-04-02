@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject
 {
-    class Tansaction
+    public class Tansaction
     {
         static int idCounter = 0;
         int id; 
