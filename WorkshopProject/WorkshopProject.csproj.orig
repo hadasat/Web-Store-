@@ -43,7 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< Updated upstream
+=======
     <Compile Include="Purchasing\ShoppingCart.cs" />
+>>>>>>> Stashed changes
     <Compile Include="Store\Category.cs" />
     <Compile Include="Store\ConditionalDiscount.cs" />
     <Compile Include="Store\DiscountPolicy.cs" />
