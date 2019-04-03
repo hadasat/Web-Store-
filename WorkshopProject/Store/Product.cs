@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject
 {
-    class Product
+    public class Product
     {
     }
 }

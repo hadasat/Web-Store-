@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace WorkshopProject
 {
 
-    class ShoppingCart
+    public class ShoppingCart
     {
         Dictionary<Product, int> products;
 
