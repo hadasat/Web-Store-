@@ -10,14 +10,14 @@ namespace Password
     public class PasswordHandler
     {
         // Dictionary<ID, Tuple <salt, pepper>
-        private Dictionary<string, Tuple<byte[], byte[]>> saltesAndPepper = new Dictionary<string, Tuple<byte[], byte[]>>();
+        private Dictionary<int, Tuple<byte[], byte[]>> saltesAndPepper = new Dictionary<int, Tuple<byte[], byte[]>>();
 
         //CREATING
 
         /** this is the byte[] that need to be stored **/
 
         //when register
-        public void hashPassword(string password, string ID)
+        public void hashPassword(string password, int ID)
         {
             byte[] bytesPass = Encoding.ASCII.GetBytes(password);
             byte[] currSalt = CreateSalt(bytesPass.Length);
@@ -26,7 +26,7 @@ namespace Password
         }
 
         //when sign in
-        public bool IdentifyPassword(string password, string ID)
+        public bool IdentifyPassword(string password, int ID)
         {
             byte[] bytesPass = Encoding.ASCII.GetBytes(password);
             Tuple<byte[], byte[]> sAndP = saltesAndPepper[ID];
