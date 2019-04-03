@@ -53,7 +53,12 @@
     <Compile Include="Store\Category.cs" />
     <Compile Include="Store\ConditionalDiscount.cs" />
     <Compile Include="Store\DiscountPolicy.cs" />
+    <Compile Include="System Service\GodObject.cs" />
+    <Compile Include="System Service\StoreService.cs" />
+    <Compile Include="System Service\SystemServiceImpl.cs" />
+    <Compile Include="System Service\TransactionService.cs" />
     <Compile Include="System Service\UserInterface.cs" />
+    <Compile Include="System Service\UserService.cs" />
     <Compile Include="User\Password.cs" />
     <Compile Include="Store\Product.cs" />
     <Compile Include="Store\PurchasePolicy.cs" />

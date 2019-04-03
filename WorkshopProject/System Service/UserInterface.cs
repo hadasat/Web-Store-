@@ -6,13 +6,104 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject.System_Service
 {
-    interface UserInterface
+    public interface UserInterface
     {
+        /*
+         * Message Format: {message: String}
+         * Search Format: {List<Product> products}
+         * 
+         * 
+         * 
+         */
 
-        void logout(int user_id);
-        Boolean login(string username, string hashPassword);
-        Boolean buyProduct(int user_id, int shoppingBasket_id);
-        Boolean createNewManager(int user_id, int newManager_id);
-        Boolean removeManager(int user_id, int managerToRemove_id);
+
+        //Return: Message Format
+        String logout();
+
+        //Return: Message Format
+        String login(string username, string password);
+
+        //Return: Message Format
+        String Register(string user, string password);
+
+        //Return: Search Format
+        String SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int storeRank);
+
+        //Return Product Jason Object
+        String GetProductInfo(int id);
+
+        //Return: Message Format
+        String AddProductToBasket(int productId, int amount);
+
+        //Return: Shopping Cart Jason Object
+        String GetShoppingCart(int storeId);
+
+        //Return: Message Format
+        String SetProductAmountInCart(int productId, int amount);
+
+        //Return: Message Format
+        String BuyShoppingBasket(int id);
+
+        //Return: Message Format
+        String AddStore(string storeName);
+
+        //Return: Message Format
+        String AddProductToStore(int storeId, string name, string desc, double price, string category);
+
+        //Return: Message Format
+        String AddProductToStock(int storeId,int productId,int amount);
+
+        //Return: Message Format
+        String ChangeProductInfo(int productId, string name, string desc, double price, string category, int amount);
+
+        //Return: Message Format
+        String RemoveProductFromStore(int storeId, int productId);
+
+        //Return: Message Format
+        /// <summary>
+        /// adding create store manager with full rules permissions and add it to user. Only store owner can use this function. 
+        /// </summary>
+        /// <param name="storeId"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        String AddStoreOwner(int storeId, string username);
+
+        //Return: Message Format
+        String RemoveStoreManager(int storeId, string username);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="storeId"></param>
+        /// <param name="user"></param>
+        /// <param name="roles">Json Format: {Bool: addRemoveProducts,
+        /// addRemovePurchasing,
+        /// addRemoveDiscountPolicy,
+           //addRemoveStoreManger,
+           //closeStore,
+           //customerCommunication}
+        /// <returns>//Return: Message Format</returns>
+        String AddStoreManager(int storeId, string user,String roles);
+
+        //Return: Message Format
+        String RemoveUser(string user);
+
+        //Return: Message Format
+        String addPurchasingPolicy(int storeId);
+
+        //Return: Message Format
+        String removePurchasingPolicy(int storeId);
+
+        //Return: Message Format
+        String addDiscountPolicy(int storeId);
+
+        //Return: Message Format
+        String removeDiscountPolicy(int storeId);
+
+        //Return: Message Format
+        String closeStore(int storeID);
+
+
+
     }
 }

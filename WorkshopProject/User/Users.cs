@@ -81,7 +81,7 @@ namespace Users
             if (ID != "0")
             {
                 Roles firstStoreRoles = new Roles(false, false, false, false, false, false);
-                Store store = new Store();
+                Store store = new Store("stubStore",3,true);
                 StoreManager st = new StoreManager(store, firstStoreRoles);
                 LinkedList<StoreManager> storesManaging = new LinkedList<StoreManager>();
                 storesManaging.AddFirst(st);
@@ -132,6 +132,7 @@ namespace Users
 
         public Member loginMember(string username, string password)
         {
+            //load shopping basket
             bool tryToRegister = ConnectionStubTemp.identifyUser(username, password);
             if (tryToRegister)
             {

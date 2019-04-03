@@ -19,9 +19,8 @@ namespace WorkshopProject
         private PurchasePolicy purchase_policy;
 
 
-        public Store(int id, string name, int rank,Boolean isActive)
+        public Store(string name, int rank,Boolean isActive)
         {
-            this.id = id;
             this.name = name;
             this.rank = rank;
             this.isActive = isActive;
