@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject
 {
-    class Member
+    public class ClassForTestExample
     {
+        public static bool TestMe()
+        {
+            return true;
+        }
     }
 }

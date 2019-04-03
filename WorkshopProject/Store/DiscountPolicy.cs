@@ -6,7 +6,20 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject
 {
-    class DiscountPolicy
+   public  class DiscountPolicy
     {
+
+       public int amount;
+
+
+        public DiscountPolicy()
+        {
+            amount = 0;
+        }
+
+        public DiscountPolicy(int discountAmount)
+        {
+            amount = discountAmount;
+        }
     }
 }
