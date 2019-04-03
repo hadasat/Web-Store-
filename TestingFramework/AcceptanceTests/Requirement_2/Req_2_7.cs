@@ -44,6 +44,11 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
 
             result = bridge.SetProductAmountInCart(cartId, productId, 0);
             Assert.IsTrue(result);
+
+            int tmp_amount;
+            int cart = bridge.GetShoppingCart(storeId);
+            Dictionary<int, int> products = bridge.GetProductsInShoppingCart(cart);
+            Assert.IsFalse(products.TryGetValue(productId, out tmp_amount));
         }
 
         [TestMethod]
@@ -76,6 +81,13 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
 
             result = bridge.SetProductAmountInCart(cartId, productId, 2);
             Assert.IsTrue(result);
+
+
+            int tmp_amount;
+            int cart = bridge.GetShoppingCart(storeId);
+            Dictionary<int, int> products = bridge.GetProductsInShoppingCart(cart);
+            Assert.IsTrue(products.TryGetValue(productId, out tmp_amount));
+            Assert.AreEqual(tmp_amount, 2);
         }
 
         [TestMethod]

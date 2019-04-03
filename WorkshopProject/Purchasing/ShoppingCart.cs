@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 namespace WorkshopProject
 {
 
-    class ShoppingCart
+    public class ShoppingCart
     {
-        Dictionary<Product,int> products;
+        Dictionary<Product, int> products;
 
         public ShoppingCart()
         {
             products = new Dictionary<Product, int>();
         }
 
-        public int setProductAmount(Product product,int amount)
+        public int setProductAmount(Product product, int amount)
         {
-            if( amount >= 0)
+            if (amount >= 0)
             {
                 products[product] = amount;
                 return 0;

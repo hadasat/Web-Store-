@@ -13,12 +13,17 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
-        public int AddProductToStore(int storeId, string name, int price, string category, int rank)
+        public int AddProductToStore(int storeId, string name, string desc, double price, string category)
         {
             throw new NotImplementedException();
         }
 
-        public int AddStore()
+        public bool RemoveProductFromStore(int storeId, int productId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int AddStore(string storeName)
         {
             throw new NotImplementedException();
         }
@@ -38,7 +43,12 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
-        public bool GetProductInfo(int id, ref string name, ref int price, ref string category, ref int rank)
+        public bool GetProductInfo(int id, out string name, out string productDesc, out double price, out string category, out int rank)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public bool ChangeProductInfo(int productId, string name, string desc, double price, string category, int amount)
         {
             throw new NotImplementedException();
         }
@@ -54,6 +64,11 @@ namespace TestingFramework.AcceptanceTests
         }
 
         public int GetShoppingCart(int storeId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<int> getProductsInCart(int cartId)
         {
             throw new NotImplementedException();
         }

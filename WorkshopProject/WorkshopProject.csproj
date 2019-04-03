@@ -58,7 +58,7 @@
     <Compile Include="Store\Product.cs" />
     <Compile Include="Store\PurchasePolicy.cs" />
     <Compile Include="Store\RegularDiscount.cs" />
-    <Compile Include="Purchasing\Shopping Cart.cs" />
+    <Compile Include="Purchasing\ShoppingCart.cs" />
     <Compile Include="Purchasing\ShoppingBasket.cs" />
     <Compile Include="Store\Store.cs" />
     <Compile Include="User\Managment.cs" />

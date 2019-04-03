@@ -16,6 +16,14 @@ namespace Users
     {
 
         public static PasswordHandler pHandler = new PasswordHandler();
+        public static List<Member> membersOnline = new List<Member>();
+
+        public static void addMember(Member m)
+        {
+            membersOnline.Add(m);
+        }
+
+
 
         /*** START - USER FUNCTIONS ***/
 
@@ -23,19 +31,17 @@ namespace Users
         {
             return "A123";
         }
-
-        public static string identifyUser(string username, string password)
+        //sign in
+        public static bool identifyUser(string username, string password)
         {
             string ID = getID();
-            pHandler.hashPassword(password, ID);
-            return ID;
+            return pHandler.IdentifyPassword(password, ID);
         }
-
-        public static string registerNewUser(string username, string password)
+        //sign up
+        public static void registerNewUser(string username, string password)
         {
             string ID = getID();
             pHandler.hashPassword(password, ID);
-            return ID;
         }
 
         
@@ -126,9 +132,13 @@ namespace Users
 
         public Member loginMember(string username, string password)
         {
-            string tryToRegister = ConnectionStubTemp.identifyUser(username, password);
-            if (tryToRegister!="")
-                return ConnectionStubTemp.getMember(username);
+            bool tryToRegister = ConnectionStubTemp.identifyUser(username, password);
+            if (tryToRegister)
+            {
+                Member m =  ConnectionStubTemp.getMember(username);
+                ConnectionStubTemp.addMember(m);
+                return m;
+            }
             else
                 return null;
         }
@@ -215,7 +225,14 @@ namespace Users
             Member member = ConnectionStubTemp.getMember(userName);
             if (member.isStoresManagers())
             {
-                //talk with ofir!!!
+                foreach (StoreManager st in storeManaging)
+                {
+                    if (st.GetFather() == null)///change to super father
+                    {
+                        Store store = st.GetStore();
+                        //store.close();    //OFIR
+                    }
+                }
                 return ConnectionStubTemp.removeUser(userName, this);
             }
             else

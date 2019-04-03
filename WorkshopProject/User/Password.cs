@@ -9,21 +9,33 @@ namespace Password
 {
     public class PasswordHandler
     {
+        // Dictionary<ID, Tuple <salt, pepper>
+        private Dictionary<string, Tuple<byte[], byte[]>> saltesAndPepper = new Dictionary<string, Tuple<byte[], byte[]>>();
 
-        private Dictionary<string, byte[]> saltes = new Dictionary<string, byte[]>(); //TMP
-
-        
         //CREATING
 
         /** this is the byte[] that need to be stored **/
-        public byte[] hashPassword(string password, string ID)
+
+        //when register
+        public void hashPassword(string password, string ID)
         {
             byte[] bytesPass = Encoding.ASCII.GetBytes(password);
             byte[] currSalt = CreateSalt(bytesPass.Length);
-            saltes.Add(ID, currSalt);
-            return GenerateSaltedHash(bytesPass, currSalt);
-            
+            byte[] pepper = GenerateSaltedHash(bytesPass, currSalt);
+            saltesAndPepper.Add(ID,new Tuple<byte[], byte[]>(currSalt, pepper));
         }
+
+        //when sign in
+        public bool IdentifyPassword(string password, string ID)
+        {
+            byte[] bytesPass = Encoding.ASCII.GetBytes(password);
+            Tuple<byte[], byte[]> sAndP = saltesAndPepper[ID];
+            byte[] salt = sAndP.Item1;
+            byte[] pepper = sAndP.Item2;
+            byte[] userPepper = GenerateSaltedHash(bytesPass, salt);
+            return CompareByteArrays(pepper, userPepper);
+        }
+
         /** salt needs to be stored as well alongside the hash**/
         private byte[] CreateSalt(int size)
         {
@@ -58,7 +70,8 @@ namespace Password
 
 
 
-        //DECHIPERING
+        //compare
+
 
         public static bool CompareByteArrays(byte[] array1, byte[] array2)
         {

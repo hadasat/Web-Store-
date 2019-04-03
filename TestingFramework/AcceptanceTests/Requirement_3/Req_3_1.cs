@@ -7,7 +7,6 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
     [TestClass]
     public class Req_3_1 : AcceptanceTest
     {
-
         [TestInitialize]
         public override void Init()
         {
@@ -17,7 +16,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
         [TestCleanup]
         public override void Cleanup()
         {
-            
+            removeTestMemberFromSystem();
         }
 
         [TestMethod]
@@ -36,7 +35,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
         public void LogoutWithNoLogin()
         {
             bool result = bridge.Logout();
-            Assert.IsTrue(result);
+            Assert.IsFalse(result);
         }
     }
 }
