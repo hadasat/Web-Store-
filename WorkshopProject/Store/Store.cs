@@ -10,7 +10,7 @@ namespace WorkshopProject
 {
     public class Store
     {
-
+        int id;
         public string name;
         public int rank;
         public Boolean isActive;
@@ -18,15 +18,23 @@ namespace WorkshopProject
         private Dictionary<int, Product> Stock;
         private PurchasePolicy purchase_policy;
 
-        public Store(string name, int rank,Boolean isActive)
+
+        public Store(int id, string name, int rank,Boolean isActive)
         {
+            this.id = id;
             this.name = name;
             this.rank = rank;
             this.isActive = isActive;
             Stock = new Dictionary<int, Product>();
 
         }
-        
+
+        public Dictionary<int, Product> GetStock()
+        {
+            return Stock;
+        }
+
+
 
         private Boolean addRemoveProductsPermission(Member member)
         {

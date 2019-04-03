@@ -7,15 +7,17 @@ using static WorkshopProject.Category;
 
 namespace WorkshopProject
 {
-    class Product
+    public class Product
     {
         public int id;
         public string name;
-        public int price;
+        private int price;
         public Categories category;
         public int rank;
         public string description;
         public int amount;
+
+        public DiscountPolicy discount;
 
         public Product(int id, string name , int price, Categories category,int rank,int amount)
         {
@@ -24,6 +26,7 @@ namespace WorkshopProject
             this.price = price;
             this.category = category;
             this.rank = rank;
+            discount = new DiscountPolicy();
         }
 
         public Product(Product p , int amount)
@@ -35,5 +38,17 @@ namespace WorkshopProject
             rank = p.rank;
             this.amount = amount;
         }
+
+        public int getPrice()
+        {
+            return price - discount.amount;
+        }
+
+        public void setPrice(int newPrice)
+        {
+            this.price = newPrice;
+        }
+
+
     }
 }

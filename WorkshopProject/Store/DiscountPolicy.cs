@@ -9,7 +9,17 @@ namespace WorkshopProject
     class DiscountPolicy
     {
 
-        int amount;
+       public int amount;
 
+
+        public DiscountPolicy()
+        {
+            amount = 0;
+        }
+
+        public DiscountPolicy(int discountAmount)
+        {
+            amount = discountAmount;
+        }
     }
 }

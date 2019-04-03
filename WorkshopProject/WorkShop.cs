@@ -10,13 +10,13 @@ namespace WorkshopProject
 {
     class WorkShop
     {
-        List<Store> stores;
-        List<User> users;
+       public  Dictionary<int,Store> stores;
+        Dictionary<int,User> users;
 
         public WorkShop()
         {
-            stores = new List<Store>();
-            users = new List<User>();
+            stores = new Dictionary<int, Store>();
+            users = new Dictionary<int, User>();
         }
 
         /// <summary>
@@ -31,10 +31,10 @@ namespace WorkshopProject
         List<Product> search(string name, Categories category, int priceRange, int ranking, int storeRanking)
         {
             List<Product> matched_products = new List<Product>();
-            foreach (Store store_id in stores)
+            foreach (Store store in stores.Values)
             {
                 /*Store store = getStore(store_id);*/
-                Dictionary<int, Product> products = store.stock;
+                Dictionary<int, Product> products = store.GetStock();
                 foreach (Product item in products.Values) {
                     if ((name == null || name == item.name) && (category == Categories.None || category == item.category)
                         && (priceRange == -1 || priceRange > item.price) && (storeRanking==-1 || storeRanking<store.rank))
@@ -53,14 +53,19 @@ namespace WorkshopProject
         /// </summary>
         /// <param name="store_id"></param>
         /// <returns>Store</returns>
-        private Store getStore(Store store_id)
+        public Store getStore(int store_id)
         {
-            throw new NotImplementedException();
+            return stores[store_id];
         }
 
-        public void createNewStore(string name, int rank, Boolean isActive)
+        public User getUser(int user_id)
         {
-            stores.Add(new Store(name, rank, isActive));
+            return users[user_id];
+        }
+
+        public void createNewStore(int id,string name, int rank, Boolean isActive)
+        {
+            stores.Add(id,new Store(id,name, rank, isActive));
         }
     }
 }
