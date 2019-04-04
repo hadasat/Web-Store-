@@ -31,6 +31,7 @@ namespace TestingFramework.AcceptanceTests
         protected double productPrice = 10.0;
         protected double startPrice = 10.0;
         protected double endPrice = 20.0;
+        protected int productRank = 1;
         protected int amount = 1;
         protected string fakeProductName = "TestFakeProduct";
         protected string illegalProductName = ";";
