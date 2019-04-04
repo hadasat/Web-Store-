@@ -16,42 +16,55 @@ namespace Users
     {
 
         public static PasswordHandler pHandler = new PasswordHandler();
-        public static List<Member> membersOnline = new List<Member>();
+        public static Dictionary<int, Member> members = new Dictionary<int, Member>();
+        // <ID, MEMBER>
+        public static Dictionary<string, int> mapIDUsermane = new Dictionary<string, int>();
+        // <username, ID>
 
-        public static void addMember(Member m)
+        static int memberIDGenerator = 0;
+
+       
+
+        public static void removeMember(Member m)
         {
-            membersOnline.Add(m);
+
+            members.Remove(m.ID);
+            mapIDUsermane.Remove(m.username);
         }
-
-
 
         /*** START - USER FUNCTIONS ***/
 
-        private static string getID()
+        private static int getID()
         {
-            return "A123";
+            return memberIDGenerator++;
         }
         //sign in
-        public static bool identifyUser(string username, string password)
+        public static int identifyUser(string username, string password)
         {
-            string ID = getID();
-            return pHandler.IdentifyPassword(password, ID);
+            int ID = mapIDUsermane[username];
+            if(pHandler.IdentifyPassword(password, ID))
+                return ID;
+            return -1;
         }
         //sign up
         public static void registerNewUser(string username, string password)
         {
-            string ID = getID();
+            int ID = getID();
             pHandler.hashPassword(password, ID);
+            Member newMember = new Member(username,ID);
+            members[ID] = newMember;
+            mapIDUsermane[username]=ID;
         }
 
         
+        public static Member getMember(int id)
+        {
+            return members[id];
+        }
+
         public static Member getMember(string username)
         {
-            string ID = "Robot123";
-            if (isAnAdmin(username))
-                return new SystemAdmin(username, ID);
-            else
-                return new Member(username, ID);
+            return members[(mapIDUsermane[username])];
         }
 
         public static bool isAnAdmin(string username)
@@ -80,8 +93,8 @@ namespace Users
         {
             if (ID != "0")
             {
-                Roles firstStoreRoles = new Roles(false, false, false, false, false, false);
-                Store store = new Store("stubStore",3,true);
+                Roles firstStoreRoles = new Roles(false, false, false, false, false, false, false,false);
+                Store store = new Store(0,"stubStore",3,true);
                 StoreManager st = new StoreManager(store, firstStoreRoles);
                 LinkedList<StoreManager> storesManaging = new LinkedList<StoreManager>();
                 storesManaging.AddFirst(st);
@@ -116,7 +129,7 @@ namespace Users
 
 
 
-    public class User
+    public class User : Permissions
     {
         public ShoppingBasket shoppingBasket;//is it this way or the opposite?
 
@@ -126,22 +139,42 @@ namespace Users
             this.shoppingBasket = new ShoppingBasket();
         }
 
+        public virtual bool hasAddRemoveDiscountPermission(Store store)
+        {
+            return false;
+        }
+
+        public virtual bool hasAddRemoveProductsPermission(Store store)
+        {
+            return false;
+        }
+
+        public virtual bool hasAddRemovePurchasingPermission(Store store)
+        {
+            return false;
+        }
+
+        public virtual bool hasAddRemoveStoreManagerPermission(Store store)
+        {
+            return false;
+        }
+
 
 
         /*** SERVICE LAYER FUNCTIONS***/
 
         public Member loginMember(string username, string password)
         {
-            //load shopping basket
-            bool tryToRegister = ConnectionStubTemp.identifyUser(username, password);
-            if (tryToRegister)
-            {
-                Member m =  ConnectionStubTemp.getMember(username);
-                ConnectionStubTemp.addMember(m);
-                return m;
-            }
-            else
-                return null;
+            //TODO:: load shopping basket
+
+
+            int ID = ConnectionStubTemp.identifyUser(username, password);
+            if (ID == -1)
+                throw new Exception("username or password does not correct");
+            
+            return  ConnectionStubTemp.getMember(ID);
+            
+           
         }
 
         public void registerNewUser(string username, string password)
@@ -159,18 +192,16 @@ namespace Users
 
     public class Member : User
     {
-        public string ID; //why do we need id?
+        public int ID; //why do we need id?
         public string username;
         public LinkedList<StoreManager> storeManaging;
         
-
-        public Member(string username, string ID)
+        
+        public Member(string username, int ID) : base()//Register
         {
             this.ID = ID;
             this.username = username;
-            this.storeManaging = ConnectionStubTemp.loadStoreManaging(ID);
-            this.shoppingBasket = ConnectionStubTemp.loadShoppingBasket(ID);
-            
+            this.storeManaging = new LinkedList<StoreManager>();
         }
 
         /*** SERVICE LAYER FUNCTIONS***/
@@ -184,9 +215,29 @@ namespace Users
         /*** This function is the function that create Store Owner - STORE USE THIS IN THE CONSTRUCTOR ***/
         public void addStore(Store store)
         {
-            Roles storeOwner = new Roles(true, true, true, true, true, true);
+            Roles storeOwner = new Roles(true, true, true, true, true, true, true, true);
             StoreManager storeOwnerManager = new StoreManager(store, storeOwner);
             storeManaging.AddFirst(storeOwnerManager);
+        }
+
+        public void closeStore(Store store)
+        {
+            Roles myRoles = getStoreManagerRoles(store);
+            if (!myRoles.isStoreOwner())
+            {
+                throw new Exception("you cant close this store");
+            }
+            StoreManager thisStoreManager;
+            foreach (StoreManager sm in storeManaging)
+            {
+                if (sm.GetStore() == store)
+                {
+                    thisStoreManager = sm;
+                    thisStoreManager.removeAllManagers();
+                    storeManaging.Remove(sm);
+                    break;
+                }
+            }
         }
 
         public bool isStoresManagers()
@@ -212,6 +263,32 @@ namespace Users
             
             return null;
         }
+
+
+
+        public override bool hasAddRemoveDiscountPermission(Store store)
+        {
+            Roles roles = getStoreManagerRoles(store);
+            return roles != null && roles.AddRemoveProducts;
+        }
+
+        public override bool hasAddRemoveProductsPermission(Store store)
+        {
+            Roles roles = getStoreManagerRoles(store);
+            return roles != null && roles.AddRemoveDiscountPolicy;
+        }
+
+        public override bool hasAddRemovePurchasingPermission(Store store)
+        {
+            Roles roles = getStoreManagerRoles(store);
+            return roles != null && roles.AddRemovePurchasing;
+        }
+
+        public override bool hasAddRemoveStoreManagerPermission(Store store)
+        {
+            Roles roles = getStoreManagerRoles(store);
+            return roles != null && roles.AddRemoveStoreManger;
+        }
     }
 
 
@@ -219,10 +296,11 @@ namespace Users
 
     public class SystemAdmin : Member
     {
-        public SystemAdmin(string username, string ID) : base(username, ID) { }
+        public SystemAdmin(string username, int ID) : base(username, ID) { }
 
         public bool RemoveUser(string userName)
         {
+
             Member member = ConnectionStubTemp.getMember(userName);
             if (member.isStoresManagers())
             {
@@ -231,9 +309,15 @@ namespace Users
                     if (st.GetFather() == null)///change to super father
                     {
                         Store store = st.GetStore();
-                        //store.close();    //OFIR
+                        WorkShop.closeStore(store.Id, member);
+                    }
+                    else
+                    {
+                        StoreManager father = st.GetFather();
+                        father.removeManager(st);
                     }
                 }
+                ConnectionStubTemp.removeMember(member);
                 return ConnectionStubTemp.removeUser(userName, this);
             }
             else
@@ -241,5 +325,17 @@ namespace Users
                 return ConnectionStubTemp.removeUser(userName, this);
             }
         }
+    }
+
+
+    interface Permissions
+    {
+        bool hasAddRemoveProductsPermission(Store store);
+
+        bool hasAddRemoveDiscountPermission(Store store);
+
+        bool hasAddRemovePurchasingPermission(Store store);
+
+        bool hasAddRemoveStoreManagerPermission(Store store);
     }
 }

@@ -54,9 +54,18 @@ namespace WorkshopProject
         }
 
        
-        public static void createNewStore(string name, int rank, Boolean isActive)
+        public static void createNewStore(string name, int rank, Boolean isActive, Member owner)
         {
-            stores.Add(++id,new Store(name, rank, isActive));
+            Store store = new Store(id,name, rank, isActive);
+            stores.Add(id,store);
+            id++;
+            owner.addStore(store);
+        }
+
+        public static void closeStore(int storeId, Member owner)
+        {
+            owner.closeStore(stores[storeId]);
+            stores[storeId].isActive = false;
         }
     }
 }
