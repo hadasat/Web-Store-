@@ -10,9 +10,16 @@ namespace WorkshopProject.System_Service
     {
         /*
          * Message Format: {message: String}
-         * Search Format: {List<Product> products}
+         * If the 'message' field equal to "Success" so the method succeed.
+         * otherwise the content contain information about the error
          * 
          * 
+         * 
+         * Search Format: { products : List<Product>}
+         * Product Format: {id : int , name :string , price : int , rank : int  , category : string  }
+         * 
+         * Shopping Cart Jason Object: {products : Dictionary<Product, int>}
+         * Dictionary info: <Product Object, Amount>
          * 
          */
 

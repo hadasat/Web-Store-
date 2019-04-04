@@ -21,7 +21,7 @@ namespace Users
         public static Dictionary<string, int> mapIDUsermane = new Dictionary<string, int>();
         // <username, ID>
 
-        static int memberIDGenerator = 0;
+        public static int memberIDGenerator = 0;
 
        
 

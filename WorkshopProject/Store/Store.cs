@@ -36,7 +36,11 @@ namespace WorkshopProject
         }
 
 
-
+        Boolean addProduct (User user, string name, string desc, double price, string category)
+        {
+            Product pro = new Product(name, price, category, 0, 0);
+            return addProduct(user, pro);
+        }
     
         /// <summary>
         /// Add new product
@@ -54,19 +58,17 @@ namespace WorkshopProject
                 
          
                     
-            Stock.Add(p.id, new Product(p,0));
+            Stock.Add(p.getId(), new Product(p,0));
             return true;
             
-        }
-
-        
+        }        
 
         Boolean removeProduct(User user, Product product)
         {
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 
-            Stock.Remove(product.id);
+            Stock.Remove(product.getId());
             return true;
             
         }
@@ -102,8 +104,6 @@ namespace WorkshopProject
 
             return true;
         }
-
-
 
         /// <summary>
         /// this method called by shoppingBakset
@@ -144,7 +144,7 @@ namespace WorkshopProject
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 
-            if (!Stock.ContainsKey(product.id))
+            if (!Stock.ContainsKey(product.getId()))
                 throw new Exception("Product not exist");
 
             product.amount += amountToAdd;
@@ -156,15 +156,15 @@ namespace WorkshopProject
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 
-            Stock.Remove(product.id);
+            Stock.Remove(product.getId());
             return true;
         }
 
         public bool checkAvailability(Product product, int amount)
         {
-            if (Stock.ContainsKey(product.id))
+            if (Stock.ContainsKey(product.getId()))
             {
-                return Stock[product.id].amount >= amount;
+                return Stock[product.getId()].amount >= amount;
             }
             return false;
         }
