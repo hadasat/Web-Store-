@@ -10,7 +10,7 @@ namespace WorkshopProject
 {
     public class Store
     {
-        int id;
+        private int id;
         public string name;
         public int rank;
         public Boolean isActive;
@@ -18,9 +18,11 @@ namespace WorkshopProject
         private Dictionary<int, Product> Stock;
         private PurchasePolicy purchase_policy;
 
+        public int Id { get => id;  }
 
-        public Store(string name, int rank,Boolean isActive)
+        public Store(int id,string name, int rank,Boolean isActive)
         {
+            this.id = id;
             this.name = name;
             this.rank = rank;
             this.isActive = isActive;
@@ -35,41 +37,24 @@ namespace WorkshopProject
 
 
 
-        private Boolean addRemoveProductsPermission(Member member)
-        {
-           Roles roles = member.getStoreManagerRoles(this);
-            return roles != null && roles.AddRemoveProducts;
-        }
-
-        private Boolean addRemoveDiscountPermission(Member member)
-        {
-            Roles roles = member.getStoreManagerRoles(this);
-            return roles != null && roles.AddRemoveDiscountPolicy;
-        }
-
-        private Boolean addRemovePurchasingPermission(Member member)
-        {
-            Roles roles = member.getStoreManagerRoles(this);
-            return roles != null && roles.AddRemovePurchasing;
-        }
-
-        private Boolean addRemoveStoreManagerPermission(Member member)
-        {
-            Roles roles = member.getStoreManagerRoles(this);
-            return roles != null && roles.AddRemoveStoreManger;
-        }
-
-        Boolean addProduct(User user,Product p,int amountToAdd)
+    
+        /// <summary>
+        /// Add new product
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="p"></param>
+        /// <param name="amountToAdd"></param>
+        /// <returns></returns>
+        Boolean addProduct(User user,Product p)
         {
             //Verify Premission
-            if (!(user is Member) || !(addRemoveProductsPermission((Member)user)))   //Verify Premission
-                return false;
-
-            if (Stock.ContainsKey(p.id))           
-                addTostock(Stock[p.id],amountToAdd);     
-            else        
-                Stock.Add(p.id, new Product(p,amountToAdd));
             
+            if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
+                return false;
+                
+         
+                    
+            Stock.Add(p.id, new Product(p,0));
             return true;
             
         }
@@ -78,8 +63,7 @@ namespace WorkshopProject
 
         Boolean removeProduct(User user, Product product)
         {
-            //Verify Premission
-            if (!(user is Member) || !(addRemoveProductsPermission((Member)user)))   //Verify Premission
+            if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 
             Stock.Remove(product.id);
@@ -89,61 +73,54 @@ namespace WorkshopProject
 
         Boolean addDiscount(User user, DiscountPolicy discount)
         {
-            if (user is Member && addRemoveDiscountPermission((Member)user))    //Verify Premission
-            {
-                return true;
-            }
-            return false;
+            if (!user.hasAddRemoveDiscountPermission(this))   //Verify Premission
+                return false;
+            return true;
         }
 
         Boolean removeDiscount(User user, DiscountPolicy discount)
         {
-            if (user is Member && addRemoveDiscountPermission((Member)user))    //Verify Premission
-            {
-                return true;
-            }
-            return false;
+            if (!user.hasAddRemoveDiscountPermission(this))   //Verify Premission
+                return false;
+            return true;
         }
 
         Boolean addPurchasingPolicy(User user,PurchasePolicy pPolicy)
         {
-            if (user is Member && addRemovePurchasingPermission((Member)user))  //Verify Premission
-            {
-                purchase_policy = pPolicy;
-                return true;
-            }
-            return false;
+            if (!user.hasAddRemovePurchasingPermission(this))   //Verify Premission
+                return false;
+
+            purchase_policy = pPolicy;
+            return true;
+
         }
 
         Boolean removePurchasingPolicy(User user,PurchasePolicy pPolicy)
         {
-            if (user is Member && addRemovePurchasingPermission((Member)user)) //Verify Premission
-            {
-                return true;
-            }
-            return false;
+            if (!user.hasAddRemovePurchasingPermission(this))   //Verify Premission
+                return false;
+
+            return true;
         }
 
 
 
-        /* Boolean addStoreManager(User user, User storeManager)
-         {
-             if (user is Member && addRemoveStoreManagerPermission((Member)user)) //Verify Premission
-             {
-                 return true;
-             }
-             return false;
-         }*/
-
-        Boolean buyProduct(User user, Product p , int amountToBuy)
+        /// <summary>
+        /// this method called by shoppingBakset
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="p"></param>
+        /// <param name="amountToBuy"></param>
+        /// <returns> succseed - callback that return the products to the stock., fail - returns null</returns>
+        bool buyProduct(User user, Product p , int amountToBuy)
         {
-            
+            /*
             if (!(user is Member) || !(addRemoveProductsPermission((Member)user))) //Verify Premission
                 return false;
 
             if (!Stock.ContainsKey(p.id) || removeFromStock(Stock[p.id],amountToBuy) == -1)
                 return false;
-
+                */
             return true;
                        
         }
@@ -162,13 +139,38 @@ namespace WorkshopProject
             return p.amount;                    
         }
 
-        private int addTostock(Product p, int amountToAdd)
+        public bool addProductTostock(User user,Product product, int amountToAdd)
         {
-            p.amount += amountToAdd;
-            return p.amount;
+            if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
+                return false;
+
+            if (!Stock.ContainsKey(product.id))
+                throw new Exception("Product not exist");
+
+            product.amount += amountToAdd;
+            return true;
         }
+
+        public bool removeProductFromStore(User user, Product product)
+        {
+            if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
+                return false;
+
+            Stock.Remove(product.id);
+            return true;
+        }
+
+        public bool checkAvailability(Product product, int amount)
+        {
+            if (Stock.ContainsKey(product.id))
+            {
+                return Stock[product.id].amount >= amount;
+            }
+            return false;
+        }
+
 
     }
 
-     
+
 }
