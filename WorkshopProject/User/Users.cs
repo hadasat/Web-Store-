@@ -47,11 +47,11 @@ namespace Users
             return -1;
         }
         //sign up
-        public static void registerNewUser(string username, string password)
+        public static void registerNewUser(string username, string password, ShoppingBasket shoppingBasket)
         {
             int ID = getID();
             pHandler.hashPassword(password, ID);
-            Member newMember = new Member(username,ID);
+            Member newMember = new Member(username,ID, shoppingBasket);
             members[ID] = newMember;
             mapIDUsermane[username]=ID;
         }
@@ -179,7 +179,7 @@ namespace Users
 
         public void registerNewUser(string username, string password)
         {
-            ConnectionStubTemp.registerNewUser(username, password);
+            ConnectionStubTemp.registerNewUser(username, password, this.shoppingBasket);
             //need to deside whats happen in this senario
         }
 
@@ -197,7 +197,7 @@ namespace Users
         public LinkedList<StoreManager> storeManaging;
         
         
-        public Member(string username, int ID) : base()//Register
+        public Member(string username, int ID, ShoppingBasket shoppingBasket) : base()//Register
         {
             this.ID = ID;
             this.username = username;
