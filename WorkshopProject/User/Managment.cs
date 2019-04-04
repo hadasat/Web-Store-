@@ -18,20 +18,26 @@ namespace Managment
         private bool addRemoveStoreManger;
         private bool closeStore;
         private bool customerCommunication;
+        private bool appointOwner;
+        private bool appointManager;
 
         public Roles(bool addRemoveProducts, 
                      bool addRemovePurchasing, 
                      bool addRemoveDiscountPolicy, 
                      bool addRemoveStoreManger, 
                      bool closeStore, 
-                     bool customerCommunication)
+                     bool customerCommunication,
+                     bool appointOwner,
+                     bool appointManager)
         {
             this.AddRemoveProducts = addRemoveProducts;
             this.addRemovePurchasing = addRemovePurchasing;
             this.addRemoveDiscountPolicy = addRemoveDiscountPolicy;
             this.addRemoveStoreManger = addRemoveStoreManger;
-            this.closeStore = closeStore;
-            this.customerCommunication = customerCommunication;
+            this.CloseStore = closeStore;
+            this.CustomerCommunication = customerCommunication;
+            this.AppointManager = appointManager;
+            this.AppointOwner = appointOwner;
         }
 
         public bool CompareRoles(Roles otherRoles)
@@ -46,7 +52,9 @@ namespace Managment
                     this.addRemoveDiscountPolicy &&
                     this.addRemoveStoreManger &&
                     this.closeStore &&
-                    this.customerCommunication;
+                    this.customerCommunication &&
+                    this.AppointManager &&
+                    this.AppointOwner;
         }
 
         public bool AddRemoveProducts { get => addRemoveProducts; set => addRemoveProducts = value; }
@@ -55,6 +63,8 @@ namespace Managment
         public bool AddRemoveStoreManger { get => addRemoveStoreManger; set => addRemoveStoreManger = value; }
         public bool CloseStore { get => closeStore; set => closeStore = value; }
         public bool CustomerCommunication { get => customerCommunication; set => customerCommunication = value; }
+        public bool AppointOwner { get => appointOwner; set => appointOwner = value; }
+        public bool AppointManager { get => appointManager; set => appointManager = value; }
     }
 
     public class StoreManager
@@ -63,6 +73,8 @@ namespace Managment
         private Roles myRoles;
         private LinkedList<StoreManager> subManagers;
         private StoreManager father;
+
+        public LinkedList<StoreManager> SubManagers { get => subManagers; set => subManagers = value; }
 
         public StoreManager(Store store, Roles storeRoles)
         {
@@ -107,6 +119,14 @@ namespace Managment
             } else
             {
                 throw new Exception("The manager to remove is not below to this manager");
+            }
+        }
+
+        public void removeAllManagers()
+        {
+            foreach(StoreManager subStoreManager in subManagers)
+            {
+                removeManager(subStoreManager);
             }
         }
 
