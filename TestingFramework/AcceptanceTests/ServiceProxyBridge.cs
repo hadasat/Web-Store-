@@ -68,11 +68,6 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
-        public bool Initialize(string admin, string password)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool Login(string user, string password)
         {
             throw new NotImplementedException();

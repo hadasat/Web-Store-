@@ -21,20 +21,35 @@ namespace TestingFramework.AcceptanceTests
             service = new SystemServiceImpl();
         }
 
-        private bool wasSuccessful(dynamic msg)
+        private bool wasSuccessful(JObject msg)
         {
-            return msg.message.ToLower() == successMsg;
+            return ((string)msg["message"]).ToLower() == successMsg;
         }
 
-        private int getId(dynamic msg)
+        private int getId(JObject msg)
         {
-            return msg.id;
+            return (int)msg["id"];
+        }
+
+        private int getAmount(JObject msg)
+        {
+            return (int)msg["amount"];
+        }
+
+        //{id : int , name :string , price : int , rank : int  , category : string  }
+        private void retrieveProductInfo(JObject product, out string name, out string productDesc, out double price, out string category, out int rank)
+        {
+            name = (string)product["name"];
+            productDesc = (string)product["name"]; //TODO: must be fixed to description
+            price = (double)product["price"];
+            category = (string)product["category"];
+            rank = (int)product["int"];
         }
 
         public bool AddProductToCart(int productId, int amount)
         {
             string msg = service.AddProductToBasket(productId, amount);
-            dynamic json = JObject.Parse(msg);
+            JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
         }
 
@@ -42,14 +57,14 @@ namespace TestingFramework.AcceptanceTests
         public int AddProductToStore(int storeId, string name, string desc, double price, string category)
         {
             string msg = service.AddProductToStore(storeId, name, desc, price, category);
-            dynamic json = JObject.Parse(msg);
+            JObject json = JObject.Parse(msg);
             return getId(json);
         }
 
         public int AddStore(string storeName)
         {
             string msg = service.AddStore(storeName);
-            dynamic json = JObject.Parse(msg);
+            JObject json = JObject.Parse(msg);
             return getId(json);
         }
 
@@ -62,7 +77,7 @@ namespace TestingFramework.AcceptanceTests
         public bool AddStoreOwner(int storeId, string user)
         {
             string msg = service.AddStoreOwner(storeId, user);
-            dynamic json = JObject.Parse(msg);
+            JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
         }
 
@@ -70,26 +85,32 @@ namespace TestingFramework.AcceptanceTests
         {
             //TODO: remove -1 when calling BuyShoppingBasket
             string msg = service.BuyShoppingBasket(-1);
-            dynamic json = JObject.Parse(msg);
+            JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
         }
 
         public bool ChangeProductInfo(int productId, string name, string desc, double price, string category, int amount)
         {
             string msg = service.ChangeProductInfo(productId, name, desc, price, category, amount);
-            dynamic json = JObject.Parse(msg);
+            JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
         }
 
         public bool GetProductInfo(int id, out string name, out string productDesc, out double price, out string category, out int rank)
         {
-            //TODO: JSON of product
-            name = "";
-            productDesc = "";
-            price = 0.0;
-            category = "";
-            rank = 0;
-            return false;
+            string msg = service.GetProductInfo(id);
+            JObject json = JObject.Parse(msg);
+            if (getId(json) != id)
+            {
+                name = "";
+                productDesc = "";
+                price = 0.0;
+                category = "";
+                rank = 0;
+                return false;
+            }
+            retrieveProductInfo(json, out name, out productDesc, out price, out category, out rank);
+            return true;
         }
 
         public Dictionary<int, int> GetProductsInShoppingCart(int cartId)
@@ -100,68 +121,77 @@ namespace TestingFramework.AcceptanceTests
 
         public int GetShoppingCart(int storeId)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool Initialize(string admin, string password)
-        {
-            throw new NotImplementedException();
+            string msg = service.GetShoppingCart(storeId);
+            JObject json = JObject.Parse(msg);
+            return getId(json);
         }
 
         public bool Login(string user, string password)
         {
-            throw new NotImplementedException();
+            string msg = service.login(user, password);
+            JObject json = JObject.Parse(msg);
+            return wasSuccessful(json);
         }
 
         public bool Logout()
         {
-            throw new NotImplementedException();
+            string msg = service.logout();
+            JObject json = JObject.Parse(msg);
+            return wasSuccessful(json);
         }
 
         public bool Register(string user, string password)
         {
-            throw new NotImplementedException();
+            string msg = service.Register(user, password);
+            JObject json = JObject.Parse(msg);
+            return wasSuccessful(json);
         }
 
         public bool RemoveProductFromStore(int storeId, int productId)
         {
-            throw new NotImplementedException();
+            string msg = service.RemoveProductFromStore(storeId, productId);
+            JObject json = JObject.Parse(msg);
+            return wasSuccessful(json);
         }
 
         public bool RemoveStoreManager(int storeId, string user)
         {
-            throw new NotImplementedException();
+            string msg = service.RemoveStoreManager(storeId, user);
+            JObject json = JObject.Parse(msg);
+            return wasSuccessful(json);
         }
 
         public bool RemoveStoreOwner(int storeId, string user)
         {
-            throw new NotImplementedException();
+            string msg = service.RemoveStoreManager(storeId, user);
+            JObject json = JObject.Parse(msg);
+            return wasSuccessful(json);
         }
 
         public bool RemoveUser(string user)
         {
-            throw new NotImplementedException();
+            string msg = service.RemoveUser(user);
+            JObject json = JObject.Parse(msg);
+            return wasSuccessful(json);
         }
 
         public List<int> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int storeRank)
         {
-            throw new NotImplementedException();
+            List<int> ret = new List<int>();
+            string msg = service.SearchProducts(name, category, keyword, startPrice, endPrice, storeRank);
+            JArray json = JArray.Parse(msg);
+            foreach (JObject product in json)
+            {
+                ret.Add(getId(product));
+            }
+            return ret;
         }
 
         public bool SetProductAmountInCart(int cartId, int productId, int amount)
         {
-            throw new NotImplementedException();
+            string msg = service.SetProductAmountInCart(productId, amount);
+            JObject json = JObject.Parse(msg);
+            return wasSuccessful(json);
         }
-    }
-
-
-    class boolMessage
-    {
-        public string message;
-    }
-
-    class idMessage
-    {
-        public int id;
     }
 }

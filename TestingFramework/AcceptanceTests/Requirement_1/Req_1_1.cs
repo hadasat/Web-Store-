@@ -7,20 +7,20 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
     public class Req_1_1 : AcceptanceTest
     {
 
-        [TestMethod]
-        [TestCategory("Req_1")]
-        public void InitializeWithAdmin()
-        {
-            string admin = "Admin";
-            string password = "Admin";
+        //[TestMethod]
+        //[TestCategory("Req_1")]
+        //public void InitializeWithAdmin()
+        //{
+        //    string admin = "Admin";
+        //    string password = "Admin";
 
-            bool result = bridge.Initialize(admin, password);
+        //    bool result = bridge.Initialize(admin, password);
 
-            Assert.IsTrue(result);
+        //    Assert.IsTrue(result);
 
-            result = bridge.Login(admin, password);
-            Assert.IsTrue(result);
-        }
+        //    result = bridge.Login(admin, password);
+        //    Assert.IsTrue(result);
+        //}
 
         //TODO: missing bad and sad - test with existing admin?
     }

@@ -9,7 +9,7 @@ namespace TestingFramework.AcceptanceTests
     public interface IServiceBridge
     {
         //Req 1_1
-        bool Initialize(string admin, string password);
+        //bool Initialize(string admin, string password);
 
         //Reg 2_2
         bool Register(string user, string password);
