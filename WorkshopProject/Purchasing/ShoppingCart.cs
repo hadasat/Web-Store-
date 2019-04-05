@@ -10,21 +10,33 @@ namespace WorkshopProject
 
     public class ShoppingCart
     {
-        Dictionary<Product, int> products;
+        private Dictionary<Product, int> products;
 
         public ShoppingCart()
         {
             products = new Dictionary<Product, int>();
         }
 
-        public int setProductAmount(Product product, int amount)
+        public ShoppingCart(ShoppingCart s)
+        {
+            this.products = new Dictionary<Product, int>();
+            Dictionary<Product, int> products = s.getProducts();
+            foreach (KeyValuePair<Product, int> c in products)
+            {
+                Product product = c.Key ;
+                int amount = c.Value;
+                this.products[product] = amount;
+            }
+        }
+
+        public bool setProductAmount(Product product, int amount)
         {
             if (amount >= 0)
             {
                 products[product] = amount;
-                return 0;
+                return true;
             }
-            return -1;
+            return false;
         }
 
         public int getProductAmount(Product product)
@@ -38,13 +50,21 @@ namespace WorkshopProject
         }
 
 
-        public int addProduct(Product product)
+        public bool addProduct(Product product)
         {
             if (products.ContainsKey(product))
                 products[product]++;
             products[product] = 1;
-            return 0;
+            return true;
         }
 
+        public bool addProduct(Product product,int amount)
+        {
+            if (products.ContainsKey(product))
+                products[product] += amount;
+            else
+                products[product] = amount;
+            return true;
+        }
     }
 }

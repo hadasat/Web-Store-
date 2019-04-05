@@ -67,5 +67,22 @@ namespace WorkshopProject
             owner.closeStore(stores[storeId]);
             stores[storeId].isActive = false;
         }
+
+        public static Dictionary<Store,Product> findProduct(int productId)
+        {
+            Product product;
+            Dictionary<Store, Product> sroreProduct = new Dictionary<Store, Product>();
+            foreach(KeyValuePair<int,Store> s in stores)
+            {
+                Store store = s.Value;
+                product = store.findProduct(productId);
+                if (product != null)
+                {
+                    sroreProduct[store]= product;
+                    return sroreProduct;
+                }
+            }
+            return null;
+        }
     }
 }

@@ -37,6 +37,9 @@
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -67,7 +70,7 @@
     <Compile Include="Purchasing\ShoppingBasket.cs" />
     <Compile Include="Store\Store.cs" />
     <Compile Include="User\Managment.cs" />
-    <Compile Include="Purchasing\Tansaction.cs" />
+    <Compile Include="Purchasing\Transaction.cs" />
     <Compile Include="User\Users.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

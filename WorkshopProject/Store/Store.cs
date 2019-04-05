@@ -169,6 +169,12 @@ namespace WorkshopProject
             return false;
         }
 
+        public Product findProduct(int productId)
+        {
+            Product output;
+            Stock.TryGetValue(productId, out output);
+            return output;
+        }
 
     }
 

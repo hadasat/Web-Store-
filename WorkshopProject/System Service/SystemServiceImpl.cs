@@ -90,7 +90,7 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 throw new Exception("Not logged in");
-            return transactionS.BuyShoppingBasket(id);
+            return transactionS.BuyShoppingBasket();
         }
 
         public string ChangeProductInfo(int productId, string name, string desc, double price, string category, int amount)

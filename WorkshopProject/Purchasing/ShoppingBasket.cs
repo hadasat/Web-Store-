@@ -9,19 +9,30 @@ namespace WorkshopProject
 {
     public class ShoppingBasket
     {
-        Dictionary<Store,ShoppingCart> carts{get;}
+        private Dictionary<Store, ShoppingCart> carts { get; }
 
         public ShoppingBasket()
         {
             carts = new Dictionary<Store, ShoppingCart>();
         }
-        
-        public int addProduct(Store store,Product product,int amount)
+
+        public ShoppingBasket(ShoppingBasket s)
+        {
+            this.carts = new Dictionary<Store, ShoppingCart>();
+            Dictionary<Store, ShoppingCart> carts = s.getCarts();
+            foreach (KeyValuePair<Store, ShoppingCart> c in carts) {
+                Store store = c.Key;
+                ShoppingCart shopping = new ShoppingCart(c.Value);
+                this.carts[store]=shopping;
+            }
+        }
+
+        public bool addProduct(Store store,Product product,int amount)
         {
             return ((ShoppingCart)carts[store]).setProductAmount(product, amount);
         }
 
-        public int addProduct(Store store, Product product)
+        public bool addProduct(Store store, Product product)
         {
             int curr_amount = carts[store].getProductAmount(product);
             return carts[store].setProductAmount(product, curr_amount+1);
@@ -32,6 +43,7 @@ namespace WorkshopProject
         {
             return carts;
         }
+
 
     }
 }

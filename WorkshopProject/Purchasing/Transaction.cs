@@ -4,22 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users;
 
 namespace WorkshopProject
 {
-    public class Tansaction
+    public static class Tansaction
     {
         static int idCounter = 0;
-        int id; 
+        
 
-        public Tansaction()
-        {
-            id = idCounter++; 
-        }
-
-        public int purchase(String user,ShoppingBasket basket)
+        public static int purchase(User user)
         {
             int totalPrice = 0;
+            ShoppingBasket basket = user.shoppingBasket;
             Dictionary<Store, ShoppingCart> carts = basket.getCarts();
             //calc toal price
             foreach (KeyValuePair<Store, ShoppingCart> c in carts)
@@ -34,12 +31,12 @@ namespace WorkshopProject
             //parches 
 
             //send products
-            return 0;
+            return idCounter++;
         }
 
-        private int calcPrice(Product p, int amount)
+        private static int calcPrice(Product p, int amount)
         {
-            return 1;
+            return amount;
         }
     }
 }
