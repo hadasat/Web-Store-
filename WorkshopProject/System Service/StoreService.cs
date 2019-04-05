@@ -47,6 +47,7 @@ namespace WorkshopProject.System_Service
         }
 
         internal string GetProductInfo(int id)
+
         {
             throw new NotImplementedException();
         }

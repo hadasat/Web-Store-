@@ -33,7 +33,7 @@ public class TransactionService
             {
                 Store store = storeAndProuduct.First().Key;
                 Product product = storeAndProuduct.First().Value;
-                userShoppingBasket.addProduct(store, product);
+                userShoppingBasket.addProduct(store, product,amount);
                 return "{message: Success}";
             }
             return "{message: Illegal Product id}";

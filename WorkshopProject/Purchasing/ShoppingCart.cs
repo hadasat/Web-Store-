@@ -34,11 +34,25 @@ namespace Shopping
         {
             if (amount >= 0)
             {
-                products[product] = amount;
+               products[product]=amount;
+               return true;
+            }
+            return false;
+        }
+
+        public bool addProducts(Product product, int amount)
+        {
+            if (amount >= 0)
+            {
+                if (products.ContainsKey(product))
+                    setProductAmount(product, products[product] + amount);
+                else
+                    setProductAmount(product, amount);
                 return true;
             }
             return false;
         }
+
 
         public int getProductAmount(Product product)
         {
@@ -67,5 +81,6 @@ namespace Shopping
                 products[product] = amount;
             return true;
         }
+
     }
 }

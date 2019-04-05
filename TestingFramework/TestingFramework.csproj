@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IntegrationTests\" />
+    <Folder Include="UnitTests\Purchasing\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

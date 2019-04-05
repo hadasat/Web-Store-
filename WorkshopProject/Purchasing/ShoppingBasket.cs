@@ -10,7 +10,7 @@ namespace Shopping
 {
     public class ShoppingBasket
     {
-        private Dictionary<Store, ShoppingCart> carts { get; }
+        private Dictionary<Store, ShoppingCart> carts;
 
         public ShoppingBasket()
         {
@@ -31,15 +31,16 @@ namespace Shopping
 
         public bool addProduct(Store store, Product product, int amount)
         {
-            return ((ShoppingCart)carts[store]).setProductAmount(product, amount);
+            if(carts.ContainsKey(store))
+                return (carts[store].addProducts(product, amount));
+            else
+            {
+                Carts.Add(store, new ShoppingCart());
+                return carts[store].addProducts(product, amount);
+            }
         }
 
-        public bool addProduct(Store store, Product product)
-        {
-            int curr_amount = carts[store].getProductAmount(product);
-            return carts[store].setProductAmount(product, curr_amount + 1);
-        }
-
+        
         public Dictionary<Store, ShoppingCart> Carts
         {
             get { return carts; }
