@@ -36,6 +36,17 @@ namespace TestingFramework.AcceptanceTests
             return (int)msg["amount"];
         }
 
+        private string createRolesJson(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
+        {
+            return JsonConvert.SerializeObject(
+                new ManagerRolesContainer(
+                    addRemovePurchasing,
+                    addRemoveDiscountPolicy,
+                    addRemoveStoreManger,
+                    closeStore)
+                , Formatting.Indented);
+        }
+
         //{id : int , name :string , price : int , rank : int  , category : string  }
         private void retrieveProductInfo(JObject product, out string name, out string productDesc, out double price, out string category, out int rank)
         {
@@ -68,9 +79,9 @@ namespace TestingFramework.AcceptanceTests
             return getId(json);
         }
 
-        public bool AddStoreManager(int storeId, string user)
+        public bool AddStoreManager(int storeId, string user, bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
         {
-            //TODO: add roles
+            string roles = createRolesJson(addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore);
             return false;
         }
 
@@ -192,6 +203,22 @@ namespace TestingFramework.AcceptanceTests
             string msg = service.SetProductAmountInCart(productId, amount);
             JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
+        }
+    }
+
+    class ManagerRolesContainer
+    {
+        public bool addRemovePurchasing;
+        public bool addRemoveDiscountPolicy;
+        public bool addRemoveStoreManger;
+        public bool closeStore;
+
+        public ManagerRolesContainer(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
+        {
+            this.addRemovePurchasing = addRemovePurchasing;
+            this.addRemoveDiscountPolicy = addRemoveDiscountPolicy;
+            this.addRemoveStoreManger = addRemoveStoreManger;
+            this.closeStore = closeStore;
         }
     }
 }

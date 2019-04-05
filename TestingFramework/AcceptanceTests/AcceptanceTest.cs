@@ -7,16 +7,25 @@ namespace TestingFramework.AcceptanceTests
     public class AcceptanceTest
     {
         protected IServiceBridge bridge  = Driver.getBridge();
+        protected IGodObject godObject = new GodObject();
 
+        protected int userId;
         protected string user = "User";
         protected string password = "Password";
         protected string wrongPassword = "WrongPassword";
         protected string fakeUser = "FakeUser";
         protected string illegalUser = ";";
 
+        protected int storeOwner1Id;
         protected string storeOwner1 = "StoreOwner1";
-        protected string storeOwner2 = "StoreOwner1";
+
+        protected int storeOwner2Id;
+        protected string storeOwner2 = "StoreOwner2";
+
+        protected int storeManager1Id;
         protected string storeManager1 = "StoreManager1";
+
+        protected int storeManager2Id;
         protected string storeManager2 = "StoreManager2";
 
         protected int storeId;
@@ -38,27 +47,19 @@ namespace TestingFramework.AcceptanceTests
 
 
         [TestInitialize]
-        virtual public void Init()
-        { 
-
-        }
-
+        virtual public void Init() { }
 
         [TestCleanup]
-        virtual public void Cleanup()
-        {
-            //TODO: AcceptanceTest method
-        }
-
+        virtual public void Cleanup() { }
 
         virtual protected void addTestMemberToSystem()
         {
-            //TODO: AcceptanceTest method
+            userId = godObject.addMember(user, password);
         }
 
         virtual protected void removeTestMemberFromSystem()
         {
-            //TODO: AcceptanceTest method
+            godObject.removeMember(userId);
         }
 
         virtual protected void addTestStoreOwner1ToSystem()

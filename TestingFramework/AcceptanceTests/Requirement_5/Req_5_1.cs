@@ -13,18 +13,6 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
     [TestClass]
     public class Req_5_1 : AcceptanceTest
     {
-
-        private string createRolesJson(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
-        {
-            return JsonConvert.SerializeObject(
-                new ManagerRolesContainer(
-                    addRemovePurchasing, 
-                    addRemoveDiscountPolicy, 
-                    addRemoveStoreManger, 
-                    closeStore)
-                , Formatting.Indented);
-        }
-
         [TestInitialize]
         public override void Init()
         {
@@ -49,23 +37,6 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
             //bridge.AddStoreManager();
             
             bridge.Logout();
-        }
-    }
-
-
-    class ManagerRolesContainer
-    {
-        public bool addRemovePurchasing;
-        public bool addRemoveDiscountPolicy;
-        public bool addRemoveStoreManger;
-        public bool closeStore;
-
-        public ManagerRolesContainer(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
-        {
-            this.addRemovePurchasing = addRemovePurchasing;
-            this.addRemoveDiscountPolicy = addRemoveDiscountPolicy;
-            this.addRemoveStoreManger = addRemoveStoreManger;
-            this.closeStore = closeStore;
         }
     }
 }
