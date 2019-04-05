@@ -80,6 +80,9 @@
     <Compile Include="AcceptanceTests\ServiceRealBridge.cs" />
     <Compile Include="UnitTests\Examples\ClassForTestExampleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTests\Purchasing\ShoppingBasketTest.cs" />
+    <Compile Include="UnitTests\Purchasing\ShoppingCartTest.cs" />
+    <Compile Include="UnitTests\Purchasing\TransactionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WorkshopProject\WorkshopProject.csproj">
@@ -89,7 +92,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IntegrationTests\" />
-    <Folder Include="UnitTests\Purchasing\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

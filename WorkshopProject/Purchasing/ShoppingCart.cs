@@ -34,7 +34,10 @@ namespace Shopping
         {
             if (amount >= 0)
             {
-               products[product]=amount;
+                if (products.ContainsKey(product))
+                    products[product] = amount;
+                else
+                    products.Add(product, amount);
                return true;
             }
             return false;
@@ -53,10 +56,11 @@ namespace Shopping
             return false;
         }
 
-
         public int getProductAmount(Product product)
         {
-            return products[product];
+            if(products.ContainsKey(product))
+                return products[product];
+            return 0;
         }
 
         public Dictionary<Product, int> getProducts()
@@ -65,22 +69,15 @@ namespace Shopping
         }
 
 
-        public bool addProduct(Product product)
+        /*public bool addProduct(Product product)
         {
             if (products.ContainsKey(product))
                 products[product]++;
             products[product] = 1;
             return true;
-        }
+        }*/
 
-        public bool addProduct(Product product,int amount)
-        {
-            if (products.ContainsKey(product))
-                products[product] += amount;
-            else
-                products[product] = amount;
-            return true;
-        }
+        
 
     }
 }

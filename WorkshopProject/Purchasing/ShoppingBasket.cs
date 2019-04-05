@@ -40,7 +40,33 @@ namespace Shopping
             }
         }
 
-        
+        public bool setProductAmount(Store store, Product product, int amount)
+        {
+            if (carts.ContainsKey(store))
+            {
+                int newAmount = carts[store].getProductAmount(product) + amount;
+                return (carts[store].addProducts(product, newAmount));
+            }
+            else
+            {
+                Carts.Add(store, new ShoppingCart());
+                return carts[store].addProducts(product, amount);
+            }
+        }
+
+        public int getProductAmount(Product product)
+        {
+            foreach (KeyValuePair<Store, ShoppingCart> c in carts)
+            {
+                ShoppingCart shopping = c.Value;
+                int amount = shopping.getProductAmount(product);
+                if(amount > 0)
+                    return amount;
+            }
+            return 0;
+        }
+
+
         public Dictionary<Store, ShoppingCart> Carts
         {
             get { return carts; }
