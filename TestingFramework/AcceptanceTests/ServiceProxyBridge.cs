@@ -38,7 +38,7 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
-        public bool BuyShoppingBasket(int id)
+        public bool BuyShoppingBasket()
         {
             throw new NotImplementedException();
         }
@@ -54,11 +54,6 @@ namespace TestingFramework.AcceptanceTests
         }
 
         public Dictionary<int, int> GetProductsInShoppingCart(int cartId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetShoppingBasket()
         {
             throw new NotImplementedException();
         }

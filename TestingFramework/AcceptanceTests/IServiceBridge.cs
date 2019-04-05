@@ -35,8 +35,7 @@ namespace TestingFramework.AcceptanceTests
         bool SetProductAmountInCart(int cartId, int productId, int amount);
 
         //Req 2_8
-        int GetShoppingBasket();
-        bool BuyShoppingBasket(int id);
+        bool BuyShoppingBasket();
 
         //Req 3_1
         bool Logout();

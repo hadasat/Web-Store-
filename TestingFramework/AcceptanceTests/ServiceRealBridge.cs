@@ -66,9 +66,10 @@ namespace TestingFramework.AcceptanceTests
             return wasSuccessful(json);
         }
 
-        public bool BuyShoppingBasket(int id)
+        public bool BuyShoppingBasket()
         {
-            string msg = service.BuyShoppingBasket(id);
+            //TODO: remove -1 when calling BuyShoppingBasket
+            string msg = service.BuyShoppingBasket(-1);
             dynamic json = JObject.Parse(msg);
             return wasSuccessful(json);
         }
@@ -94,11 +95,6 @@ namespace TestingFramework.AcceptanceTests
         public Dictionary<int, int> GetProductsInShoppingCart(int cartId)
         {
             //TODO GetProductsInShoppingCart
-            throw new NotImplementedException();
-        }
-
-        public int GetShoppingBasket()
-        {
             throw new NotImplementedException();
         }
 

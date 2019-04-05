@@ -19,15 +19,24 @@ namespace TestingFramework.UnitTests.JsonTests
         public void test1()
         {
             string json = @"{
-              'Name': 'Bad Boys',
-              'ReleaseDate': '1995-4-7T00:00:00',
-              'Genres': [
-                'Action',
-                'Comedy'
-              ]
+                'id': '1',
+                'msg': 'abc',
+                'arr': [{ 
+                    'id': '2',
+                    'msg': 'def'
+                    }]
             }";
-            dynamic obj = JObject.Parse(json);
-            Assert.AreEqual(obj.Name, "Bad Boys");
+            JObject obj = JObject.Parse(json);
+            int id = (int)obj["id"];
+            string msg = (string)obj["msg"];
+            Assert.AreEqual(id, 1);
+            Assert.AreEqual(msg, "abc");
+
+            JArray arr = (JArray)obj["arr"];
+            id = (int)arr[0]["id"];
+            msg = (string)arr[0]["msg"];
+            Assert.AreEqual(id, 2);
+            Assert.AreEqual(msg, "def");
         }
 
 
