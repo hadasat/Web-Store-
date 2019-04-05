@@ -1,14 +1,16 @@
-﻿using System;
+﻿using Shopping;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject;
 
-namespace WorkshopProject
+namespace Tansactions
 {
-    public static class Tansaction
+    public static class Transaction
     {
         static int idCounter = 0;
         
@@ -17,7 +19,7 @@ namespace WorkshopProject
         {
             int totalPrice = 0;
             ShoppingBasket basket = user.shoppingBasket;
-            Dictionary<Store, ShoppingCart> carts = basket.getCarts();
+            Dictionary<Store, ShoppingCart> carts = basket.Carts;
             //calc toal price
             foreach (KeyValuePair<Store, ShoppingCart> c in carts)
             {

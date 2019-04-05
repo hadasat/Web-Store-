@@ -1,14 +1,22 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Shopping;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tansactions;
 using Users;
+
 
 
 namespace WorkshopProject.System_Service
 {
-    public class TransactionService
+
+    //Message Format: {message: String}
+    //Search Format: {List<Product> products}
+
+public class TransactionService
     {
         internal User user;
 
@@ -26,27 +34,25 @@ namespace WorkshopProject.System_Service
                 Store store = storeAndProuduct.First().Key;
                 Product product = storeAndProuduct.First().Value;
                 userShoppingBasket.addProduct(store, product);
-                return "good";
+                return "{message: Success}";
             }
-            return "bad";
+            return "{message: Illegal Product id}";
         }
 
         internal string BuyShoppingBasket()
         {
-            int transId = Tansaction.purchase(user);
-
-            return "good" + transId;
+            int transId = Transaction.purchase(user);
+            return "{message: Success, transactionId: " + transId + " }";
         }
 
         internal string GetShoppingCart(int storeId)
         {
-            //return JsonConvert.SerializeObject(user.shoppingBasket);
-            throw new NotImplementedException();
+            return JsonConvert.SerializeObject(user.shoppingBasket.Carts);
         }
 
         internal string SetProductAmountInCart(int productId, int amount)
         {
-            throw new NotImplementedException();
+            return AddProductToBasket(productId, amount);
         }
     }
 }

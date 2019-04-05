@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkshopProject;
 
-namespace WorkshopProject
+namespace Shopping
 {
     public class ShoppingBasket
     {
@@ -19,15 +20,16 @@ namespace WorkshopProject
         public ShoppingBasket(ShoppingBasket s)
         {
             this.carts = new Dictionary<Store, ShoppingCart>();
-            Dictionary<Store, ShoppingCart> carts = s.getCarts();
-            foreach (KeyValuePair<Store, ShoppingCart> c in carts) {
+            Dictionary<Store, ShoppingCart> carts = s.carts;
+            foreach (KeyValuePair<Store, ShoppingCart> c in carts)
+            {
                 Store store = c.Key;
                 ShoppingCart shopping = new ShoppingCart(c.Value);
-                this.carts[store]=shopping;
+                this.carts[store] = shopping;
             }
         }
 
-        public bool addProduct(Store store,Product product,int amount)
+        public bool addProduct(Store store, Product product, int amount)
         {
             return ((ShoppingCart)carts[store]).setProductAmount(product, amount);
         }
@@ -35,15 +37,13 @@ namespace WorkshopProject
         public bool addProduct(Store store, Product product)
         {
             int curr_amount = carts[store].getProductAmount(product);
-            return carts[store].setProductAmount(product, curr_amount+1);
+            return carts[store].setProductAmount(product, curr_amount + 1);
         }
 
-
-        public Dictionary<Store, ShoppingCart> getCarts()
+        public Dictionary<Store, ShoppingCart> Carts
         {
-            return carts;
+            get { return carts; }
+
         }
-
-
     }
 }
