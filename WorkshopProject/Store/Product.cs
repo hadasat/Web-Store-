@@ -21,7 +21,7 @@ namespace WorkshopProject
 
         public DiscountPolicy discount;
 
-        public Product(string name , double price, string category,int rank,int amount , int storeId)
+        public Product(string name , double price, string desc, string category,int rank,int amount , int storeId)
         {
             this.id = idGenerator++;
             this.name = name;
@@ -30,6 +30,7 @@ namespace WorkshopProject
             this.rank = rank;
             this.storeId = storeId;
             discount = new DiscountPolicy();
+            this.description = desc;
         }
 
         public int getId()
@@ -37,15 +38,7 @@ namespace WorkshopProject
             return id;
         }
 
-        public Product(Product p , int amount)
-        {
-            id = p.id;
-            name = p.name;
-            price = p.price;
-            category = p.category;
-            rank = p.rank;
-            this.amount = amount;
-        }
+       
 
         public double getPrice()
         {

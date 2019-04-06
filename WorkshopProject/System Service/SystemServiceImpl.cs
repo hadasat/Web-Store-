@@ -107,9 +107,9 @@ namespace WorkshopProject.System_Service
             return storeS.CloseStore(storeID);
         }
 
-        public string GetProductInfo(int storeId , int productId)
+        public string GetProductInfo(int productId)
         {
-            return  storeS.GetProductInfo(storeId , productId);
+            return  storeS.GetProductInfo(productId);
         }
 
         public string GetShoppingCart(int storeId)
