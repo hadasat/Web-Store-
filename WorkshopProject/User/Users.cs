@@ -254,7 +254,7 @@ namespace Users
             {
                 foreach(StoreManager sm in storeManaging)
                 {
-                    if (sm.GetStore() == store)
+                    if (sm.GetStore().Id == store.Id)
                     {
                         return sm.GetRoles();
                     }
@@ -264,9 +264,26 @@ namespace Users
             return null;
         }
 
-        public bool addManager(string username,Roles  role,Store store)
+        public StoreManager getStoreManagerOb(Store store)
         {
-            throw new NotImplementedException();
+            if (isStoresManagers())
+            {
+                foreach (StoreManager sm in storeManaging)
+                {
+                    if (sm.GetStore().Id == store.Id)
+                    {
+                        return sm;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public bool addManager(string username,Roles role,Store store)
+        {
+            StoreManager myStoreRoles = getStoreManagerOb(store);
+            return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
         }
 
 
