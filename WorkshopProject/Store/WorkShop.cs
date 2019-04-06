@@ -23,7 +23,7 @@ namespace WorkshopProject
         /// <param name="ranking"></param>
         /// <param name="storeRanking"></param>
         /// <returns>list of products</returns>
-        public static List<Product>  search(string name, Categories category, int priceRange, int ranking, int storeRanking)
+        public static List<Product>  search(string name, string category, double startPrice,double endPrice, int productRanking, int storeRanking)
         {
             List<Product> matched_products = new List<Product>();
             foreach (Store store in stores.Values)
@@ -31,8 +31,9 @@ namespace WorkshopProject
                 /*Store store = getStore(store_id);*/
                 Dictionary<int, Product> products = store.GetStock();
                 foreach (Product item in products.Values) {
-                    if ((name == null || name == item.name) && (category == Categories.None || category == item.category)
-                        && (priceRange == -1 || priceRange > item.getPrice()) && (storeRanking==-1 || storeRanking<store.rank))
+                    if ((name == null || name == item.name) && (category == null || category == item.category)
+                        && (endPrice == -1 || endPrice > item.getPrice()) && (startPrice == -1 || startPrice < item.getPrice())
+                        && (storeRanking==-1 || storeRanking<store.rank) && (productRanking == -1 || productRanking<item.rank))
                     {
                         //All the non-empty search filters has been matched
                         matched_products.Add(item);
@@ -47,10 +48,19 @@ namespace WorkshopProject
         /// Get store from DB
         /// </summary>
         /// <param name="store_id"></param>
-        /// <returns>Store</returns>
+        /// <returns>Store if exist. otherwise return null</returns>
         public static  Store getStore(int store_id)
         {
-            return stores[store_id];
+            try
+            {
+                return stores[store_id];
+            }
+            catch (KeyNotFoundException e)
+            {
+                return null;
+            }
+
+
         }
 
        
@@ -62,10 +72,17 @@ namespace WorkshopProject
             owner.addStore(store);
         }
 
-        public static void closeStore(int storeId, Member owner)
+        public static bool closeStore(int storeId, Member owner)
         {
-            owner.closeStore(stores[storeId]);
-            stores[storeId].isActive = false;
+            try
+            {
+                owner.closeStore(stores[storeId]);
+                stores[storeId].isActive = false;
+            }catch(Exception e)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

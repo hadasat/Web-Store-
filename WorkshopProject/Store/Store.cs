@@ -17,6 +17,7 @@ namespace WorkshopProject
 
         private Dictionary<int, Product> Stock;
         private PurchasePolicy purchase_policy;
+        private List<DiscountPolicy> discountPolicy;
 
         public int Id { get => id;  }
 
@@ -27,6 +28,7 @@ namespace WorkshopProject
             this.rank = rank;
             this.isActive = isActive;
             Stock = new Dictionary<int, Product>();
+            discountPolicy = new List<DiscountPolicy>();
 
         }
 
@@ -36,8 +38,20 @@ namespace WorkshopProject
         }
 
 
+        public Boolean addProduct (User user, string name, string desc, double price, string category)
+        {
+            Product pro = new Product(name, price, category, 0, 0,id);
+            return addProduct(user, pro);
+        }
 
-    
+        public Product getProduct(int productId)
+        {
+            if (!Stock.ContainsKey(productId))
+                return null;
+            return Stock[productId];
+
+        }
+
         /// <summary>
         /// Add new product
         /// </summary>
@@ -45,7 +59,7 @@ namespace WorkshopProject
         /// <param name="p"></param>
         /// <param name="amountToAdd"></param>
         /// <returns></returns>
-        Boolean addProduct(User user,Product p)
+        private Boolean addProduct(User user,Product p)
         {
             //Verify Premission
             
@@ -54,19 +68,17 @@ namespace WorkshopProject
                 
          
                     
-            Stock.Add(p.id, new Product(p,0));
+            Stock.Add(p.getId(), new Product(p,0));
             return true;
             
-        }
-
-        
+        }        
 
         Boolean removeProduct(User user, Product product)
         {
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 
-            Stock.Remove(product.id);
+            Stock.Remove(product.getId());
             return true;
             
         }
@@ -102,8 +114,6 @@ namespace WorkshopProject
 
             return true;
         }
-
-
 
         /// <summary>
         /// this method called by shoppingBakset
@@ -144,7 +154,7 @@ namespace WorkshopProject
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 
-            if (!Stock.ContainsKey(product.id))
+            if (!Stock.ContainsKey(product.getId()))
                 throw new Exception("Product not exist");
 
             product.amount += amountToAdd;
@@ -156,19 +166,31 @@ namespace WorkshopProject
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 
-            Stock.Remove(product.id);
+            Stock.Remove(product.getId());
             return true;
         }
 
         public bool checkAvailability(Product product, int amount)
         {
-            if (Stock.ContainsKey(product.id))
+            if (Stock.ContainsKey(product.getId()))
             {
-                return Stock[product.id].amount >= amount;
+                return Stock[product.getId()].amount >= amount;
             }
             return false;
         }
 
+        public bool ChangeProductInfo(User user, int productId, string name, string desc, double price, string category, int amount)
+        {
+            if (!Stock.ContainsKey(productId) || !user.hasAddRemoveProductsPermission(this))
+                return false;
+            Product product = Stock[productId];
+            product.name = name;
+            product.description = desc;
+            product.setPrice(price);
+            product.category = category;
+            product.amount = amount;
+            return true;
+        }
 
     }
 
