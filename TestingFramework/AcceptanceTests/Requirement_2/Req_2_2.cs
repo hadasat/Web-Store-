@@ -11,7 +11,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestCleanup]
         public override void Cleanup()
         {
-            //TODO: remove added users
+            removeTestMemberFromSystem();
         }
 
 
@@ -19,9 +19,6 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestCategory("Req_2")]
         public void RegisterNewUser()
         {
-            string user = "User";
-            string password = "SecretPassword";
-
             bool result = bridge.Register(user, password);
 
             Assert.IsTrue(result);
@@ -35,9 +32,6 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         public void RegisterExistingUser()
         {
             RegisterNewUser();
-            string user = "User";
-            string password = "SecretPassword";
-
             bool result = bridge.Register(user, password);
 
             Assert.IsFalse(result);
