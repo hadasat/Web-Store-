@@ -17,13 +17,15 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestInitialize]
         public override void Init()
         {
-            //TODO: add product to system
+            addTestStoreToSystem();
+            addTestProductToSystem();
         }
 
         [TestCleanup]
         public override void Cleanup()
         {
-            //TODO: remove product
+            removeTestProductFromSystem();
+            removeTestStoreFromSystem();
         }
 
 

@@ -10,6 +10,8 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
     // AddRemoveStoreManger
     // CloseStore
 
+
+    //TODO: AccTest 5.1 - add test for policies and discounts when they are supported
     [TestClass]
     public class Req_5_1 : AcceptanceTest
     {
@@ -17,26 +19,93 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
         public override void Init()
         {
             addTestStoreOwner1ToSystem();
-            addTestMemberToSystem();
+            addTestStoreManager1ToSystem();
         }
 
         [TestCleanup]
         public override void Cleanup()
         {
-            removeTestMemberFromSystem();
+            removeTestStoreManager1FromSystem();
             removeTestStoreOwner1FromSystem();
         }
 
-
-        //TODO: 5.1 tests
-        [TestMethod]
-        [TestCategory("Req_5")]
-        public void TestAddPurchasingManagerSuccess()
+        private void createManagerWithRoles(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
         {
             bridge.Login(storeOwner1, password);
-            //bridge.AddStoreManager();
-            
+            bridge.AddStoreManager(storeId, storeOwner1, addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore);
             bridge.Logout();
+        }
+
+        [TestMethod]
+        [TestCategory("Req_5")]
+        public void TestManagerWithNoPermissions()
+        {
+            createManagerWithRoles(false, false, false, false);
+
+            bridge.Login(storeManager1, password);
+            bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, false, false);
+            Assert.IsFalse(result);
+
+            result = bridge.CloseStore(storeId);
+            Assert.IsFalse(result);
+
+            bridge.Logout();
+        }
+
+
+        [TestMethod]
+        [TestCategory("Req_5")]
+        public void TestAddAnotherManagerSuccess()
+        {
+            createManagerWithRoles(false, false, true, false);
+
+            bridge.Login(storeManager1, password);
+            bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, true, false);
+            bridge.Logout();
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Req_5")]
+        public void TestAddAnotherManagerWithWrongPermissions()
+        {
+            createManagerWithRoles(false, false, true, false);
+            bridge.Login(storeManager1, password);
+
+            for (int i = 0; i < 2; i++)
+            {
+                bool p1 = (i == 0) ? false : true;
+                for (int j = 0; j < 2; j++)
+                {
+                    bool p2 = (j == 0) ? false : true;
+                    for (int k = 0; k < 2; k++)
+                    {
+                        bool p3 = (k == 0) ? false : true;
+                        if (k==0 && j == 0 && i == 0)
+                        {
+                            continue;
+                        }
+
+                        bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, true, true);
+                        Assert.IsFalse(result);
+                    }
+                }
+            }   
+            bridge.Logout();
+        }
+
+        [TestMethod]
+        [TestCategory("Req_5")]
+        public void TestCloseStoreSuccess()
+        {
+            createManagerWithRoles(false, false, false, true);
+
+            bridge.Login(storeManager1, password);
+            bool result = bridge.CloseStore(storeId);
+            bridge.Logout();
+
+            Assert.IsTrue(result);
         }
     }
 }

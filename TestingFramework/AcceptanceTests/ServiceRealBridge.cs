@@ -81,18 +81,15 @@ namespace TestingFramework.AcceptanceTests
 
         public bool AddStoreManager(int storeId, string user)
         {
-            string roles = createRolesJson(false, false, false, false);
-            return false;
-
-            //TODO
+            return AddStoreManager(storeId, user, false, false, false, false);
         }
 
         public bool AddStoreManager(int storeId, string user, bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
         {
             string roles = createRolesJson(addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore);
-            return false;
-
-            //TODO
+            string msg = service.AddStoreManager(storeId, user, roles);
+            JObject json = JObject.Parse(msg);
+            return wasSuccessful(json);
         }
 
         public bool AddStoreOwner(int storeId, string user)
@@ -106,6 +103,13 @@ namespace TestingFramework.AcceptanceTests
         {
             //TODO: remove -1 when calling BuyShoppingBasket
             string msg = service.BuyShoppingBasket(-1);
+            JObject json = JObject.Parse(msg);
+            return wasSuccessful(json);
+        }
+
+        public bool CloseStore(int storeID)
+        {
+            string msg = service.closeStore(storeID);
             JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
         }

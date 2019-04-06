@@ -112,5 +112,10 @@ namespace TestingFramework.AcceptanceTests
         {
             throw new NotImplementedException();
         }
+
+        public bool CloseStore(int storeID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

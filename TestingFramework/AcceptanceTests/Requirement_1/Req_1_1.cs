@@ -8,6 +8,17 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
     {
 
         //[TestMethod]
+        [TestCategory("Req_1")]
+        public void InitializeWithAdmin()
+        {
+            string admin = "Admin";
+            string password = "Admin";
+
+            bool result = bridge.Login(admin, password);
+            Assert.IsTrue(result);
+        }
+
+        //[TestMethod]
         //[TestCategory("Req_1")]
         //public void InitializeWithAdmin()
         //{
@@ -21,8 +32,5 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
         //    result = bridge.Login(admin, password);
         //    Assert.IsTrue(result);
         //}
-
-        //TODO: missing bad and sad - test with existing admin?
     }
-
 }

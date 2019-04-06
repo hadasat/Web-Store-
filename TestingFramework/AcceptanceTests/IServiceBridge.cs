@@ -62,8 +62,8 @@ namespace TestingFramework.AcceptanceTests
         bool RemoveStoreManager(int storeId, string user);
 
         //Req 5_1
-        //TODO - what are the current permissions available?
-        
+        bool CloseStore(int storeID);
+
         //Req 6_2
         bool RemoveUser(string user);
     }
