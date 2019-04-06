@@ -241,7 +241,7 @@ namespace Users
 
         public bool addManager(string username, Roles roles)
         {
-        
+            return true;
         }
 
         public bool isStoresManagers()
@@ -300,7 +300,7 @@ namespace Users
 
     public class SystemAdmin : Member
     {
-        public SystemAdmin(string username, int ID) : base(username, ID) { }
+        public SystemAdmin(string username, int ID, ShoppingBasket sb) : base (username, ID, sb){}
 
         public bool RemoveUser(string userName)
         {
