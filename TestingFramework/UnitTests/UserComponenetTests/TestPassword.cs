@@ -14,7 +14,8 @@ namespace Password.Tests
         [TestInitialize]
         public void Init()
         {
-            //this method is called BEFORE each test
+            int ID = "1111";
+            string password;
         }
 
         [TestCleanup]
@@ -24,8 +25,15 @@ namespace Password.Tests
         }
 
         [TestMethod()]
-        [TestCategory("Users")]
-        public void TestMeTest()
+        [TestCategory("Users_Password")]
+        public void hashPassword_Test()
+        {
+            Assert.IsTrue(ClassForTestExample.TestMe());
+        }
+
+        [TestMethod()]
+        [TestCategory("Users_Password")]
+        public void IdentifyPassword_Test()
         {
             Assert.IsTrue(ClassForTestExample.TestMe());
         }
