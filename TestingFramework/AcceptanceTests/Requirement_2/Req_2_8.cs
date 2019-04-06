@@ -26,8 +26,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         public void BuyCartSuccess()
         {
             bridge.AddProductToCart(productId, 1);
-            int basket = bridge.GetShoppingBasket();
-            bool result = bridge.BuyShoppingBasket(basket);
+            bool result = bridge.BuyShoppingBasket();
 
             Assert.IsTrue(result);
         }
@@ -36,8 +35,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestCategory("Req_2")]
         public void BuyEmptyCart()
         {
-            int basket = bridge.GetShoppingBasket();
-            bool result = bridge.BuyShoppingBasket(basket);
+            bool result = bridge.BuyShoppingBasket();
 
             Assert.IsTrue(result);
         }
@@ -49,8 +47,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             BuyCartSuccess();
 
             bridge.AddProductToCart(productId, 1);
-            int basket = bridge.GetShoppingBasket();
-            bool result = bridge.BuyShoppingBasket(basket);
+            bool result = bridge.BuyShoppingBasket();
 
             Assert.IsFalse(result);
         }
@@ -62,8 +59,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             BuyCartSuccess();
 
             bridge.AddProductToCart(-1, 1);
-            int basket = bridge.GetShoppingBasket();
-            bool result = bridge.BuyShoppingBasket(basket);
+            bool result = bridge.BuyShoppingBasket();
 
             Assert.IsFalse(result);
         }

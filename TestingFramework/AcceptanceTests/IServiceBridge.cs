@@ -9,7 +9,7 @@ namespace TestingFramework.AcceptanceTests
     public interface IServiceBridge
     {
         //Req 1_1
-        bool Initialize(string admin, string password);
+        //bool Initialize(string admin, string password);
 
         //Reg 2_2
         bool Register(string user, string password);
@@ -21,7 +21,7 @@ namespace TestingFramework.AcceptanceTests
         //List<int> GetProductsFromStore(string store);
 
         //Req 2_5
-        List<int> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int storeRank);
+        List<int> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank);
         bool GetProductInfo(int id, out string name, out string productDesc, out double price, out string category, out int rank);
 
         //Req 2_6
@@ -35,8 +35,7 @@ namespace TestingFramework.AcceptanceTests
         bool SetProductAmountInCart(int cartId, int productId, int amount);
 
         //Req 2_8
-        int GetShoppingBasket();
-        bool BuyShoppingBasket(int id);
+        bool BuyShoppingBasket();
 
         //Req 3_1
         bool Logout();
@@ -47,7 +46,7 @@ namespace TestingFramework.AcceptanceTests
         //Req 4_1
         int AddProductToStore(int storeId, string name, string desc, double price, string category);
         bool RemoveProductFromStore(int storeId, int productId);
-        bool ChangeProductInfo(int productId, string name, string desc, double price, string category, int amount);
+        bool ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount);
 
         //Req 4_3
         bool AddStoreOwner(int storeId, string user);
@@ -57,13 +56,14 @@ namespace TestingFramework.AcceptanceTests
 
         //Req 4_5
         bool AddStoreManager(int storeId, string user);
+        bool AddStoreManager(int storeId, string user, bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore);
 
         //Req 4_6
         bool RemoveStoreManager(int storeId, string user);
 
         //Req 5_1
-        //TODO - what are the current permissions available?
-        
+        bool CloseStore(int storeID);
+
         //Req 6_2
         bool RemoveUser(string user);
     }

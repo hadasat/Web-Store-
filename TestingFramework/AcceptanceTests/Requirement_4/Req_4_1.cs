@@ -76,7 +76,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         public void UpdateProductSuccess()
         {
             AddNewProductSuccess();
-            bool result = bridge.ChangeProductInfo(productId, "", "", 50.0, "", -1);
+            bool result = bridge.ChangeProductInfo(storeId, productId, "", "", 50.0, "", -1);
             Assert.AreNotEqual(result, -1);
         }
 
@@ -85,7 +85,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         public void UpdateProductThatWasRemoved()
         {
             RemoveNewProductSuccess();
-            bool result = bridge.ChangeProductInfo(productId, "", "", 50.0, "", -1);
+            bool result = bridge.ChangeProductInfo(storeId, productId, "", "", 50.0, "", -1);
             Assert.AreNotEqual(result, -1);
         }
 
@@ -93,7 +93,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         [TestCategory("Req_4")]
         public void UpdateIllegalProduct()
         {
-            bool result = bridge.ChangeProductInfo(-1, "", "", 50.0, "", -1);
+            bool result = bridge.ChangeProductInfo(storeId, -1, "", "", 50.0, "", -1);
             Assert.AreNotEqual(result, -1);
         }
 
