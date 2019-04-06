@@ -84,5 +84,21 @@ namespace WorkshopProject
             }
             return true;
         }
+
+
+        /// <summary>
+        /// get product by id
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns>Product if exist in the WorkShop. otherwise return null</returns>
+        internal static Product getProduct(int productId)
+        {
+            foreach(Store store in stores.Values)
+            {
+                if (store.GetStock().ContainsKey(productId))
+                    return store.GetStock()[productId];
+            }
+            return null;
+        }
     }
 }

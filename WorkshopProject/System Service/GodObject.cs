@@ -54,7 +54,7 @@ namespace WorkshopProject.System_Service
         public int addProductToStore(int storeId, string name, double price, string category, string desc, string keyword, int amount, int rank)
         {
             Store store = WorkShop.getStore(storeId);
-            Product p = new Product(name, price, category, rank, amount, storeId);
+            Product p = new Product(name, price,desc, category, rank, amount, storeId);
             store.GetStock().Add(p.getId(), p);
             return p.getId();
         }
@@ -97,7 +97,6 @@ namespace WorkshopProject.System_Service
                 }
             }
             return false;
-
         }
 
         public bool removeManagerFromStore(int storeId, int ManagerId)
@@ -148,6 +147,7 @@ namespace WorkshopProject.System_Service
         {
             Member owner = ConnectionStubTemp.getMember(ownerId);
             WorkShop.closeStore(storeId, owner);
+            WorkShop.stores.Remove(storeId);
             return true;
         }
     }
