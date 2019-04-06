@@ -14,6 +14,7 @@ namespace WorkshopProject
         static void Main(string[] args)
         {
             ShoppingBasket s = new ShoppingBasket();
+            ShoppingCart c = new ShoppingCart();
             Product p = new Product(1, "p", 10, Category.Categories.category1, 100, 1000);
             Product p1 = new Product(1, "p", 10, Category.Categories.category1, 100, 1000);
             Product p2 = new Product(1, "p", 10, Category.Categories.category1, 100, 1000);
@@ -31,11 +32,21 @@ namespace WorkshopProject
             products.Add(p3, 4);
 
             //foreach () { }
-            String f = JsonConvert.SerializeObject(s);
+            
+            
+            
+            Object[] array = new object[products.Count * 2];
+            for(int i=0;i< products.Count; i++)
+            {
+                array[2*i] = products.ElementAt(i).Key;
+                array[2*i+1] = products.ElementAt(i).Value;
+            }
+            //products = JsonConvert.DeserializeObject< Dictionary<Product, int>>(f); 
+            String f = JsonConvert.SerializeObject(s, Formatting.Indented);
             Console.WriteLine(f);
-            List<Product> pr = new List<Product>();
+            //Object[] array1 = JsonConvert.DeserializeObject< Object[]>(f);
 
-            ShoppingBasket g = JsonConvert.DeserializeObject<ShoppingBasket>(f);
+            // ShoppingBasket g = JsonConvert.DeserializeObject<ShoppingBasket>(f);
             Console.ReadLine();
 
         }
