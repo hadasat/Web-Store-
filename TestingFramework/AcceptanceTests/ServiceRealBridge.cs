@@ -123,7 +123,7 @@ namespace TestingFramework.AcceptanceTests
 
         public bool GetProductInfo(int id, out string name, out string productDesc, out double price, out string category, out int rank)
         {
-            string msg = service.GetProductInfo(-1,id);   //TODO: service.GetProductInfo must revert to old interface
+            string msg = service.GetProductInfo(id);
             JObject json = JObject.Parse(msg);
             if (getId(json) != id)
             {
