@@ -11,34 +11,30 @@ namespace Shopping
 
     public class ShoppingCart
     {
-        private Dictionary<Product, int> products;
+        public Dictionary<Product, int> products { get; }
+        public static int idCartCounter = 0;
+        public int id { get; }
 
         public ShoppingCart()
         {
+            id = idCartCounter++;
             products = new Dictionary<Product, int>();
-        }
-
-        public ShoppingCart(ShoppingCart s)
-        {
-            this.products = new Dictionary<Product, int>();
-            Dictionary<Product, int> products = s.getProducts();
-            foreach (KeyValuePair<Product, int> c in products)
-            {
-                Product product = c.Key ;
-                int amount = c.Value;
-                this.products[product] = amount;
-            }
         }
 
         public bool setProductAmount(Product product, int amount)
         {
-            if (amount >= 0)
+            if(amount == 0 && products.ContainsKey(product))
+            {
+                products.Remove(product);
+                return true;
+            }
+            else if (amount > 0)
             {
                 if (products.ContainsKey(product))
                     products[product] = amount;
                 else
                     products.Add(product, amount);
-               return true;
+                return true;
             }
             return false;
         }
@@ -58,9 +54,19 @@ namespace Shopping
 
         public int getProductAmount(Product product)
         {
-            if(products.ContainsKey(product))
+            if (products.ContainsKey(product))
                 return products[product];
             return 0;
+        }
+
+        public int getTotalAmount()
+        {
+            int total = 0;
+            foreach (KeyValuePair<Product, int> c in products)
+            {
+                total += c.Value;
+            }
+            return total;
         }
 
         public Dictionary<Product, int> getProducts()
@@ -68,16 +74,64 @@ namespace Shopping
             return products;
         }
 
+    }
 
-        /*public bool addProduct(Product product)
+    public class JsonShoppingCartValue
+    {
+        public Product product { get; }
+        public int amount { get; }
+
+        public JsonShoppingCartValue(Product product,int amount)
         {
-            if (products.ContainsKey(product))
-                products[product]++;
-            products[product] = 1;
-            return true;
-        }*/
+            this.product = product;
+            this.amount = amount;
+        }
 
-        
+    }
+
+    public class JsonShoppingCart
+    {
+        public List<JsonShoppingCartValue> products { get; set; }
+        public int id { get; set; }
+
+        public JsonShoppingCart(ShoppingCart shopping)
+        {
+            products = new List<JsonShoppingCartValue>();
+            id = shopping.id;
+            copyCart(shopping);
+        }
+
+        private void copyCart(ShoppingCart shopping)
+        {
+            Dictionary<Product, int> shoppingProducts = shopping.products;
+            foreach (KeyValuePair<Product,int> pair in shoppingProducts)
+            {
+                Product p = pair.Key;
+                int amount = pair.Value;
+                JsonShoppingCartValue item = new JsonShoppingCartValue(p, amount);
+                products.Add(item);
+            }
+        }
 
     }
 }
+/*public ShoppingCart(ShoppingCart s)
+{
+    this.products = new Dictionary<Product, int>();
+    Dictionary<Product, int> products = s.getProducts();
+    foreach (KeyValuePair<Product, int> c in products)
+    {
+        Product product = c.Key;
+        int amount = c.Value;
+        this.products[product] = amount;
+    }
+}*/
+
+/*public bool addProduct(Product product)
+   {
+       if (products.ContainsKey(product))
+           products[product]++;
+       products[product] = 1;
+       return true;
+   }*/
+

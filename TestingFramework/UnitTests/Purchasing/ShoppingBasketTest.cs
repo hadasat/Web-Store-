@@ -13,10 +13,10 @@ namespace WorkshopProject.Tests
     class ShoppingBasketTest
     {
 
-    ShoppingBasket shoppingBasket = new ShoppingBasket();
-    Store store1 = new Store(1, "store1", 1, true);
-    Store store2 = new Store(2, "store2", 2, true);
-    Product p1, p2, p3, p4;
+        ShoppingBasket shoppingBasket = new ShoppingBasket();
+        Store store1 = new Store(1, "store1", 1, true);
+        Store store2 = new Store(2, "store2", 2, true);
+        Product p1, p2, p3, p4;
 
         [TestInitialize]
         public void Init()
@@ -32,20 +32,20 @@ namespace WorkshopProject.Tests
 
         }
 
-    [TestCleanup]
+        [TestCleanup]
         public void Cealup()
         {
             shoppingBasket = new ShoppingBasket();
         }
 
         [TestMethod()]
-        [TestCategory("Examples")]
+        [TestCategory("Unit Test")]
         public void setProductAmount()
         {
             int newAmount = 50;
             Product p5 = new Product(50, "five", 50, Category.Categories.category1, 50, 50);
             //positive amount
-            Assert.IsTrue(shoppingBasket.setProductAmount(store1,p5,newAmount));
+            Assert.IsTrue(shoppingBasket.setProductAmount(store1, p5, newAmount));
             Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
 
             //stay the previous price
@@ -55,11 +55,12 @@ namespace WorkshopProject.Tests
             //zero amount
             Assert.IsTrue(shoppingBasket.setProductAmount(store1, p5, 0));
             Assert.AreEqual(0, shoppingBasket.getProductAmount(p5));
+            //check 
 
         }
 
         [TestMethod()]
-        [TestCategory("Examples")]
+        [TestCategory("Unit Test")]
         public void addProduct()
         {
             int newAmount = 50;
@@ -76,4 +77,5 @@ namespace WorkshopProject.Tests
             Assert.IsFalse(shoppingBasket.addProduct(store1, p5, -newAmount));
             Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
         }
+    }
 }

@@ -45,7 +45,12 @@ public class TransactionService
             return "{message: Success, transactionId: " + transId + " }";
         }
 
-        internal string GetShoppingCart(int storeId)
+        internal string GetShoppingCart(User user,int storeId)
+        {
+            return JsonConvert.SerializeObject(user.shoppingBasket.Carts);
+        }
+
+        internal string GetShoppingBasket(User user)
         {
             return JsonConvert.SerializeObject(user.shoppingBasket.Carts);
         }

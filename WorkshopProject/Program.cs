@@ -9,6 +9,7 @@ using WorkshopProject.Examples;
 
 namespace WorkshopProject
 {
+    
     class Program
     {
         static void Main(string[] args)
@@ -25,24 +26,17 @@ namespace WorkshopProject
             s.addProduct(store2, p1, 10);
             s.addProduct(store2, p2, 10);
             s.addProduct(store, p3, 10);
-            Dictionary<Product, int> products = new Dictionary<Product, int>();
-            products.Add(p, 1);
-            products.Add(p1, 2);
-            products.Add(p2, 3);
-            products.Add(p3, 4);
 
-            //foreach () { }
-            
-            
-            
-            Object[] array = new object[products.Count * 2];
-            for(int i=0;i< products.Count; i++)
-            {
-                array[2*i] = products.ElementAt(i).Key;
-                array[2*i+1] = products.ElementAt(i).Value;
-            }
-            //products = JsonConvert.DeserializeObject< Dictionary<Product, int>>(f); 
-            String f = JsonConvert.SerializeObject(s, Formatting.Indented);
+
+            c.addProducts(p, 1);
+            c.addProducts(p1, 2);
+            c.addProducts(p2, 3);
+            c.addProducts(p3, 4);
+
+
+            JsonShoppingCart shp = new JsonShoppingCart(c);
+
+            String f = JsonConvert.SerializeObject(shp, Formatting.Indented);
             Console.WriteLine(f);
             //Object[] array1 = JsonConvert.DeserializeObject< Object[]>(f);
 

@@ -86,18 +86,18 @@ namespace WorkshopProject.System_Service
             return userS.AddStoreOwner(storeId, user);
         }
 
-        public string BuyShoppingBasket(int id)
+        public string BuyShoppingBasket()
         {
             if (!loggedIn)
                 throw new Exception("Not logged in");
-            return transactionS.BuyShoppingBasket(id);
+            return transactionS.BuyShoppingBasket();
         }
 
         public string ChangeProductInfo(int storeId,int productId, string name, string desc, double price, string category, int amount)
         {
             if (!loggedIn)
                 throw new Exception("Not logged in");
-            return storeS.ChangeProductInfo(storeId,productId, name, desc, price, category, amount);
+            return storeS.ChangeProductInfo(productId, name, desc, price, category, amount);
         }
 
         public string closeStore(int storeID)
@@ -109,14 +109,14 @@ namespace WorkshopProject.System_Service
 
         public string GetProductInfo(int storeId , int productId)
         {
-            return  storeS.GetProductInfo(storeId , productId);
+            return  storeS.GetProductInfo(productId);
         }
 
-        public string GetShoppingShoppingBasket(int storeId)
+        public string GetShoppingShoppingBasket()
         {
             if (!loggedIn)
                 throw new Exception("Not logged in");
-            return transactionS.ShoppingBasket(storeId);
+            return transactionS.GetShoppingBasket();
         }
 
         public string login(string username, string password)
@@ -160,7 +160,7 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 throw new Exception("Not logged in");
-            return storeS.removePurchasingPolicy(storeId);
+            throw new NotImplementedException();
         }
 
         public string RemoveStoreManager(int storeId, string user)
@@ -179,13 +179,28 @@ namespace WorkshopProject.System_Service
 
         public string SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank)
         {
-            return storeS.SearchProducts(name, category, keyword, startPrice, endPrice,productRank,storeRank);
+            return storeS.SearchProducts(name, category, keyword, startPrice, endPrice, storeRank);
         }
 
         public string SetProductAmountInCart(int productId, int amount)
         {
 
             return transactionS.SetProductAmountInCart(productId, amount);
+        }
+
+        public string GetShoppingCart(int storeId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetShoppingBasket(int storeId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string BuyShoppingBasket(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

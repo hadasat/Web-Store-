@@ -12,33 +12,40 @@ namespace Tansactions
 {
     public static class Transaction
     {
-        static int idCounter = 0;
-        
+        static int transactionCounter = 0;
+
 
         public static int purchase(User user)
         {
             int totalPrice = 0;
             ShoppingBasket basket = user.shoppingBasket;
-            Dictionary<Store, ShoppingCart> carts = basket.Carts;
+            Dictionary<Store, ShoppingCart> carts = basket.carts;
             //calc toal price
             foreach (KeyValuePair<Store, ShoppingCart> c in carts)
             {
-                //check if the item in the stock and add the price
-                Dictionary<Product, int> itemsPerStore = c.Value.getProducts();
-                foreach (KeyValuePair<Product, int> item in itemsPerStore) {
-                    totalPrice += calcPrice(item.Key, item.Value);
-                        }
-            }
-            
-            //parches 
+                Store currStore = c.Key;
+                ShoppingCart currShoppingCart = c.Value;
 
+                //check if the item in the stock and add the price
+                Dictionary<Product, int> itemsPerStore = currShoppingCart.getProducts();
+                foreach (KeyValuePair<Product, int> item in itemsPerStore)
+                {
+                    // TODO buy from store
+                    Product currProduct = item.Key;
+                    int currAmount = item.Value;
+                    //remove product from basket
+                    basket.setProductAmount(currStore, currProduct, 0);
+                    totalPrice += calcPrice(currProduct, currAmount);
+                }
+            }
+            //parches 
             //send products
-            return idCounter++;
+            return transactionCounter++;
         }
 
         private static int calcPrice(Product p, int amount)
         {
-            return amount;
+            return amount*p.getPrice();
         }
     }
 }

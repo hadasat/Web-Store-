@@ -45,6 +45,9 @@ namespace WorkshopProject.System_Service
         //Return: Shopping Cart Jason Object
         String GetShoppingCart(int storeId);
 
+        //Return: Shopping Cart Jason Object
+        String GetShoppingBasket(int storeId);
+
         //Return: Message Format
         String SetProductAmountInCart(int productId, int amount);
 
