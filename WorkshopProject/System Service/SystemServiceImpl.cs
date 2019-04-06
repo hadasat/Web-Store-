@@ -93,11 +93,11 @@ namespace WorkshopProject.System_Service
             return transactionS.BuyShoppingBasket(id);
         }
 
-        public string ChangeProductInfo(int productId, string name, string desc, double price, string category, int amount)
+        public string ChangeProductInfo(int storeId,int productId, string name, string desc, double price, string category, int amount)
         {
             if (!loggedIn)
                 throw new Exception("Not logged in");
-            return storeS.ChangeProductInfo(productId, name, desc, price, category, amount);
+            return storeS.ChangeProductInfo(storeId,productId, name, desc, price, category, amount);
         }
 
         public string closeStore(int storeID)
@@ -107,9 +107,9 @@ namespace WorkshopProject.System_Service
             return storeS.CloseStore(storeID);
         }
 
-        public string GetProductInfo(int id)
+        public string GetProductInfo(int storeId , int productId)
         {
-            return  storeS.GetProductInfo(id);
+            return  storeS.GetProductInfo(storeId , productId);
         }
 
         public string GetShoppingCart(int storeId)
@@ -160,7 +160,7 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 throw new Exception("Not logged in");
-            return storeS.removeProductFromStore(storeId);
+            return storeS.removePurchasingPolicy(storeId);
         }
 
         public string RemoveStoreManager(int storeId, string user)
@@ -177,9 +177,9 @@ namespace WorkshopProject.System_Service
             return userS.RemoveUser(user);
         }
 
-        public string SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int storeRank)
+        public string SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank)
         {
-            return storeS.SearchProducts(name, category, keyword, startPrice, endPrice, storeRank);
+            return storeS.SearchProducts(name, category, keyword, startPrice, endPrice,productRank,storeRank);
         }
 
         public string SetProductAmountInCart(int productId, int amount)

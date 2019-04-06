@@ -17,6 +17,7 @@ namespace WorkshopProject
 
         private Dictionary<int, Product> Stock;
         private PurchasePolicy purchase_policy;
+        private List<DiscountPolicy> discountPolicy;
 
         public int Id { get => id;  }
 
@@ -27,6 +28,7 @@ namespace WorkshopProject
             this.rank = rank;
             this.isActive = isActive;
             Stock = new Dictionary<int, Product>();
+            discountPolicy = new List<DiscountPolicy>();
 
         }
 
@@ -36,12 +38,20 @@ namespace WorkshopProject
         }
 
 
-        Boolean addProduct (User user, string name, string desc, double price, string category)
+        public Boolean addProduct (User user, string name, string desc, double price, string category)
         {
-            Product pro = new Product(name, price, category, 0, 0);
+            Product pro = new Product(name, price, category, 0, 0,id);
             return addProduct(user, pro);
         }
-    
+
+        public Product getProduct(int productId)
+        {
+            if (!Stock.ContainsKey(productId))
+                return null;
+            return Stock[productId];
+
+        }
+
         /// <summary>
         /// Add new product
         /// </summary>
@@ -49,7 +59,7 @@ namespace WorkshopProject
         /// <param name="p"></param>
         /// <param name="amountToAdd"></param>
         /// <returns></returns>
-        Boolean addProduct(User user,Product p)
+        private Boolean addProduct(User user,Product p)
         {
             //Verify Premission
             
@@ -169,6 +179,18 @@ namespace WorkshopProject
             return false;
         }
 
+        public bool ChangeProductInfo(User user, int productId, string name, string desc, double price, string category, int amount)
+        {
+            if (!Stock.ContainsKey(productId) || !user.hasAddRemoveProductsPermission(this))
+                return false;
+            Product product = Stock[productId];
+            product.name = name;
+            product.description = desc;
+            product.setPrice(price);
+            product.category = category;
+            product.amount = amount;
+            return true;
+        }
 
     }
 

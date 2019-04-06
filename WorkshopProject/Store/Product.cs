@@ -17,16 +17,18 @@ namespace WorkshopProject
         public int rank;
         public string description;
         public int amount;
+        public int storeId;
 
         public DiscountPolicy discount;
 
-        public Product(string name , double price, string category,int rank,int amount)
+        public Product(string name , double price, string category,int rank,int amount , int storeId)
         {
             this.id = idGenerator++;
             this.name = name;
             this.price = price;
             this.category = category;
             this.rank = rank;
+            this.storeId = storeId;
             discount = new DiscountPolicy();
         }
 
@@ -50,10 +52,12 @@ namespace WorkshopProject
             return price - discount.amount;
         }
 
-        public void setPrice(int newPrice)
+        public void setPrice(double newPrice)
         {
             this.price = newPrice;
         }
+
+
 
 
     }

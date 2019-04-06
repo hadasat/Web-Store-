@@ -16,7 +16,7 @@ namespace WorkshopProject.System_Service
          * 
          * 
          * Search Format: { products : List<Product>}
-         * Product Format: {id : int , name :string , price : int , rank : int  , category : string  }
+         * Product Format: {id : int , name :string , price : int , rank : int  , category : string ,storeId : int }
          * 
          * Shopping Cart Jason Object: {products : Dictionary<Product, int>}
          * Dictionary info: <Product Object, Amount>
@@ -34,10 +34,10 @@ namespace WorkshopProject.System_Service
         String Register(string user, string password);
 
         //Return: Search Format
-        String SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int storeRank);
+        String SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank);
 
         //Return Product Jason Object
-        String GetProductInfo(int id);
+        String GetProductInfo(int storeId , int productId);
 
         //Return: Message Format
         String AddProductToBasket(int productId, int amount);
@@ -61,7 +61,7 @@ namespace WorkshopProject.System_Service
         String AddProductToStock(int storeId,int productId,int amount);
 
         //Return: Message Format
-        String ChangeProductInfo(int productId, string name, string desc, double price, string category, int amount);
+        String ChangeProductInfo(int storeId , int productId, string name, string desc, double price, string category, int amount);
 
         //Return: Message Format
         String RemoveProductFromStore(int storeId, int productId);

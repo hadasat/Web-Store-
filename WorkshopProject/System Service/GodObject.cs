@@ -30,7 +30,7 @@ namespace WorkshopProject.System_Service
 
         bool removeMember(int memberId);
 
-        bool removeStore(int storeId);
+        bool removeStore(int storeId, int ownerId);
 
         bool removeManagerFromStore(int storeId, int ManagerId);    //manager or owner 
 
@@ -42,6 +42,8 @@ namespace WorkshopProject.System_Service
 
     public class GodObject : IGodObject
     {
+        
+
         public int addMember(string username, string password)
         {
             ConnectionStubTemp.registerNewUser(username, password);
@@ -52,7 +54,7 @@ namespace WorkshopProject.System_Service
         public int addProductToStore(int storeId, string name, double price, string category, string desc, string keyword, int amount, int rank)
         {
             Store store = WorkShop.getStore(storeId);
-            Product p = new Product(name, price, category, rank, amount);
+            Product p = new Product(name, price, category, rank, amount, storeId);
             store.GetStock().Add(p.getId(), p);
             return p.getId();
         }
@@ -77,22 +79,63 @@ namespace WorkshopProject.System_Service
 
         public bool makeUserManager(int storeId, int storeOwnerId, int newManagerId, bool[] roles)
         {
-            throw new NotImplementedException();
+            Roles newRoles = new Roles(roles[0], roles[1], roles[2], roles[3], roles[4],roles[5], roles[6], roles[7]);
+            Store store = WorkShop.getStore(storeId);
+            Member storeOwner = ConnectionStubTemp.members[storeOwnerId];
+            Member newManager = ConnectionStubTemp.members[newManagerId];
+            LinkedList<StoreManager> nmstoreManagers = newManager.storeManaging;
+            StoreManager newStoreManager = new StoreManager(store, newRoles);
+            nmstoreManagers.AddFirst(newStoreManager);
+
+            LinkedList<StoreManager> storeManagers = storeOwner.storeManaging;
+            foreach (StoreManager sm in storeManagers)
+            {
+                if (sm.GetStore().Id == storeId)
+                {
+                    sm.SubManagers.AddFirst(newStoreManager);
+                    return true;
+                }
+            }
+            return false;
+
         }
 
         public bool removeManagerFromStore(int storeId, int ManagerId)
         {
-            throw new NotImplementedException();
+            Member member = ConnectionStubTemp.members[ManagerId];
+            LinkedList<StoreManager> storeManagers = member.storeManaging;
+            foreach(StoreManager sm in storeManagers)
+            {
+                if(sm.GetStore().Id == storeId)
+                {
+                    if(sm.GetFather() == null)
+                    {
+                        WorkShop.closeStore(storeId, member);
+                    }
+                    else
+                    {
+                        sm.GetFather().removeManager(sm);
+                    }
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool removeMember(int memberId)
         {
-            throw new NotImplementedException();
+            string username = ConnectionStubTemp.members[memberId].username;
+            ConnectionStubTemp.members.Remove(memberId);
+            ConnectionStubTemp.mapIDUsermane.Remove(username);
+            return true;
         }
 
         public bool removeProductFromStock(int storeId, int ProductId, int amountToRemove)
-        {
-            throw new NotImplementedException();
+        {     
+            Store store = WorkShop.getStore(storeId);
+            store.GetStock()[ProductId].amount -= amountToRemove;
+            return true;
+             
         }
 
         public bool removeProductFromStore(int storeId, int productID)
