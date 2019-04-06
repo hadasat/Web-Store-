@@ -13,7 +13,7 @@ namespace Password
         private Dictionary<int, Tuple<byte[], byte[]>> saltesAndPepper = new Dictionary<int, Tuple<byte[], byte[]>>();
 
         //CREATING
-
+        
         /** this is the byte[] that need to be stored **/
 
         //when register
@@ -92,6 +92,14 @@ namespace Password
         }
 
 
+        public Tuple<byte[], byte[]> GetEntry(int ID)
+        {
+            return saltesAndPepper[ID];
+        }
 
+        public void RemoveEntry(int ID)
+        {
+            saltesAndPepper.Remove(ID);
+        }
     }
 }
