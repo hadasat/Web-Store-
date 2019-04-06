@@ -28,6 +28,11 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
+        public bool AddStoreManager(int storeId, string user)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool AddStoreManager(int storeId, string user, bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
         {
             throw new NotImplementedException();
@@ -48,7 +53,7 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
         
-        public bool ChangeProductInfo(int productId, string name, string desc, double price, string category, int amount)
+        public bool ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount)
         {
             throw new NotImplementedException();
         }
@@ -98,7 +103,7 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
-        public List<int> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int storeRank)
+        public List<int> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank)
         {
             throw new NotImplementedException();
         }

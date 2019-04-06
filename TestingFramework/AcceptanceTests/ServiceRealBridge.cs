@@ -79,10 +79,20 @@ namespace TestingFramework.AcceptanceTests
             return getId(json);
         }
 
+        public bool AddStoreManager(int storeId, string user)
+        {
+            string roles = createRolesJson(false, false, false, false);
+            return false;
+
+            //TODO
+        }
+
         public bool AddStoreManager(int storeId, string user, bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
         {
             string roles = createRolesJson(addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore);
             return false;
+
+            //TODO
         }
 
         public bool AddStoreOwner(int storeId, string user)
@@ -100,16 +110,16 @@ namespace TestingFramework.AcceptanceTests
             return wasSuccessful(json);
         }
 
-        public bool ChangeProductInfo(int productId, string name, string desc, double price, string category, int amount)
+        public bool ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount)
         {
-            string msg = service.ChangeProductInfo(productId, name, desc, price, category, amount);
+            string msg = service.ChangeProductInfo(storeId ,productId, name, desc, price, category, amount);
             JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
         }
 
         public bool GetProductInfo(int id, out string name, out string productDesc, out double price, out string category, out int rank)
         {
-            string msg = service.GetProductInfo(id);
+            string msg = service.GetProductInfo(-1,id);   //TODO: service.GetProductInfo must revert to old interface
             JObject json = JObject.Parse(msg);
             if (getId(json) != id)
             {
@@ -186,10 +196,10 @@ namespace TestingFramework.AcceptanceTests
             return wasSuccessful(json);
         }
 
-        public List<int> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int storeRank)
+        public List<int> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank)
         {
             List<int> ret = new List<int>();
-            string msg = service.SearchProducts(name, category, keyword, startPrice, endPrice, storeRank);
+            string msg = service.SearchProducts(name, category, keyword, startPrice, endPrice, productRank, storeRank);
             JArray json = JArray.Parse(msg);
             foreach (JObject product in json)
             {
@@ -204,6 +214,7 @@ namespace TestingFramework.AcceptanceTests
             JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
         }
+
     }
 
     class ManagerRolesContainer

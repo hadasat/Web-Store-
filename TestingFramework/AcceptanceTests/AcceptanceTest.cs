@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WorkshopProject.System_Service;
 
 namespace TestingFramework.AcceptanceTests
 {
@@ -41,7 +42,7 @@ namespace TestingFramework.AcceptanceTests
         protected double startPrice = 10.0;
         protected double endPrice = 20.0;
         protected int productRank = 1;
-        protected int amount = 1;
+        protected int productAmount = 1;
         protected string fakeProductName = "TestFakeProduct";
         protected string illegalProductName = ";";
 
@@ -64,93 +65,70 @@ namespace TestingFramework.AcceptanceTests
 
         virtual protected void addTestStoreOwner1ToSystem()
         {
-            //TODO: AcceptanceTest method
-            //also adds store
+            storeOwner1Id = godObject.addMember(user, password);
+            storeId = godObject.addStore(storeName, storeRank, storeOwner1Id);
         }
 
         virtual protected void removeTestStoreOwner1FromSystem()
         {
-            //TODO: AcceptanceTest method
-            //also removes store
+            godObject.removeStore(storeId, storeOwner1Id);
+            godObject.removeMember(storeOwner1Id);
         }
 
         virtual protected void addTestStoreOwner2ToSystem()
         {
-            //TODO: AcceptanceTest method
-
+            storeOwner2Id = godObject.addMember(user, password);
+            storeId = godObject.addStore(storeName, storeRank, storeOwner2Id);
         }
 
         virtual protected void removeTestStoreOwner2FromSystem()
         {
-            //TODO: AcceptanceTest method
-
+            godObject.removeStore(storeId, storeOwner2Id);
+            godObject.removeMember(storeOwner2Id);
         }
-
-        virtual protected void addTestStoreOwner3ToSystem()
-        {
-            //TODO: AcceptanceTest method
-
-        }
-
-        virtual protected void removeTestStoreOwner3FromSystem()
-        {
-            //TODO: AcceptanceTest method
-
-        }
-
+        
+        ///only adds user. does not give store management roles to that user
         virtual protected void addTestStoreManager1ToSystem()
         {
-            //TODO: AcceptanceTest method
+            storeManager1Id = godObject.addMember(storeManager1, password);
+            //godObject.makeUserManager(storeId, storeOwner1Id, storeManager1Id, );
         }
 
         virtual protected void removeTestStoreManager1FromSystem()
         {
-            //TODO: AcceptanceTest method
+            godObject.removeMember(storeManager2Id);
         }
 
+        ///only adds user. does not give store management roles to that user
         virtual protected void addTestStoreManager2ToSystem()
         {
-            //TODO: AcceptanceTest method
+            storeManager1Id = godObject.addMember(storeManager1, password);
         }
 
         virtual protected void removeTestStoreManager2FromSystem()
         {
-            //TODO: AcceptanceTest method
-        }
-
-        virtual protected void addTestStoreManager3ToSystem()
-        {
-            //TODO: AcceptanceTest method
-        }
-
-        virtual protected void removeTestStoreManager3FromSystem()
-        {
-            //TODO: AcceptanceTest method
+            godObject.removeMember(storeManager2Id);
         }
 
         virtual protected void addTestStoreToSystem()
         {
-            //TODO: AcceptanceTest method
-            storeId = -1; //TODO: change to return id from actually adding to system
+            addTestStoreOwner1ToSystem();
         }
 
         virtual protected void removeTestStoreFromSystem()
         {
-            //TODO: AcceptanceTest method
+            removeTestStoreOwner1FromSystem();
         }
-
 
         virtual protected void addTestProductToSystem()
         {
             addTestStoreToSystem();
-            //TODO: AcceptanceTest method
-            productId = -1; //TODO: change to return id from actually adding to system
+            productId = godObject.addProductToStore(storeId, productName, productPrice, productCategory, productDesc, productKeyword, productAmount, productRank);
         }
 
         virtual protected void removeTestProductFromSystem()
         {
-            //TODO: AcceptanceTest method
-
+            godObject.removeProductFromStore(storeId, productId);
             removeTestStoreFromSystem();
         }
     }
