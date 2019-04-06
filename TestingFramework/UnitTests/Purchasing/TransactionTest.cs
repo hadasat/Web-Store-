@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Users;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shopping;
 using Tansactions;
 
 namespace WorkshopProject.Tests
@@ -56,8 +55,7 @@ namespace WorkshopProject.Tests
             Product p5 = new Product(40, "five", 40, Category.Categories.category1, 40, 40);
             user.shoppingBasket.addProduct(store1,p5, 10);
             //check transction number grow
-            transactionId = Transaction.purchase(user);
-            Assert.IsTrue(transactionId > transactionId);
+            Assert.IsTrue(Transaction.purchase(user) > transactionId);
         }
 
     }
