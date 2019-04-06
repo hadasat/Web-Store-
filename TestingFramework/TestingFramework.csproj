@@ -83,7 +83,7 @@
     <Compile Include="AcceptanceTests\ServiceRealBridge.cs" />
     <Compile Include="UnitTests\Examples\ClassForTestExampleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTests\StoreUnitTest.cs" />
+    <Compile Include="UnitTests\Store UnitTests\StoreUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WorkshopProject\WorkshopProject.csproj">
