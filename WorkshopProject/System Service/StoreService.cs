@@ -72,7 +72,7 @@ namespace WorkshopProject.System_Service
             if (store == null)
                 return generateMessageFormatJason("Store does not exist");
 
-            if (!store.addProduct(user, name, desc, price, category))
+            if (store.addProduct(user, name, desc, price, category) == -1)
                 return generateMessageFormatJason("User does not have permission");
 
             return successJason(); //All Valid
@@ -92,7 +92,7 @@ namespace WorkshopProject.System_Service
             if (store == null)
                 return generateMessageFormatJason("Store does not exist");
 
-            if (!store.ChangeProductInfo(user, productId, name, desc, price, category, amount))
+            if (!store.changeProductInfo(user, productId, name, desc, price, category, amount))
                 return generateMessageFormatJason("Error: User does not have permission Or Product does not exist");
 
             return successJason(); //All Valid
@@ -106,15 +106,11 @@ namespace WorkshopProject.System_Service
             return successJason(); //All Valid
         }
 
-        internal string GetProductInfo(int storeId, int productId)
+        internal string GetProductInfo(int productId)
         {
-            Store store = WorkShop.getStore(storeId);
-            if (store == null)
-                return generateMessageFormatJason("Store does not exist");
-
-            Product product = store.getProduct(productId);
+            Product product = WorkShop.getProduct(productId);
             if (product == null)
-                return generateMessageFormatJason("Product does not exist in store id" + storeId);
+                return generateMessageFormatJason("Product does not exist in store id");
 
             return JsonConvert.SerializeObject(product);
 

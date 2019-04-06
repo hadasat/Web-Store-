@@ -19,9 +19,9 @@ namespace WorkshopProject
         private PurchasePolicy purchase_policy;
         private List<DiscountPolicy> discountPolicy;
 
-        public int Id { get => id;  }
+        public int Id { get => id; }
 
-        public Store(int id,string name, int rank,Boolean isActive)
+        public Store(int id, string name, int rank, Boolean isActive)
         {
             this.id = id;
             this.name = name;
@@ -38,12 +38,17 @@ namespace WorkshopProject
         }
 
 
-        public Boolean addProduct (User user, string name, string desc, double price, string category)
+        public int addProduct(User user, string name, string desc, double price, string category)
         {
-            Product pro = new Product(name, price, category, 0, 0,id);
+            Product pro = new Product(name, price, desc, category, 0, 0, id);
             return addProduct(user, pro);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns>product. if fail returns null</returns>
         public Product getProduct(int productId)
         {
             if (!Stock.ContainsKey(productId))
@@ -58,46 +63,44 @@ namespace WorkshopProject
         /// <param name="user"></param>
         /// <param name="p"></param>
         /// <param name="amountToAdd"></param>
-        /// <returns></returns>
-        private Boolean addProduct(User user,Product p)
+        /// <returns>product id if succeed. otherwise -1</returns>
+        private int addProduct(User user, Product p)
         {
             //Verify Premission
-            
-            if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
-                return false;
-                
-         
-                    
-            Stock.Add(p.getId(), new Product(p,0));
-            return true;
-            
-        }        
 
-        Boolean removeProduct(User user, Product product)
+            if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
+                return -1;
+
+            Stock.Add(p.getId(), p);
+            return p.getId();
+        }
+
+       
+
+        public bool removeProductFromStore(User user, Product product)
         {
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 
             Stock.Remove(product.getId());
             return true;
-            
         }
 
-        Boolean addDiscount(User user, DiscountPolicy discount)
+        public Boolean addDiscount(User user, DiscountPolicy discount)
         {
             if (!user.hasAddRemoveDiscountPermission(this))   //Verify Premission
                 return false;
             return true;
         }
 
-        Boolean removeDiscount(User user, DiscountPolicy discount)
+        public Boolean removeDiscount(User user, DiscountPolicy discount)
         {
             if (!user.hasAddRemoveDiscountPermission(this))   //Verify Premission
                 return false;
             return true;
         }
 
-        Boolean addPurchasingPolicy(User user,PurchasePolicy pPolicy)
+        public Boolean addPurchasingPolicy(User user, PurchasePolicy pPolicy)
         {
             if (!user.hasAddRemovePurchasingPermission(this))   //Verify Premission
                 return false;
@@ -107,31 +110,32 @@ namespace WorkshopProject
 
         }
 
-        Boolean removePurchasingPolicy(User user,PurchasePolicy pPolicy)
+        public Boolean removePurchasingPolicy(User user, PurchasePolicy pPolicy)
         {
             if (!user.hasAddRemovePurchasingPermission(this))   //Verify Premission
                 return false;
 
             return true;
         }
-
+        public delegate void callback();
         /// <summary>
-        /// this method called by shoppingBakset
+        /// succseed - callback that return the products to the stock. if fail - returns null
         /// </summary>
         /// <param name="user"></param>
         /// <param name="p"></param>
         /// <param name="amountToBuy"></param>
         /// <returns> succseed - callback that return the products to the stock., fail - returns null</returns>
-        bool buyProduct(User user, Product p , int amountToBuy)
+        public callback buyProduct(Product p, int amountToBuy)
         {
-            /*
-            if (!(user is Member) || !(addRemoveProductsPermission((Member)user))) //Verify Premission
-                return false;
+            callback callback = delegate () {
+                if (Stock.ContainsKey(p.getId()))
+                    Stock[p.getId()].amount += amountToBuy;
+            };
 
-            if (!Stock.ContainsKey(p.id) || removeFromStock(Stock[p.id],amountToBuy) == -1)
-                return false;
-                */
-            return true;
+            if (!Stock.ContainsKey(p.getId()) || removeFromStock(Stock[p.getId()],amountToBuy) == -1)
+                return null;
+
+            return callback;
                        
         }
 
@@ -161,14 +165,7 @@ namespace WorkshopProject
             return true;
         }
 
-        public bool removeProductFromStore(User user, Product product)
-        {
-            if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
-                return false;
-
-            Stock.Remove(product.getId());
-            return true;
-        }
+        
 
         public bool checkAvailability(Product product, int amount)
         {
@@ -179,7 +176,7 @@ namespace WorkshopProject
             return false;
         }
 
-        public bool ChangeProductInfo(User user, int productId, string name, string desc, double price, string category, int amount)
+        public bool changeProductInfo(User user, int productId, string name, string desc, double price, string category, int amount)
         {
             if (!Stock.ContainsKey(productId) || !user.hasAddRemoveProductsPermission(this))
                 return false;

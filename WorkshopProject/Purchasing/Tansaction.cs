@@ -30,9 +30,9 @@ namespace WorkshopProject
                     totalPrice += calcPrice(item.Key, item.Value);
                         }
             }
-            
-            //parches 
 
+            //parches 
+            
             //send products
             return 0;
         }
