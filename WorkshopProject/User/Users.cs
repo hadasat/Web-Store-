@@ -27,7 +27,6 @@ namespace Users
 
         public static void removeMember(Member m)
         {
-
             members.Remove(m.ID);
             mapIDUsermane.Remove(m.username);
         }
@@ -238,6 +237,11 @@ namespace Users
                     break;
                 }
             }
+        }
+
+        public bool addManager(string username, Roles roles)
+        {
+        
         }
 
         public bool isStoresManagers()
