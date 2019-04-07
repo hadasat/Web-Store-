@@ -11,7 +11,8 @@ namespace TestingFramework.AcceptanceTests
         //This function returns the current implementation of IServiceBridge
         public static IServiceBridge getBridge()
         {
-            return new ServiceProxyBridge();
+            //return new ServiceProxyBridge();
+            return new ServiceRealBridge();
         }
 
     }
