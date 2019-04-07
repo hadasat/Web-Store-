@@ -17,6 +17,8 @@
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -84,8 +86,11 @@
     <Compile Include="UnitTests\Purchasing UnitTest\ShoppingBasketTest.cs" />
     <Compile Include="UnitTests\JsonTests\JsonTests.cs" />
     <Compile Include="UnitTests\Store UnitTests\StoreUnitTest.cs" />
+<<<<<<< HEAD
     <Compile Include="UnitTests\Purchasing UnitTest\ShoppingCartTest.cs" />
     <Compile Include="UnitTests\Purchasing UnitTest\TransactionTest.cs" />
+=======
+>>>>>>> origin/master
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WorkshopProject\WorkshopProject.csproj">

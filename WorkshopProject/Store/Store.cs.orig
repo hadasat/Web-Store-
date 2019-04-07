@@ -70,6 +70,7 @@ namespace WorkshopProject
 
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return -1;
+<<<<<<< HEAD
 
             Stock.Add(p.getId(), p);
             return p.getId();
@@ -77,6 +78,15 @@ namespace WorkshopProject
 
        
 
+=======
+
+            Stock.Add(p.getId(), p);
+            return p.getId();
+        }
+
+       
+
+>>>>>>> origin/master
         public bool removeProductFromStore(User user, Product product)
         {
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
@@ -164,8 +174,13 @@ namespace WorkshopProject
             product.amount += amountToAdd;
             return true;
         }
+<<<<<<< HEAD
         
+=======
+
         
+
+>>>>>>> origin/master
         public bool checkAvailability(Product product, int amount)
         {
             if (Stock.ContainsKey(product.getId()))
@@ -175,8 +190,15 @@ namespace WorkshopProject
             return false;
         }
 
+<<<<<<< HEAD
+        
+
+        public bool changeProductInfo(User user, int productId, string name, string desc, double price, string category, int amount)
+        { 
+=======
         public bool changeProductInfo(User user, int productId, string name, string desc, double price, string category, int amount)
         {
+>>>>>>> origin/master
             if (!Stock.ContainsKey(productId) || !user.hasAddRemoveProductsPermission(this))
                 return false;
             Product product = Stock[productId];
