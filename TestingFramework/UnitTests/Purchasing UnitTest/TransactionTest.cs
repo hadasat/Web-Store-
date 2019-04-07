@@ -18,10 +18,10 @@ namespace WorkshopProject.Tests
         [TestInitialize]
         public void Init()
         {
-            p1 = new Product("first", 10, "h", 10, 10, 10);
-            p2 = new Product("second", 20, "l", 20, 20, 20);
-            p3 = new Product("third", 30, "k", 30, 30, 30);
-            p4 = new Product("five", 40, "j", 40, 40, 40);
+            p1 = new Product("first", 10, "h", "g", 10, 10, 10);
+            p2 = new Product("second", 20, "l", "g", 20, 20, 20);
+            p3 = new Product("third", 30, "k", "g", 30, 30, 30);
+            p4 = new Product("five", 40, "j", "g", 40, 40, 40);
             user.shoppingBasket.addProduct(store1, p1, 10);
             user.shoppingBasket.addProduct(store2, p2, 20);
             user.shoppingBasket.addProduct(store1, p3, 20);
@@ -52,7 +52,7 @@ namespace WorkshopProject.Tests
             Assert.IsTrue(transactionId == -1);
 
 
-            Product p5 = new Product( "five", 40, "Category.Categories.category1", 40,40, 40);
+            Product p5 = new Product( "five", 40, "Category.Categories.category1", "g", 40,40, 40);
             user.shoppingBasket.addProduct(store1,p5, 10);
             //check transction number grow
             Assert.IsTrue(Transaction.purchase(user) > transactionId);

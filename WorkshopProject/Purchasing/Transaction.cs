@@ -17,7 +17,7 @@ namespace Tansactions
 
         public static int purchase(User user)
         {
-            int totalPrice = 0;
+            double totalPrice = 0;
             ShoppingBasket basket = user.shoppingBasket;
             Dictionary<Store, ShoppingCart> carts = basket.carts;
             //calc toal price
@@ -43,9 +43,9 @@ namespace Tansactions
             return transactionCounter++;
         }
 
-        private static int calcPrice(Product p, int amount)
+        private static double calcPrice(Product p, int amount)
         {
-            return amount*p.getPrice();
+            return amount * (p.getPrice());
         }
     }
 }

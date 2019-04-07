@@ -164,17 +164,7 @@ namespace WorkshopProject
             product.amount += amountToAdd;
             return true;
         }
-
         
-        public bool removeProductFromStore(User user, Product product)
-        {
-            if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
-                return false;
-
-            Stock.Remove(product.getId());
-            return true;
-        }
-
         public bool checkAvailability(Product product, int amount)
         {
             if (Stock.ContainsKey(product.getId()))
@@ -184,14 +174,9 @@ namespace WorkshopProject
             return false;
         }
 
-        public Product findProduct(int productId)
-        {
-            Product output;
-            Stock.TryGetValue(productId, out output);
-            return output;
-        }
+        
 
-        public bool ChangeProductInfo(User user, int productId, string name, string desc, double price, string category, int amount)
+        public bool changeProductInfo(User user, int productId, string name, string desc, double price, string category, int amount)
         { 
             if (!Stock.ContainsKey(productId) || !user.hasAddRemoveProductsPermission(this))
                 return false;

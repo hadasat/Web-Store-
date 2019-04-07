@@ -19,19 +19,26 @@ namespace Shopping
         public bool setProductAmount(Store store, Product product, int amount)
         {
             //remove product from list
-            if (amount == 0 && carts.ContainsKey(store))
+            if (amount == 0)
             {
-                int storeAmount = carts[store].getTotalAmount();
-                if (storeAmount == 0)
+                //check if the storecart is empty now
+                if (carts.ContainsKey(store))
                 {
-                    carts.Remove(store);
-                    return true;
+                    //set product amount to zero
+                    carts[store].setProductAmount(product, amount);
+                    int storeAmount = carts[store].getTotalAmount();
+                    if (storeAmount == 0)
+                        carts.Remove(store);
                 }
+                return true;
             }
-
-            if (!carts.ContainsKey(store))
-                carts.Add(store, new ShoppingCart());
-            return carts[store].addProducts(product, amount);
+            else if (amount > 0)
+            {
+                if (!carts.ContainsKey(store))
+                    carts.Add(store, new ShoppingCart());
+                return carts[store].addProducts(product, amount);
+            }
+            return false;
 
         }
 

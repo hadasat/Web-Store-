@@ -15,20 +15,14 @@ namespace WorkshopProject.Tests
 
         ShoppingBasket shoppingBasket = new ShoppingBasket();
         Store store1 = new Store(1, "store1", 1, true);
-        Store store2 = new Store(2, "store2", 2, true);
-        Product p1, p2, p3, p4;
+        Product p1;
 
         [TestInitialize]
         public void Init()
         {
-            p1 = new Product("first", 10, "h", 10, 10, 10);
-            p2 = new Product("second", 20, "l", 20, 20, 20);
-            p3 = new Product("third", 30, "k", 30, 30, 30);
-            p4 = new Product("five", 40, "j", 40, 40, 40);
+            p1 = new Product("first", 10, "h", "g", 10, 10, 10);
             shoppingBasket.addProduct(store1, p1, 10);
-            shoppingBasket.addProduct(store2, p2, 20);
-            shoppingBasket.addProduct(store1, p3, 20);
-            shoppingBasket.addProduct(store2, p4, 20);
+
 
         }
 
@@ -40,11 +34,11 @@ namespace WorkshopProject.Tests
 
         [TestMethod()]
         [TestCategory("Unit Test")]
-        public void setProductAmount()
+        public void setProductAmountTest()
         {
             int newAmount = 50;
 
-            Product p5 = new Product("five", 50, "j", 50, 50,50);
+            Product p5 = new Product("five", 50, "j", "g", 50, 50, 50);
             //positive amount
             Assert.IsTrue(shoppingBasket.setProductAmount(store1, p5, newAmount));
             Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
@@ -62,10 +56,10 @@ namespace WorkshopProject.Tests
 
         [TestMethod()]
         [TestCategory("Unit Test")]
-        public void addProduct()
+        public void addProductTest()
         {
             int newAmount = 50;
-            Product p5 = new Product("five", 50, "Category.Categories.category1", 50, 50,50);
+            Product p5 = new Product("five", 50, "Category.Categories.category1", "g", 50, 50, 50);
             //positive amount
             shoppingBasket.addProduct(store1, p5, newAmount);
             Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
@@ -77,6 +71,11 @@ namespace WorkshopProject.Tests
             //negative amount
             Assert.IsFalse(shoppingBasket.addProduct(store1, p5, -newAmount));
             Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
+        }
+        
+
+        public void getProductAmountTest()
+        {
         }
     }
 }

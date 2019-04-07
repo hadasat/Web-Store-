@@ -144,7 +144,7 @@ namespace WorkshopProject.Tests
             int id = store.addProduct(storeOwner, "product name 1", "desc1", 10, "category 1");
             Product p = store.getProduct(id);
             store.addProductTostock(storeOwner, p, amountToBuy);
-
+            
             store.changeProductInfo(storeOwner, id, "new name", "new desc", 33.3, "new category", 20);
             Assert.IsTrue(p.name == "new name");
             Assert.IsTrue(p.description == "new desc");
