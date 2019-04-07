@@ -21,10 +21,10 @@ namespace WorkshopProject.Tests
         [TestInitialize]
         public void Init()
         {
-            p1 = new Product(10, "first", 10, Category.Categories.category1, 10, 10);
-            p2 = new Product(20, "second", 20, Category.Categories.category2, 20, 20);
-            p3 = new Product(30, "third", 30, Category.Categories.category3, 30, 30);
-            p4 = new Product(40, "five", 40, Category.Categories.category1, 40, 40);
+            p1 = new Product("first", 10, "h", 10, 10, 10);
+            p2 = new Product("second", 20, "l", 20, 20, 20);
+            p3 = new Product("third", 30, "k", 30, 30, 30);
+            p4 = new Product("five", 40, "j", 40, 40, 40);
             shoppingBasket.addProduct(store1, p1, 10);
             shoppingBasket.addProduct(store2, p2, 20);
             shoppingBasket.addProduct(store1, p3, 20);
@@ -43,7 +43,8 @@ namespace WorkshopProject.Tests
         public void setProductAmount()
         {
             int newAmount = 50;
-            Product p5 = new Product(50, "five", 50, Category.Categories.category1, 50, 50);
+
+            Product p5 = new Product("five", 50, "j", 50, 50,50);
             //positive amount
             Assert.IsTrue(shoppingBasket.setProductAmount(store1, p5, newAmount));
             Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
@@ -64,7 +65,7 @@ namespace WorkshopProject.Tests
         public void addProduct()
         {
             int newAmount = 50;
-            Product p5 = new Product(50, "five", 50, Category.Categories.category1, 50, 50);
+            Product p5 = new Product("five", 50, "Category.Categories.category1", 50, 50,50);
             //positive amount
             shoppingBasket.addProduct(store1, p5, newAmount);
             Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));

@@ -106,16 +106,11 @@ namespace WorkshopProject.System_Service
             return successJason(); //All Valid
         }
 
-        internal string GetProductInfo(int storeId, int productId)
-
+        internal string GetProductInfo(int productId)
         {
-            Store store = WorkShop.getStore(storeId);
-            if (store == null)
-                return generateMessageFormatJason("Store does not exist");
-
-            Product product = store.getProduct(productId);
+            Product product = WorkShop.getProduct(productId);
             if (product == null)
-                return generateMessageFormatJason("Product does not exist in store id" + storeId);
+                return generateMessageFormatJason("Product does not exist in store id");
 
             return JsonConvert.SerializeObject(product);
 

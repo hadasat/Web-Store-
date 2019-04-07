@@ -17,10 +17,10 @@ namespace WorkshopProject.Tests
         [TestInitialize]
         public void Init()
         {
-            p1 = new Product(10, "first", 10, Category.Categories.category1, 10, 10);
-            p2 = new Product(20, "second", 20, Category.Categories.category2, 20, 20);
-            p3 = new Product(30, "third", 30, Category.Categories.category3, 30, 30);
-            p4 = new Product(40, "five", 40, Category.Categories.category1, 40, 40);
+            p1 = new Product("first", 10, "h",10, 10, 10);
+            p2 = new Product("second", 20, "l", 20, 20,20);
+            p3 = new Product("third", 30,"k", 30, 30,30);
+            p4 = new Product("five", 40, "j", 40, 40,40);
             shoppingCart.addProducts(p1, amount[0]);
             shoppingCart.addProducts(p2, amount[1]);
             shoppingCart.addProducts(p3, amount[2]);
@@ -39,7 +39,7 @@ namespace WorkshopProject.Tests
         {
             //adding new item
             int newAmount = 20;
-            Product testp = new Product(10, "testp", 10, Category.Categories.category1, 10, 10);
+            Product testp = new Product("testp", 10, "Category.Categories.category1", 10,10, 10);
             shoppingCart.setProductAmount(testp, newAmount);
             int inCartAmount = shoppingCart.getProducts()[testp];
             Assert.AreEqual(newAmount, inCartAmount);
@@ -66,7 +66,7 @@ namespace WorkshopProject.Tests
         {
             //adding new item
             int newAmount = 20;
-            Product testp = new Product(10, "testp", 10, Category.Categories.category1, 10, 10);
+            Product testp = new Product("testp", 10, "Category.Categories.category1", 10, 10, 10);
             shoppingCart.addProducts(testp, newAmount);
             int inCartAmount =shoppingCart.getProductAmount(testp);
             Assert.AreEqual(newAmount, inCartAmount);
@@ -102,7 +102,7 @@ namespace WorkshopProject.Tests
 
             //adding amount
             int newAmount = 20;
-            Product testp = new Product(10, "testp", 10, Category.Categories.category1, 10, 10);
+            Product testp = new Product("testp", 10, "Category.Categories.category1", 10, 10, 10);
             shoppingCart.setProductAmount(testp, newAmount);
             pAmount = shoppingCart.getProductAmount(testp);
             Assert.AreEqual(pAmount, newAmount);
@@ -119,7 +119,7 @@ namespace WorkshopProject.Tests
             Assert.Equals(currAmount, goalAmmount);
 
             //adding new product 
-            Product newp = new Product(10, "first", 10, Category.Categories.category1, 10, 10);
+            Product newp = new Product("testp", 10, "Category.Categories.category1", 10, 10, 10);
             shoppingCart.addProducts(newp, 20);
             goalAmmount += 20;
             currAmount = shoppingCart.getTotalAmount();

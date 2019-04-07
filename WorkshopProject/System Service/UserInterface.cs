@@ -37,7 +37,7 @@ namespace WorkshopProject.System_Service
         String SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank);
 
         //Return Product Jason Object
-        String GetProductInfo(int storeId , int productId);
+        String GetProductInfo(int productId);
 
         //Return: Message Format
         String AddProductToBasket(int productId, int amount);

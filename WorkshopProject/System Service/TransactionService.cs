@@ -45,14 +45,20 @@ public class TransactionService
             return "{message: Success, transactionId: " + transId + " }";
         }
 
-        internal string GetShoppingCart(User user,int storeId)
+        internal string GetShoppingCart(int storeId)
         {
-            return JsonConvert.SerializeObject(user.shoppingBasket.Carts);
+            Store store;
+            if (!WorkShop.stores.ContainsKey(storeId))
+                return "{message: Illegal store id}";
+            store = WorkShop.stores[storeId];
+            JsonShoppingCart jsc = new JsonShoppingCart(user.shoppingBasket.carts[store]);
+            return JsonConvert.SerializeObject(jsc);
         }
 
-        internal string GetShoppingBasket(User user)
+        internal string GetShoppingBasket()
         {
-            return JsonConvert.SerializeObject(user.shoppingBasket.Carts);
+            JsonShoppingBasket jsb = new JsonShoppingBasket(user.shoppingBasket);
+            return JsonConvert.SerializeObject(jsb);
         }
 
         internal string SetProductAmountInCart(int productId, int amount)
