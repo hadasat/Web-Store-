@@ -27,8 +27,15 @@ namespace Users
 
         public static void removeMember(Member m)
         {
-            members.Remove(m.ID);
-            mapIDUsermane.Remove(m.username);
+            try
+            {
+                members.Remove(m.ID);
+                mapIDUsermane.Remove(m.username);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("this should noy happen, member doesn't exist");
+            }
         }
 
         public static Member getMember(int id)
@@ -39,7 +46,7 @@ namespace Users
             }
             catch (Exception ex)
             {
-                throw new Exception("this should noy happen, user doesn't exist");
+                throw new Exception("this should noy happen, member doesn't exist");
             }
         }
 
@@ -51,7 +58,7 @@ namespace Users
             }
             catch (Exception ex)
             {
-                throw new Exception("this should noy happen, user doesn't exist");
+                throw new Exception("this should noy happen, member doesn't exist");
             }
         }
 
@@ -170,7 +177,6 @@ namespace Users
                 throw new Exception("username or password does not correct");
             
             return  ConnectionStubTemp.getMember(ID);
-            
            
         }
 
@@ -233,6 +239,9 @@ namespace Users
             if (!myRoles.isStoreOwner())
             {
                 throw new Exception("you cant close this store");
+            } else if (!store.isActive)
+            {
+                throw new Exception("you cant close this store, it closed already");
             }
             StoreManager thisStoreManager;
             foreach (StoreManager sm in storeManaging)
@@ -298,8 +307,9 @@ namespace Users
         {
             StoreManager myStoreRoles = getStoreManagerOb(store);
             Member memberToRemove = ConnectionStubTemp.getMember(username);
+            bool res = myStoreRoles.removeManager(memberToRemove.getStoreManagerOb(store));
             memberToRemove.RemoveStoreFromMe(memberToRemove.getStoreManagerOb(store));
-            return myStoreRoles.removeManager(memberToRemove.getStoreManagerOb(store));
+            return res;
         }
 
         public override bool hasAddRemoveDiscountPermission(Store store)
