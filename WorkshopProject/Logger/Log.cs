@@ -8,7 +8,7 @@ namespace WorkshopProject.Log
 
     public class Logger
     {
-        //TODO: make sure this does not cause any slowness due to long logger construction time
+        //TODO: Logger - make sure this does not cause any slowness due to long logger construction time
         public static void Log(string logger, logLevel loglevel, string message)
         {
             ILog loggerObj = LogManager.GetLogger(logger);

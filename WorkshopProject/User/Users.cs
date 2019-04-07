@@ -20,7 +20,7 @@ namespace Users
         public static Dictionary<string, int> mapIDUsermane = new Dictionary<string, int>();
         // <username, ID>
 
-        static int memberIDGenerator = 0;
+        public static int memberIDGenerator = 0;
 
        
 
@@ -263,6 +263,11 @@ namespace Users
             return null;
         }
 
+        public bool addManager(string username,Roles  role,Store store)
+        {
+            throw new NotImplementedException();
+        }
+
 
 
         public override bool hasAddRemoveDiscountPermission(Store store)
@@ -288,6 +293,8 @@ namespace Users
             Roles roles = getStoreManagerRoles(store);
             return roles != null && roles.AddRemoveStoreManger;
         }
+
+        
     }
 
 

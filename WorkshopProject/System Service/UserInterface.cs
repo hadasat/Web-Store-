@@ -18,7 +18,7 @@ namespace WorkshopProject.System_Service
          * Search Format: { products : List<Product>}
          * Product Format: {id : int , name :string , price : int , rank : int  , category : string ,storeId : int }
          * 
-         * Shopping Basket Jason Object: {products : Dictionary<Product, int>}
+         * Shopping Cart Jason Object: {products : Dictionary<Product, int>}
          * Dictionary info: <Product Object, Amount>
          * 
          */

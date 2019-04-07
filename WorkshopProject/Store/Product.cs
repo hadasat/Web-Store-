@@ -9,24 +9,32 @@ namespace WorkshopProject
 {
     public class Product
     {
-        public int id;
+        public static int idGenerator = 0;
+        private int id; 
         public string name;
-        private int price;
-        public Categories category;
+        private double price;
+        public string category;
         public int rank;
         public string description;
         public int amount;
+        public int storeId;
 
         public DiscountPolicy discount;
 
-        public Product(int id, string name , int price, Categories category,int rank,int amount)
+        public Product(string name , double price, string category,int rank,int amount , int storeId)
         {
-            this.id = id;
+            this.id = idGenerator++;
             this.name = name;
             this.price = price;
             this.category = category;
             this.rank = rank;
+            this.storeId = storeId;
             discount = new DiscountPolicy();
+        }
+
+        public int getId()
+        {
+            return id;
         }
 
         public Product(Product p , int amount)
@@ -39,15 +47,17 @@ namespace WorkshopProject
             this.amount = amount;
         }
 
-        public int getPrice()
+        public double getPrice()
         {
             return price - discount.amount;
         }
 
-        public void setPrice(int newPrice)
+        public void setPrice(double newPrice)
         {
             this.price = newPrice;
         }
+
+
 
 
     }

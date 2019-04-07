@@ -33,12 +33,17 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
+        public bool AddStoreManager(int storeId, string user, bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool AddStoreOwner(int storeId, string user)
         {
             throw new NotImplementedException();
         }
 
-        public bool BuyShoppingBasket(int id)
+        public bool BuyShoppingBasket()
         {
             throw new NotImplementedException();
         }
@@ -48,17 +53,12 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
         
-        public bool ChangeProductInfo(int productId, string name, string desc, double price, string category, int amount)
+        public bool ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount)
         {
             throw new NotImplementedException();
         }
 
         public Dictionary<int, int> GetProductsInShoppingCart(int cartId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetShoppingBasket()
         {
             throw new NotImplementedException();
         }
@@ -69,11 +69,6 @@ namespace TestingFramework.AcceptanceTests
         }
 
         public List<int> getProductsInCart(int cartId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Initialize(string admin, string password)
         {
             throw new NotImplementedException();
         }
@@ -108,12 +103,17 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
-        public List<int> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int storeRank)
+        public List<int> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank)
         {
             throw new NotImplementedException();
         }
 
         public bool SetProductAmountInCart(int cartId, int productId, int amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CloseStore(int storeID)
         {
             throw new NotImplementedException();
         }
