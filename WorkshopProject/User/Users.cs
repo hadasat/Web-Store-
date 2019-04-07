@@ -27,9 +27,32 @@ namespace Users
 
         public static void removeMember(Member m)
         {
-
             members.Remove(m.ID);
             mapIDUsermane.Remove(m.username);
+        }
+
+        public static Member getMember(int id)
+        {
+            try
+            {
+                return members[id];
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("this should noy happen, user doesn't exist");
+            }
+        }
+
+        public static Member getMember(string username)
+        {
+            try
+            {
+                return members[(mapIDUsermane[username])];
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("this should noy happen, user doesn't exist");
+            }
         }
 
         /*** START - USER FUNCTIONS ***/
@@ -57,27 +80,8 @@ namespace Users
         }
 
         
-        public static Member getMember(int id)
-        {
-            try
-            {
-                return members[id];
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("this should noy happen, user doesn't exist");
-            }
-        }
 
-        public static Member getMember(string username)
-        {
-            return members[(mapIDUsermane[username])];
-        }
 
-        public static bool isAnAdmin(string username)
-        {
-            return true;
-        }
 
 
         /*** END - USER FUNCTIONS ***/
@@ -91,27 +95,7 @@ namespace Users
             
         }
 
-        public static ShoppingBasket loadShoppingBasket(string ID)
-        {
-            return new ShoppingBasket();
-        }
 
-        public static LinkedList<StoreManager> loadStoreManaging(string ID)
-        {
-            if (ID != "0")
-            {
-                Roles firstStoreRoles = new Roles(false, false, false, false, false, false, false,false);
-                Store store = new Store(0,"stubStore",3,true);
-                StoreManager st = new StoreManager(store, firstStoreRoles);
-                LinkedList<StoreManager> storesManaging = new LinkedList<StoreManager>();
-                storesManaging.AddFirst(st);
-                return storesManaging;
-            }
-            else
-            {
-                return null;
-            }
-        }
 
         /*** END - MEMBER FUNCTIONS ***/
 
@@ -128,6 +112,12 @@ namespace Users
         }
 
 
+        public static bool isAnAdmin(string username)
+        {
+            return true;
+        }
+
+
         /*** END - SYSTEM ADMIN FUNCTIONS ***/
 
 
@@ -138,7 +128,7 @@ namespace Users
 
     public class User : Permissions
     {
-        public ShoppingBasket shoppingBasket;//is it this way or the opposite?
+        public ShoppingBasket shoppingBasket;
 
 
         public User()
