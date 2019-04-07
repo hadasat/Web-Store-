@@ -59,7 +59,14 @@ namespace Users
         
         public static Member getMember(int id)
         {
-            return members[id];
+            try
+            {
+                return members[id];
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("this should noy happen, user doesn't exist");
+            }
         }
 
         public static Member getMember(string username)
@@ -220,6 +227,16 @@ namespace Users
             storeManaging.AddFirst(storeOwnerManager);
         }
 
+        public void addStoreToMe(StoreManager storeManager)
+        {
+            storeManaging.AddFirst(storeManager);
+        }
+
+        public void RemoveStoreFromMe(StoreManager storeManager)
+        {
+            storeManaging.Remove(storeManager);
+        }
+
         public void closeStore(Store store)
         {
             Roles myRoles = getStoreManagerRoles(store);
@@ -286,7 +303,14 @@ namespace Users
             return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
         }
 
-
+        //TODO : is there  need for remove manager option?
+        public bool removeManager(string username, Store store)
+        {
+            StoreManager myStoreRoles = getStoreManagerOb(store);
+            Member memberToRemove = ConnectionStubTemp.getMember(username);
+            memberToRemove.RemoveStoreFromMe(memberToRemove.getStoreManagerOb(store));
+            return myStoreRoles.removeManager(memberToRemove.getStoreManagerOb(store));
+        }
 
         public override bool hasAddRemoveDiscountPermission(Store store)
         {

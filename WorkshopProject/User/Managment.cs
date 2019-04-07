@@ -111,6 +111,7 @@ namespace Managment
                 StoreManager newSubStoreManager = new StoreManager(this.store, roles);
                 newSubStoreManager.setFather(this);
                 subManagers.AddFirst(newSubStoreManager);
+                member.addStoreToMe(newSubStoreManager);
                 return true;
             }
             else
@@ -140,9 +141,11 @@ namespace Managment
 
         public void removeAllManagers()
         {
-            foreach(StoreManager subStoreManager in subManagers)
+            while(subManagers.Count > 0)
             {
+                StoreManager subStoreManager = subManagers.ElementAt(0);
                 removeManager(subStoreManager);
+                //if (subManagers.Count == 0) break;
             }
         }
 
@@ -155,6 +158,7 @@ namespace Managment
                 {
                     recursiveCleanManager(sm);
                     subManagers.Remove(sm);
+                    if (subManagers.Count == 0) break;
                 }
             }
         }
