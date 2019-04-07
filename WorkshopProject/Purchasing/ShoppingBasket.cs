@@ -61,6 +61,11 @@ namespace Shopping
             return 0;
         }
 
+        public bool isEmpty()
+        {
+            return carts.Count == 0;
+        }
+
     }
 
     public class JsonShoppingBasketValue

@@ -16,16 +16,21 @@ namespace Tansactions
 
 
         public static int purchase(User user)
-        {
+        {           
             double totalPrice = 0;
             ShoppingBasket basket = user.shoppingBasket;
+            //check the basket is empty
+            if (basket.isEmpty())
+                return -1;
             Dictionary<Store, ShoppingCart> carts = basket.carts;
+            Dictionary<Product, Store> purchasedProducts = new Dictionary<Product, Store>();
             //calc toal price
             foreach (KeyValuePair<Store, ShoppingCart> c in carts)
             {
                 Store currStore = c.Key;
                 ShoppingCart currShoppingCart = c.Value;
 
+                
                 //check if the item in the stock and add the price
                 Dictionary<Product, int> itemsPerStore = currShoppingCart.getProducts();
                 foreach (KeyValuePair<Product, int> item in itemsPerStore)
@@ -34,13 +39,19 @@ namespace Tansactions
                     Product currProduct = item.Key;
                     int currAmount = item.Value;
                     //remove product from basket
-                    basket.setProductAmount(currStore, currProduct, 0);
+                    purchasedProducts.Add(currProduct,currStore);
                     totalPrice += calcPrice(currProduct, currAmount);
                 }
             }
+
+            //clean purches product from basket
+            foreach(KeyValuePair<Product,Store> p in purchasedProducts)
+            {
+                basket.setProductAmount(p.Value, p.Key, 0);
+            }
             //parches 
             //send products
-            return transactionCounter++;
+            return ++transactionCounter;
         }
 
         private static double calcPrice(Product p, int amount)

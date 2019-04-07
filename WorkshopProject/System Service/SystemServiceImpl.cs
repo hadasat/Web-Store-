@@ -23,7 +23,7 @@ namespace WorkshopProject.System_Service
             storeS = new StoreService(user);
             transactionS = new TransactionService(user);
             userS = new UserService(user);
-            loggedIn = false;          
+            loggedIn = false;
         }
 
         public void updateMember(User member)
@@ -50,7 +50,7 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 throw new Exception("Not logged in");
-            return storeS.AddProductToStock(storeId,productId,amount);
+            return storeS.AddProductToStock(storeId, productId, amount);
         }
 
         public string AddProductToStore(int storeId, string name, string desc, double price, string category)
@@ -93,11 +93,11 @@ namespace WorkshopProject.System_Service
             return transactionS.BuyShoppingBasket();
         }
 
-        public string ChangeProductInfo(int storeId,int productId, string name, string desc, double price, string category, int amount)
+        public string ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount)
         {
             if (!loggedIn)
                 throw new Exception("Not logged in");
-            return storeS.ChangeProductInfo(storeId,productId, name, desc, price, category, amount);
+            return storeS.ChangeProductInfo(storeId, productId, name, desc, price, category, amount);
         }
 
         public string closeStore(int storeID)
@@ -109,20 +109,20 @@ namespace WorkshopProject.System_Service
 
         public string GetProductInfo(int productId)
         {
-            return  storeS.GetProductInfo(productId);
+            return storeS.GetProductInfo(productId);
         }
 
-        public string GetShoppingShoppingBasket()
+        public string GetShoppingCart(int storeId)
         {
             if (!loggedIn)
                 throw new Exception("Not logged in");
-            return transactionS.GetShoppingBasket();
+            return transactionS.GetShoppingCart(storeId);
         }
 
         public string login(string username, string password)
         {
             loggedIn = true;
-            String toReturn =  userS.login(username, password);
+            String toReturn = userS.login(username, password);
             updateMember(userS.user);
             return toReturn;
         }
@@ -132,7 +132,7 @@ namespace WorkshopProject.System_Service
             if (!loggedIn)
                 throw new Exception("Not logged in");
             loggedIn = false;
-            String toReturn =  userS.logout();
+            String toReturn = userS.logout();
             updateMember(new User());
             return toReturn;
         }
@@ -179,28 +179,13 @@ namespace WorkshopProject.System_Service
 
         public string SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank)
         {
-            return storeS.SearchProducts(name, category, keyword, startPrice, endPrice,productRank,storeRank);
+            return storeS.SearchProducts(name, category, keyword, startPrice, endPrice, productRank, storeRank);
         }
 
         public string SetProductAmountInCart(int productId, int amount)
         {
 
             return transactionS.SetProductAmountInCart(productId, amount);
-        }
-
-        public string GetShoppingCart(int storeId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetShoppingBasket(int storeId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string BuyShoppingBasket(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -45,14 +45,11 @@ namespace WorkshopProject.System_Service
         //Return: Shopping Cart Jason Object
         String GetShoppingCart(int storeId);
 
-        //Return: Shopping Cart Jason Object
-        String GetShoppingBasket(int storeId);
-
         //Return: Message Format
         String SetProductAmountInCart(int productId, int amount);
 
         //Return: Message Format
-        String BuyShoppingBasket(int id);
+        String BuyShoppingBasket();
 
         //Return: Message Format
         String AddStore(string storeName);
@@ -61,10 +58,10 @@ namespace WorkshopProject.System_Service
         String AddProductToStore(int storeId, string name, string desc, double price, string category);
 
         //Return: Message Format
-        String AddProductToStock(int storeId,int productId,int amount);
+        String AddProductToStock(int storeId, int productId, int amount);
 
         //Return: Message Format
-        String ChangeProductInfo(int storeId , int productId, string name, string desc, double price, string category, int amount);
+        String ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount);
 
         //Return: Message Format
         String RemoveProductFromStore(int storeId, int productId);
@@ -89,11 +86,11 @@ namespace WorkshopProject.System_Service
         /// <param name="roles">Json Format: {Bool: addRemoveProducts,
         /// addRemovePurchasing,
         /// addRemoveDiscountPolicy,
-           //addRemoveStoreManger,
-           //closeStore,
-           //customerCommunication}
+        //addRemoveStoreManger,
+        //closeStore,
+        //customerCommunication}
         /// <returns>//Return: Message Format</returns>
-        String AddStoreManager(int storeId, string user,String roles);
+        String AddStoreManager(int storeId, string user, String roles);
 
         //Return: Message Format
         String RemoveUser(string user);

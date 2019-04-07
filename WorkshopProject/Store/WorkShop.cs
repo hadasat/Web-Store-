@@ -8,11 +8,11 @@ using Users;
 
 namespace WorkshopProject
 {
-    public  static class  WorkShop
+    public static class WorkShop
     {
-       public  static Dictionary<int,Store> stores = new Dictionary<int, Store>();
-        public static  int id = 0;
-       
+        public static Dictionary<int, Store> stores = new Dictionary<int, Store>();
+        public static int id = 0;
+
 
         /// <summary>
         /// Search products. if int is -1 - ignore. if string is null - ignore.
@@ -23,17 +23,18 @@ namespace WorkshopProject
         /// <param name="ranking"></param>
         /// <param name="storeRanking"></param>
         /// <returns>list of products</returns>
-        public static List<Product>  search(string name, string category, double startPrice,double endPrice, int productRanking, int storeRanking)
+        public static List<Product> search(string name, string category, double startPrice, double endPrice, int productRanking, int storeRanking)
         {
             List<Product> matched_products = new List<Product>();
             foreach (Store store in stores.Values)
             {
                 /*Store store = getStore(store_id);*/
                 Dictionary<int, Product> products = store.GetStock();
-                foreach (Product item in products.Values) {
+                foreach (Product item in products.Values)
+                {
                     if ((name == null || name == item.name) && (category == null || category == item.category)
                         && (endPrice == -1 || endPrice > item.getPrice()) && (startPrice == -1 || startPrice < item.getPrice())
-                        && (storeRanking==-1 || storeRanking<store.rank) && (productRanking == -1 || productRanking<item.rank))
+                        && (storeRanking == -1 || storeRanking < store.rank) && (productRanking == -1 || productRanking < item.rank))
                     {
                         //All the non-empty search filters has been matched
                         matched_products.Add(item);
@@ -49,7 +50,7 @@ namespace WorkshopProject
         /// </summary>
         /// <param name="store_id"></param>
         /// <returns>Store if exist. otherwise return null</returns>
-        public static  Store getStore(int store_id)
+        public static Store getStore(int store_id)
         {
             try
             {
@@ -63,11 +64,11 @@ namespace WorkshopProject
 
         }
 
-       
+
         public static void createNewStore(string name, int rank, Boolean isActive, Member owner)
         {
-            Store store = new Store(id,name, rank, isActive);
-            stores.Add(id,store);
+            Store store = new Store(id, name, rank, isActive);
+            stores.Add(id, store);
             id++;
             owner.addStore(store);
         }
@@ -78,24 +79,41 @@ namespace WorkshopProject
             {
                 owner.closeStore(stores[storeId]);
                 stores[storeId].isActive = false;
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 return false;
             }
             return true;
         }
 
-        public static Dictionary<Store,Product> findProduct(int productId)
+
+        /// <summary>
+        /// get product by id
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns>Product if exist in the WorkShop. otherwise return null</returns>
+        internal static Product getProduct(int productId)
+        {
+            foreach (Store store in stores.Values)
+            {
+                if (store.GetStock().ContainsKey(productId))
+                    return store.GetStock()[productId];
+            }
+            return null;
+        }
+
+        public static Dictionary<Store, Product> findProduct(int productId)
         {
             Product product;
             Dictionary<Store, Product> sroreProduct = new Dictionary<Store, Product>();
-            foreach(KeyValuePair<int,Store> s in stores)
+            foreach (KeyValuePair<int, Store> s in stores)
             {
                 Store store = s.Value;
                 product = store.findProduct(productId);
                 if (product != null)
                 {
-                    sroreProduct[store]= product;
+                    sroreProduct[store] = product;
                     return sroreProduct;
                 }
             }

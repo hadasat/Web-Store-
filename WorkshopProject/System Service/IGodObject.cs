@@ -10,13 +10,13 @@ namespace WorkshopProject.System_Service
 {
     public interface IGodObject
     {
-       
+
         /// <returns>member id</returns>
         int addMember(string username, string password);
 
         /// <returns>product id</returns>
         int addProductToStore(int storeId, string name, double price, string category, string desc, string keyword, int amount, int rank);
-        
+
         /// <returns>store id</returns>
         int addStore(string name, int rank, int ownerId);
 
@@ -42,7 +42,7 @@ namespace WorkshopProject.System_Service
 
     public class GodObject : IGodObject
     {
-        
+
 
         public int addMember(string username, string password)
         {
@@ -54,7 +54,7 @@ namespace WorkshopProject.System_Service
         public int addProductToStore(int storeId, string name, double price, string category, string desc, string keyword, int amount, int rank)
         {
             Store store = WorkShop.getStore(storeId);
-            Product p = new Product(name, price,desc, category, rank, amount, storeId);
+            Product p = new Product(name, price, desc, category, rank, amount, storeId);
             store.GetStock().Add(p.getId(), p);
             return p.getId();
         }
@@ -72,14 +72,14 @@ namespace WorkshopProject.System_Service
             Member owner = ConnectionStubTemp.getMember(storeOwnerId);
             Member newowner = ConnectionStubTemp.getMember(storeOwnerId);
             Roles role = new Roles(true, true, true, true, true, true, true, true);
-            owner.addManager(newowner.username,role,store);
+            owner.addManager(newowner.username, role, store);
             return true;
-           
+
         }
 
         public bool makeUserManager(int storeId, int storeOwnerId, int newManagerId, bool[] roles)
         {
-            Roles newRoles = new Roles(roles[0], roles[1], roles[2], roles[3], roles[4],roles[5], roles[6], roles[7]);
+            Roles newRoles = new Roles(roles[0], roles[1], roles[2], roles[3], roles[4], roles[5], roles[6], roles[7]);
             Store store = WorkShop.getStore(storeId);
             Member storeOwner = ConnectionStubTemp.members[storeOwnerId];
             Member newManager = ConnectionStubTemp.members[newManagerId];
@@ -103,11 +103,11 @@ namespace WorkshopProject.System_Service
         {
             Member member = ConnectionStubTemp.members[ManagerId];
             LinkedList<StoreManager> storeManagers = member.storeManaging;
-            foreach(StoreManager sm in storeManagers)
+            foreach (StoreManager sm in storeManagers)
             {
-                if(sm.GetStore().Id == storeId)
+                if (sm.GetStore().Id == storeId)
                 {
-                    if(sm.GetFather() == null)
+                    if (sm.GetFather() == null)
                     {
                         WorkShop.closeStore(storeId, member);
                     }
@@ -130,11 +130,11 @@ namespace WorkshopProject.System_Service
         }
 
         public bool removeProductFromStock(int storeId, int ProductId, int amountToRemove)
-        {     
+        {
             Store store = WorkShop.getStore(storeId);
             store.GetStock()[ProductId].amount -= amountToRemove;
             return true;
-             
+
         }
 
         public bool removeProductFromStore(int storeId, int productID)
@@ -143,7 +143,7 @@ namespace WorkshopProject.System_Service
             return store.GetStock().Remove(productID);
         }
 
-        public bool removeStore(int storeId , int ownerId)
+        public bool removeStore(int storeId, int ownerId)
         {
             Member owner = ConnectionStubTemp.getMember(ownerId);
             WorkShop.closeStore(storeId, owner);

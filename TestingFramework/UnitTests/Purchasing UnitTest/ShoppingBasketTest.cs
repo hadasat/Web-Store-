@@ -10,18 +10,19 @@ using Shopping;
 namespace WorkshopProject.Tests
 {
     [TestClass()]
-    class ShoppingBasketTest
+    public class ShoppingBasketTest
     {
 
         ShoppingBasket shoppingBasket = new ShoppingBasket();
         Store store1 = new Store(1, "store1", 1, true);
         Product p1;
+        int amount1 = 10;
 
         [TestInitialize]
         public void Init()
         {
             p1 = new Product("first", 10, "h", "g", 10, 10, 10);
-            shoppingBasket.addProduct(store1, p1, 10);
+            shoppingBasket.addProduct(store1, p1, amount1);
 
 
         }
@@ -33,7 +34,7 @@ namespace WorkshopProject.Tests
         }
 
         [TestMethod()]
-        [TestCategory("Unit Test")]
+        [TestCategory("Unit test - ShoppingBasketTest")]
         public void setProductAmountTest()
         {
             int newAmount = 50;
@@ -55,7 +56,7 @@ namespace WorkshopProject.Tests
         }
 
         [TestMethod()]
-        [TestCategory("Unit Test")]
+        [TestCategory("Unit test - ShoppingBasketTest")]
         public void addProductTest()
         {
             int newAmount = 50;
@@ -64,18 +65,34 @@ namespace WorkshopProject.Tests
             shoppingBasket.addProduct(store1, p5, newAmount);
             Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
 
-            //zeroamount
-            shoppingBasket.addProduct(store1, p5, -newAmount);
-            Assert.AreEqual(0, shoppingBasket.getProductAmount(p5));
-
             //negative amount
             Assert.IsFalse(shoppingBasket.addProduct(store1, p5, -newAmount));
             Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
         }
-        
 
+        [TestMethod()]
+        [TestCategory("Unit test - ShoppingBasketTest")]
         public void getProductAmountTest()
         {
+            //existing product
+            Assert.AreEqual(shoppingBasket.getProductAmount(p1), amount1);
+
+            //new product
+            int newAmount = 50;
+            Product p5 = new Product("five", 50, "j", "g", 50, 50, 50);
+            shoppingBasket.addProduct(store1, p5, newAmount);
+            Assert.AreEqual(shoppingBasket.getProductAmount(p5), newAmount);
+        }
+
+        [TestMethod()]
+        [TestCategory("Unit test - ShoppingBasketTest")]
+        public void isEmptyTest()
+        {
+            Assert.IsFalse(shoppingBasket.isEmpty());
+            shoppingBasket.setProductAmount(store1, p1, 0);
+            Assert.IsTrue(shoppingBasket.isEmpty());
+
+
         }
     }
 }

@@ -34,7 +34,7 @@ namespace WorkshopProject.Tests
         }
         
         [TestMethod()]
-        [TestCategory("UnitTest")]
+        [TestCategory("Unit test - ShoppingCartTest")]
         public void SetProductAmountTest()
         {
             //adding new item
@@ -54,14 +54,14 @@ namespace WorkshopProject.Tests
 
             //zero amount - remove product from list
             Assert.IsTrue(shoppingCart.setProductAmount(testp, 0));
-            Assert.Equals(shoppingCart.getProductAmount(testp), 0);
+            Assert.AreEqual(shoppingCart.getProductAmount(testp), 0);
             Assert.IsFalse(shoppingCart.products.ContainsKey(testp));
         }
 
         
 
         [TestMethod()]
-        [TestCategory("UnitTest")]
+        [TestCategory("Unit test - ShoppingCartTest")]
         public void addProductsTest()
         {
             //adding new item
@@ -87,7 +87,7 @@ namespace WorkshopProject.Tests
         }
 
         [TestMethod()]
-        [TestCategory("UnitTest")]
+        [TestCategory("Unit test - ShoppingCartTest")]
         public void getProductAmountTest()
         {
             //check matching amount
@@ -110,20 +110,20 @@ namespace WorkshopProject.Tests
         }
         
         [TestMethod()]
-        [TestCategory("UnitTest")]
+        [TestCategory("Unit test - ShoppingCartTest")]
         public void getTotalAmountTest()
         {
             //defult amount
             int currAmount = shoppingCart.getTotalAmount();
             int goalAmmount = amount.Sum();
-            Assert.Equals(currAmount, goalAmmount);
+            Assert.AreEqual(currAmount, goalAmmount);
 
             //adding new product 
             Product newp = new Product("testp", 10, "Category.Categories.category1", "g", 10, 10, 10);
             shoppingCart.addProducts(newp, 20);
             goalAmmount += 20;
             currAmount = shoppingCart.getTotalAmount();
-            Assert.Equals(currAmount, goalAmmount);
+            Assert.AreEqual(currAmount, goalAmmount);
             
 
         }
