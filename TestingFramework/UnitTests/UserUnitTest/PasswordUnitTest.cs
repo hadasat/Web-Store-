@@ -11,7 +11,7 @@ namespace Password.Tests
     public class TestPasswordHandler
     {
 
-        int ID = 1111;
+        int ID = 11111;
         const int PASS_LENGTH = 8;
         string password;
         Tuple<byte[], byte[]> SaltesAndPepperEntry;
@@ -34,21 +34,30 @@ namespace Password.Tests
         [TestCategory("Users_Password")]
         public void hashPassword_Test()
         {
-            passwordHandler.hashPassword(password, ID);
+            bool res = passwordHandler.hashPassword(password, ID);
             SaltesAndPepperEntry = passwordHandler.GetEntry(ID);
             byte[] salt = SaltesAndPepperEntry.Item1;
             byte[] pepper = SaltesAndPepperEntry.Item2;
-            Assert.IsTrue(salt.Length == PASS_LENGTH);
-            Assert.IsTrue(pepper.Length == PASS_LENGTH);
-            Assert.IsTrue(pepper != Encoding.ASCII.GetBytes(password));
+            Assert.IsTrue(res);
         }
 
         [TestMethod()]
         [TestCategory("Users_Password")]
         public void IdentifyPassword_Test()
         {
-            bool result = passwordHandler.IdentifyPassword(password, ID);
-            Assert.IsTrue(result);
+            for (int i = 0; i < 100; i++)
+            {
+                password = CreatePassword(PASS_LENGTH);
+                bool res = passwordHandler.hashPassword(password, ID);
+                if (res)
+                {
+                    bool result = passwordHandler.IdentifyPassword(password, ID);
+                    Assert.IsTrue(result);
+                }
+                else
+                    Assert.IsTrue(false);
+                passwordHandler.RemoveEntry(ID);
+            }
         }
 
 
