@@ -165,6 +165,7 @@ namespace WorkshopProject
             return true;
         }
         
+        
         public bool checkAvailability(Product product, int amount)
         {
             if (Stock.ContainsKey(product.getId()))
@@ -174,10 +175,8 @@ namespace WorkshopProject
             return false;
         }
 
-        
-
         public bool changeProductInfo(User user, int productId, string name, string desc, double price, string category, int amount)
-        { 
+        {
             if (!Stock.ContainsKey(productId) || !user.hasAddRemoveProductsPermission(this))
                 return false;
             Product product = Stock[productId];

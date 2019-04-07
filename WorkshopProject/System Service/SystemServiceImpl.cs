@@ -109,7 +109,7 @@ namespace WorkshopProject.System_Service
 
         public string GetProductInfo(int productId)
         {
-            return storeS.GetProductInfo(productId);
+            return  storeS.GetProductInfo(productId);
         }
 
         public string GetShoppingCart(int storeId)
@@ -122,7 +122,7 @@ namespace WorkshopProject.System_Service
         public string login(string username, string password)
         {
             loggedIn = true;
-            String toReturn = userS.login(username, password);
+            String toReturn =  userS.login(username, password);
             updateMember(userS.user);
             return toReturn;
         }
@@ -132,7 +132,7 @@ namespace WorkshopProject.System_Service
             if (!loggedIn)
                 throw new Exception("Not logged in");
             loggedIn = false;
-            String toReturn = userS.logout();
+            String toReturn =  userS.logout();
             updateMember(new User());
             return toReturn;
         }
