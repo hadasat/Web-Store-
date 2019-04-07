@@ -123,7 +123,7 @@ namespace TestingFramework.AcceptanceTests
 
         public bool GetProductInfo(int id, out string name, out string productDesc, out double price, out string category, out int rank)
         {
-            string msg = service.GetProductInfo(-1,id);   //TODO: service.GetProductInfo must revert to old interface
+            string msg = service.GetProductInfo(id);
             JObject json = JObject.Parse(msg);
             if (getId(json) != id)
             {
@@ -138,10 +138,21 @@ namespace TestingFramework.AcceptanceTests
             return true;
         }
 
-        public Dictionary<int, int> GetProductsInShoppingCart(int cartId)
+        public Dictionary<int, int> GetProductsInShoppingCart(int storeId)
         {
-            //TODO GetProductsInShoppingCart
-            throw new NotImplementedException();
+            Dictionary<int, int> ret = new Dictionary<int, int>();
+
+            string msg = service.GetShoppingCart(storeId);
+            JObject json = JObject.Parse(msg);
+            JArray productsAndAmounts = (JArray)json["products"];
+
+            foreach (JObject pair in productsAndAmounts)
+            {
+                int productId = (int)pair["product"]["id"];
+                int amount = (int)pair["amount"];
+                ret.Add(productId, amount);
+            }
+            return ret;
         }
 
         public int GetShoppingCart(int storeId)
