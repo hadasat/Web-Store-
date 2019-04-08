@@ -13,16 +13,17 @@ namespace Password
         private Dictionary<int, Tuple<byte[], byte[]>> saltesAndPepper = new Dictionary<int, Tuple<byte[], byte[]>>();
 
         //CREATING
-
+        
         /** this is the byte[] that need to be stored **/
 
         //when register
-        public void hashPassword(string password, int ID)
+        public bool hashPassword(string password, int ID)
         {
             byte[] bytesPass = Encoding.ASCII.GetBytes(password);
             byte[] currSalt = CreateSalt(bytesPass.Length);
             byte[] pepper = GenerateSaltedHash(bytesPass, currSalt);
             saltesAndPepper.Add(ID,new Tuple<byte[], byte[]>(currSalt, pepper));
+            return saltesAndPepper[ID] != null;
         }
 
         //when sign in
@@ -92,6 +93,14 @@ namespace Password
         }
 
 
+        public Tuple<byte[], byte[]> GetEntry(int ID)
+        {
+            return saltesAndPepper[ID];
+        }
 
+        public void RemoveEntry(int ID)
+        {
+            saltesAndPepper.Remove(ID);
+        }
     }
 }
