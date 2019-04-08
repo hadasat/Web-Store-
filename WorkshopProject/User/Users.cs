@@ -79,7 +79,16 @@ namespace Users
         //sign up
         public static void registerNewUser(string username, string password)
         {
+            Member m = null;
             int ID = getID();
+            try
+            {
+                m = members[ID];
+            } catch(Exception ex) { }
+            if(m != null)
+            {
+                throw new Exception("this username is already taken. try somthing else");
+            }
             pHandler.hashPassword(password, ID);
             Member newMember = new Member(username,ID);
             members[ID] = newMember;
@@ -296,8 +305,33 @@ namespace Users
             return null;
         }
 
+        private Store GetStore(int StoreID)
+        {
+            if (isStoresManagers())
+            {
+                foreach (StoreManager sm in storeManaging)
+                {
+                    if (sm.GetStore().Id == StoreID)
+                    {
+                        return sm.GetStore();
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public bool addManager(string username, Roles role, int StoreID)
+        {
+            Store store = GetStore(StoreID);
+            StoreManager myStoreRoles = getStoreManagerOb(store);
+            return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
+        }
+
+
         public bool addManager(string username,Roles role,Store store)
         {
+
             StoreManager myStoreRoles = getStoreManagerOb(store);
             return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
         }
@@ -305,6 +339,16 @@ namespace Users
         //TODO : is there  need for remove manager option?
         public bool removeManager(string username, Store store)
         {
+            StoreManager myStoreRoles = getStoreManagerOb(store);
+            Member memberToRemove = ConnectionStubTemp.getMember(username);
+            bool res = myStoreRoles.removeManager(memberToRemove.getStoreManagerOb(store));
+            memberToRemove.RemoveStoreFromMe(memberToRemove.getStoreManagerOb(store));
+            return res;
+        }
+
+        public bool removeManager(string username, int StoreID)
+        {
+            Store store = GetStore(StoreID);
             StoreManager myStoreRoles = getStoreManagerOb(store);
             Member memberToRemove = ConnectionStubTemp.getMember(username);
             bool res = myStoreRoles.removeManager(memberToRemove.getStoreManagerOb(store));

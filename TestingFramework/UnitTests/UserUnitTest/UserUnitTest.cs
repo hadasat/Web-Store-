@@ -186,6 +186,20 @@ namespace Users.Tests
             Assert.IsTrue(member2.getStoreManagerOb(s).GetStore().Id == 1);
         }
 
+        [TestMethod()]
+        [TestCategory("TestMember")]
+        public void addManager2_Test()
+        {
+            Store s = new Store(1, "store", 1, true);
+            member1.addStore(s);
+
+            Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true);
+            member1.addManager("username2", ownerRoles, 1);
+
+            Assert.IsTrue(member2.isStoresManagers());
+            Assert.IsTrue(member2.getStoreManagerOb(s).GetStore().Id == 1);
+        }
+
 
         [TestMethod()]
         [TestCategory("TestMember")]
@@ -198,6 +212,8 @@ namespace Users.Tests
             member1.removeManager("username2", s);
             Assert.IsFalse(member2.isStoresManagers());
         }
+
+
 
         
 

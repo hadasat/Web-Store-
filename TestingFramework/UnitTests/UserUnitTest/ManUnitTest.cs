@@ -53,6 +53,16 @@ namespace Managment.Tests
             god.removeMember(ownerId2);
             god.removeMember(managerId);
             god.removeMember(managerId2);
+            try
+            {
+                ConnectionStubTemp.removeMember(storeOwner);
+                ConnectionStubTemp.removeMember(storeOwner2);
+                ConnectionStubTemp.removeMember(storeManager);
+                ConnectionStubTemp.removeMember(storeManager2);
+            } catch (Exception ex)
+            {
+
+            }
         }
 
         [TestMethod()]
