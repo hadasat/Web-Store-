@@ -46,7 +46,7 @@ namespace Users
             }
             catch (Exception ex)
             {
-                throw new Exception("this should noy happen, member doesn't exist");
+                throw new Exception("this should not happen, member doesn't exist");
             }
         }
 
