@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Password;
 using Managment;
 using WorkshopProject;
-
-
+using Shopping;
 
 namespace Users
 {
