@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WorkshopProject.System_Service;
+using WorkshopProject.Log;
 
 namespace TestingFramework.AcceptanceTests
 {
@@ -10,6 +11,9 @@ namespace TestingFramework.AcceptanceTests
         protected IServiceBridge bridge  = Driver.getBridge();
         protected IGodObject godObject = new GodObject();
 
+        protected string adminUser = "Admin";
+        protected string adminPass = "Admin";
+ 
         protected int userId;
         protected string user = "User";
         protected string password = "Password";
@@ -55,81 +59,178 @@ namespace TestingFramework.AcceptanceTests
 
         virtual protected void addTestMemberToSystem()
         {
-            userId = godObject.addMember(user, password);
+            try { 
+                userId = godObject.addMember(user, password);
+            }
+            catch(Exception e)
+            {
+                Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
         }
 
         virtual protected void removeTestMemberFromSystem()
         {
-            godObject.removeMember(userId);
+            try
+            {
+                godObject.removeMember(userId);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
         }
 
         virtual protected void addTestStoreOwner1ToSystem()
         {
-            storeOwner1Id = godObject.addMember(user, password);
-            storeId = godObject.addStore(storeName, storeRank, storeOwner1Id);
+            try
+            {
+                storeOwner1Id = godObject.addMember(user, password);
+                storeId = godObject.addStore(storeName, storeRank, storeOwner1Id);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
         }
 
         virtual protected void removeTestStoreOwner1FromSystem()
         {
-            godObject.removeStore(storeId, storeOwner1Id);
-            godObject.removeMember(storeOwner1Id);
+            try
+            {
+                godObject.removeStore(storeId, storeOwner1Id);
+                godObject.removeMember(storeOwner1Id);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
         }
 
         virtual protected void addTestStoreOwner2ToSystem()
         {
-            storeOwner2Id = godObject.addMember(user, password);
-            storeId = godObject.addStore(storeName, storeRank, storeOwner2Id);
+            try
+            {
+                storeOwner2Id = godObject.addMember(user, password);
+                storeId = godObject.addStore(storeName, storeRank, storeOwner2Id);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
         }
 
         virtual protected void removeTestStoreOwner2FromSystem()
         {
-            godObject.removeStore(storeId, storeOwner2Id);
-            godObject.removeMember(storeOwner2Id);
+            try
+            {
+                godObject.removeStore(storeId, storeOwner2Id);
+                godObject.removeMember(storeOwner2Id);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
         }
         
         ///only adds user. does not give store management roles to that user
         virtual protected void addTestStoreManager1ToSystem()
         {
-            storeManager1Id = godObject.addMember(storeManager1, password);
-            //godObject.makeUserManager(storeId, storeOwner1Id, storeManager1Id, );
+            try
+            {
+                storeManager1Id = godObject.addMember(storeManager1, password);
+                //godObject.makeUserManager(storeId, storeOwner1Id, storeManager1Id, );
+            }
+            catch (Exception e)
+            {
+                Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
         }
 
         virtual protected void removeTestStoreManager1FromSystem()
         {
-            godObject.removeMember(storeManager2Id);
+            try
+            {
+                godObject.removeMember(storeManager2Id);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
         }
 
         ///only adds user. does not give store management roles to that user
         virtual protected void addTestStoreManager2ToSystem()
         {
-            storeManager1Id = godObject.addMember(storeManager1, password);
+            try
+            {
+                storeManager1Id = godObject.addMember(storeManager1, password);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
         }
 
         virtual protected void removeTestStoreManager2FromSystem()
         {
-            godObject.removeMember(storeManager2Id);
+            try
+            {
+                godObject.removeMember(storeManager2Id);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
         }
 
         virtual protected void addTestStoreToSystem()
         {
-            addTestStoreOwner1ToSystem();
+            try
+            {
+                addTestStoreOwner1ToSystem();
+            }
+            catch (Exception e)
+            {
+                Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
         }
 
         virtual protected void removeTestStoreFromSystem()
         {
-            removeTestStoreOwner1FromSystem();
+            try
+            {
+                removeTestStoreOwner1FromSystem();
+            }
+            catch (Exception e)
+            {
+                Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
         }
 
         virtual protected void addTestProductToSystem()
         {
-            addTestStoreToSystem();
-            productId = godObject.addProductToStore(storeId, productName, productPrice, productCategory, productDesc, productKeyword, productAmount, productRank);
+            try
+            {
+                addTestStoreToSystem();
+                productId = godObject.addProductToStore(storeId, productName, productPrice, productCategory, productDesc, productKeyword, productAmount, productRank);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
         }
 
         virtual protected void removeTestProductFromSystem()
         {
-            godObject.removeProductFromStore(storeId, productId);
-            removeTestStoreFromSystem();
+            try
+            {
+                godObject.removeProductFromStore(storeId, productId);
+                removeTestStoreFromSystem();
+            }
+            catch (Exception e)
+            {
+                Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
         }
     }
 }

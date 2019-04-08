@@ -6,27 +6,33 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
 {
 
     [TestClass]
-    public class Req_2_7 : AcceptanceTest
+    public class Req_2_7 : Req_2_6
     {
 
         protected int cartId;
 
-        [TestInitialize]
-        public override void Init()
-        {
-            addTestProductToSystem();
-        }
+        //[TestInitialize]
+        //public override void Init()
+        //{
+        //    addTestMemberToSystem();
+        //    addTestProductToSystem();
+        //    bridge.Login(user, password);
+        //}
 
-        [TestCleanup]
-        public override void Cleanup()
-        {
-            removeTestProductFromSystem();
-        }
+        //[TestCleanup]
+        //public override void Cleanup()
+        //{
+        //    bridge.Logout();
+        //    removeTestProductFromSystem();
+        //    removeTestMemberFromSystem();
+        //}
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void GetShoppingCart()
         {
+            AddProductToCart();
+
             int result = bridge.GetShoppingCart(storeId);
             Assert.AreNotEqual(result, -1);
             cartId = result;

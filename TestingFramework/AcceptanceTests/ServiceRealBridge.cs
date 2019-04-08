@@ -24,17 +24,32 @@ namespace TestingFramework.AcceptanceTests
 
         private bool wasSuccessful(JObject msg)
         {
-            return ((string)msg["message"]).ToLower() == successMsg;
+            if (msg["message"] == null)
+            {
+                return false;
+            }
+            bool ret = ((string)msg["message"]).ToLower() == successMsg;
+            return ret;
         }
 
         private int getId(JObject msg)
         {
-            return (int)msg["id"];
+            if(msg["id"] == null)
+            {
+                return -1;
+            }
+            int ret =  (int)msg["id"];
+            return ret;
         }
 
         private int getAmount(JObject msg)
         {
-            return (int)msg["amount"];
+            if (msg["id"] == null)
+            {
+                return -1;
+            }
+            int ret = (int)msg["amount"];
+            return ret;
         }
 
         private string createRolesJson(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
