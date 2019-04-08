@@ -64,12 +64,15 @@ namespace WorkshopProject
         }
 
 
-        public static void createNewStore(string name, int rank, Boolean isActive, Member owner)
+       
+        public static int createNewStore(string name, int rank, Boolean isActive, Member owner)
         {
             Store store = new Store(id,name, rank, isActive);
             stores.Add(id,store);
+            int currID = id;
             id++;
             owner.addStore(store);
+            return currID;
         }
 
         public static bool closeStore(int storeId, Member owner)

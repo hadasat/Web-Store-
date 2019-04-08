@@ -84,11 +84,14 @@
     <Compile Include="UnitTests\Purchasing UnitTest\ShoppingBasketTest.cs" />
     <Compile Include="UnitTests\JsonTests\JsonTests.cs" />
     <Compile Include="UnitTests\Store UnitTests\StoreUnitTest.cs" />
+<<<<<<< HEAD
     <Compile Include="UnitTests\UserUnitTest\UserUnitTest.cs" />
     <Compile Include="UnitTests\UserUnitTest\ManUnitTest.cs" />
     <Compile Include="UnitTests\UserUnitTest\PasswordUnitTest.cs" />
+=======
     <Compile Include="UnitTests\Purchasing UnitTest\ShoppingCartTest.cs" />
     <Compile Include="UnitTests\Purchasing UnitTest\TransactionTest.cs" />
+>>>>>>> master
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WorkshopProject\WorkshopProject.csproj">

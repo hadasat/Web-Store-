@@ -31,9 +31,9 @@ namespace Managment
                      bool appointManager)
         {
             this.AddRemoveProducts = addRemoveProducts;
-            this.addRemovePurchasing = addRemovePurchasing;
-            this.addRemoveDiscountPolicy = addRemoveDiscountPolicy;
-            this.addRemoveStoreManger = addRemoveStoreManger;
+            this.AddRemovePurchasing = addRemovePurchasing;
+            this.AddRemoveDiscountPolicy = addRemoveDiscountPolicy;
+            this.AddRemoveStoreManger = addRemoveStoreManger;
             this.CloseStore = closeStore;
             this.CustomerCommunication = customerCommunication;
             this.AppointManager = appointManager;
@@ -42,6 +42,22 @@ namespace Managment
 
         public bool CompareRoles(Roles otherRoles)
         {
+            if (!this.AddRemoveProducts && otherRoles.AddRemoveProducts)
+                return false;
+            if (!this.AddRemovePurchasing && otherRoles.AddRemovePurchasing)
+                return false;
+            if (!this.AddRemoveDiscountPolicy && otherRoles.AddRemoveDiscountPolicy)
+                return false;
+            if (!this.AddRemoveStoreManger && otherRoles.AddRemoveStoreManger)
+                return false;
+            if (!this.CloseStore && otherRoles.CloseStore)
+                return false;
+            if (!this.CustomerCommunication && otherRoles.CustomerCommunication)
+                return false;
+            if (!this.AppointManager && otherRoles.AppointManager)
+                return false;
+            if (!this.AppointOwner && otherRoles.AppointOwner)
+                return false;
             return true;
         }
 
@@ -88,14 +104,15 @@ namespace Managment
 
         /*about roles: the client will choose what roles he wants to give the new
           manager (needs to be like hes and below) */
-        public StoreManager CreateNewManager(Member member, Roles roles)
+        public bool CreateNewManager(Member member, Roles roles)
         {
-            if (myRoles.CompareRoles(roles))
+            if (myRoles.isStoreOwner() && myRoles.CompareRoles(roles))
             {
                 StoreManager newSubStoreManager = new StoreManager(this.store, roles);
                 newSubStoreManager.setFather(this);
                 subManagers.AddFirst(newSubStoreManager);
-                return newSubStoreManager;
+                member.addStoreToMe(newSubStoreManager);
+                return true;
             }
             else
             {
@@ -124,9 +141,11 @@ namespace Managment
 
         public void removeAllManagers()
         {
-            foreach(StoreManager subStoreManager in subManagers)
+            while(subManagers.Count > 0)
             {
+                StoreManager subStoreManager = subManagers.ElementAt(0);
                 removeManager(subStoreManager);
+                //if (subManagers.Count == 0) break;
             }
         }
 
@@ -139,6 +158,7 @@ namespace Managment
                 {
                     recursiveCleanManager(sm);
                     subManagers.Remove(sm);
+                    if (subManagers.Count == 0) break;
                 }
             }
         }
