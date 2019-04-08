@@ -26,9 +26,39 @@ namespace Users
 
         public static void removeMember(Member m)
         {
+            try
+            {
+                members.Remove(m.ID);
+                mapIDUsermane.Remove(m.username);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("this should noy happen, member doesn't exist");
+            }
+        }
 
-            members.Remove(m.ID);
-            mapIDUsermane.Remove(m.username);
+        public static Member getMember(int id)
+        {
+            try
+            {
+                return members[id];
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("this should noy happen, member doesn't exist");
+            }
+        }
+
+        public static Member getMember(string username)
+        {
+            try
+            {
+                return members[(mapIDUsermane[username])];
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("this should noy happen, member doesn't exist");
+            }
         }
 
         /*** START - USER FUNCTIONS ***/
@@ -48,7 +78,16 @@ namespace Users
         //sign up
         public static void registerNewUser(string username, string password)
         {
+            Member m = null;
             int ID = getID();
+            try
+            {
+                m = members[ID];
+            } catch(Exception ex) { }
+            if(m != null)
+            {
+                throw new Exception("this username is already taken. try somthing else");
+            }
             pHandler.hashPassword(password, ID);
             Member newMember = new Member(username,ID);
             members[ID] = newMember;
@@ -56,20 +95,8 @@ namespace Users
         }
 
         
-        public static Member getMember(int id)
-        {
-            return members[id];
-        }
 
-        public static Member getMember(string username)
-        {
-            return members[(mapIDUsermane[username])];
-        }
 
-        public static bool isAnAdmin(string username)
-        {
-            return true;
-        }
 
 
         /*** END - USER FUNCTIONS ***/
@@ -83,27 +110,7 @@ namespace Users
             
         }
 
-        public static ShoppingBasket loadShoppingBasket(string ID)
-        {
-            return new ShoppingBasket();
-        }
 
-        public static LinkedList<StoreManager> loadStoreManaging(string ID)
-        {
-            if (ID != "0")
-            {
-                Roles firstStoreRoles = new Roles(false, false, false, false, false, false, false,false);
-                Store store = new Store(0,"stubStore",3,true);
-                StoreManager st = new StoreManager(store, firstStoreRoles);
-                LinkedList<StoreManager> storesManaging = new LinkedList<StoreManager>();
-                storesManaging.AddFirst(st);
-                return storesManaging;
-            }
-            else
-            {
-                return null;
-            }
-        }
 
         /*** END - MEMBER FUNCTIONS ***/
 
@@ -120,6 +127,12 @@ namespace Users
         }
 
 
+        public static bool isAnAdmin(string username)
+        {
+            return true;
+        }
+
+
         /*** END - SYSTEM ADMIN FUNCTIONS ***/
 
 
@@ -130,7 +143,7 @@ namespace Users
 
     public class User : Permissions
     {
-        public ShoppingBasket shoppingBasket;//is it this way or the opposite?
+        public ShoppingBasket shoppingBasket;
 
 
         public User()
@@ -172,7 +185,6 @@ namespace Users
                 throw new Exception("username or password does not correct");
             
             return  ConnectionStubTemp.getMember(ID);
-            
            
         }
 
@@ -219,12 +231,25 @@ namespace Users
             storeManaging.AddFirst(storeOwnerManager);
         }
 
+        public void addStoreToMe(StoreManager storeManager)
+        {
+            storeManaging.AddFirst(storeManager);
+        }
+
+        public void RemoveStoreFromMe(StoreManager storeManager)
+        {
+            storeManaging.Remove(storeManager);
+        }
+
         public void closeStore(Store store)
         {
             Roles myRoles = getStoreManagerRoles(store);
             if (!myRoles.isStoreOwner())
             {
                 throw new Exception("you cant close this store");
+            } else if (!store.isActive)
+            {
+                throw new Exception("you cant close this store, it closed already");
             }
             StoreManager thisStoreManager;
             foreach (StoreManager sm in storeManaging)
@@ -253,7 +278,7 @@ namespace Users
             {
                 foreach(StoreManager sm in storeManaging)
                 {
-                    if (sm.GetStore() == store)
+                    if (sm.GetStore().Id == store.Id)
                     {
                         return sm.GetRoles();
                     }
@@ -263,12 +288,72 @@ namespace Users
             return null;
         }
 
-        public bool addManager(string username,Roles  role,Store store)
+        public StoreManager getStoreManagerOb(Store store)
         {
-            throw new NotImplementedException();
+            if (isStoresManagers())
+            {
+                foreach (StoreManager sm in storeManaging)
+                {
+                    if (sm.GetStore().Id == store.Id)
+                    {
+                        return sm;
+                    }
+                }
+            }
+
+            throw new Exception("you dont own or manage this store");
+        }
+
+        private Store GetStore(int StoreID)
+        {
+            if (isStoresManagers())
+            {
+                foreach (StoreManager sm in storeManaging)
+                {
+                    if (sm.GetStore().Id == StoreID)
+                    {
+                        return sm.GetStore();
+                    }
+                }
+            }
+
+            throw new Exception("you dont own or manage this store");
+        }
+
+        public bool addManager(string username, Roles role, int StoreID)
+        {
+            Store store = GetStore(StoreID);
+            StoreManager myStoreRoles = getStoreManagerOb(store);
+            return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
         }
 
 
+        public bool addManager(string username,Roles role,Store store)
+        {
+
+            StoreManager myStoreRoles = getStoreManagerOb(store);
+            return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
+        }
+
+        //TODO : is there  need for remove manager option?
+        public bool removeManager(string username, Store store)
+        {
+            StoreManager myStoreRoles = getStoreManagerOb(store);
+            Member memberToRemove = ConnectionStubTemp.getMember(username);
+            bool res = myStoreRoles.removeManager(memberToRemove.getStoreManagerOb(store));
+            memberToRemove.RemoveStoreFromMe(memberToRemove.getStoreManagerOb(store));
+            return res;
+        }
+
+        public bool removeManager(string username, int StoreID)
+        {
+            Store store = GetStore(StoreID);
+            StoreManager myStoreRoles = getStoreManagerOb(store);
+            Member memberToRemove = ConnectionStubTemp.getMember(username);
+            bool res = myStoreRoles.removeManager(memberToRemove.getStoreManagerOb(store));
+            memberToRemove.RemoveStoreFromMe(memberToRemove.getStoreManagerOb(store));
+            return res;
+        }
 
         public override bool hasAddRemoveDiscountPermission(Store store)
         {

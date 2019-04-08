@@ -84,9 +84,6 @@
     <Compile Include="UnitTests\Purchasing UnitTest\ShoppingBasketTest.cs" />
     <Compile Include="UnitTests\JsonTests\JsonTests.cs" />
     <Compile Include="UnitTests\Store UnitTests\StoreUnitTest.cs" />
-    <Compile Include="UnitTests\UserUnitTest\UserUnitTest.cs" />
-    <Compile Include="UnitTests\UserUnitTest\ManUnitTest.cs" />
-    <Compile Include="UnitTests\UserUnitTest\PasswordUnitTest.cs" />
     <Compile Include="UnitTests\Purchasing UnitTest\ShoppingCartTest.cs" />
     <Compile Include="UnitTests\Purchasing UnitTest\TransactionTest.cs" />
   </ItemGroup>

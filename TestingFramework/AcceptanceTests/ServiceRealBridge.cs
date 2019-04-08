@@ -9,13 +9,14 @@ using Newtonsoft.Json.Linq;
 using Microsoft.CSharp.RuntimeBinder;
 using System.Dynamic;
 
+
 namespace TestingFramework.AcceptanceTests
 {
     public class ServiceRealBridge : IServiceBridge
     {
         private UserInterface service;
         private string successMsg = "success";
-
+        
         public ServiceRealBridge()
         {
             service = new SystemServiceImpl();
