@@ -11,8 +11,8 @@ namespace TestingFramework.AcceptanceTests
         protected IServiceBridge bridge  = Driver.getBridge();
         protected IGodObject godObject = new GodObject();
 
-        protected string adminUser = "Admin";
-        protected string adminPass = "Admin";
+        protected string adminUser = "admin";
+        protected string adminPass = "admin";
  
         protected int userId;
         protected string user = "User";
