@@ -302,7 +302,7 @@ namespace Users
                 }
             }
 
-            return null;
+            throw new Exception("you dont own or manage this store");
         }
 
         private Store GetStore(int StoreID)
@@ -318,7 +318,7 @@ namespace Users
                 }
             }
 
-            return null;
+            throw new Exception("you dont own or manage this store");
         }
 
         public bool addManager(string username, Roles role, int StoreID)
