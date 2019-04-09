@@ -18,7 +18,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         public override void Cleanup()
         {
             bridge.Logout();
-            removeTestStoreManager1FromSystem();
+            removeTestStoreOwner1FromSystem();
         }
 
         [TestMethod]
