@@ -20,7 +20,7 @@ namespace Users.Tests
         Member m;
 
 
-        [TestInitialize]
+        //[TestInitialize]
         public void Init()
         {
             username = "username";
@@ -28,7 +28,7 @@ namespace Users.Tests
             user = new User();
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public void Cealup()
         {
             try
@@ -283,7 +283,7 @@ namespace Users.Tests
         User user;
         Member member;
 
-        [TestInitialize]
+        //[TestInitialize]
         public void Init()
         {
             admin = new SystemAdmin("admin", 1);
@@ -292,7 +292,7 @@ namespace Users.Tests
             member = user.loginMember("username", "password");
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public void Cealup()
         {
             //this method is called AFTER each test
