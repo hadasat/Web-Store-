@@ -26,7 +26,7 @@ namespace Managment.Tests
         Roles managerRoles;
 
 
-        [TestInitialize]
+        //[TestInitialize]
         public void Init()
         {
             ownerId = god.addMember("username1", "password1");
@@ -45,7 +45,7 @@ namespace Managment.Tests
             store = WorkShop.getStore(storeId);
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public void Cealup()
         {
             god.removeStore(storeId, ownerId);
@@ -69,60 +69,87 @@ namespace Managment.Tests
         [TestCategory("Users_managment")]
         public void CreateNewManager_test()
         {
+            try
+            {
+                Init();
+                StoreManager storeManagerFirstOwner = storeOwner.getStoreManagerOb(store);
+                storeManagerFirstOwner.CreateNewManager(storeOwner2, ownerRoles);
 
-            StoreManager storeManagerFirstOwner = storeOwner.getStoreManagerOb(store);
-            storeManagerFirstOwner.CreateNewManager(storeOwner2, ownerRoles);
+                Assert.IsTrue(storeOwner2.getStoreManagerRoles(store).isStoreOwner());
+                Assert.IsTrue(storeOwner2.getStoreManagerOb(store).GetFather().GetStore().Id == storeId);
+            }
+            finally
+            {
+                Cealup();
+            }
 
-            Assert.IsTrue(storeOwner2.getStoreManagerRoles(store).isStoreOwner());
-            Assert.IsTrue(storeOwner2.getStoreManagerOb(store).GetFather().GetStore().Id == storeId);
         }
 
         [TestMethod()]
         [TestCategory("Users_managment")]
         public void removeManager_test()
         {
-            //create one owner
-            StoreManager storeManagerFirstOwner = storeOwner.getStoreManagerOb(store);
-            storeManagerFirstOwner.CreateNewManager(storeOwner2, ownerRoles);
-            //create one manager sub the new owner
-            StoreManager storeManagerSecondOwner = storeOwner2.getStoreManagerOb(store);
-            storeManagerSecondOwner.CreateNewManager(storeManager, ownerRoles);
-            //delete the owner see if he and is sub are removed
-            bool res = storeManagerFirstOwner.removeManager(storeManagerSecondOwner);
-
-            Assert.IsTrue(res);
-            Assert.IsTrue(storeManagerSecondOwner.SubManagers.Count == 0);
-            Assert.IsTrue(storeManagerFirstOwner.SubManagers.Count == 0);
-
-            StoreManager notExist = new StoreManager(null, null);
             try
             {
-                storeManagerFirstOwner.removeManager(notExist);
-                Assert.IsTrue(false);
-            } catch(Exception ex)
-            {
-                Assert.IsTrue(true);
+                Init();
+                //create one owner
+                StoreManager storeManagerFirstOwner = storeOwner.getStoreManagerOb(store);
+                storeManagerFirstOwner.CreateNewManager(storeOwner2, ownerRoles);
+                //create one manager sub the new owner
+                StoreManager storeManagerSecondOwner = storeOwner2.getStoreManagerOb(store);
+                storeManagerSecondOwner.CreateNewManager(storeManager, ownerRoles);
+                //delete the owner see if he and is sub are removed
+                bool res = storeManagerFirstOwner.removeManager(storeManagerSecondOwner);
+
+                Assert.IsTrue(res);
+                Assert.IsTrue(storeManagerSecondOwner.SubManagers.Count == 0);
+                Assert.IsTrue(storeManagerFirstOwner.SubManagers.Count == 0);
+
+                StoreManager notExist = new StoreManager(null, null);
+                try
+                {
+                    storeManagerFirstOwner.removeManager(notExist);
+                    Assert.IsTrue(false);
+                }
+                catch (Exception ex)
+                {
+                    Assert.IsTrue(true);
+                }
             }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
         [TestMethod()]
         [TestCategory("Users_managment")]
         public void removeAllManagers_test()
         {
-            //create one owner
-            StoreManager storeManagerFirstOwner = storeOwner.getStoreManagerOb(store);
-            storeManagerFirstOwner.CreateNewManager(storeOwner2, ownerRoles);
-            storeManagerFirstOwner.CreateNewManager(storeManager, ownerRoles);
-            //create one manager sub the new owner
-            StoreManager storeManagerSecondOwner = storeOwner2.getStoreManagerOb(store);
-            storeManagerSecondOwner.CreateNewManager(storeManager2, ownerRoles);
-            //delete the owner see if he and is sub are removed
+            try
+            {
+                Init();
+                //create one owner
+                StoreManager storeManagerFirstOwner = storeOwner.getStoreManagerOb(store);
+                storeManagerFirstOwner.CreateNewManager(storeOwner2, ownerRoles);
+                storeManagerFirstOwner.CreateNewManager(storeManager, ownerRoles);
+                //create one manager sub the new owner
+                StoreManager storeManagerSecondOwner = storeOwner2.getStoreManagerOb(store);
+                storeManagerSecondOwner.CreateNewManager(storeManager2, ownerRoles);
+                //delete the owner see if he and is sub are removed
 
-            storeManagerFirstOwner.removeAllManagers();
+                storeManagerFirstOwner.removeAllManagers();
 
 
-            Assert.IsTrue(storeManagerSecondOwner.SubManagers.Count == 0);
-            Assert.IsTrue(storeManagerFirstOwner.SubManagers.Count == 0);
+                Assert.IsTrue(storeManagerSecondOwner.SubManagers.Count == 0);
+                Assert.IsTrue(storeManagerFirstOwner.SubManagers.Count == 0);
+            }
+            finally
+            {
+                Cealup();
+            }
+
 
         }
 
@@ -132,17 +159,6 @@ namespace Managment.Tests
     [TestClass()]
     public class TestRoles
     {
-        [TestInitialize]
-        public void Init()
-        {
-            //this method is called BEFORE each test
-        }
-
-        [TestCleanup]
-        public void Cealup()
-        {
-            //this method is called AFTER each test
-        }
 
         [TestMethod()]
         [TestCategory("Users_managment")]

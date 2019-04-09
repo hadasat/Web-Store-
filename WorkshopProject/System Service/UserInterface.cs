@@ -51,10 +51,12 @@ namespace WorkshopProject.System_Service
         //Return: Message Format
         String BuyShoppingBasket();
 
-        //Return: Message Format
+        //TODO jonathan: please choose format that includes ID
+        //Return: ID
         String AddStore(string storeName);
 
-        //Return: Message Format
+        //TODO jonathan: please choose format that includes ID
+        //Return: ID
         String AddProductToStore(int storeId, string name, string desc, double price, string category);
 
         //Return: Message Format

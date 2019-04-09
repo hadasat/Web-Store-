@@ -9,7 +9,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
     public class Req_2_6 : AcceptanceTest
     {
 
-        [TestInitialize]
+        //[TestInitialize]
         public override void Init()
         {
             addTestMemberToSystem();
@@ -25,34 +25,59 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             removeTestMemberFromSystem();
         }
 
+        //TODO dependant test
         [TestMethod]
         [TestCategory("Req_2")]
         public void AddProductToCart()
         {
-            bool result = bridge.AddProductToCart(productId, 1);
-            Assert.IsTrue(result);
+            try
+            {
+                Init();
+                bool result = bridge.AddProductToCart(productId, 1);
+                Assert.IsTrue(result);
 
-            int tmp_amount;
-            int cart = bridge.GetShoppingCart(storeId);
-            Dictionary<int, int> products = bridge.GetProductsInShoppingCart(cart);
-            Assert.IsTrue(products.TryGetValue(productId, out tmp_amount));
-            Assert.AreEqual(tmp_amount, 1);
+                int tmp_amount;
+                int cart = bridge.GetShoppingCart(storeId);
+                Dictionary<int, int> products = bridge.GetProductsInShoppingCart(storeId);
+                Assert.IsTrue(products.TryGetValue(productId, out tmp_amount));
+                Assert.AreEqual(tmp_amount, 1);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void AddNonExistentProductToCart()
         {
-            bool result = bridge.AddProductToCart(-1, 1);
-            Assert.IsFalse(result);
+            try
+            {
+                Init();
+                bool result = bridge.AddProductToCart(-1, 1);
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void AddIllegalAmountToCart()
         {
-            bool result = bridge.AddProductToCart(productId, -1);
-            Assert.IsFalse(result);
+            try
+            {
+                Init();
+                bool result = bridge.AddProductToCart(productId, -1);
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
     }
 }

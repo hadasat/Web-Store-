@@ -97,7 +97,7 @@ public class TransactionService
                 Store store = storeAndProuduct.First().Key;
                 Product product = storeAndProuduct.First().Value;
                 bool sucss;
-                if (product.amount < amount)
+                if (product.amount <= amount)
                     sucss = userShoppingBasket.setProductAmount(store, product, amount);
                 else
                     sucss = false;

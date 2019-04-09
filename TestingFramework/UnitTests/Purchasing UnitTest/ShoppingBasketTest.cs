@@ -18,7 +18,7 @@ namespace WorkshopProject.Tests
         Product p1;
         int amount1 = 10;
 
-        [TestInitialize]
+        //[TestInitialize]
         public void Init()
         {
             p1 = new Product("first", 10, "h", "g", 10, 10, 10);
@@ -27,7 +27,7 @@ namespace WorkshopProject.Tests
 
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public void Cealup()
         {
             shoppingBasket = new ShoppingBasket();
@@ -37,21 +37,30 @@ namespace WorkshopProject.Tests
         [TestCategory("Unit test - ShoppingBasketTest")]
         public void setProductAmountTest()
         {
-            int newAmount = 50;
+            try
+            {
+                Init();
+                int newAmount = 50;
 
-            Product p5 = new Product("five", 50, "j", "g", 50, 50, 50);
-            //positive amount
-            Assert.IsTrue(shoppingBasket.setProductAmount(store1, p5, newAmount));
-            Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
+                Product p5 = new Product("five", 50, "j", "g", 50, 50, 50);
+                //positive amount
+                Assert.IsTrue(shoppingBasket.setProductAmount(store1, p5, newAmount));
+                Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
 
-            //stay the previous price
-            Assert.IsFalse(shoppingBasket.setProductAmount(store1, p5, -newAmount));
-            Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
+                //stay the previous price
+                Assert.IsFalse(shoppingBasket.setProductAmount(store1, p5, -newAmount));
+                Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
 
-            //zero amount
-            Assert.IsTrue(shoppingBasket.setProductAmount(store1, p5, 0));
-            Assert.AreEqual(0, shoppingBasket.getProductAmount(p5));
-            //check 
+                //zero amount
+                Assert.IsTrue(shoppingBasket.setProductAmount(store1, p5, 0));
+                Assert.AreEqual(0, shoppingBasket.getProductAmount(p5));
+                //check 
+            }
+            finally
+            {
+                Cealup();
+            }
+
 
         }
 
@@ -59,39 +68,64 @@ namespace WorkshopProject.Tests
         [TestCategory("Unit test - ShoppingBasketTest")]
         public void addProductTest()
         {
-            int newAmount = 50;
-            Product p5 = new Product("five", 50, "Category.Categories.category1", "g", 50, 50, 50);
-            //positive amount
-            shoppingBasket.addProduct(store1, p5, newAmount);
-            Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
+            try
+            {
+                Init();
+                int newAmount = 50;
+                Product p5 = new Product("five", 50, "Category.Categories.category1", "g", 50, 50, 50);
+                //positive amount
+                shoppingBasket.addProduct(store1, p5, newAmount);
+                Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
 
-            //negative amount
-            Assert.IsFalse(shoppingBasket.addProduct(store1, p5, -newAmount));
-            Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
+                //negative amount
+                Assert.IsFalse(shoppingBasket.addProduct(store1, p5, -newAmount));
+                Assert.AreEqual(newAmount, shoppingBasket.getProductAmount(p5));
+            }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
         [TestMethod()]
         [TestCategory("Unit test - ShoppingBasketTest")]
         public void getProductAmountTest()
         {
-            //existing product
-            Assert.AreEqual(shoppingBasket.getProductAmount(p1), amount1);
+            try
+            {
+                Init();
+                //existing product
+                Assert.AreEqual(shoppingBasket.getProductAmount(p1), amount1);
 
-            //new product
-            int newAmount = 50;
-            Product p5 = new Product("five", 50, "j", "g", 50, 50, 50);
-            shoppingBasket.addProduct(store1, p5, newAmount);
-            Assert.AreEqual(shoppingBasket.getProductAmount(p5), newAmount);
+                //new product
+                int newAmount = 50;
+                Product p5 = new Product("five", 50, "j", "g", 50, 50, 50);
+                shoppingBasket.addProduct(store1, p5, newAmount);
+                Assert.AreEqual(shoppingBasket.getProductAmount(p5), newAmount);
+            }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
         [TestMethod()]
         [TestCategory("Unit test - ShoppingBasketTest")]
         public void isEmptyTest()
         {
-            Assert.IsFalse(shoppingBasket.isEmpty());
-            shoppingBasket.setProductAmount(store1, p1, 0);
-            Assert.IsTrue(shoppingBasket.isEmpty());
-
+            try
+            {
+                Init();
+                Assert.IsFalse(shoppingBasket.isEmpty());
+                shoppingBasket.setProductAmount(store1, p1, 0);
+                Assert.IsTrue(shoppingBasket.isEmpty());
+            }
+            finally
+            {
+                Cealup();
+            }
 
         }
     }

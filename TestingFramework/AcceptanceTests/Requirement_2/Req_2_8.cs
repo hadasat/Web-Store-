@@ -9,7 +9,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
     public class Req_2_8 : AcceptanceTest
     {
 
-        [TestInitialize]
+        //[TestInitialize]
         public override void Init()
         {
             addTestProductToSystem();
@@ -25,43 +25,75 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestCategory("Req_2")]
         public void BuyCartSuccess()
         {
-            bridge.AddProductToCart(productId, 1);
-            bool result = bridge.BuyShoppingBasket();
+            try
+            {
+                Init();
+                bridge.AddProductToCart(productId, 1);
+                bool result = bridge.BuyShoppingBasket();
 
-            Assert.IsTrue(result);
+                Assert.IsTrue(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void BuyEmptyCart()
         {
-            bool result = bridge.BuyShoppingBasket();
+            try
+            {
+                Init();
+                bool result = bridge.BuyShoppingBasket();
 
-            Assert.IsFalse(result);
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void BuyCartUnavailableProducts()
         {
-            BuyCartSuccess();
+            try
+            {
+                Init();
+                BuyCartSuccess();
 
-            bridge.AddProductToCart(productId, 200);
-            bool result = bridge.BuyShoppingBasket();
+                bridge.AddProductToCart(productId, 200);
+                bool result = bridge.BuyShoppingBasket();
 
-            Assert.IsFalse(result);
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void BuyCartIllegalProducts()
         {
-            BuyCartSuccess();
+            try
+            {
+                Init();
+                BuyCartSuccess();
 
-            bridge.AddProductToCart(-1, 1);
-            bool result = bridge.BuyShoppingBasket();
+                bridge.AddProductToCart(-1, 1);
+                bool result = bridge.BuyShoppingBasket();
 
-            Assert.IsFalse(result);
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
     }
 }

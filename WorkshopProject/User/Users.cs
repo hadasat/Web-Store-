@@ -78,25 +78,68 @@ namespace Users
         //sign up
         public static void registerNewUser(string username, string password)
         {
-            Member m = null;
-            int ID = getID();
-            try
-            {
-                m = members[ID];
-            } catch(Exception ex) { }
-            if(m != null)
-            {
+            //Member m = null;
+            //int ID = getID();
+            //try
+            //{
+            //    m = members[ID];
+            //} catch(Exception ex) { }
+            //if(m != null)
+            //{
+            //    throw new Exception("this username is already taken. try somthing else");
+            //}
+            //pHandler.hashPassword(password, ID);
+            //Member newMember = new Member(username,ID);
+            //members[ID] = newMember;
+            //mapIDUsermane[username]=ID;
+
+
+            //jonathan rewrite
+            sanitizeInput(username, password);
+            int id;
+            if(mapIDUsermane.TryGetValue(username, out id)) {
                 throw new Exception("this username is already taken. try somthing else");
             }
-            pHandler.hashPassword(password, ID);
-            Member newMember = new Member(username,ID);
-            members[ID] = newMember;
-            mapIDUsermane[username]=ID;
+            id = getID();
+            pHandler.hashPassword(password, id);
+            Member newMember = new Member(username, id);
+            members[id] = newMember;
+            mapIDUsermane[username] = id;
         }
 
-        
 
+        private static bool sanitizeInput(string username, string password)
+        {
+            return sanitizeUsername(username) &&
+                sanitizePassword(password);
+        }
 
+        private static bool sanitizeUsername(string username)
+        {
+            if (username.Equals(""))
+            {
+                throw new Exception("username contains illegal charachters");
+            }
+            string[] illegalChars = { ";" };
+            foreach (string c in illegalChars)
+            {
+                if (username.Contains(c))
+                {
+                    throw new Exception("username contains illegal charachters");
+                    //return false;
+                }
+            }
+            return true;
+        }
+
+        private static bool sanitizePassword(string password)
+        {
+            if (password.Equals(""))
+            {
+                throw new Exception("password can't be empty");
+            }
+            return true;
+        }
 
 
         /*** END - USER FUNCTIONS ***/

@@ -14,10 +14,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         private string tmp_category;
         private int tmp_rank;
 
-        [TestInitialize]
+        //[TestInitialize]
         public override void Init()
         {
-            addTestStoreToSystem();
+            //addTestStoreToSystem();
             addTestProductToSystem();
         }
 
@@ -25,7 +25,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         public override void Cleanup()
         {
             removeTestProductFromSystem();
-            removeTestStoreFromSystem();
+            //removeTestStoreFromSystem();
         }
 
 
@@ -33,76 +33,134 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestCategory("Req_2")]
         public void SearchForExistingProductByName()
         {
-            List<int> products = bridge.SearchProducts(productName, "", "", -1, -1, -1, -1);
-            Assert.IsTrue(products.Count == 1);
+            try
+            {
+                Init();
+                List<int> products = bridge.SearchProducts(productName, "", "", -1, -1, -1, -1);
+                Assert.IsTrue(products.Count == 1);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void SearchForExistingProductByCategory()
         {
-            List<int> products = bridge.SearchProducts("", productCategory, "", -1, -1, -1, -1);
-            Assert.IsTrue(products.Count > 0);
+            try
+            {
+                Init();
+                List<int> products = bridge.SearchProducts("", productCategory, "", -1, -1, -1, -1);
+                Assert.IsTrue(products.Count > 0);
 
-            bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc,  out tmp_price, out tmp_category, out tmp_rank);
-            Assert.IsTrue(result);
-            Assert.IsNotNull(tmp_name);
-            Assert.AreNotEqual(tmp_name, "");
+                bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank);
+                Assert.IsTrue(result);
+                Assert.IsNotNull(tmp_name);
+                Assert.AreNotEqual(tmp_name, "");
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void SearchForExistingProductByKeyword()
         {
-            List<int> products = bridge.SearchProducts("", "", productKeyword, -1, -1, -1, -1);
-            Assert.IsTrue(products.Count > 0);
+            try
+            {
+                Init();
+                List<int> products = bridge.SearchProducts("", "", productKeyword, -1, -1, -1, -1);
+                Assert.IsTrue(products.Count > 0);
 
-            bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank);
-            Assert.IsTrue(result);
-            Assert.IsNotNull(tmp_name);
-            Assert.AreNotEqual(tmp_name, "");
+                bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank);
+                Assert.IsTrue(result);
+                Assert.IsNotNull(tmp_name);
+                Assert.AreNotEqual(tmp_name, "");
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void SearchForExistingProductByPriceRange()
         {
-            List<int> products = bridge.SearchProducts("", "", "", startPrice, endPrice, -1, -1);
-            Assert.IsTrue(products.Count > 0);
+            try
+            {
+                Init();
+                List<int> products = bridge.SearchProducts("", "", "", startPrice, endPrice, -1, -1);
+                Assert.IsTrue(products.Count > 0);
 
-            bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank);
-            Assert.IsTrue(result);
-            Assert.IsNotNull(tmp_name);
-            Assert.AreNotEqual(tmp_name, "");
+                bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank);
+                Assert.IsTrue(result);
+                Assert.IsNotNull(tmp_name);
+                Assert.AreNotEqual(tmp_name, "");
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void SearchForExistingProductByStoreRank()
         {
-            List<int> products = bridge.SearchProducts("", "", "", -1, -1, -1, storeRank);
-            Assert.IsTrue(products.Count > 0);
+            try
+            {
+                Init();
+                List<int> products = bridge.SearchProducts("", "", "", -1, -1, -1, storeRank);
+                Assert.IsTrue(products.Count > 0);
 
-            bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank);
-            Assert.IsTrue(result);
-            Assert.IsNotNull(tmp_name);
-            Assert.AreNotEqual(tmp_name, "");
+                bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank);
+                Assert.IsTrue(result);
+                Assert.IsNotNull(tmp_name);
+                Assert.AreNotEqual(tmp_name, "");
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void SearchForNonExistingProduct()
         {
-            List<int> products = bridge.SearchProducts(fakeProductName, "", "", -1, -1, -1, -1);
-            Assert.IsTrue(products.Count == 0);
+            try
+            {
+                Init();
+                List<int> products = bridge.SearchProducts(fakeProductName, "", "", -1, -1, -1, -1);
+                Assert.IsTrue(products.Count == 0);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void SearchForIllegalProduct()
         {
-            List<int> products = bridge.SearchProducts(illegalProductName, "", "", -1, -1, -1, -1);
-            Assert.IsTrue(products.Count == 0);
+            try
+            {
+                Init();
+                List<int> products = bridge.SearchProducts(illegalProductName, "", "", -1, -1, -1, -1);
+                Assert.IsTrue(products.Count == 0);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
     }
 }
+
+

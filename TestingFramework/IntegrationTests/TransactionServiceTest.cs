@@ -16,7 +16,7 @@ namespace IntegrationTests
 
     //Message Format: {message: String}
     //Search Format: {List<Product> products}
-    [TestClass()]
+    //[TestClass()]
     public class TransactionServiceTest
     {
         [TestInitialize]

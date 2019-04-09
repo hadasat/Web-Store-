@@ -27,91 +27,150 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         //    removeTestMemberFromSystem();
         //}
 
+        //TODO dependant test
         [TestMethod]
         [TestCategory("Req_2")]
         public void GetShoppingCart()
         {
-            AddProductToCart();
-            int result = bridge.GetShoppingCart(storeId);
-            Assert.AreNotEqual(result, -1);
-            cartId = result;
+            try
+            {
+                Init();
+                bridge.AddProductToCart(productId, 1);
+                int result = bridge.GetShoppingCart(storeId);
+                Assert.AreNotEqual(result, -1);
+                cartId = result;
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
-
+        //TODO: dependant test
         [TestMethod]
         [TestCategory("Req_2")]
         public void RemoveProductFromCart()
         {
-            GetShoppingCart();
+            try
+            {
 
-            bool result = bridge.AddProductToCart(productId, 1);
-            Assert.IsTrue(result);
+                //GetShoppingCart();
+                Init();
+                bool result = bridge.AddProductToCart(productId, 1);
+                Assert.IsTrue(result);
 
-            result = bridge.SetProductAmountInCart(cartId, productId, 0);
-            Assert.IsTrue(result);
+                result = bridge.SetProductAmountInCart(cartId, productId, 0);
+                Assert.IsTrue(result);
 
-            int tmp_amount;
-            int cart = bridge.GetShoppingCart(storeId);
-            Dictionary<int, int> products = bridge.GetProductsInShoppingCart(cart);
-            Assert.IsFalse(products.TryGetValue(productId, out tmp_amount));
+                int cart = bridge.GetShoppingCart(storeId);
+                Assert.AreEqual(cart, -1);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void RemoveNonExistentProductFromCart()
         {
-            RemoveProductFromCart();
+            try
+            {
+                Init();
+                RemoveProductFromCart();
 
-            bool result = bridge.SetProductAmountInCart(cartId, productId, 0);
-            Assert.IsFalse(result);
+                bool result = bridge.SetProductAmountInCart(cartId, productId, 0);
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void RemoveIllegalProductFromCart()
         {
-            bool result = bridge.SetProductAmountInCart(cartId, -1, 0);
-            Assert.IsFalse(result);
+            try
+            {
+                Init();
+                bool result = bridge.SetProductAmountInCart(cartId, -1, 0);
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
-
+        //TODO: dependant test
         [TestMethod]
         [TestCategory("Req_2")]
         public void ChangeProductAmountInCart()
         {
-            GetShoppingCart();
+            try
+            {
+                
+                //GetShoppingCart();
+                Init();
+                bool result = bridge.AddProductToCart(productId, 5);
+                Assert.IsTrue(result);
 
-            bool result = bridge.AddProductToCart(productId, 5);
-            Assert.IsTrue(result);
-
-            result = bridge.SetProductAmountInCart(cartId, productId, 2);
-            Assert.IsTrue(result);
+                result = bridge.SetProductAmountInCart(cartId, productId, 2);
+                Assert.IsTrue(result);
 
 
-            int tmp_amount;
-            int cart = bridge.GetShoppingCart(storeId);
-            Dictionary<int, int> products = bridge.GetProductsInShoppingCart(cart);
-            Assert.IsTrue(products.TryGetValue(productId, out tmp_amount));
-            Assert.AreEqual(tmp_amount, 2);
+                int tmp_amount;
+                int cart = bridge.GetShoppingCart(storeId);
+                Dictionary<int, int> products = bridge.GetProductsInShoppingCart(storeId);
+                Assert.IsTrue(products.TryGetValue(productId, out tmp_amount));
+                Assert.AreEqual(tmp_amount, 2);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
+        //TODO: dependant test
         [TestMethod]
         [TestCategory("Req_2")]
         public void ChangeNonExistingProductAmountInCart()
         {
-            RemoveProductFromCart();
+            try
+            {
+                Init();
+                //bridge.AddProductToCart(productId, 1);
+                //RemoveProductFromCart();
 
-            bool result = bridge.SetProductAmountInCart(cartId, productId, 2);
-            Assert.IsFalse(result);
+                bool result = bridge.SetProductAmountInCart(cartId, productId, 2);
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
+        //TODO: dependant test
         [TestMethod]
         [TestCategory("Req_2")]
         public void ChangeProductIllegalAmountInCart()
         {
-            ChangeProductAmountInCart();
-            bool result = bridge.SetProductAmountInCart(cartId, productId, -1);
-            Assert.IsFalse(result);
+            try
+            {
+                Init();
+                bridge.AddProductToCart(productId, 1);
+                //ChangeProductAmountInCart();
+                bool result = bridge.SetProductAmountInCart(cartId, productId, -1);
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
     }
 }
