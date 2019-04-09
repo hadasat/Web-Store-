@@ -30,7 +30,8 @@ namespace WorkshopProject.System_Service
         {
             storeS.user = member;
             transactionS.user = member;
-            userS.user = member;
+            user = member;
+            //userS.user = member;
             this.user = member;
         }
 
@@ -88,8 +89,8 @@ namespace WorkshopProject.System_Service
 
         public string BuyShoppingBasket()
         {
-            if (!loggedIn)
-                throw new Exception("Not logged in");
+            //if (!loggedIn)
+            //    throw new Exception("Not logged in");
             return transactionS.BuyShoppingBasket();
         }
 
@@ -114,8 +115,6 @@ namespace WorkshopProject.System_Service
 
         public string GetShoppingCart(int storeId)
         {
-            if (!loggedIn)
-                throw new Exception("Not logged in");
             return transactionS.GetShoppingCart(storeId);
         }
 
@@ -184,7 +183,6 @@ namespace WorkshopProject.System_Service
 
         public string SetProductAmountInCart(int productId, int amount)
         {
-
             return transactionS.SetProductAmountInCart(productId, amount);
         }
     }

@@ -16,7 +16,7 @@ namespace TestingFramework.AcceptanceTests
     {
         private UserInterface service;
         private string successMsg = "success";
-        
+
         public ServiceRealBridge()
         {
             service = new SystemServiceImpl();
@@ -34,11 +34,11 @@ namespace TestingFramework.AcceptanceTests
 
         private int getId(JObject msg)
         {
-            if(msg["id"] == null)
+            if (msg["id"] == null)
             {
                 return -1;
             }
-            int ret =  (int)msg["id"];
+            int ret = (int)msg["id"];
             return ret;
         }
 
@@ -132,7 +132,7 @@ namespace TestingFramework.AcceptanceTests
 
         public bool ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount)
         {
-            string msg = service.ChangeProductInfo(storeId ,productId, name, desc, price, category, amount);
+            string msg = service.ChangeProductInfo(storeId, productId, name, desc, price, category, amount);
             JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
         }
