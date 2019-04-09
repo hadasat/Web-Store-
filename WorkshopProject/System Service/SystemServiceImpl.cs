@@ -114,8 +114,6 @@ namespace WorkshopProject.System_Service
 
         public string GetShoppingCart(int storeId)
         {
-            if (!loggedIn)
-                throw new Exception("Not logged in");
             return transactionS.GetShoppingCart(storeId);
         }
 
@@ -184,7 +182,6 @@ namespace WorkshopProject.System_Service
 
         public string SetProductAmountInCart(int productId, int amount)
         {
-
             return transactionS.SetProductAmountInCart(productId, amount);
         }
     }
