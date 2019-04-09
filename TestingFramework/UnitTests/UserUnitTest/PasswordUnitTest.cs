@@ -17,14 +17,14 @@ namespace Password.Tests
         Tuple<byte[], byte[]> SaltesAndPepperEntry;
         PasswordHandler passwordHandler = new PasswordHandler();
 
-        [TestInitialize]
+        //[TestInitialize]
         public void Init()
         {
             password = CreatePassword(PASS_LENGTH);
 
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public void Cealup()
         {
             passwordHandler.RemoveEntry(ID);
@@ -34,44 +34,71 @@ namespace Password.Tests
         [TestCategory("Users_Password")]
         public void hashPassword_Test()
         {
-            bool res = passwordHandler.hashPassword(password, ID);
-            SaltesAndPepperEntry = passwordHandler.GetEntry(ID);
-            byte[] salt = SaltesAndPepperEntry.Item1;
-            byte[] pepper = SaltesAndPepperEntry.Item2;
-            Assert.IsTrue(res);
+            try
+            {
+                Init();
+                bool res = passwordHandler.hashPassword(password, ID);
+                SaltesAndPepperEntry = passwordHandler.GetEntry(ID);
+                byte[] salt = SaltesAndPepperEntry.Item1;
+                byte[] pepper = SaltesAndPepperEntry.Item2;
+                Assert.IsTrue(res);
+            }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
         [TestMethod()]
         [TestCategory("Users_Password")]
         public void IdentifyPassword_Test()
         {
-            for (int i = 0; i < 100; i++)
+            try
             {
-                password = CreatePassword(PASS_LENGTH);
-                bool res = passwordHandler.hashPassword(password, ID);
-                if (res)
+                Init();
+                for (int i = 0; i < 100; i++)
                 {
-                    bool result = passwordHandler.IdentifyPassword(password, ID);
-                    Assert.IsTrue(result);
+                    password = CreatePassword(PASS_LENGTH);
+                    bool res = passwordHandler.hashPassword(password, ID);
+                    if (res)
+                    {
+                        bool result = passwordHandler.IdentifyPassword(password, ID);
+                        Assert.IsTrue(result);
+                    }
+                    else
+                        Assert.IsTrue(false);
+                    passwordHandler.RemoveEntry(ID);
                 }
-                else
-                    Assert.IsTrue(false);
-                passwordHandler.RemoveEntry(ID);
             }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
 
 
         private string CreatePassword(int length)
         {
-            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            StringBuilder res = new StringBuilder();
-            Random rnd = new Random();
-            while (0 < length--)
+            try
             {
-                res.Append(valid[rnd.Next(valid.Length)]);
+                Init();
+                const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+                StringBuilder res = new StringBuilder();
+                Random rnd = new Random();
+                while (0 < length--)
+                {
+                    res.Append(valid[rnd.Next(valid.Length)]);
+                }
+                return res.ToString();
             }
-            return res.ToString();
+            finally
+            {
+                Cealup();
+            }
+
         }
     }
 }
