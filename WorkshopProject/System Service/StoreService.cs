@@ -17,6 +17,16 @@ namespace WorkshopProject.System_Service
         }
     }
 
+    //TODO: jonathan added this just to return store IDs when using AddStore
+    public class IdMessage
+    {
+        public int id;
+        public IdMessage(int id)
+        {
+            this.id = id;
+        }
+    }
+
     public class StoreService
     {
         internal User user;
@@ -81,9 +91,12 @@ namespace WorkshopProject.System_Service
 
         internal string AddStore(string storeName)
         {
-            WorkShop.createNewStore(storeName, 0, true, (Member)user);
-            return successJason(); //All Valid
+            int id = WorkShop.createNewStore(storeName, 0, true, (Member)user);
+            //return successJason(); //All Valid
+            //jonathan - we need the id of the new store, not a message
 
+            IdMessage idMsg = new IdMessage(id);
+            return JsonConvert.SerializeObject(idMsg);
         }
 
         internal string ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount)
@@ -150,6 +163,6 @@ namespace WorkshopProject.System_Service
             throw new NotImplementedException();
         }
 
-
+        
     }
 }

@@ -8,7 +8,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
     public class Req_2_2 : AcceptanceTest
     {
 
-        [TestCleanup]
+        //[TestCleanup]
         public override void Cleanup()
         {
             removeTestMemberFromSystem();

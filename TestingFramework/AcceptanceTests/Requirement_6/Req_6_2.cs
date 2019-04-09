@@ -6,7 +6,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
     [TestClass]
     public class Req_6_2 : AcceptanceTest
     {
-        [TestInitialize]
+        //[TestInitialize]
         public override void Init()
         {
             addTestMemberToSystem();
@@ -14,7 +14,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
             bool result = bridge.Login(adminUser, adminPass);
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public override void Cleanup()
         {
             bool result = bridge.Logout();

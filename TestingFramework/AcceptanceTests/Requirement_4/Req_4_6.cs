@@ -7,7 +7,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
     [TestClass]
     public class Req_4_6 : AcceptanceTest
     {
-        [TestInitialize]
+        //[TestInitialize]
         public override void Init()
         {
             addTestStoreOwner1ToSystem();
@@ -15,7 +15,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             addTestStoreManager2ToSystem();
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public override void Cleanup()
         {
             bridge.Logout();
@@ -28,17 +28,20 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         [TestCategory("Req_4")]
         public void RemoveStoreManagerSuccess()
         {
+            Init();
             bridge.Login(storeOwner1, password);
             bridge.AddStoreManager(storeId, storeManager1);
 
             bool result = bridge.RemoveStoreManager(storeId, storeManager1);
             Assert.IsTrue(result);
+            Cleanup();
         }
 
         [TestMethod]
         [TestCategory("Req_4")]
         public void RemoveStoreManagerWhoIsntChild()
         {
+            Init();
             bridge.Login(storeOwner1, password);
             bridge.AddStoreManager(storeId, storeManager1);
             bridge.AddStoreManager(storeId, storeManager2);
@@ -46,17 +49,20 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             bridge.Login(storeManager1, password);
             bool result = bridge.RemoveStoreManager(storeId, storeOwner1);
             Assert.IsFalse(result);
+            Cleanup();
         }
 
         [TestMethod]
         [TestCategory("Req_4")]
         public void RemoveStoreManagerIllegal()
         {
+            Init();
             bridge.Login(storeOwner1, password);
             bridge.AddStoreManager(storeId, storeManager1);
 
             bool result = bridge.RemoveStoreManager(storeId, ";");
             Assert.IsFalse(result);
+            Cleanup();
         }
 
     }

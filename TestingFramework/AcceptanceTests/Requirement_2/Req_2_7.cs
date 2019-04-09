@@ -31,10 +31,12 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestCategory("Req_2")]
         public void GetShoppingCart()
         {
+            Init();
             AddProductToCart();
             int result = bridge.GetShoppingCart(storeId);
             Assert.AreNotEqual(result, -1);
             cartId = result;
+            Cleanup();
         }
 
 
@@ -42,6 +44,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestCategory("Req_2")]
         public void RemoveProductFromCart()
         {
+            Init();
             GetShoppingCart();
 
             bool result = bridge.AddProductToCart(productId, 1);
@@ -54,24 +57,29 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             int cart = bridge.GetShoppingCart(storeId);
             Dictionary<int, int> products = bridge.GetProductsInShoppingCart(cart);
             Assert.IsFalse(products.TryGetValue(productId, out tmp_amount));
+            Cleanup();
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void RemoveNonExistentProductFromCart()
         {
+            Init();
             RemoveProductFromCart();
 
             bool result = bridge.SetProductAmountInCart(cartId, productId, 0);
             Assert.IsFalse(result);
+            Cleanup();
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void RemoveIllegalProductFromCart()
         {
+            Init();
             bool result = bridge.SetProductAmountInCart(cartId, -1, 0);
             Assert.IsFalse(result);
+            Cleanup();
         }
 
 
@@ -79,6 +87,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestCategory("Req_2")]
         public void ChangeProductAmountInCart()
         {
+            Init();
             GetShoppingCart();
 
             bool result = bridge.AddProductToCart(productId, 5);
@@ -93,25 +102,30 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             Dictionary<int, int> products = bridge.GetProductsInShoppingCart(cart);
             Assert.IsTrue(products.TryGetValue(productId, out tmp_amount));
             Assert.AreEqual(tmp_amount, 2);
+            Cleanup();
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void ChangeNonExistingProductAmountInCart()
         {
+            Init();
             RemoveProductFromCart();
 
             bool result = bridge.SetProductAmountInCart(cartId, productId, 2);
             Assert.IsFalse(result);
+            Cleanup();
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void ChangeProductIllegalAmountInCart()
         {
+            Init();
             ChangeProductAmountInCart();
             bool result = bridge.SetProductAmountInCart(cartId, productId, -1);
             Assert.IsFalse(result);
+            Cleanup();
         }
     }
 }

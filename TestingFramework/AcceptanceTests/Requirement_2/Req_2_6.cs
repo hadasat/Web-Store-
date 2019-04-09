@@ -9,7 +9,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
     public class Req_2_6 : AcceptanceTest
     {
 
-        [TestInitialize]
+        //[TestInitialize]
         public override void Init()
         {
             addTestMemberToSystem();
@@ -17,7 +17,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             bridge.Login(user, password);
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public override void Cleanup()
         {
             bridge.Logout();
@@ -29,6 +29,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestCategory("Req_2")]
         public void AddProductToCart()
         {
+            Init();
             bool result = bridge.AddProductToCart(productId, 1);
             Assert.IsTrue(result);
 
@@ -37,22 +38,27 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             Dictionary<int, int> products = bridge.GetProductsInShoppingCart(cart);
             Assert.IsTrue(products.TryGetValue(productId, out tmp_amount));
             Assert.AreEqual(tmp_amount, 1);
+            Cleanup();
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void AddNonExistentProductToCart()
         {
+            Init();
             bool result = bridge.AddProductToCart(-1, 1);
             Assert.IsFalse(result);
+            Cleanup();
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void AddIllegalAmountToCart()
         {
+            Init();
             bool result = bridge.AddProductToCart(productId, -1);
             Assert.IsFalse(result);
+            Cleanup();
         }
     }
 }

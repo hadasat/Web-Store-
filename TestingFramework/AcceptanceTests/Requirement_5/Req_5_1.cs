@@ -15,14 +15,14 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
     [TestClass]
     public class Req_5_1 : AcceptanceTest
     {
-        [TestInitialize]
+        //[TestInitialize]
         public override void Init()
         {
             addTestStoreOwner1ToSystem();
             addTestStoreManager1ToSystem();
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public override void Cleanup()
         {
             removeTestStoreManager1FromSystem();
@@ -31,6 +31,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
 
         private void createManagerWithRoles(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
         {
+            Init();
             bridge.Login(storeOwner1, password);
             bridge.AddStoreManager(storeId, storeOwner1, addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore);
             bridge.Logout();
@@ -40,6 +41,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
         [TestCategory("Req_5")]
         public void TestManagerWithNoPermissions()
         {
+            Init();
             createManagerWithRoles(false, false, false, false);
 
             bridge.Login(storeManager1, password);
@@ -57,6 +59,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
         [TestCategory("Req_5")]
         public void TestAddAnotherManagerSuccess()
         {
+            Init();
             createManagerWithRoles(false, false, true, false);
 
             bridge.Login(storeManager1, password);
@@ -64,12 +67,14 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
             bridge.Logout();
 
             Assert.IsTrue(result);
+            Cleanup();
         }
 
         [TestMethod]
         [TestCategory("Req_5")]
         public void TestAddAnotherManagerWithWrongPermissions()
         {
+            Init();
             createManagerWithRoles(false, false, true, false);
             bridge.Login(storeManager1, password);
 
@@ -93,12 +98,14 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
                 }
             }   
             bridge.Logout();
+            Cleanup();
         }
 
         [TestMethod]
         [TestCategory("Req_5")]
         public void TestCloseStoreSuccess()
         {
+            Init();
             createManagerWithRoles(false, false, false, true);
 
             bridge.Login(storeManager1, password);
@@ -106,6 +113,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
             bridge.Logout();
 
             Assert.IsTrue(result);
+            Cleanup();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
     [TestClass]
     public class Req_4_4 : AcceptanceTest
     {
-        [TestInitialize]
+        //[TestInitialize]
         public override void Init()
         {
             addTestStoreOwner1ToSystem();
@@ -15,7 +15,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             //addTestStoreOwner3ToSystem();
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public override void Cleanup()
         {
             bridge.Logout();
@@ -28,34 +28,40 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         [TestCategory("Req_4")]
         public void RemoveStoreOwnerSuccess()
         {
+            Init();
             bridge.Login(storeOwner1, password);
             bridge.AddStoreOwner(storeId, storeOwner2);
 
             bool result = bridge.RemoveStoreOwner(storeId, storeOwner2);
             Assert.IsTrue(result);
+            Cleanup();
         }
 
         [TestMethod]
         [TestCategory("Req_4")]
         public void RemoveStoreOwnerWhoIsntChild()
         {
+            Init();
             bridge.Login(storeOwner1, password);
             bridge.AddStoreOwner(storeId, storeOwner2);
             bridge.Logout();
             bridge.Login(storeOwner2, password);
             bool result = bridge.RemoveStoreOwner(storeId, storeOwner1);
             Assert.IsFalse(result);
+            Cleanup();
         }
 
         [TestMethod]
         [TestCategory("Req_4")]
         public void RemoveStoreOwnerIllegal()
         {
+            Init();
             bridge.Login(storeOwner1, password);
             bridge.AddStoreOwner(storeId, storeOwner2);
 
             bool result = bridge.RemoveStoreOwner(storeId, ";");
             Assert.IsFalse(result);
+            Cleanup();
         }
 
     }

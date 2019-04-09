@@ -7,14 +7,14 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
     [TestClass]
     public class Req_3_2 : AcceptanceTest
     {
-        [TestInitialize]
+        //[TestInitialize]
         public override void Init()
         {
             addTestStoreOwner1ToSystem();
             bool result = bridge.Login(storeOwner1, password);
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public override void Cleanup()
         {
             bool result = bridge.Logout();

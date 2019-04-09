@@ -7,7 +7,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
     [TestClass]
     public class Req_4_5 : AcceptanceTest
     {
-        [TestInitialize]
+        //[TestInitialize]
         public override void Init()
         {
             addTestStoreOwner1ToSystem();
@@ -15,7 +15,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             bridge.Login(storeOwner1, password);
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public override void Cleanup()
         {
             bridge.Logout();
@@ -27,25 +27,31 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         [TestCategory("Req_4")]
         public void AddStoreManagerSuccess()
         {
+            Init();
             bool result = bridge.AddStoreManager(storeId, storeManager2);
             Assert.IsTrue(result);
+            Cleanup();
         }
 
         [TestMethod]
         [TestCategory("Req_4")]
         public void AddStoreManagerDuplicate()
         {
+            Init();
             AddStoreManagerSuccess();
             bool result = bridge.AddStoreManager(storeId, storeManager2);
             Assert.IsFalse(result);
+            Cleanup();
         }
 
         [TestMethod]
         [TestCategory("Req_4")]
         public void AddStoreManagerIllegal()
         {
+            Init();
             bool result = bridge.AddStoreManager(storeId, ";");
             Assert.IsFalse(result);
+            Cleanup();
         }
     }
 }
