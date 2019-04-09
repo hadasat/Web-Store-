@@ -19,6 +19,7 @@ namespace WorkshopProject.System_Service
 public class TransactionService
     {
         internal User user;
+        public string successMsg = "success";
 
         public TransactionService(User user)
         {
@@ -27,31 +28,56 @@ public class TransactionService
 
         internal string AddProductToBasket(int productId, int amount)
         {
+            Message msg;
             ShoppingBasket userShoppingBasket = user.shoppingBasket;
             Dictionary<Store, Product> storeAndProuduct = WorkShop.findProduct(productId);
             if(storeAndProuduct != null)
             {
                 Store store = storeAndProuduct.First().Key;
                 Product product = storeAndProuduct.First().Value;
-                userShoppingBasket.addProduct(store, product,amount);
-                return "{message: Success}";
+                bool sucss;
+                if (product.amount < amount)
+                    sucss = userShoppingBasket.addProduct(store, product, amount);
+                else
+                    sucss = false;
+                if (sucss)
+                    msg = new Message(successMsg);
+                else
+                    msg = new Message("request Fail");
             }
-            return "{message: Illegal Product id}";
+            else
+                msg = new Message("Illegal Product id");
+            return JsonConvert.SerializeObject(msg);
         }
 
         internal string BuyShoppingBasket()
         {
+            Message msg;
             int transId = Transaction.purchase(user);
-            return "{message: Success, transactionId: " + transId + " }";
+            if(transId > 0)
+                return "{\"message\": \"Success\", \"transactionId\": " + transId + " }";
+            else
+                msg = new Message("purchase failed");
+            return JsonConvert.SerializeObject(msg);
         }
 
         internal string GetShoppingCart(int storeId)
         {
-            Store store;
-            if (!WorkShop.stores.ContainsKey(storeId))
-                return "{message: Illegal store id}";
-            store = WorkShop.stores[storeId];
-            JsonShoppingCart jsc = new JsonShoppingCart(user.shoppingBasket.carts[store]);
+            Message msg;
+            //find the product store;
+            Store store = WorkShop.getStore(storeId);
+            if (store == null) { 
+                msg = new Message("Illegal store id");
+                return JsonConvert.SerializeObject(msg);
+            }
+            ShoppingCart shoppingCart;
+            user.shoppingBasket.carts.TryGetValue(store,out shoppingCart);
+            if(shoppingCart == null)
+            {
+                msg = new Message("Illegal store id for this user");
+                return JsonConvert.SerializeObject(msg);
+            }
+            JsonShoppingCart jsc = new JsonShoppingCart(shoppingCart);
             return JsonConvert.SerializeObject(jsc);
         }
 
@@ -63,7 +89,26 @@ public class TransactionService
 
         internal string SetProductAmountInCart(int productId, int amount)
         {
-            return AddProductToBasket(productId, amount);
+            Message msg;
+            ShoppingBasket userShoppingBasket = user.shoppingBasket;
+            Dictionary<Store, Product> storeAndProuduct = WorkShop.findProduct(productId);
+            if (storeAndProuduct != null)
+            {
+                Store store = storeAndProuduct.First().Key;
+                Product product = storeAndProuduct.First().Value;
+                bool sucss;
+                if (product.amount < amount)
+                    sucss = userShoppingBasket.setProductAmount(store, product, amount);
+                else
+                    sucss = false;
+                if (sucss)
+                    msg = new Message(successMsg);
+                else
+                    msg = new Message("request Fail");
+            }
+            else
+                msg = new Message("Illegal Product id");
+            return JsonConvert.SerializeObject(msg);
         }
     }
 }

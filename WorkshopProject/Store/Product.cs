@@ -10,7 +10,7 @@ namespace WorkshopProject
     public class Product
     {
         public static int idGenerator = 0;
-        private int id; 
+        public int id { get; } 
         public string name;
         private double price;
         public string category;

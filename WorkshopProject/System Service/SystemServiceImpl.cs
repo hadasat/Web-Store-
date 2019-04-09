@@ -88,8 +88,8 @@ namespace WorkshopProject.System_Service
 
         public string BuyShoppingBasket()
         {
-            if (!loggedIn)
-                throw new Exception("Not logged in");
+            //if (!loggedIn)
+            //    throw new Exception("Not logged in");
             return transactionS.BuyShoppingBasket();
         }
 

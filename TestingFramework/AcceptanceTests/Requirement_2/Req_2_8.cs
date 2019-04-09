@@ -37,7 +37,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             bool result = bridge.BuyShoppingBasket();
 
-            Assert.IsTrue(result);
+            Assert.IsFalse(result);
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             BuyCartSuccess();
 
-            bridge.AddProductToCart(productId, 1);
+            bridge.AddProductToCart(productId, 200);
             bool result = bridge.BuyShoppingBasket();
 
             Assert.IsFalse(result);

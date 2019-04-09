@@ -17,7 +17,7 @@ namespace Shopping
 
         public ShoppingCart()
         {
-            id = idCartCounter++;
+            id = ++idCartCounter;
             products = new Dictionary<Product, int>();
         }
 
