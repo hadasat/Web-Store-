@@ -12,13 +12,17 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestInitialize]
         public override void Init()
         {
+            addTestMemberToSystem();
             addTestProductToSystem();
+            bridge.Login(user, password);
         }
 
         [TestCleanup]
         public override void Cleanup()
         {
+            bridge.Logout();
             removeTestProductFromSystem();
+            removeTestMemberFromSystem();
         }
 
         [TestMethod]

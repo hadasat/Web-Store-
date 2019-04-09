@@ -11,11 +11,13 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
         public override void Init()
         {
             addTestStoreOwner1ToSystem();
+            bridge.Login(storeOwner1, password);
         }
 
         [TestCleanup]
         public override void Cleanup()
         {
+            bridge.Logout();
             removeTestStoreOwner1FromSystem();
         }
 
@@ -23,7 +25,6 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
         [TestCategory("Req_3")]
         public void AddStoreSuccess()
         {
-            bridge.Login(storeOwner1, password);
             int result = bridge.AddStore(storeName);
             Assert.AreNotEqual(result, -1);
 
@@ -34,7 +35,6 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
         [TestCategory("Req_3")]
         public void AddIllegalStore()
         {
-            bridge.Login(storeOwner1, password);
             int result = bridge.AddStore(";");
             Assert.AreEqual(result, -1);
         }

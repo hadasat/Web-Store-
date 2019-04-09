@@ -11,11 +11,13 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
         {
             addTestMemberToSystem();
             addTestStoreOwner1ToSystem();
+            bridge.Login(adminUser, adminPass);
         }
 
         [TestCleanup]
         public override void Cleanup()
         {
+            bridge.Logout();
             removeTestStoreOwner1FromSystem();
             removeTestMemberFromSystem();
         }
@@ -57,7 +59,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
             bool result = bridge.RemoveUser(storeOwner1);
             Assert.IsTrue(result);
 
-            result = bridge.Login(user, password);
+            result = bridge.Login(storeOwner1, password);
             Assert.IsFalse(result);
 
             //TODO: verify that store doesnt exist when this feature is added
