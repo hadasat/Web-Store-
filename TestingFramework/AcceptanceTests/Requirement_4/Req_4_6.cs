@@ -28,41 +28,59 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         [TestCategory("Req_4")]
         public void RemoveStoreManagerSuccess()
         {
-            Init();
-            bridge.Login(storeOwner1, password);
-            bridge.AddStoreManager(storeId, storeManager1);
+            try
+            {
+                Init();
+                bridge.Login(storeOwner1, password);
+                bridge.AddStoreManager(storeId, storeManager1);
 
-            bool result = bridge.RemoveStoreManager(storeId, storeManager1);
-            Assert.IsTrue(result);
-            Cleanup();
+                bool result = bridge.RemoveStoreManager(storeId, storeManager1);
+                Assert.IsTrue(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_4")]
         public void RemoveStoreManagerWhoIsntChild()
         {
-            Init();
-            bridge.Login(storeOwner1, password);
-            bridge.AddStoreManager(storeId, storeManager1);
-            bridge.AddStoreManager(storeId, storeManager2);
-            bridge.Logout();
-            bridge.Login(storeManager1, password);
-            bool result = bridge.RemoveStoreManager(storeId, storeOwner1);
-            Assert.IsFalse(result);
-            Cleanup();
+            try
+            {
+                Init();
+                bridge.Login(storeOwner1, password);
+                bridge.AddStoreManager(storeId, storeManager1);
+                bridge.AddStoreManager(storeId, storeManager2);
+                bridge.Logout();
+                bridge.Login(storeManager1, password);
+                bool result = bridge.RemoveStoreManager(storeId, storeOwner1);
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_4")]
         public void RemoveStoreManagerIllegal()
         {
-            Init();
-            bridge.Login(storeOwner1, password);
-            bridge.AddStoreManager(storeId, storeManager1);
+            try
+            {
+                Init();
+                bridge.Login(storeOwner1, password);
+                bridge.AddStoreManager(storeId, storeManager1);
 
-            bool result = bridge.RemoveStoreManager(storeId, ";");
-            Assert.IsFalse(result);
-            Cleanup();
+                bool result = bridge.RemoveStoreManager(storeId, ";");
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
     }

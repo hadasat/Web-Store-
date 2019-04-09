@@ -8,7 +8,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
     public class Req_2_2 : AcceptanceTest
     {
 
-        //[TestCleanup]
+        [TestCleanup]
         public override void Cleanup()
         {
             removeTestMemberFromSystem();
@@ -19,49 +19,68 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestCategory("Req_2")]
         public void RegisterNewUser()
         {
-            bool result = bridge.Register(user, password);
+            try
+            {
+                bool result = bridge.Register(user, password);
 
-            Assert.IsTrue(result);
+                Assert.IsTrue(result);
 
-            result = bridge.Login(user, password);
-            Assert.IsTrue(result);
-
-            Cleanup();
+                result = bridge.Login(user, password);
+                Assert.IsTrue(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
+
+        //TODO: dependant test
         [TestMethod]
         [TestCategory("Req_2")]
         public void RegisterExistingUser()
         {
-            RegisterNewUser();
-            bool result = bridge.Register(user, password);
+            try
+            {
+                bridge.Register(user, password);
 
-            Assert.IsFalse(result);
+                bool result = bridge.Register(user, password);
 
-            Cleanup();
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void RegisterIllegalUser()
         {
-            //illegal user name
-            string user = ";";
-            string password = "123456";
+            try
+            {
+                //illegal user name
+                string user = ";";
+                string password = "123456";
 
-            bool result = bridge.Register(user, password);
+                bool result = bridge.Register(user, password);
 
-            Assert.IsFalse(result);
+                Assert.IsFalse(result);
 
-            //illegal password
-            user = "User";
-            password = "";
+                //illegal password
+                user = "User";
+                password = "";
 
-            result = bridge.Register(user, password);
+                result = bridge.Register(user, password);
 
-            Assert.IsFalse(result);
+                Assert.IsFalse(result);
 
-            Cleanup();
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
     }
 }

@@ -72,7 +72,7 @@ namespace TestingFramework.AcceptanceTests
         {
             try
             {
-                godObject.removeMember(userId);
+                godObject.removeMember(user);
             }
             catch (Exception e)
             {

@@ -27,31 +27,49 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         [TestCategory("Req_4")]
         public void AddStoreManagerSuccess()
         {
-            Init();
-            bool result = bridge.AddStoreManager(storeId, storeManager2);
-            Assert.IsTrue(result);
-            Cleanup();
+            try
+            {
+                Init();
+                bool result = bridge.AddStoreManager(storeId, storeManager2);
+                Assert.IsTrue(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_4")]
         public void AddStoreManagerDuplicate()
         {
-            Init();
-            AddStoreManagerSuccess();
-            bool result = bridge.AddStoreManager(storeId, storeManager2);
-            Assert.IsFalse(result);
-            Cleanup();
+            try
+            {
+                Init();
+                AddStoreManagerSuccess();
+                bool result = bridge.AddStoreManager(storeId, storeManager2);
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_4")]
         public void AddStoreManagerIllegal()
         {
-            Init();
-            bool result = bridge.AddStoreManager(storeId, ";");
-            Assert.IsFalse(result);
-            Cleanup();
+            try
+            {
+                Init();
+                bool result = bridge.AddStoreManager(storeId, ";");
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
     }
 }

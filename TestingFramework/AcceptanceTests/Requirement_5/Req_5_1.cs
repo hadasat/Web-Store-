@@ -25,33 +25,47 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
         //[TestCleanup]
         public override void Cleanup()
         {
+            bridge.Logout();
             removeTestStoreManager1FromSystem();
             removeTestStoreOwner1FromSystem();
         }
 
         private void createManagerWithRoles(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
         {
-            Init();
-            bridge.Login(storeOwner1, password);
-            bridge.AddStoreManager(storeId, storeOwner1, addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore);
-            bridge.Logout();
+            try
+            {
+                Init();
+                bridge.Login(storeOwner1, password);
+                bridge.AddStoreManager(storeId, storeOwner1, addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore);
+            }
+            finally
+            {
+                Cleanup();
+            }
+
         }
 
         [TestMethod]
         [TestCategory("Req_5")]
         public void TestManagerWithNoPermissions()
         {
-            Init();
-            createManagerWithRoles(false, false, false, false);
+            try
+            {
+                Init();
+                createManagerWithRoles(false, false, false, false);
 
-            bridge.Login(storeManager1, password);
-            bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, false, false);
-            Assert.IsFalse(result);
+                bridge.Login(storeManager1, password);
+                bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, false, false);
+                Assert.IsFalse(result);
 
-            result = bridge.CloseStore(storeId);
-            Assert.IsFalse(result);
+                result = bridge.CloseStore(storeId);
+                Assert.IsFalse(result);
 
-            bridge.Logout();
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
 
@@ -59,61 +73,78 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
         [TestCategory("Req_5")]
         public void TestAddAnotherManagerSuccess()
         {
-            Init();
-            createManagerWithRoles(false, false, true, false);
+            try
+            {
+                Init();
+                createManagerWithRoles(false, false, true, false);
 
-            bridge.Login(storeManager1, password);
-            bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, true, false);
-            bridge.Logout();
+                bridge.Login(storeManager1, password);
+                bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, true, false);
+                bridge.Logout();
 
-            Assert.IsTrue(result);
-            Cleanup();
+                Assert.IsTrue(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_5")]
         public void TestAddAnotherManagerWithWrongPermissions()
         {
-            Init();
-            createManagerWithRoles(false, false, true, false);
-            bridge.Login(storeManager1, password);
-
-            for (int i = 0; i < 2; i++)
+            try
             {
-                bool p1 = (i == 0) ? false : true;
-                for (int j = 0; j < 2; j++)
-                {
-                    bool p2 = (j == 0) ? false : true;
-                    for (int k = 0; k < 2; k++)
-                    {
-                        bool p3 = (k == 0) ? false : true;
-                        if (k==0 && j == 0 && i == 0)
-                        {
-                            continue;
-                        }
+                Init();
+                createManagerWithRoles(false, false, true, false);
+                bridge.Login(storeManager1, password);
 
-                        bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, true, true);
-                        Assert.IsFalse(result);
+                for (int i = 0; i < 2; i++)
+                {
+                    bool p1 = (i == 0) ? false : true;
+                    for (int j = 0; j < 2; j++)
+                    {
+                        bool p2 = (j == 0) ? false : true;
+                        for (int k = 0; k < 2; k++)
+                        {
+                            bool p3 = (k == 0) ? false : true;
+                            if (k == 0 && j == 0 && i == 0)
+                            {
+                                continue;
+                            }
+
+                            bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, true, true);
+                            Assert.IsFalse(result);
+                        }
                     }
                 }
-            }   
-            bridge.Logout();
-            Cleanup();
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_5")]
         public void TestCloseStoreSuccess()
         {
-            Init();
-            createManagerWithRoles(false, false, false, true);
+            try
+            {
+                Init();
+                createManagerWithRoles(false, false, false, true);
 
-            bridge.Login(storeManager1, password);
-            bool result = bridge.CloseStore(storeId);
-            bridge.Logout();
+                bridge.Login(storeManager1, password);
+                bool result = bridge.CloseStore(storeId);
+                bridge.Logout();
 
-            Assert.IsTrue(result);
-            Cleanup();
+                Assert.IsTrue(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
     }
 }

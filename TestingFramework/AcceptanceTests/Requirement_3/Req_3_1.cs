@@ -23,23 +23,35 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
         [TestCategory("Req_3")]
         public void LogoutAfterLogin()
         {
-            Init();
-            bool result = bridge.Login(user, password);
-            Assert.IsTrue(result);
+            try
+            {
+                Init();
+                bool result = bridge.Login(user, password);
+                Assert.IsTrue(result);
 
-            result = bridge.Logout();
-            Assert.IsTrue(result);
-            Cleanup();
+                result = bridge.Logout();
+                Assert.IsTrue(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_3")]
         public void LogoutWithNoLogin()
         {
-            Init();
-            bool result = bridge.Logout();
-            Assert.IsFalse(result);
-            Cleanup();
+            try
+            {
+                Init();
+                bool result = bridge.Logout();
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
     }
 }

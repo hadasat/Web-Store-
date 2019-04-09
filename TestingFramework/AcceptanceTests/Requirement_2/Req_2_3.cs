@@ -13,9 +13,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             addTestMemberToSystem();
         }
 
-        //[TestCleanup]
+        [TestCleanup]
         public override void Cleanup()
         {
+            bridge.Logout();
             removeTestMemberFromSystem();
         }
 
@@ -23,11 +24,17 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestCategory("Req_2")]
         public void LoginExistingUserCorrectly()
         {
+            try
+            {
             Init();
             bool result = bridge.Login(user, password);
 
             Assert.IsTrue(result);
-            Cleanup();
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
 
@@ -35,33 +42,55 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestCategory("Req_2")]
         public void LoginExistingUserInCorrectly()
         {
+            try
+            {
+
+            
             Init();
             bool result = bridge.Login(user, wrongPassword);
 
             Assert.IsFalse(result);
-            Cleanup();
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void LoginNonExistingUser()
         {
+            try
+            {
+
+            
             Init();
             bool result = bridge.Login(fakeUser, password);
 
             Assert.IsFalse(result);
-            Cleanup();
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void LoginIllegalUser()
         {
+            try {
+
             Init();
             bool result = bridge.Login(illegalUser, password);
 
             Assert.IsFalse(result);
-            Cleanup();
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
     }
 }

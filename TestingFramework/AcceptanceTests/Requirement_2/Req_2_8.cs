@@ -15,7 +15,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             addTestProductToSystem();
         }
 
-        //[TestCleanup]
+        [TestCleanup]
         public override void Cleanup()
         {
             removeTestProductFromSystem();
@@ -25,51 +25,75 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestCategory("Req_2")]
         public void BuyCartSuccess()
         {
-            Init();
-            bridge.AddProductToCart(productId, 1);
-            bool result = bridge.BuyShoppingBasket();
+            try
+            {
+                Init();
+                bridge.AddProductToCart(productId, 1);
+                bool result = bridge.BuyShoppingBasket();
 
-            Assert.IsTrue(result);
-            Cleanup();
+                Assert.IsTrue(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void BuyEmptyCart()
         {
-            Init();
-            bool result = bridge.BuyShoppingBasket();
+            try
+            {
+                Init();
+                bool result = bridge.BuyShoppingBasket();
 
-            Assert.IsFalse(result);
-            Cleanup();
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void BuyCartUnavailableProducts()
         {
-            Init();
-            BuyCartSuccess();
+            try
+            {
+                Init();
+                BuyCartSuccess();
 
-            bridge.AddProductToCart(productId, 200);
-            bool result = bridge.BuyShoppingBasket();
+                bridge.AddProductToCart(productId, 200);
+                bool result = bridge.BuyShoppingBasket();
 
-            Assert.IsFalse(result);
-            Cleanup();
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_2")]
         public void BuyCartIllegalProducts()
         {
-            Init();
-            BuyCartSuccess();
+            try
+            {
+                Init();
+                BuyCartSuccess();
 
-            bridge.AddProductToCart(-1, 1);
-            bool result = bridge.BuyShoppingBasket();
+                bridge.AddProductToCart(-1, 1);
+                bool result = bridge.BuyShoppingBasket();
 
-            Assert.IsFalse(result);
-            Cleanup();
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
     }
 }

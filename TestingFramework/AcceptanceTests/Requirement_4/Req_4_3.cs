@@ -15,7 +15,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             bridge.Login(storeOwner1, password);
         }
 
-        //[TestCleanup]
+        [TestCleanup]
         public override void Cleanup()
         {
             bridge.Logout();
@@ -27,31 +27,49 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         [TestCategory("Req_4")]
         public void AddStoreOwnerSuccess()
         {
-            Init();
-            bool result = bridge.AddStoreOwner(storeId, storeOwner2);
-            Assert.IsTrue(result);
-            Cleanup();
+            try
+            {
+                Init();
+                bool result = bridge.AddStoreOwner(storeId, storeOwner2);
+                Assert.IsTrue(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_4")]
         public void AddStoreOwnerDuplicate()
         {
-            Init();
-            AddStoreOwnerSuccess();
-            bool result = bridge.AddStoreOwner(storeId, storeOwner2);
-            Assert.IsFalse(result);
-            Cleanup();
+            try
+            {
+                Init();
+                AddStoreOwnerSuccess();
+                bool result = bridge.AddStoreOwner(storeId, storeOwner2);
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_4")]
         public void AddStoreOwnerIllegal()
         {
-            Init();
-            bool result = bridge.AddStoreOwner(storeId, ";");
-            Assert.IsFalse(result);
-            Cleanup();
+            try
+            {
+                Init();
+                bool result = bridge.AddStoreOwner(storeId, ";");
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
     }
 }

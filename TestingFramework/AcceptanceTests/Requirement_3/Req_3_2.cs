@@ -14,7 +14,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
             bool result = bridge.Login(storeOwner1, password);
         }
 
-        //[TestCleanup]
+        [TestCleanup]
         public override void Cleanup()
         {
             bool result = bridge.Logout();
@@ -25,12 +25,17 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
         [TestCategory("Req_3")]
         public void AddStoreSuccess()
         {
-            Init();
+            try
+            {
+                Init();
 
-            int result = bridge.AddStore(storeName);
-            Assert.AreNotEqual(result, -1);
-
-            Cleanup();
+                int result = bridge.AddStore(storeName);
+                Assert.AreNotEqual(result, -1);
+            }
+            finally
+            {
+                Cleanup();
+            }
             //TODO: add query for store to see that it was added (when this requirment is in the version)
         }
 
@@ -38,25 +43,35 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
         [TestCategory("Req_3")]
         public void AddIllegalStore()
         {
-            Init();
+            try
+            {
+                Init();
 
-            int result = bridge.AddStore(";");
-            Assert.AreEqual(result, -1);
-
-            Cleanup();
+                int result = bridge.AddStore(";");
+                Assert.AreEqual(result, -1);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_3")]
         public void AddDuplicateStore()
         {
-            Init();
+            try
+            {
+                Init();
 
-            AddStoreSuccess();
-            int result = bridge.AddStore(storeName);
-            Assert.AreEqual(result, -1);
-
-            Cleanup();
+                AddStoreSuccess();
+                int result = bridge.AddStore(storeName);
+                Assert.AreEqual(result, -1);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
     }
 }
