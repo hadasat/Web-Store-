@@ -38,7 +38,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
 
                 int tmp_amount;
                 int cart = bridge.GetShoppingCart(storeId);
-                Dictionary<int, int> products = bridge.GetProductsInShoppingCart(cart);
+                Dictionary<int, int> products = bridge.GetProductsInShoppingCart(storeId);
                 Assert.IsTrue(products.TryGetValue(productId, out tmp_amount));
                 Assert.AreEqual(tmp_amount, 1);
             }
