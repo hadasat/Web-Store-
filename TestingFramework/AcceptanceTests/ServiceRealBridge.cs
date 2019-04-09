@@ -117,7 +117,6 @@ namespace TestingFramework.AcceptanceTests
 
         public bool BuyShoppingBasket()
         {
-            //TODO: remove -1 when calling BuyShoppingBasket
             string msg = service.BuyShoppingBasket();
             JObject json = JObject.Parse(msg);
             return wasSuccessful(json);

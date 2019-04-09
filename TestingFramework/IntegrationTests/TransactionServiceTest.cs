@@ -19,49 +19,49 @@ namespace IntegrationTests
     //[TestClass()]
     public class TransactionServiceTest
     {
-        [TestInitialize]
-        public void Init()
-        {
-        }
+        //[TestInitialize]
+        //public void Init()
+        //{
+        //}
 
-        [TestCleanup]
-        public void Cealup()
-        {
-        }
+        //[TestCleanup]
+        //public void Cealup()
+        //{
+        //}
 
-        [TestMethod()]
-        [TestCategory("TransactionServiceTest")]
-        public void AddProductToBasketTest()
-        {
-            throw new NotImplementedException();
-        }
+        //[TestMethod()]
+        //[TestCategory("TransactionServiceTest")]
+        //public void AddProductToBasketTest()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        [TestMethod()]
-        [TestCategory("TransactionServiceTest")]
-        public void BuyShoppingBasketTest()
-        {
-            throw new NotImplementedException();
-        }
+        //[TestMethod()]
+        //[TestCategory("TransactionServiceTest")]
+        //public void BuyShoppingBasketTest()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        [TestMethod()]
-        [TestCategory("TransactionServiceTest")]
-        public void GetShoppingCartTest()
-        {
-            throw new NotImplementedException();
-        }
+        //[TestMethod()]
+        //[TestCategory("TransactionServiceTest")]
+        //public void GetShoppingCartTest()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        [TestMethod()]
-        [TestCategory("TransactionServiceTest")]
-        public void GetShoppingBasketTest()
-        {
-            throw new NotImplementedException();
-        }
+        //[TestMethod()]
+        //[TestCategory("TransactionServiceTest")]
+        //public void GetShoppingBasketTest()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        [TestMethod()]
-        [TestCategory("TransactionServiceTest")]
-        public void SetProductAmountInCartTest()
-        {
-            throw new NotImplementedException();
-        }
+        //[TestMethod()]
+        //[TestCategory("TransactionServiceTest")]
+        //public void SetProductAmountInCartTest()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
