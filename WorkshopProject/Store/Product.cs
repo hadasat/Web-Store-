@@ -31,6 +31,7 @@ namespace WorkshopProject
             this.storeId = storeId;
             discount = new DiscountPolicy();
             this.description = desc;
+            this.amount = amount;
         }
 
         public int getId()
