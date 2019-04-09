@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,9 @@ namespace WorkshopProject.System_Service
         //Those fileds are temporary
         Boolean loggedIn;
         User user;
+
+        private string adminUsername = "Admin";
+        private string adminPassword = "Admin";
 
         public SystemServiceImpl()
         {
@@ -38,7 +42,7 @@ namespace WorkshopProject.System_Service
         public string addDiscountPolicy(int storeId)
         {
             if (!loggedIn)
-                throw new Exception("Not logged in");
+                return notLoggedInError();
             return storeS.addDiscountPolicy(storeId);
         }
 
@@ -50,14 +54,14 @@ namespace WorkshopProject.System_Service
         public string AddProductToStock(int storeId, int productId, int amount)
         {
             if (!loggedIn)
-                throw new Exception("Not logged in");
+                return notLoggedInError();
             return storeS.AddProductToStock(storeId, productId, amount);
         }
 
         public string AddProductToStore(int storeId, string name, string desc, double price, string category)
         {
             if (!loggedIn)
-                throw new Exception("Not logged in");
+                return notLoggedInError();
             return storeS.AddProductToStore(storeId, name, desc, price, category);
         }
 
@@ -69,21 +73,21 @@ namespace WorkshopProject.System_Service
         public string AddStore(string storeName)
         {
             if (!loggedIn)
-                throw new Exception("Not logged in");
+                return notLoggedInError();
             return storeS.AddStore(storeName);
         }
 
         public string AddStoreManager(int storeId, string user, string roles)
         {
             if (!loggedIn)
-                throw new Exception("Not logged in");
+                return notLoggedInError();
             return userS.AddStoreManager(storeId, user, roles);    ///TODO:::::::::::::::::;///////////// :))))))
         }
 
         public string AddStoreOwner(int storeId, string user)
         {
             if (!loggedIn)
-                throw new Exception("Not logged in");
+                return notLoggedInError();
             return userS.AddStoreOwner(storeId, user);
         }
 
@@ -97,14 +101,14 @@ namespace WorkshopProject.System_Service
         public string ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount)
         {
             if (!loggedIn)
-                throw new Exception("Not logged in");
+                return notLoggedInError();
             return storeS.ChangeProductInfo(storeId, productId, name, desc, price, category, amount);
         }
 
         public string closeStore(int storeID)
         {
             if (!loggedIn)
-                throw new Exception("Not logged in");
+                return notLoggedInError();
             return storeS.CloseStore(storeID);
         }
 
@@ -120,7 +124,7 @@ namespace WorkshopProject.System_Service
 
         public string login(string username, string password)
         {
-            loggedIn = true;
+            loggedIn = true; //TODO: why does the field turn to TRUE even if we fail ?!?!
             String toReturn =  userS.login(username, password);
             updateMember(userS.user);
             return toReturn;
@@ -129,7 +133,7 @@ namespace WorkshopProject.System_Service
         public string logout()
         {
             if (!loggedIn)
-                throw new Exception("Not logged in");
+                return notLoggedInError();
             loggedIn = false;
             String toReturn =  userS.logout();
             updateMember(new User());
@@ -144,35 +148,35 @@ namespace WorkshopProject.System_Service
         public string removeDiscountPolicy(int storeId)
         {
             if (!loggedIn)
-                throw new Exception("Not logged in");
+                return notLoggedInError();
             return storeS.removeDiscountPolicy(storeId);
         }
 
         public string RemoveProductFromStore(int storeId, int productId)
         {
             if (!loggedIn)
-                throw new Exception("Not logged in");
+                return notLoggedInError();
             return storeS.RemoveProductFromStore(storeId, productId);
         }
 
         public string removePurchasingPolicy(int storeId)
         {
             if (!loggedIn)
-                throw new Exception("Not logged in");
+                return notLoggedInError();
             return storeS.removePurchasingPolicy(storeId);
         }
 
         public string RemoveStoreManager(int storeId, string user)
         {
             if (!loggedIn)
-                throw new Exception("Not logged in");
+                return notLoggedInError();
             return userS.RemoveStoreManager(storeId, user);
         }
 
         public string RemoveUser(string user)
         {
             if (!loggedIn)
-                throw new Exception("Not logged in");
+                return notLoggedInError();
             return userS.RemoveUser(user);
         }
 
@@ -185,5 +189,18 @@ namespace WorkshopProject.System_Service
         {
             return transactionS.SetProductAmountInCart(productId, amount);
         }
+
+        //jonathan
+        private string notLoggedInError()
+        {
+            Message msg = new Message("User not logged in");
+            return JsonConvert.SerializeObject(msg);
+        }
+
+        //jonathan - no idea how SystemAdmin object can be added
+        //private string addAdmin()
+        //{
+        //    return Register(adminUsername, adminPassword);
+        //}
     }
 }

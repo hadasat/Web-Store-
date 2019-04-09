@@ -11,8 +11,8 @@ namespace TestingFramework.AcceptanceTests
         protected IServiceBridge bridge  = Driver.getBridge();
         protected IGodObject godObject = new GodObject();
 
-        protected string adminUser = "admin";
-        protected string adminPass = "admin";
+        protected string adminUser = "Admin";
+        protected string adminPass = "Admin";
  
         protected int userId;
         protected string user = "User";
@@ -84,7 +84,7 @@ namespace TestingFramework.AcceptanceTests
         {
             try
             {
-                storeOwner1Id = godObject.addMember(user, password);
+                storeOwner1Id = godObject.addMember(storeOwner1, password);
                 storeId = godObject.addStore(storeName, storeRank, storeOwner1Id);
             }
             catch (Exception e)
@@ -110,7 +110,7 @@ namespace TestingFramework.AcceptanceTests
         {
             try
             {
-                storeOwner2Id = godObject.addMember(user, password);
+                storeOwner2Id = godObject.addMember(storeOwner2, password);
                 storeId = godObject.addStore(storeName, storeRank, storeOwner2Id);
             }
             catch (Exception e)

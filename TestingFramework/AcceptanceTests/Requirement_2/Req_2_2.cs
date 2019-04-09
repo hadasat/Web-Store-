@@ -25,6 +25,8 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
 
             result = bridge.Login(user, password);
             Assert.IsTrue(result);
+
+            Cleanup();
         }
 
         [TestMethod]
@@ -35,6 +37,8 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             bool result = bridge.Register(user, password);
 
             Assert.IsFalse(result);
+
+            Cleanup();
         }
 
         [TestMethod]
@@ -56,6 +60,8 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             result = bridge.Register(user, password);
 
             Assert.IsFalse(result);
+
+            Cleanup();
         }
     }
 }
