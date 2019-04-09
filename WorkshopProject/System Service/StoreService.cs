@@ -81,6 +81,7 @@ namespace WorkshopProject.System_Service
             try
             {
                 sanitizeName(name);
+                checkPrice(price);
             }
             catch (Exception e)
             {
@@ -181,6 +182,15 @@ namespace WorkshopProject.System_Service
         }
 
         //jonathan
+        private bool checkPrice(double price)
+        {
+            if (price <= 0)
+            {
+                throw new Exception("product price must be positive");
+            }
+            return true;
+        }
+
         private bool sanitizeName(string storeName)
         {
         string[] illegalChars = { ";" };
