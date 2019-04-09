@@ -78,6 +78,14 @@ namespace WorkshopProject.System_Service
 
         internal string AddProductToStore(int storeId, string name, string desc, double price, string category)
         {
+            try
+            {
+                sanitizeName(name);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
             Store store = WorkShop.getStore(storeId);
             if (store == null)
                 return generateMessageFormatJason("Store does not exist");
@@ -91,6 +99,14 @@ namespace WorkshopProject.System_Service
 
         internal string AddStore(string storeName)
         {
+            try
+            {
+                sanitizeName(storeName);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
             int id = WorkShop.createNewStore(storeName, 0, true, (Member)user);
             //return successJason(); //All Valid
             //jonathan - we need the id of the new store, not a message
@@ -163,6 +179,20 @@ namespace WorkshopProject.System_Service
             throw new NotImplementedException();
         }
 
-        
+        //jonathan
+        private bool sanitizeName(string storeName)
+        {
+        string[] illegalChars = { ";" };
+            foreach (string c in illegalChars)
+            {
+                if (storeName.Contains(c))
+                {
+                    throw new Exception("name contains illegal charachters");
+                    //return false;
+                }
+            }
+            return true;
+        }
+
     }
 }
