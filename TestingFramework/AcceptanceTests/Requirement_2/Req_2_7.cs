@@ -31,8 +31,8 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         [TestCategory("Req_2")]
         public void GetShoppingCart()
         {
-            Init();
             AddProductToCart();
+            Init();
             int result = bridge.GetShoppingCart(storeId);
             Assert.AreNotEqual(result, -1);
             cartId = result;

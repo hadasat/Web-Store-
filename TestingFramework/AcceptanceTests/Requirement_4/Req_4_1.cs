@@ -55,8 +55,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         [TestCategory("Req_4")]
         public void RemoveNewProductSuccess()
         {
-            Init();
             AddNewProductSuccess();
+
+            Init();
             bool result = bridge.RemoveProductFromStore(storeId, productId);
             Assert.IsTrue(result);
             Cleanup();
