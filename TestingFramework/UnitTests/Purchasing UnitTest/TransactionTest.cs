@@ -39,24 +39,31 @@ namespace WorkshopProject.Tests
         [TestCategory("Unit test - TransactionTest")]
         public void purchaseTest()
          {
+            try
+            {
+                Init();
+                //chack if the purchase sucesess
+                int transactionId = Transaction.purchase(user);
+                Assert.IsTrue(transactionId > 0, "fail to purchase legal transaction");
 
-            //chack if the purchase sucesess
-            int transactionId = Transaction.purchase(user);
-            Assert.IsTrue(transactionId > 0, "fail to purchase legal transaction");
+                //check if the product remove from user
+                int productAmount = user.shoppingBasket.getProductAmount(p[0]);
+                Assert.AreEqual(productAmount, 0, "products stay in user basket");
 
-            //check if the product remove from user
-            int productAmount = user.shoppingBasket.getProductAmount(p[0]);
-            Assert.AreEqual(productAmount, 0,"products stay in user basket");
-
-            //check purchase fail becouse basket empty
-            transactionId = Transaction.purchase(user);
-            Assert.IsTrue(transactionId == -1, "fail to unpurchase ilegal transaction");
+                //check purchase fail becouse basket empty
+                transactionId = Transaction.purchase(user);
+                Assert.IsTrue(transactionId == -1, "fail to unpurchase ilegal transaction");
 
 
-            Product p5 = new Product( "five", 40, "Category.Categories.category1", "g", 40,40, 40);
-            user.shoppingBasket.addProduct(store1,p5, 10);
-            //check transction number grow
-            Assert.IsTrue(Transaction.purchase(user) > transactionId, "fail to update transaction id");
+                Product p5 = new Product("five", 40, "Category.Categories.category1", "g", 40, 40, 40);
+                user.shoppingBasket.addProduct(store1, p5, 10);
+                //check transction number grow
+                Assert.IsTrue(Transaction.purchase(user) > transactionId, "fail to update transaction id");
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
     }

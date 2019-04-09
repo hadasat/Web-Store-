@@ -18,6 +18,7 @@ namespace WorkshopProject.Tests
         int ownerId;
         int storeId;
         Store store;
+
         //[TestInitialize]
         public void Init()
         {
@@ -35,7 +36,8 @@ namespace WorkshopProject.Tests
         public void Cealup()
         {
             god.removeStore(storeId, ownerId);
-            god.removeMember(ownerId);
+            god.removeMember("username");
+            god.removeMember("some member");
         }
 
         [TestMethod()]

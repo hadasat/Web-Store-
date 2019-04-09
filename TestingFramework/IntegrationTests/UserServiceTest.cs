@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IntegrationTests
 {
-    [TestClass()]
+    //[TestClass()]
     public class UserServiceTest
     {
 
