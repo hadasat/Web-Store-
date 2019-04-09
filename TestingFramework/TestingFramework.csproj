@@ -79,6 +79,9 @@
     <Compile Include="AcceptanceTests\Requirement_6\Req_6_2.cs" />
     <Compile Include="AcceptanceTests\ServiceProxyBridge.cs" />
     <Compile Include="AcceptanceTests\ServiceRealBridge.cs" />
+    <Compile Include="IntegrationTests\StoreServiceTest.cs" />
+    <Compile Include="IntegrationTests\TransactionServiceTest.cs" />
+    <Compile Include="IntegrationTests\UserServiceTest.cs" />
     <Compile Include="UnitTests\Examples\ClassForTestExampleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\Purchasing UnitTest\ShoppingBasketTest.cs" />
@@ -96,9 +99,7 @@
       <Name>WorkshopProject</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IntegrationTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

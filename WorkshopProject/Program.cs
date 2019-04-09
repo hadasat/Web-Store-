@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Shopping;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using Tansactions;
 using Users;
 using WorkshopProject.Examples;
+using WorkshopProject.System_Service;
 
 namespace WorkshopProject
 {
@@ -30,7 +32,30 @@ namespace WorkshopProject
             user.shoppingBasket.addProduct(store1, p3, 20);
             user.shoppingBasket.addProduct(store2, p4, 20);
 
-            Console.WriteLine(Transaction.purchase(user));
+            //Console.WriteLine(Transaction.purchase(user));
+            Dictionary<int, int> ret = new Dictionary<int, int>();
+            ShoppingCart sc = user.shoppingBasket.carts[store1];
+            Console.WriteLine(sc.setProductAmount(p1, -1));
+            JsonShoppingCart jsc = new JsonShoppingCart(user.shoppingBasket.carts[store1]);
+            string msg = JsonConvert.SerializeObject(jsc,Formatting.Indented);
+            JObject json = JObject.Parse(msg);
+            JArray productsAndAmounts = (JArray)json["products"];
+
+            SystemServiceImpl f = new SystemServiceImpl();
+           
+            //f.AddProductToBasket(p1, 20);
+
+
+
+            foreach (JObject pair in productsAndAmounts)
+            {
+                int productId = (int)pair["product"]["id"];
+                int amount = (int)pair["amount"];
+                Console.WriteLine("pId: " + productId + " amount: " +amount + "\n");
+                ret.Add(productId, amount);
+            }
+            
+
             Console.ReadLine();
         }
 

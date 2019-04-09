@@ -32,7 +32,6 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         public void GetShoppingCart()
         {
             AddProductToCart();
-
             int result = bridge.GetShoppingCart(storeId);
             Assert.AreNotEqual(result, -1);
             cartId = result;
