@@ -89,12 +89,14 @@ namespace WorkshopProject.System_Service
             Store store = WorkShop.getStore(storeId);
             if (store == null)
                 return generateMessageFormatJason("Store does not exist");
-
-            if (store.addProduct(user, name, desc, price, category) == -1)
+            int id = store.addProduct(user, name, desc, price, category);
+            if (id == -1)
                 return generateMessageFormatJason("User does not have permission");
 
-            return successJason(); //All Valid
-
+            //return successJason(); //All Valid
+            //jonathan - we need the id of the new store, not a message
+            IdMessage idMsg = new IdMessage(id);
+            return JsonConvert.SerializeObject(idMsg);
         }
 
         internal string AddStore(string storeName)
@@ -110,7 +112,6 @@ namespace WorkshopProject.System_Service
             int id = WorkShop.createNewStore(storeName, 0, true, (Member)user);
             //return successJason(); //All Valid
             //jonathan - we need the id of the new store, not a message
-
             IdMessage idMsg = new IdMessage(id);
             return JsonConvert.SerializeObject(idMsg);
         }
