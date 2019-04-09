@@ -17,7 +17,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         //[TestInitialize]
         public override void Init()
         {
-            addTestStoreToSystem();
+            //addTestStoreToSystem();
             addTestProductToSystem();
         }
 
@@ -25,7 +25,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         public override void Cleanup()
         {
             removeTestProductFromSystem();
-            removeTestStoreFromSystem();
+            //removeTestStoreFromSystem();
         }
 
 
