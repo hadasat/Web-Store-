@@ -37,7 +37,7 @@ namespace WorkshopProject.System_Service
             {
                 generateMessageFormatJason(exception.ToString());
             }
-            throw new NotImplementedException();
+            return successJason();
         }
 
         private Roles createRole(string roles)
