@@ -74,10 +74,12 @@ namespace WorkshopProject.System_Service
         {
             try
             {
-                user.loginMember(username, password);
+                Member member = user.loginMember(username, password);
+                user = member;
             }
             catch (Exception exception)
             {
+                //TODO change return format
                 generateMessageFormatJason(exception.ToString());
             }
             return successJason();

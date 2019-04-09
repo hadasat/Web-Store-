@@ -30,7 +30,8 @@ namespace WorkshopProject.System_Service
         {
             storeS.user = member;
             transactionS.user = member;
-            userS.user = member;
+            user = member;
+            //userS.user = member;
             this.user = member;
         }
 
