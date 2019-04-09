@@ -14,7 +14,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             bridge.Login(storeOwner1, password);
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public override void Cleanup()
         {
             bridge.Logout();
@@ -76,7 +76,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             try
             {
                 Init();
-                int result = bridge.AddProductToStore(storeId, productName, productDesc, productPrice, productCategory);
+                int productId = bridge.AddProductToStore(storeId, productName, productDesc, productPrice, productCategory);
                 bool result2 = bridge.RemoveProductFromStore(storeId, productId);
                 Assert.IsTrue(result2);
             }
@@ -129,7 +129,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             {
                 Init();
 
-                int result = bridge.AddProductToStore(storeId, productName, productDesc, productPrice, productCategory);
+                int productId = bridge.AddProductToStore(storeId, productName, productDesc, productPrice, productCategory);
 
                 bool result2 = bridge.ChangeProductInfo(storeId, productId, "", "", 50.0, "", -1);
                 Assert.IsTrue(result2);
