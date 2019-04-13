@@ -37,7 +37,7 @@ namespace WorkshopProject.System_Service
             {
                 generateMessageFormatJason(exception.ToString());
             }
-            throw new NotImplementedException();
+            return successJason();
         }
 
         private Roles createRole(string roles)
@@ -65,7 +65,7 @@ namespace WorkshopProject.System_Service
                 ((Member)user).addManager(username, ownerRoles, storeId);
             } catch(Exception exception)
             {
-                generateMessageFormatJason(exception.ToString());
+                return generateMessageFormatJason(exception.ToString());
             }
             return successJason();
         }
@@ -80,7 +80,7 @@ namespace WorkshopProject.System_Service
             catch (Exception exception)
             {
                 //TODO change return format
-                generateMessageFormatJason(exception.ToString());
+                return generateMessageFormatJason(exception.ToString());
             }
             return successJason();
         }
@@ -95,7 +95,7 @@ namespace WorkshopProject.System_Service
             }
             catch (Exception exception)
             {
-                generateMessageFormatJason(exception.ToString());
+                return generateMessageFormatJason(exception.ToString());
             }
             return successJason();
         }
@@ -108,7 +108,7 @@ namespace WorkshopProject.System_Service
             }
             catch (Exception exception)
             {
-                generateMessageFormatJason(exception.ToString());
+                return generateMessageFormatJason(exception.ToString());
             }
             
             return successJason();
@@ -124,7 +124,7 @@ namespace WorkshopProject.System_Service
             }
             catch (Exception exception)
             {
-                generateMessageFormatJason(exception.ToString());
+                return generateMessageFormatJason(exception.ToString());
             }
             return successJason();
         }
@@ -139,7 +139,7 @@ namespace WorkshopProject.System_Service
             }
             catch (Exception exception)
             {
-                generateMessageFormatJason(exception.ToString());
+                return generateMessageFormatJason(exception.ToString());
             }
             return successJason();
         }

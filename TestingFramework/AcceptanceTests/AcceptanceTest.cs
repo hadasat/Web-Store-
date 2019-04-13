@@ -11,8 +11,8 @@ namespace TestingFramework.AcceptanceTests
         protected IServiceBridge bridge  = Driver.getBridge();
         protected IGodObject godObject = new GodObject();
 
-        protected string adminUser = "admin";
-        protected string adminPass = "admin";
+        protected string adminUser = "Admin";
+        protected string adminPass = "Admin";
  
         protected int userId;
         protected string user = "User";
@@ -72,7 +72,7 @@ namespace TestingFramework.AcceptanceTests
         {
             try
             {
-                godObject.removeMember(userId);
+                godObject.removeMember(user);
             }
             catch (Exception e)
             {
@@ -84,12 +84,16 @@ namespace TestingFramework.AcceptanceTests
         {
             try
             {
-                storeOwner1Id = godObject.addMember(user, password);
-                storeId = godObject.addStore(storeName, storeRank, storeOwner1Id);
+                storeOwner1Id = godObject.addMember(storeOwner1, password);
+                
             }
             catch (Exception e)
             {
                 Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
+            finally
+            {
+                storeId = godObject.addStore(storeName, storeRank, storeOwner1Id);
             }
         }
 
@@ -98,11 +102,15 @@ namespace TestingFramework.AcceptanceTests
             try
             {
                 godObject.removeStore(storeId, storeOwner1Id);
-                godObject.removeMember(storeOwner1Id);
+                
             }
             catch (Exception e)
             {
                 Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
+            finally
+            {
+                godObject.removeMember(storeOwner1);
             }
         }
 
@@ -110,12 +118,15 @@ namespace TestingFramework.AcceptanceTests
         {
             try
             {
-                storeOwner2Id = godObject.addMember(user, password);
-                storeId = godObject.addStore(storeName, storeRank, storeOwner2Id);
+                storeOwner2Id = godObject.addMember(storeOwner2, password);
             }
             catch (Exception e)
             {
                 Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
+            finally
+            {
+                storeId = godObject.addStore(storeName, storeRank, storeOwner2Id);
             }
         }
 
@@ -124,11 +135,14 @@ namespace TestingFramework.AcceptanceTests
             try
             {
                 godObject.removeStore(storeId, storeOwner2Id);
-                godObject.removeMember(storeOwner2Id);
             }
             catch (Exception e)
             {
                 Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
+            finally
+            {
+                godObject.removeMember(storeOwner2);
             }
         }
         
@@ -150,7 +164,7 @@ namespace TestingFramework.AcceptanceTests
         {
             try
             {
-                godObject.removeMember(storeManager2Id);
+                godObject.removeMember(storeManager2);
             }
             catch (Exception e)
             {
@@ -175,7 +189,7 @@ namespace TestingFramework.AcceptanceTests
         {
             try
             {
-                godObject.removeMember(storeManager2Id);
+                godObject.removeMember(storeManager2);
             }
             catch (Exception e)
             {
@@ -212,11 +226,14 @@ namespace TestingFramework.AcceptanceTests
             try
             {
                 addTestStoreToSystem();
-                productId = godObject.addProductToStore(storeId, productName, productPrice, productCategory, productDesc, productKeyword, productAmount, productRank);
             }
             catch (Exception e)
             {
                 Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
+            finally
+            {
+                productId = godObject.addProductToStore(storeId, productName, productPrice, productCategory, productDesc, productKeyword, productAmount, productRank);
             }
         }
 
@@ -225,11 +242,14 @@ namespace TestingFramework.AcceptanceTests
             try
             {
                 godObject.removeProductFromStore(storeId, productId);
-                removeTestStoreFromSystem();
             }
             catch (Exception e)
             {
                 Logger.Log("testFile", logLevel.DEBUG, e.Message);
+            }
+            finally
+            {
+                removeTestStoreFromSystem();
             }
         }
     }

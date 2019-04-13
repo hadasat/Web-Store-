@@ -20,7 +20,7 @@ namespace Users.Tests
         Member m;
 
 
-        [TestInitialize]
+        //[TestInitialize]
         public void Init()
         {
             username = "username";
@@ -28,7 +28,7 @@ namespace Users.Tests
             user = new User();
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public void Cealup()
         {
             try
@@ -102,7 +102,7 @@ namespace Users.Tests
         Store store;
 
 
-        [TestInitialize]
+        //[TestInitialize]
         public void Init()
         {
             username = "username";
@@ -118,7 +118,7 @@ namespace Users.Tests
             //store = WorkShop.getStore(storeId);
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public void Cealup()
         {
             try
@@ -138,8 +138,17 @@ namespace Users.Tests
         [TestCategory("TestMember")]
         public void logOut_Test()
         {
-            //logout currently not yet implemented
-            Assert.IsTrue(true);
+            try
+            {
+                Init();
+                //logout currently not yet implemented
+                Assert.IsTrue(true);
+            }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
 
@@ -147,28 +156,47 @@ namespace Users.Tests
         [TestCategory("TestMember")]
         public void addStore_Test()
         {
-            Store s = new Store(1, "store", 1, true);
-            member1.addStore(s);
-            Assert.IsTrue(member1.isStoresManagers());
-            Assert.IsTrue(member1.getStoreManagerOb(s).GetStore().Id == 1);
+            try
+            {
+                Init();
+                Store s = new Store(1, "store", 1, true);
+                member1.addStore(s);
+                Assert.IsTrue(member1.isStoresManagers());
+                Assert.IsTrue(member1.getStoreManagerOb(s).GetStore().Id == 1);
+            }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
         [TestMethod()]
         [TestCategory("TestMember")]
         public void closeStore_Test()
         {
-            Store s = new Store(1, "store", 1, true);
-            member1.addStore(s);
-            member1.closeStore(s);
-            Assert.IsFalse(member1.isStoresManagers());
             try
             {
+                Init();
+                Store s = new Store(1, "store", 1, true);
+                member1.addStore(s);
                 member1.closeStore(s);
-                Assert.IsTrue(false);
-            } catch (Exception ex)
-            {
-                Assert.IsTrue(true);
+                Assert.IsFalse(member1.isStoresManagers());
+                try
+                {
+                    member1.closeStore(s);
+                    Assert.IsTrue(false);
+                }
+                catch (Exception ex)
+                {
+                    Assert.IsTrue(true);
+                }
             }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
 
@@ -176,28 +204,46 @@ namespace Users.Tests
         [TestCategory("TestMember")]
         public void addManager_Test()
         {
-            Store s = new Store(1, "store", 1, true);
-            member1.addStore(s);
+            try
+            {
+                Init();
+                Store s = new Store(1, "store", 1, true);
+                member1.addStore(s);
 
-            Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true);
-            member1.addManager("username2", ownerRoles, s);
+                Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true);
+                member1.addManager("username2", ownerRoles, s);
 
-            Assert.IsTrue(member2.isStoresManagers());
-            Assert.IsTrue(member2.getStoreManagerOb(s).GetStore().Id == 1);
+                Assert.IsTrue(member2.isStoresManagers());
+                Assert.IsTrue(member2.getStoreManagerOb(s).GetStore().Id == 1);
+            }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
         [TestMethod()]
         [TestCategory("TestMember")]
         public void addManager2_Test()
         {
-            Store s = new Store(1, "store", 1, true);
-            member1.addStore(s);
+            try
+            {
+                Init();
+                Store s = new Store(1, "store", 1, true);
+                member1.addStore(s);
 
-            Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true);
-            member1.addManager("username2", ownerRoles, 1);
+                Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true);
+                member1.addManager("username2", ownerRoles, 1);
 
-            Assert.IsTrue(member2.isStoresManagers());
-            Assert.IsTrue(member2.getStoreManagerOb(s).GetStore().Id == 1);
+                Assert.IsTrue(member2.isStoresManagers());
+                Assert.IsTrue(member2.getStoreManagerOb(s).GetStore().Id == 1);
+            }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
 
@@ -205,12 +251,21 @@ namespace Users.Tests
         [TestCategory("TestMember")]
         public void removeManager_Test()
         {
-            Store s = new Store(1, "store", 1, true);
-            member1.addStore(s);
-            Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true);
-            member1.addManager("username2", ownerRoles, s);
-            member1.removeManager("username2", s);
-            Assert.IsFalse(member2.isStoresManagers());
+            try
+            {
+                Init();
+                Store s = new Store(1, "store", 1, true);
+                member1.addStore(s);
+                Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true);
+                member1.addManager("username2", ownerRoles, s);
+                member1.removeManager("username2", s);
+                Assert.IsFalse(member2.isStoresManagers());
+            }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
 
@@ -228,7 +283,7 @@ namespace Users.Tests
         User user;
         Member member;
 
-        [TestInitialize]
+        //[TestInitialize]
         public void Init()
         {
             admin = new SystemAdmin("admin", 1);
@@ -237,7 +292,7 @@ namespace Users.Tests
             member = user.loginMember("username", "password");
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public void Cealup()
         {
             //this method is called AFTER each test
@@ -247,20 +302,29 @@ namespace Users.Tests
         [TestCategory("TestSystemAdmin")]
         public void RemoveUser_test()
         {
-            Store s = new Store(1, "store", 1, true);
-            member.addStore(s);
-
-            admin.RemoveUser("username");
-
             try
             {
-                ConnectionStubTemp.getMember("username");
-                Assert.IsTrue(false);
+                Init();
+                Store s = new Store(1, "store", 1, true);
+                member.addStore(s);
+
+                admin.RemoveUser("username");
+
+                try
+                {
+                    ConnectionStubTemp.getMember("username");
+                    Assert.IsTrue(false);
+                }
+                catch (Exception ex)
+                {
+                    Assert.IsTrue(true);
+                }
             }
-            catch (Exception ex)
+            finally
             {
-                Assert.IsTrue(true);
+                Cealup();
             }
+
         }
     }
 }

@@ -30,6 +30,8 @@ namespace WorkshopProject.System_Service
 
         bool removeMember(int memberId);
 
+        bool removeMember(string member);
+
         bool removeStore(int storeId, int ownerId);
 
         bool removeManagerFromStore(int storeId, int ManagerId);    //manager or owner 
@@ -127,6 +129,15 @@ namespace WorkshopProject.System_Service
             ConnectionStubTemp.members.Remove(memberId);
             ConnectionStubTemp.mapIDUsermane.Remove(username);
             return true;
+        }
+
+        public bool removeMember(string member)
+        {
+            int id;
+            bool ret = ConnectionStubTemp.mapIDUsermane.TryGetValue(member, out id);
+            ConnectionStubTemp.mapIDUsermane.Remove(member);
+            ConnectionStubTemp.members.Remove(id);     
+            return ret;
         }
 
         public bool removeProductFromStock(int storeId, int ProductId, int amountToRemove)

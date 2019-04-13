@@ -7,7 +7,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
     [TestClass]
     public class Req_4_4 : AcceptanceTest
     {
-        [TestInitialize]
+        //[TestInitialize]
         public override void Init()
         {
             addTestStoreOwner1ToSystem();
@@ -28,34 +28,58 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         [TestCategory("Req_4")]
         public void RemoveStoreOwnerSuccess()
         {
-            bridge.Login(storeOwner1, password);
-            bridge.AddStoreOwner(storeId, storeOwner2);
+            try
+            {
+                Init();
+                bridge.Login(storeOwner1, password);
+                bridge.AddStoreOwner(storeId, storeOwner2);
 
-            bool result = bridge.RemoveStoreOwner(storeId, storeOwner2);
-            Assert.IsTrue(result);
+                bool result = bridge.RemoveStoreOwner(storeId, storeOwner2);
+                Assert.IsTrue(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_4")]
         public void RemoveStoreOwnerWhoIsntChild()
         {
-            bridge.Login(storeOwner1, password);
-            bridge.AddStoreOwner(storeId, storeOwner2);
-            bridge.Logout();
-            bridge.Login(storeOwner2, password);
-            bool result = bridge.RemoveStoreOwner(storeId, storeOwner1);
-            Assert.IsFalse(result);
+            try
+            {
+                Init();
+                bridge.Login(storeOwner1, password);
+                bridge.AddStoreOwner(storeId, storeOwner2);
+                bridge.Logout();
+                bridge.Login(storeOwner2, password);
+                bool result = bridge.RemoveStoreOwner(storeId, storeOwner1);
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         [TestMethod]
         [TestCategory("Req_4")]
         public void RemoveStoreOwnerIllegal()
         {
-            bridge.Login(storeOwner1, password);
-            bridge.AddStoreOwner(storeId, storeOwner2);
+            try
+            {
+                Init();
+                bridge.Login(storeOwner1, password);
+                bridge.AddStoreOwner(storeId, storeOwner2);
 
-            bool result = bridge.RemoveStoreOwner(storeId, ";");
-            Assert.IsFalse(result);
+                bool result = bridge.RemoveStoreOwner(storeId, ";");
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
     }
