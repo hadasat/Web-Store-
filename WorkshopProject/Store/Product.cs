@@ -10,7 +10,7 @@ namespace WorkshopProject
     public class Product
     {
         public static int idGenerator = 0;
-        public int id { get; } 
+        public int id { get; set; } 
         public string name;
         private double price;
         public string category;
@@ -34,6 +34,10 @@ namespace WorkshopProject
             this.amount = amount;
         }
 
+
+
+        public Product() { }
+
         public int getId()
         {
             return id;
@@ -51,6 +55,13 @@ namespace WorkshopProject
             this.price = newPrice;
         }
 
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Product))
+                return false;
+            Product p = (Product)obj;
+            return (id == p.id && storeId == p.storeId);
+        }
 
 
 

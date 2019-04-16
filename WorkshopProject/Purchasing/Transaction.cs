@@ -34,6 +34,7 @@ namespace Tansactions
                 ShoppingCart currShoppingCart = c.Value;
 
                 //check if the item in the stock and add the price
+                
                 Dictionary<Product, int> itemsPerStore = currShoppingCart.getProducts();
                 foreach (KeyValuePair<Product, int> item in itemsPerStore)
                 {
@@ -42,15 +43,15 @@ namespace Tansactions
                     
                     //buy from store
                     Store.callback currCallBack = currStore.buyProduct(currProduct, currAmount);
-                    callbacks.Add(currCallBack);
                     //store disconfirm the purchase
                     if (currCallBack == null)
-                        return -1;
-
+                        return -2;
+                    callbacks.Add(currCallBack);
                     //list of product to remove from basket
                     purchasedProducts.Add(currProduct,currStore);
                     totalPrice += calcPrice(currProduct, currAmount);
                 }
+                
             }
             //parches 
             //send products
@@ -59,7 +60,7 @@ namespace Tansactions
             {
                 foreach (Store.callback call in callbacks)
                     call();
-                return -1;
+                return -3;
             }
             //clean purches product from basket
             else

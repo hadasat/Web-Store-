@@ -5,9 +5,9 @@ namespace Shopping
 {
     public class ShoppingBasket
     {
-        public Dictionary<Store, ShoppingCart> carts { get; }
+        public Dictionary<Store, ShoppingCart> carts;
         public static int idBasketCounter = 0;
-        public int id {get;}
+        public int id;
 
         public ShoppingBasket()
         {
@@ -15,6 +15,19 @@ namespace Shopping
             carts = new Dictionary<Store, ShoppingCart>();
         }
 
+        public ShoppingBasket(JsonShoppingBasket basket)
+        {
+            if (basket != null)
+            {
+                id = basket.id;
+                carts = new Dictionary<Store, ShoppingCart>();
+                foreach (JsonShoppingBasketValue c in basket.shoppingCarts)
+                {
+                    ShoppingCart cart = new ShoppingCart(c.shoppingCart);
+                    carts.Add(c.store, cart);
+                }
+            }
+        }
 
         public bool setProductAmount(Store store, Product product, int amount)
         {
@@ -36,7 +49,7 @@ namespace Shopping
             {
                 if (!carts.ContainsKey(store))
                     carts.Add(store, new ShoppingCart());
-                return carts[store].addProducts(product, amount);
+                return carts[store].setProductAmount(product, amount);
             }
             return false;
 
@@ -66,12 +79,20 @@ namespace Shopping
             return carts.Count == 0;
         }
 
+        public bool cleanBasket()
+        {
+            carts.Clear();
+            return true;
+        }
+
+        
+
     }
 
     public class JsonShoppingBasketValue
     {
-        Store store { get; set; }
-        JsonShoppingCart shoppingCart { get; set; }
+        public Store store { get; set; }
+        public JsonShoppingCart shoppingCart { get; set; }
 
         public JsonShoppingBasketValue(Store store, JsonShoppingCart shoppingCart)
         {
@@ -91,6 +112,11 @@ namespace Shopping
             id = basket.id;
             copyBasket(basket);
         }
+
+        public JsonShoppingBasket()
+        {   
+        }
+        
 
         private void copyBasket(ShoppingBasket basket)
         {

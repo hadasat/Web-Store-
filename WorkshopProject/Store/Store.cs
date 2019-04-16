@@ -32,6 +32,8 @@ namespace WorkshopProject
 
         }
 
+        public Store() { }
+
         public Dictionary<int, Product> GetStock()
         {
             return Stock;

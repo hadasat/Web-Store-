@@ -10,6 +10,7 @@ using Users;
 
 
 
+
 namespace WorkshopProject.System_Service
 {
 
@@ -26,20 +27,16 @@ public class TransactionService
             this.user = user;
         }
 
-        internal string AddProductToBasket(int productId, int amount)
+        internal string AddProductToBasket(int storeId, int productId, int amount)
         {
             Message msg;
             ShoppingBasket userShoppingBasket = user.shoppingBasket;
-            Dictionary<Store, Product> storeAndProuduct = WorkShop.findProduct(productId);
-            if(storeAndProuduct != null)
+            Store store = WorkShop.getStore(storeId);
+            Product product;
+            if (store != null && (product = store.findProduct(productId)) != null)
             {
-                Store store = storeAndProuduct.First().Key;
-                Product product = storeAndProuduct.First().Value;
-                bool sucss;
-                if (product.amount <= amount)
-                    sucss = userShoppingBasket.addProduct(store, product, amount);
-                else
-                    sucss = false;
+                    bool sucss;
+                sucss = userShoppingBasket.addProduct(store, product, amount);
                 if (sucss)
                     msg = new Message(successMsg);
                 else
@@ -52,15 +49,11 @@ public class TransactionService
 
         internal string BuyShoppingBasket()
         {
-            Message msg;
             int transId = Transaction.purchase(user);
-            if(transId > 0)
-                return "{\"message\": \"Success\", \"transactionId\": " + transId + " }";
-            else
-                msg = new Message("purchase failed");
-            return JsonConvert.SerializeObject(msg);
+            return JsonConvert.SerializeObject(new IdMessage(transId));
+            
         }
-
+        
         internal string GetShoppingCart(int storeId)
         {
             Message msg;
@@ -87,15 +80,14 @@ public class TransactionService
             return JsonConvert.SerializeObject(jsb);
         }
 
-        internal string SetProductAmountInCart(int productId, int amount)
+        internal string SetProductAmountInBasket(int storeId,int productId, int amount)
         {
             Message msg;
             ShoppingBasket userShoppingBasket = user.shoppingBasket;
-            Dictionary<Store, Product> storeAndProuduct = WorkShop.findProduct(productId);
-            if (storeAndProuduct != null)
+            Store store = WorkShop.getStore(storeId);
+            Product product;
+            if (store != null && (product=store.findProduct(productId)) !=null)
             {
-                Store store = storeAndProuduct.First().Key;
-                Product product = storeAndProuduct.First().Value;
                 bool sucss;
                 //jonathan - this flow makes no sense
                 //if (product.amount <= amount)

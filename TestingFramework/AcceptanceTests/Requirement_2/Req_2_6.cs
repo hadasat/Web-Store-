@@ -33,7 +33,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             try
             {
                 Init();
-                bool result = bridge.AddProductToCart(productId, 1);
+                bool result = bridge.AddProductToBasket(storeId,productId, 1);
                 Assert.IsTrue(result);
 
                 int tmp_amount;
@@ -55,7 +55,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             try
             {
                 Init();
-                bool result = bridge.AddProductToCart(-1, 1);
+                bool result = bridge.AddProductToBasket(storeId,-1, 1);
                 Assert.IsFalse(result);
             }
             finally
@@ -71,7 +71,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             try
             {
                 Init();
-                bool result = bridge.AddProductToCart(productId, -1);
+                bool result = bridge.AddProductToBasket(storeId,productId, -1);
                 Assert.IsFalse(result);
             }
             finally

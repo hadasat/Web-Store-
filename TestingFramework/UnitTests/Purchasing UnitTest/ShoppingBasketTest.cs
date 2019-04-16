@@ -23,8 +23,6 @@ namespace WorkshopProject.Tests
         {
             p1 = new Product("first", 10, "h", "g", 10, 10, 10);
             shoppingBasket.addProduct(store1, p1, amount1);
-
-
         }
 
         //[TestCleanup]

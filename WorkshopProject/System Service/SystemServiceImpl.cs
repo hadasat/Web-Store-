@@ -16,7 +16,7 @@ namespace WorkshopProject.System_Service
 
         //Those fileds are temporary
         Boolean loggedIn;
-        User user;
+        public User user { get; set; }
 
         private string adminUsername = "Admin";
         private string adminPassword = "Admin";
@@ -46,9 +46,9 @@ namespace WorkshopProject.System_Service
             return storeS.addDiscountPolicy(storeId);
         }
 
-        public string AddProductToBasket(int productId, int amount)
+        public string AddProductToBasket(int storeId,int productId, int amount)
         {
-            return transactionS.AddProductToBasket(productId, amount);
+            return transactionS.AddProductToBasket(storeId,productId, amount);
         }
 
         public string AddProductToStock(int storeId, int productId, int amount)
@@ -122,6 +122,11 @@ namespace WorkshopProject.System_Service
             return transactionS.GetShoppingCart(storeId);
         }
 
+        public string GetShoppingBasket()
+        {
+            return transactionS.GetShoppingBasket();
+        }
+
         public string login(string username, string password)
         {
             loggedIn = true; //TODO: why does the field turn to TRUE even if we fail ?!?!
@@ -185,9 +190,9 @@ namespace WorkshopProject.System_Service
             return storeS.SearchProducts(name, category, keyword, startPrice, endPrice, productRank, storeRank);
         }
 
-        public string SetProductAmountInCart(int productId, int amount)
+        public string SetProductAmountInBasket(int storeId,int productId, int amount)
         {
-            return transactionS.SetProductAmountInCart(productId, amount);
+            return transactionS.SetProductAmountInBasket(storeId,productId, amount);
         }
 
         //jonathan

@@ -35,7 +35,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             try
             {
                 Init();
-                bridge.AddProductToCart(productId, 1);
+                bridge.AddProductToBasket(storeId,productId, 1);
                 int result = bridge.GetShoppingCart(storeId);
                 Assert.AreNotEqual(result, -1);
                 cartId = result;
@@ -56,10 +56,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
 
                 //GetShoppingCart();
                 Init();
-                bool result = bridge.AddProductToCart(productId, 1);
+                bool result = bridge.AddProductToBasket(storeId,productId, 1);
                 Assert.IsTrue(result);
 
-                result = bridge.SetProductAmountInCart(cartId, productId, 0);
+                result = bridge.SetProductAmountInBasket(storeId, productId, 0);
                 Assert.IsTrue(result);
 
                 int cart = bridge.GetShoppingCart(storeId);
@@ -80,7 +80,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
                 Init();
                 RemoveProductFromCart();
 
-                bool result = bridge.SetProductAmountInCart(cartId, productId, 0);
+                bool result = bridge.SetProductAmountInBasket(storeId, productId, 0);
                 Assert.IsFalse(result);
             }
             finally
@@ -96,7 +96,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             try
             {
                 Init();
-                bool result = bridge.SetProductAmountInCart(cartId, -1, 0);
+                bool result = bridge.SetProductAmountInBasket(storeId, -1, 0);
                 Assert.IsFalse(result);
             }
             finally
@@ -112,21 +112,19 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             try
             {
-                
                 //GetShoppingCart();
                 Init();
-                bool result = bridge.AddProductToCart(productId, 5);
+                bool result = bridge.SetProductAmountInBasket(storeId,productId, 5);
                 Assert.IsTrue(result);
 
-                result = bridge.SetProductAmountInCart(cartId, productId, 2);
+                result = bridge.AddProductToBasket(storeId, productId, 2);
                 Assert.IsTrue(result);
 
 
                 int tmp_amount;
-                int cart = bridge.GetShoppingCart(storeId);
                 Dictionary<int, int> products = bridge.GetProductsInShoppingCart(storeId);
                 Assert.IsTrue(products.TryGetValue(productId, out tmp_amount));
-                Assert.AreEqual(tmp_amount, 2);
+                Assert.AreEqual(tmp_amount, 7);
             }
             finally
             {
@@ -145,7 +143,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
                 //bridge.AddProductToCart(productId, 1);
                 //RemoveProductFromCart();
 
-                bool result = bridge.SetProductAmountInCart(cartId, productId, 2);
+                bool result = bridge.SetProductAmountInBasket(cartId, productId, 2);
                 Assert.IsFalse(result);
             }
             finally
@@ -162,9 +160,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             try
             {
                 Init();
-                bridge.AddProductToCart(productId, 1);
+                bridge.AddProductToBasket(storeId,productId, 1);
                 //ChangeProductAmountInCart();
-                bool result = bridge.SetProductAmountInCart(cartId, productId, -1);
+                bool result = bridge.SetProductAmountInBasket(cartId, productId, -1);
                 Assert.IsFalse(result);
             }
             finally

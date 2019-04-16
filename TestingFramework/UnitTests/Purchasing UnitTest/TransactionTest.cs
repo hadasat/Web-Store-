@@ -26,6 +26,13 @@ namespace WorkshopProject.Tests
             user.shoppingBasket.addProduct(store2, p[1], 20);
             user.shoppingBasket.addProduct(store1, p[2], 20);
             user.shoppingBasket.addProduct(store2, p[3], 20);
+
+            //adding products to store
+            store1.GetStock().Add(p[0].id, p[0]);
+            store2.GetStock().Add(p[1].id, p[1]);
+            store1.GetStock().Add(p[2].id, p[2]);
+            store2.GetStock().Add(p[3].id, p[3]);
+
         }
 
 
@@ -57,6 +64,7 @@ namespace WorkshopProject.Tests
 
                 Product p5 = new Product("five", 40, "Category.Categories.category1", "g", 40, 40, 40);
                 user.shoppingBasket.addProduct(store1, p5, 10);
+                store1.GetStock().Add(p5.id, p5);
                 //check transction number grow
                 Assert.IsTrue(Transaction.purchase(user) > transactionId, "fail to update transaction id");
             }

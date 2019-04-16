@@ -73,9 +73,9 @@ namespace TestingFramework.AcceptanceTests
             rank = (int)product["int"];
         }
 
-        public bool AddProductToCart(int productId, int amount)
+        public bool AddProductToBasket(int storeId,int productId, int amount)
         {
-            string msg = service.AddProductToBasket(productId, amount);
+            string msg = service.AddProductToBasket(storeId,productId, amount);
             JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
         }
@@ -119,7 +119,7 @@ namespace TestingFramework.AcceptanceTests
         {
             string msg = service.BuyShoppingBasket();
             JObject json = JObject.Parse(msg);
-            return wasSuccessful(json);
+            return ((int)json["id"] > 0);
         }
 
         public bool CloseStore(int storeID)
@@ -173,6 +173,13 @@ namespace TestingFramework.AcceptanceTests
         public int GetShoppingCart(int storeId)
         {
             string msg = service.GetShoppingCart(storeId);
+            JObject json = JObject.Parse(msg);
+            return getId(json);
+        }
+
+        public int GetShoppingBasket()
+        {
+            string msg = service.GetShoppingBasket();
             JObject json = JObject.Parse(msg);
             return getId(json);
         }
@@ -238,9 +245,9 @@ namespace TestingFramework.AcceptanceTests
             return ret;
         }
 
-        public bool SetProductAmountInCart(int cartId, int productId, int amount)
+        public bool SetProductAmountInBasket(int storeId, int productId, int amount)
         {
-            string msg = service.SetProductAmountInCart(productId, amount);
+            string msg = service.SetProductAmountInBasket(storeId,productId, amount);
             JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
         }
