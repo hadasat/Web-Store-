@@ -18,7 +18,7 @@ namespace WorkshopProject.System_Service
          * Search Format: { products : List<Product>}
          * Product Format: {id : int , name :string , price : int , rank : int  , category : string ,storeId : int }
          * 
-         * Shopping Cart Jason Object: {products : Dictionary<Product, int>}
+         * Shopping basket Jason Object: {products : Dictionary<store,Shopping cart>}
          * Dictionary info: <Product Object, Amount>
          * 
          */
@@ -39,14 +39,16 @@ namespace WorkshopProject.System_Service
         //Return Product Jason Object
         String GetProductInfo(int productId);
 
-        //Return: Message Format
-        String AddProductToBasket(int productId, int amount);
-
-        //Return: Shopping Cart Jason Object
+        //Return: Shopping basket Jason Object
         String GetShoppingCart(int storeId);
 
+        String GetShoppingBasket();
+
         //Return: Message Format
-        String SetProductAmountInCart(int productId, int amount);
+        String SetProductAmountInBasket(int storeId,int productId, int amount);
+
+        //Return: Message Format
+        String AddProductToBasket(int storeId, int productId, int amount);
 
         //Return: Message Format
         String BuyShoppingBasket();

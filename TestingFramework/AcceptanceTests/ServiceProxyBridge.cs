@@ -8,7 +8,7 @@ namespace TestingFramework.AcceptanceTests
 {
     public class ServiceProxyBridge : IServiceBridge
     {
-        public bool AddProductToCart(int productId, int amount)
+        public bool AddProductToBasket(int storId,int productId, int amount)
         {
             throw new NotImplementedException();
         }
@@ -43,6 +43,11 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
+        public bool BuyShoppingCart(int storeId)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool BuyShoppingBasket()
         {
             throw new NotImplementedException();
@@ -64,6 +69,11 @@ namespace TestingFramework.AcceptanceTests
         }
 
         public int GetShoppingCart(int storeId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetShoppingBasket()
         {
             throw new NotImplementedException();
         }
@@ -108,7 +118,7 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
-        public bool SetProductAmountInCart(int cartId, int productId, int amount)
+        public bool SetProductAmountInBasket(int cartId, int productId, int amount)
         {
             throw new NotImplementedException();
         }

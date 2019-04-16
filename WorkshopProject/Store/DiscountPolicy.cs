@@ -14,7 +14,7 @@ namespace WorkshopProject
 
         public DiscountPolicy()
         {
-            amount = 0;
+            
         }
 
         public DiscountPolicy(int discountAmount)

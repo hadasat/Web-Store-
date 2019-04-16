@@ -11,14 +11,28 @@ namespace Shopping
 
     public class ShoppingCart
     {
-        public Dictionary<Product, int> products { get; }
+        public Dictionary<Product, int> products;
         public static int idCartCounter = 0;
-        public int id { get; }
+        public int id;
 
         public ShoppingCart()
         {
             id = ++idCartCounter;
             products = new Dictionary<Product, int>();
+        }
+
+
+        public ShoppingCart(JsonShoppingCart cart)
+        {
+            if (cart != null)
+            {
+                id = cart.id;
+                products = new Dictionary<Product, int>();
+                foreach (JsonShoppingCartValue p in cart.products)
+                {
+                    products.Add(p.product, p.amount);
+                }
+            }
         }
 
         public bool setProductAmount(Product product, int amount)
@@ -54,8 +68,10 @@ namespace Shopping
 
         public int getProductAmount(Product product)
         {
-            if (products.ContainsKey(product))
-                return products[product];
+            foreach (KeyValuePair<Product, int> p in products) 
+                if (p.Key.Equals(product))
+                    return p.Value;
+                    
             return 0;
         }
 
@@ -87,6 +103,8 @@ namespace Shopping
             this.amount = amount;
         }
 
+        
+
     }
 
     public class JsonShoppingCart
@@ -97,8 +115,18 @@ namespace Shopping
         public JsonShoppingCart(ShoppingCart shopping)
         {
             products = new List<JsonShoppingCartValue>();
-            id = shopping.id;
+            this.id = shopping.id;
             copyCart(shopping);
+        }
+
+        public JsonShoppingCart(int id,List<JsonShoppingCartValue> list)
+        {
+            this.id = id;
+            products = list;
+            
+        }
+        public JsonShoppingCart()
+        {
         }
 
         private void copyCart(ShoppingCart shopping)
