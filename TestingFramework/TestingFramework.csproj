@@ -77,7 +77,6 @@
     <Compile Include="AcceptanceTests\Requirement_4\Req_4_1.cs" />
     <Compile Include="AcceptanceTests\Requirement_5\Req_5_1.cs" />
     <Compile Include="AcceptanceTests\Requirement_6\Req_6_2.cs" />
-    <Compile Include="AcceptanceTests\Req_special\LegalStocks.cs" />
     <Compile Include="AcceptanceTests\Req_special\ExternalSystemsConnection.cs" />
     <Compile Include="AcceptanceTests\Req_special\RefundAcceptanceTests.cs" />
     <Compile Include="AcceptanceTests\ServiceProxyBridge.cs" />

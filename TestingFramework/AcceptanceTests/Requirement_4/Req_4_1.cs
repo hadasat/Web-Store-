@@ -173,5 +173,33 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             }
         }
 
+
+        [TestMethod]
+        [TestCategory("Req_4")]
+        public void AddProductToStockNegativeAmount()
+        {
+            try
+            {
+                Init();
+                string tmp_name;
+                string tmp_desc;
+                double tmp_price;
+                string tmp_category;
+                int tmp_rank;
+                int tmp_amount;
+
+                int productId = bridge.AddProductToStore(storeId, productName, productDesc, productPrice, productCategory);
+
+                bool result = bridge.AddProductToStock(storeId, productId, -10);
+                Assert.IsFalse(result);
+
+                bridge.GetProductInfo(productId, out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank, out tmp_amount);
+                Assert.IsTrue(tmp_amount >= 0);
+            }
+            finally
+            {
+                Cleanup();
+            }
+        }
     }
 }
