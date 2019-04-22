@@ -20,7 +20,7 @@ namespace Users.Tests
         Member m;
 
 
-        //[TestInitialize]
+        [TestInitialize]
         public void Init()
         {
             username = "username";
@@ -28,7 +28,7 @@ namespace Users.Tests
             user = new User();
         }
 
-        //[TestCleanup]
+        [TestCleanup]
         public void Cealup()
         {
             try
