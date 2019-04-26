@@ -50,6 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommunicationLayer\Server\INewConnectionHandler.cs" />
+    <Compile Include="CommunicationLayer\Server\IServer.cs" />
+    <Compile Include="CommunicationLayer\Server\IWebScoketHandler.cs" />
+    <Compile Include="CommunicationLayer\Server\Server.cs" />
     <Compile Include="Examples\ClassForTestExample.cs" />
     <Compile Include="Examples\LogExample.cs" />
     <Compile Include="Logger\Log.cs" />
