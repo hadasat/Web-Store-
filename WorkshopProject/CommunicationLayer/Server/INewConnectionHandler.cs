@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject.CommunicationLayer.Server
 {
-    interface INewConnectionHandler
+    public interface INewConnectionHandler
     {
         Task<string> httpNewConnectionHandler(HttpListenerContext context);
-        Task<IWebScoketHandler> webSocketNewConnectionHandler(WebSocket ws, uint id);
+        Task<IWebScoketHandler> webSocketNewConnectionHandler(WebSocketContext context, uint id);
     }
 }

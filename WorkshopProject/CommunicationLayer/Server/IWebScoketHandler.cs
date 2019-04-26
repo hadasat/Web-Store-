@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject.CommunicationLayer.Server
 {
-    interface IWebScoketHandler
+    public interface IWebScoketHandler
     {
         void onMessage(List<byte[]> bufferCollector, WebSocketReceiveResult receiveResult, uint myId);
         void onClose(List<byte[]> bufferCollector, WebSocketReceiveResult receiveResult, uint myId);
-        void onCloseError(uint myID);
+        void onCloseError(uint myId);
 
     }
 }

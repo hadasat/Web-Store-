@@ -21,7 +21,7 @@ namespace WorkshopProject.CommunicationLayer.Server
 
 
 
-    class Server : IServer
+    public class Server : IServer
     {
 
         #region fields
@@ -171,8 +171,16 @@ namespace WorkshopProject.CommunicationLayer.Server
                 }
                 //handle new connection
 
-                IWebScoketHandler wsh = await newConnectionHandler.webSocketNewConnectionHandler(ws, newId);
-                webSocketConnectionLoop(ws, wsh, newId);
+                IWebScoketHandler wsh = await newConnectionHandler.webSocketNewConnectionHandler(wsContext, newId);
+                if (wsh != null)
+                {
+                    webSocketConnectionLoop(ws, wsh, newId);
+                }
+                else
+                {
+                    activeConections.TryRemove(newId,out ws);
+                    Console.WriteLine("unsuccessful creatio of new web socket handler");
+                }
             }
             else
             {
