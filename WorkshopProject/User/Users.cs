@@ -45,7 +45,7 @@ namespace Users
             }
             catch (Exception ex)
             {
-                throw new Exception("this should noy happen, member doesn't exist");
+                throw new Exception("this should not happen, member doesn't exist");
             }
         }
 
@@ -70,9 +70,18 @@ namespace Users
         //sign in
         public static int identifyUser(string username, string password)
         {
-            int ID = mapIDUsermane[username];
-            if(pHandler.IdentifyPassword(password, ID))
-                return ID;
+            //very tmp until database! TODO: change
+            if (username == "Admin")
+                registerNewUser(username, password);
+            try
+            {
+                int ID = mapIDUsermane[username];
+                if (pHandler.IdentifyPassword(password, ID))
+                    return ID;
+            } catch(Exception ex)
+            {
+                return -1;
+            }
             return -1;
         }
         //sign up
@@ -103,6 +112,8 @@ namespace Users
             id = getID();
             pHandler.hashPassword(password, id);
             Member newMember = new Member(username, id);
+            if (username == "Admin" && password == "Admin")
+                newMember = new SystemAdmin(username, id);
             members[id] = newMember;
             mapIDUsermane[username] = id;
         }
@@ -227,7 +238,7 @@ namespace Users
             if (ID == -1)
                 throw new Exception("username or password does not correct");
             
-            return  ConnectionStubTemp.getMember(ID);
+            return ConnectionStubTemp.getMember(ID);
            
         }
 
@@ -434,7 +445,7 @@ namespace Users
 
         public bool RemoveUser(string userName)
         {
-
+            
             Member member = ConnectionStubTemp.getMember(userName);
             if (member.isStoresManagers())
             {
@@ -456,6 +467,7 @@ namespace Users
             }
             else
             {
+                ConnectionStubTemp.removeMember(member);
                 return ConnectionStubTemp.removeUser(userName, this);
             }
         }
