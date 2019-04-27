@@ -22,7 +22,7 @@ namespace TestingFramework.AcceptanceTests
 
         //Req 2_5
         List<int> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank);
-        bool GetProductInfo(int id, out string name, out string productDesc, out double price, out string category, out int rank);
+        bool GetProductInfo(int id, out string name, out string productDesc, out double price, out string category, out int rank, out int amount);
 
         //Req 2_6
         bool AddProductToBasket(int storeId,int productId, int amount);
@@ -49,6 +49,8 @@ namespace TestingFramework.AcceptanceTests
         int AddProductToStore(int storeId, string name, string desc, double price, string category);
         bool RemoveProductFromStore(int storeId, int productId);
         bool ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount);
+
+        bool AddProductToStock(int storeId, int productId, int amount);
 
         //Req 4_3
         bool AddStoreOwner(int storeId, string user);
