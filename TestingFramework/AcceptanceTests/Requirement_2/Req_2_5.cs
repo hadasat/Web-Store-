@@ -13,6 +13,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         private double tmp_price;
         private string tmp_category;
         private int tmp_rank;
+        private int tmp_amount;
 
         //[TestInitialize]
         public override void Init()
@@ -55,7 +56,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
                 List<int> products = bridge.SearchProducts("", productCategory, "", -1, -1, -1, -1);
                 Assert.IsTrue(products.Count > 0);
 
-                bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank);
+                bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank, out tmp_amount);
                 Assert.IsTrue(result);
                 Assert.IsNotNull(tmp_name);
                 Assert.AreNotEqual(tmp_name, "");
@@ -76,7 +77,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
                 List<int> products = bridge.SearchProducts("", "", productKeyword, -1, -1, -1, -1);
                 Assert.IsTrue(products.Count > 0);
 
-                bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank);
+                bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank, out tmp_amount);
                 Assert.IsTrue(result);
                 Assert.IsNotNull(tmp_name);
                 Assert.AreNotEqual(tmp_name, "");
@@ -97,7 +98,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
                 List<int> products = bridge.SearchProducts("", "", "", startPrice, endPrice, -1, -1);
                 Assert.IsTrue(products.Count > 0);
 
-                bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank);
+                bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank, out tmp_amount);
                 Assert.IsTrue(result);
                 Assert.IsNotNull(tmp_name);
                 Assert.AreNotEqual(tmp_name, "");
@@ -118,7 +119,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
                 List<int> products = bridge.SearchProducts("", "", "", -1, -1, -1, storeRank);
                 Assert.IsTrue(products.Count > 0);
 
-                bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank);
+                bool result = bridge.GetProductInfo(products[0], out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank, out tmp_amount);
                 Assert.IsTrue(result);
                 Assert.IsNotNull(tmp_name);
                 Assert.AreNotEqual(tmp_name, "");

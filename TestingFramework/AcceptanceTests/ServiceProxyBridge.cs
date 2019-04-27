@@ -53,7 +53,7 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
-        public bool GetProductInfo(int id, out string name, out string productDesc, out double price, out string category, out int rank)
+        public bool GetProductInfo(int id, out string name, out string productDesc, out double price, out string category, out int rank, out int amount)
         {
             throw new NotImplementedException();
         }
@@ -124,6 +124,11 @@ namespace TestingFramework.AcceptanceTests
         }
 
         public bool CloseStore(int storeID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AddProductToStock(int storeId, int productId, int amount)
         {
             throw new NotImplementedException();
         }

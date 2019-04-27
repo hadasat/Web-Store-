@@ -14,18 +14,43 @@ namespace WorkshopProject.Tests
         [TestInitialize]
         public void Init()
         {
-            //this method is called BEFORE each test
+            //this method is called ONCE before the test run
         }
 
         [TestCleanup]
-        public void Cealup()
+        public void Cleanup()
         {
-            //this method is called AFTER each test
+            //this method is called ONCE AFTER the test run
         }
+
+        public void InitTestMethod()
+        {
+            //this method is called before each test method call
+        }
+
+        public void CleanupTestMethod()
+        {
+            //this method is called AFTER each test method call
+        }
+
 
         [TestMethod()]
         [TestCategory("Examples")]
         public void TestMeTest()
+        {
+            try
+            {
+                InitTestMethod();
+                TestMeTestInner();
+            }
+            finally
+            {
+                CleanupTestMethod();
+            }
+
+        }
+
+        public void TestMeTestInner()
         {
             Assert.IsTrue(ClassForTestExample.TestMe());
         }
