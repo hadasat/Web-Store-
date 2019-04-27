@@ -1,4 +1,5 @@
-﻿using Shopping;
+﻿using External_Services;
+using Shopping;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +14,6 @@ namespace Tansactions
     public static class Transaction
     {
         static int transactionCounter = 0;
-
 
         public static int purchase(User user)
         {
@@ -33,19 +33,22 @@ namespace Tansactions
                 Store currStore = c.Key;
                 ShoppingCart currShoppingCart = c.Value;
 
-                //check if the item in the stock and add the price
-                
+                //check if the item in the stock and the policies consistency
+
                 Dictionary<Product, int> itemsPerStore = currShoppingCart.getProducts();
                 foreach (KeyValuePair<Product, int> item in itemsPerStore)
                 {
                     Product currProduct = item.Key;
                     int currAmount = item.Value;
-                    
+                    //check consistency
+                    if (!checkConsistency(user, currStore, currProduct))
+                        return -2;
+                     
                     //buy from store
                     Store.callback currCallBack = currStore.buyProduct(currProduct, currAmount);
                     //store disconfirm the purchase
                     if (currCallBack == null)
-                        return -2;
+                        return -3;
                     callbacks.Add(currCallBack);
                     //list of product to remove from basket
                     purchasedProducts.Add(currProduct,currStore);
@@ -60,7 +63,7 @@ namespace Tansactions
             {
                 foreach (Store.callback call in callbacks)
                     call();
-                return -3;
+                return -4;
             }
             //clean purches product from basket
             else
@@ -75,6 +78,15 @@ namespace Tansactions
         private static double calcPrice(Product p, int amount)
         {
             return amount * (p.getPrice());
+        }
+
+        public static bool checkConsistency(User user,Store store, Product product)
+        {
+            List<DiscountPolicy> discount = store.discountPolicy;
+            discount.Add(product.discount);
+            List<PurchasePolicy> purchase = new List<PurchasePolicy>();
+            purchase.Add(store.purchase_policy);
+            return ConsistencyAdapter.checkConsistency(user, purchase, discount);
         }
     }
 }
