@@ -21,8 +21,6 @@ namespace WorkshopProject
         static void Main(string[] args)
         {
             //Console.ReadLine();
-
-            LogExample.RunMe();
         }
     }
 }
