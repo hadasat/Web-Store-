@@ -20,7 +20,9 @@ namespace WorkshopProject
 
         static void Main(string[] args)
         {
-            Console.ReadLine();
+            //Console.ReadLine();
+
+            LogExample.RunMe();
         }
     }
 }
