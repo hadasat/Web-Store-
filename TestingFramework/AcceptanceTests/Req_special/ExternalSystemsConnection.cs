@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WorkshopProject.External_Services;
+
 
 namespace TestingFramework.AcceptanceTests.Req_special
 {
@@ -10,12 +12,10 @@ namespace TestingFramework.AcceptanceTests.Req_special
 
         public override void Init()
         {
-
         }
 
         public override void Cleanup()
         {
-            
         }
 
 
@@ -36,7 +36,8 @@ namespace TestingFramework.AcceptanceTests.Req_special
 
         public void PaymentSystemConnectionTestInner()
         {
-            //TODO: wait for external systems
+            bool result = PaymentStub.connectionTest();
+            Assert.IsTrue(result);
         }
 
 
@@ -57,7 +58,8 @@ namespace TestingFramework.AcceptanceTests.Req_special
 
         public void SupplySystemConnectionTestInner()
         {
-            //TODO: wait for external systems
+            bool result = SupplyStub.connectionTest();
+            Assert.IsTrue(result);
         }
 
         [TestMethod]
@@ -77,7 +79,8 @@ namespace TestingFramework.AcceptanceTests.Req_special
 
         public void ConsistencySystemConnectionTestInner()
         {
-            //TODO: wait for external systems
+            bool result = ConsistencyStub.connectionTest();
+            Assert.IsTrue(result);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using External_Services;
+﻿using WorkshopProject.External_Services;
 using Shopping;
 using System;
 using System.Collections;
@@ -86,7 +86,7 @@ namespace Tansactions
             discount.Add(product.discount);
             List<PurchasePolicy> purchase = new List<PurchasePolicy>();
             purchase.Add(store.purchase_policy);
-            return ConsistencyAdapter.checkConsistency(user, purchase, discount);
+            return ConsistencyStub.checkConsistency(purchase, discount);
         }
     }
 }
