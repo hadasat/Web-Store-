@@ -70,7 +70,7 @@ namespace TestingFramework.AcceptanceTests
             productDesc = (string)product["name"]; //TODO: must be fixed to description
             price = (double)product["price"];
             category = (string)product["category"];
-            rank = (int)product["int"];
+            rank = (int)product["rank"];
             amount = (int)product["amount"];
         }
 

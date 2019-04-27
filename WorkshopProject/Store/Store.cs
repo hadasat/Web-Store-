@@ -157,6 +157,11 @@ namespace WorkshopProject
 
         public bool addProductTostock(User user,Product product, int amountToAdd)
         {
+            if(amountToAdd <= 0)
+            {
+                return false;
+            }
+
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 

@@ -12,7 +12,7 @@ namespace WorkshopProject
         public static int idGenerator = 0;
         public int id { get; set; } 
         public string name;
-        private double price;
+        public double price;
         public string category;
         public int rank;
         public string description;
