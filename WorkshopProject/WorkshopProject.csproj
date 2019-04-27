@@ -52,7 +52,11 @@
   <ItemGroup>
     <Compile Include="Examples\ClassForTestExample.cs" />
     <Compile Include="Examples\LogExample.cs" />
+    <Compile Include="External Services\Consistency.cs" />
+    <Compile Include="External Services\Payment.cs" />
+    <Compile Include="External Services\Supply.cs" />
     <Compile Include="Logger\Log.cs" />
+    <Compile Include="Polices\RelevantStuff.cs" />
     <Compile Include="Store\Category.cs" />
     <Compile Include="Store\ConditionalDiscount.cs" />
     <Compile Include="Store\DiscountPolicy.cs" />

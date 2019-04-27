@@ -19,7 +19,7 @@ namespace WorkshopProject
         public int amount;
         public int storeId;
 
-        public DiscountPolicy discount;
+        public DiscountPolicy discount { get; }
 
         public Product(string name , double price, string desc, string category,int rank,int amount , int storeId)
         {
