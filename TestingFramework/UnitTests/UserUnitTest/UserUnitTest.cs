@@ -20,7 +20,6 @@ namespace Users.Tests
         Member m;
 
 
-        //[TestInitialize]
         public void Init()
         {
             username = "username";
@@ -28,12 +27,11 @@ namespace Users.Tests
             user = new User();
         }
 
-        //[TestCleanup]
-        public void Cealup()
+        public void Cleanup()
         {
             try
             {
-                ConnectionStubTemp.getMember(username);
+                m = ConnectionStubTemp.getMember(username);
                 ConnectionStubTemp.removeMember(m);
             }
             catch (Exception ex)//not registerd
@@ -48,23 +46,31 @@ namespace Users.Tests
         {
             try
             {
-                Member m = user.loginMember(username, password);
-                Assert.IsTrue(false);
-            }
-            catch (Exception ex)//not registerd
-            {
-                Assert.IsTrue(true);
-            }
+                Init();
+                try
+                {
+                    Member m = user.loginMember(username, password);
+                    Assert.IsTrue(false);
+                }
+                catch (Exception ex)//not registerd
+                {
+                    Assert.IsTrue(true);
+                }
 
-            user.registerNewUser(username, password);
-            try
-            {
-                user.loginMember(username, password);
-                Assert.IsTrue(true);
+                user.registerNewUser(username, password);
+                try
+                {
+                    user.loginMember(username, password);
+                    Assert.IsTrue(true);
+                }
+                catch (Exception ex)//registerd
+                {
+                    Assert.IsTrue(false);
+                }
             }
-            catch (Exception ex)//registerd
+            finally
             {
-                Assert.IsTrue(false);
+                Cleanup();
             }
         }
 
@@ -73,16 +79,24 @@ namespace Users.Tests
         [TestCategory("TestUser")]
         public void registerNewUser_Test()
         {
-            user.registerNewUser(username, password);
-            Assert.IsTrue(true);
             try
             {
-                m = ConnectionStubTemp.getMember(username);
+                Init();
+                user.registerNewUser(username, password);
                 Assert.IsTrue(true);
+                try
+                {
+                    m = ConnectionStubTemp.getMember(username);
+                    Assert.IsTrue(true);
+                }
+                catch (Exception ex)//didnt worked
+                {
+                    Assert.IsTrue(false);
+                }
             }
-            catch (Exception ex)//didnt worked
+            finally
             {
-                Assert.IsTrue(false);
+                Cleanup();
             }
         }
     }
@@ -293,9 +307,12 @@ namespace Users.Tests
         }
 
         //[TestCleanup]
-        public void Cealup()
+        public void Cleanup()
         {
-            //this method is called AFTER each test
+            int id;
+            bool ret = ConnectionStubTemp.mapIDUsermane.TryGetValue("username", out id);
+            ConnectionStubTemp.mapIDUsermane.Remove("username");
+            ConnectionStubTemp.members.Remove(id);
         }
 
         [TestMethod()]
@@ -322,7 +339,7 @@ namespace Users.Tests
             }
             finally
             {
-                Cealup();
+                Cleanup();
             }
 
         }

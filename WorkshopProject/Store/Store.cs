@@ -15,9 +15,9 @@ namespace WorkshopProject
         public int rank;
         public Boolean isActive;
 
-        private Dictionary<int, Product> Stock;
-        private PurchasePolicy purchase_policy;
-        private List<DiscountPolicy> discountPolicy;
+        public Dictionary<int, Product> Stock;
+        public PurchasePolicy purchase_policy;
+        public List<DiscountPolicy> discountPolicy;
 
         public int Id { get => id; }
 
@@ -157,6 +157,11 @@ namespace WorkshopProject
 
         public bool addProductTostock(User user,Product product, int amountToAdd)
         {
+            if(amountToAdd <= 0)
+            {
+                return false;
+            }
+
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 

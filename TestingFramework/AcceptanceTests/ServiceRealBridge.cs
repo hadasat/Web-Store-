@@ -64,13 +64,14 @@ namespace TestingFramework.AcceptanceTests
         }
 
         //{id : int , name :string , price : int , rank : int  , category : string  }
-        private void retrieveProductInfo(JObject product, out string name, out string productDesc, out double price, out string category, out int rank)
+        private void retrieveProductInfo(JObject product, out string name, out string productDesc, out double price, out string category, out int rank, out int amount)
         {
             name = (string)product["name"];
             productDesc = (string)product["name"]; //TODO: must be fixed to description
             price = (double)product["price"];
             category = (string)product["category"];
-            rank = (int)product["int"];
+            rank = (int)product["rank"];
+            amount = (int)product["amount"];
         }
 
         public bool AddProductToBasket(int storeId,int productId, int amount)
@@ -136,7 +137,7 @@ namespace TestingFramework.AcceptanceTests
             return wasSuccessful(json);
         }
 
-        public bool GetProductInfo(int id, out string name, out string productDesc, out double price, out string category, out int rank)
+        public bool GetProductInfo(int id, out string name, out string productDesc, out double price, out string category, out int rank, out int amount)
         {
             string msg = service.GetProductInfo(id);
             JObject json = JObject.Parse(msg);
@@ -147,9 +148,10 @@ namespace TestingFramework.AcceptanceTests
                 price = 0.0;
                 category = "";
                 rank = 0;
+                amount = 0;
                 return false;
             }
-            retrieveProductInfo(json, out name, out productDesc, out price, out category, out rank);
+            retrieveProductInfo(json, out name, out productDesc, out price, out category, out rank, out amount);
             return true;
         }
 
@@ -252,6 +254,12 @@ namespace TestingFramework.AcceptanceTests
             return wasSuccessful(json);
         }
 
+        public bool AddProductToStock(int storeId, int productId, int amount)
+        {
+            string msg = service.AddProductToStock(storeId, productId, amount);
+            JObject json = JObject.Parse(msg);
+            return wasSuccessful(json);
+        }
     }
 
     class ManagerRolesContainer
