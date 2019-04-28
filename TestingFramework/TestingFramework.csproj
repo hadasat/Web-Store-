@@ -83,6 +83,12 @@
     <Compile Include="IntegrationTests\StoreServiceTest.cs" />
     <Compile Include="IntegrationTests\TransactionServiceTest.cs" />
     <Compile Include="IntegrationTests\UserServiceTest.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UnitTests\ClientTests\HtmlPageManagerTests.cs" />
     <Compile Include="UnitTests\Examples\ClassForTestExampleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\Purchasing UnitTest\ShoppingBasketTest.cs" />
@@ -100,9 +106,20 @@
       <Name>WorkshopProject</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WSClientExample.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WSSclientExample.html" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

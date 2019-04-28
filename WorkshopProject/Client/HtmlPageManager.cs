@@ -17,7 +17,6 @@ namespace WorkshopProject.Client
 
         private static readonly Dictionary<string, PagesNames> enumStringMapping = new Dictionary<string, PagesNames>()
         {
-            {"main",PagesNames.Main },
             {"/wot/main",PagesNames.Main },
             {"/wot/",PagesNames.Main },
             {"/wot",PagesNames.Main },
