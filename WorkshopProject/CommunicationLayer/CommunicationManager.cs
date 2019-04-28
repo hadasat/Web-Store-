@@ -88,3 +88,9 @@ namespace WorkshopProject.CommunicationLayer
         #endregion      
     }
 }
+
+
+/* 
+ * netsh http add sslcert ipport=0.0.0.0:8443 certhash=<insert thumbprint > appid={c600b8cf-47d8-46d2-8d3c-bc092789b6ea}
+ * 
+ * */

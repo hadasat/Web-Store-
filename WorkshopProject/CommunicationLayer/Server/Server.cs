@@ -154,7 +154,7 @@ namespace WorkshopProject.CommunicationLayer.Server
             }
             catch (Exception e)
             {
-                Console.WriteLine("test - problem in connecting \n");
+                //Console.WriteLine("test - problem in connecting \n");
                 Logger.Log("file", logLevel.WARN, "listener couldn't get end of context");
                 return;
             }
@@ -243,7 +243,8 @@ namespace WorkshopProject.CommunicationLayer.Server
             bool removeAns = activeConections.TryRemove(myId, out removed);
             if (removed == null || !removeAns)
             {
-                Console.WriteLine("error removing form connection list, id:{0}", myId);
+                //Console.WriteLine("error removing form connection list, id:{0}", myId);
+                Logger.Log("file", logLevel.ERROR, "error removing form connection list, id: " + myId);
                 return;
             }
             removed.Dispose();

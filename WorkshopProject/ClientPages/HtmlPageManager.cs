@@ -14,7 +14,7 @@ namespace WorkshopProject.ClientPages
             Error
         };
 
-        public static readonly Dictionary<string, PagesNames> enumStringMapping = new Dictionary<string, PagesNames>()
+        private static readonly Dictionary<string, PagesNames> enumStringMapping = new Dictionary<string, PagesNames>()
         {
             {"main",PagesNames.Main },
             {"/wot/main",PagesNames.Main },
@@ -24,7 +24,7 @@ namespace WorkshopProject.ClientPages
 
         public static readonly Dictionary<PagesNames, string> htmlPages = new Dictionary<PagesNames, string>()
         {
-            {PagesNames.Main , Properties.Resources.WSSclientExample },
+            {PagesNames.Main , Properties.Resources.WSClientExample },
             {PagesNames.Error,"<html><body>error path not found>" }
         };
 
