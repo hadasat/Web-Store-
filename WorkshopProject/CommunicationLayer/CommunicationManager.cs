@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WorkshopProject.ClientPages;
 using WorkshopProject.CommunicationLayer.Server;
+using WorkshopProject.Log;
 
 namespace WorkshopProject.CommunicationLayer
 {
@@ -53,11 +54,12 @@ namespace WorkshopProject.CommunicationLayer
         public async Task<IWebScoketHandler> webSocketNewConnectionHandler(WebSocketContext context, uint id)
         {
             bool isSecureConnection = context.IsSecureConnection;
-            UserConnectionInfo userConnection = new UserConnectionInfo(isSecureConnection, id);
+            UserConnectionInfo userConnection = new UserConnectionInfo(isSecureConnection, id,this);
             bool addAns = connections.TryAdd(id, userConnection);
             if (!addAns)
             {
-                Console.WriteLine("error in adding to dictionary in Communication manager");
+                //Console.WriteLine("error in adding to dictionary in Communication manager");
+                Logger.Log("file", logLevel.ERROR, "error in adding new connection to dictionary in Communication manager");
                 return null;
             }
             return this;

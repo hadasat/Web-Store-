@@ -8,6 +8,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WorkshopProject.Log;
 
 namespace WorkshopProject.CommunicationLayer.Server
 {
@@ -154,6 +155,7 @@ namespace WorkshopProject.CommunicationLayer.Server
             catch (Exception e)
             {
                 Console.WriteLine("test - problem in connecting \n");
+                Logger.Log("file", logLevel.WARN, "listener couldn't get end of context");
                 return;
             }
             if (context.Request.IsWebSocketRequest)
@@ -166,7 +168,8 @@ namespace WorkshopProject.CommunicationLayer.Server
                 bool ans = activeConections.TryAdd(newId, ws);
                 if (!ans)
                 {
-                    Console.WriteLine("couldn't add new web socket connection to connection dictionary");
+                    //Console.WriteLine("couldn't add new web socket connection to connection dictionary");
+                    Logger.Log("file", logLevel.ERROR, "couldn't add new web socket connection to connection dictionary");
                     return;
                 }
                 //handle new connection
@@ -179,7 +182,8 @@ namespace WorkshopProject.CommunicationLayer.Server
                 else
                 {
                     activeConections.TryRemove(newId,out ws);
-                    Console.WriteLine("unsuccessful creatio of new web socket handler");
+                    //Console.WriteLine("unsuccessful creatio of new web socket handler");
+                    Logger.Log("file", logLevel.ERROR, "unsuccessful creation of new web socket handler, recievd null handler");
                 }
             }
             else
@@ -213,7 +217,8 @@ namespace WorkshopProject.CommunicationLayer.Server
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("test 1");
+                        //Console.WriteLine("test 1");
+                        Logger.Log("file", logLevel.DEBUG, "closed the server while some websockets are open");
                         wsHandler.onClose(new List<byte[]>(), null, myId);
                         return;
                     }

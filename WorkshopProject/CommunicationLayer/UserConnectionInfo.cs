@@ -14,12 +14,14 @@ namespace WorkshopProject.CommunicationLayer
         bool isSecureConnection;
         UserInterface user;
         uint id;
+        IWebScoketHandler msgSender;
 
-        public UserConnectionInfo (bool isSecureConnection, uint id)
+        public UserConnectionInfo (bool isSecureConnection, uint id,IWebScoketHandler msgSender)
         {
             this.isSecureConnection = isSecureConnection;
             this.id = id;
             user = new SystemServiceImpl();
+            this.msgSender = msgSender;
         }
 
         public void onMessage(List<byte[]> bufferCollector, WebSocketReceiveResult receiveResult) { }

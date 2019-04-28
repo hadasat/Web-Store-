@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tansactions;
 using Users;
+using WorkshopProject.CommunicationLayer;
 using WorkshopProject.Examples;
 using WorkshopProject.System_Service;
 
@@ -20,7 +21,9 @@ namespace WorkshopProject
 
         static void Main(string[] args)
         {
-            Console.ReadLine();
+            //Console.ReadLine();
+            CommunicationManager cmng = new CommunicationManager();
+
         }
     }
 }
