@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Echo Client</title>
+    <script type="text/javascript">
+        var myId =-1;
+        var createJsonToSend = function (message){
+            var msg = {
+                type: "message",
+                text: message,
+                date: Date.now(),
+                id: myId};
+            return JSON.stringify(msg);
+        };
+        var start = function () {
+            const printArea = document.getElementById('incoming');
+            const form = document.getElementById('sendForm');
+            const input = document.getElementById('sendText');
+            const urlAdress = "wss://localhost:8443/wot"
+            printArea.innerHTML += "connecting to server "+urlAdress+ " "+" <br/>";
+            const webSocketClient = new WebSocket(urlAdress);
+            //when connection opens
+            webSocketClient.onopen = function (event) {
+                printArea.innerHTML += "connected to server :) <br/>"
+            }
+            webSocketClient.onclose = function (event) {
+                printArea.innerHTML += "connection closed :( <br/>"
+            }
+            webSocketClient.onmessage = function (event) {
+                printArea.innerHTML += event.data+ "<br/>";
+            }
+            webSocketClient.onsend
+            //send action
+            form.addEventListener('submit',function (e){
+                e.preventDefault();
+                webSocketClient.send(input.value);
+                input.value ="";
+            })
+
+        }
+        window.onload = start;
+    </script>
+</head>
+<body>
+<form id="sendForm">
+    <input id="sendText" placeholder="Text to send" />
+</form>
+<pre id="incoming"></pre>
+</body>
+</html>
+
+
