@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 namespace WorkshopProject.Policies
 {
     /// <summary>
-    /// Implements the Composite design pattern
+    /// Implements the Composite design pattern.
+    /// This is essentially the "Purchasing Policy"
     /// </summary>
     public abstract class IBooleanExpression
     {

@@ -9,7 +9,7 @@ namespace WorkshopProject.Policies
 {
     public interface ItemFilter
     {
-        List<ProductAmountPrice> getStuff(List<ProductAmountPrice> products);
+        List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products);
 
         //bool addStuff(List<ProductAmountPrice> products);
         //bool removeStuff(List<ProductAmountPrice> products);
@@ -19,7 +19,7 @@ namespace WorkshopProject.Policies
     {
         public AllProductsFilter() { }
 
-        public List<ProductAmountPrice> getStuff(List<ProductAmountPrice> products) { return products; }
+        public List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products) { return products; }
     }
    
 
@@ -31,7 +31,7 @@ namespace WorkshopProject.Policies
             this.productIds = productIds;
         }
 
-        public List<ProductAmountPrice> getStuff(List<ProductAmountPrice> products) {
+        public List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products) {
             List<ProductAmountPrice> ret = new List<ProductAmountPrice>();
             foreach (ProductAmountPrice pair in products)
             {
@@ -52,7 +52,7 @@ namespace WorkshopProject.Policies
             this.category = category.ToLower();
         }
 
-        public List<ProductAmountPrice> getStuff(List<ProductAmountPrice> products)
+        public List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products)
         {
             List<ProductAmountPrice> ret = new List<ProductAmountPrice>();
             foreach (ProductAmountPrice pair in products)

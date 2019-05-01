@@ -19,8 +19,8 @@ namespace WorkshopProject.Policies
 
         public override bool evaluate(ShoppingCart cart, List<ProductAmountPrice> products)
         {
-            //TODO:
-            return true;
+            List<ProductAmountPrice> relevantProducts = filter.getFilteredItems(products);
+            return relevantProducts.Count <= amount;
         }
 
         public override void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
@@ -42,8 +42,8 @@ namespace WorkshopProject.Policies
 
         public override bool evaluate(ShoppingCart cart, List<ProductAmountPrice> products)
         {
-            //TODO:
-            return true;
+            List<ProductAmountPrice> relevantProducts = filter.getFilteredItems(products);
+            return relevantProducts.Count >= amount;
         }
 
         public override void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
@@ -65,7 +65,7 @@ namespace WorkshopProject.Policies
 
         public override bool evaluate(ShoppingCart cart, List<ProductAmountPrice> products)
         {
-            //TODO:
+            //TODO: UserAge (IBooleanExpression) age
             return true;
         }
 
@@ -88,7 +88,7 @@ namespace WorkshopProject.Policies
 
         public override bool evaluate(ShoppingCart cart, List<ProductAmountPrice> products)
         {
-            //TODO:
+            //TODO: UserAge (country) age
             return true;
         }
 
