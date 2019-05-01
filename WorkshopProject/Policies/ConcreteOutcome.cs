@@ -14,7 +14,7 @@ namespace WorkshopProject.Policies
             //TODO FreeProduct
         }
 
-        protected override List<ProductAmountPrice> myApply(List<ProductAmountPrice> products, User user)
+        public List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
         {
             //TODO FreeProduct
             throw new NotImplementedException();
@@ -29,7 +29,7 @@ namespace WorkshopProject.Policies
             //TODO Percentage
         }
 
-        protected override List<ProductAmountPrice> myApply(List<ProductAmountPrice> products, User user)
+        public List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
         {
             //TODO Percentage
             throw new NotImplementedException();
