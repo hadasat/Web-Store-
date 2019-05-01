@@ -46,6 +46,24 @@ namespace WorkshopProject
             return addProduct(user, pro);
         }
 
+        public List<Product> searchProducts(string name, string category,
+             double startPrice,  double endPrice, int productRanking, int storeRanking)
+        {
+            List<Product> matched_products = new List<Product>();
+            Dictionary<int, Product> products = GetStock();
+            foreach (Product item in products.Values)
+            {
+                if ((name == "" || name == item.name) && (category == "" || category == item.category)
+                    && (endPrice == -1 || endPrice >= item.getPrice()) && (startPrice == -1 || startPrice <= item.getPrice())
+                    && (storeRanking == -1 || storeRanking <= rank) && (productRanking == -1 || productRanking <= item.rank))
+                {
+                    //All the non-empty search filters has been matched
+                    matched_products.Add(item);
+                }
+            }
+            return matched_products;
+        }
+
         /// <summary>
         /// 
         /// </summary>
