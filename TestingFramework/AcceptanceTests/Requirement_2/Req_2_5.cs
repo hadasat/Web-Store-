@@ -27,6 +27,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             removeTestProductFromSystem();
             //removeTestStoreFromSystem();
+            godObject.cleanUpAllData();
         }
 
 

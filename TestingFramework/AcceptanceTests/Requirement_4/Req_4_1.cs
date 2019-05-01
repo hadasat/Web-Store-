@@ -19,6 +19,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         {
             bridge.Logout();
             removeTestStoreOwner1FromSystem();
+            godObject.cleanUpAllData();
         }
 
         [TestMethod]

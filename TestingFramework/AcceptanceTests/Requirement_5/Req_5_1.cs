@@ -28,6 +28,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
             bridge.Logout();
             removeTestStoreManager1FromSystem();
             removeTestStoreOwner1FromSystem();
+            godObject.cleanUpAllData();
         }
 
         private void createManagerWithRoles(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
