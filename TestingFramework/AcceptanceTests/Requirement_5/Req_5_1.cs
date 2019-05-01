@@ -32,16 +32,14 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
 
         private void createManagerWithRoles(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
         {
-            try
-            {
-                Init();
-                bridge.Login(storeOwner1, password);
-                bridge.AddStoreManager(storeId, storeOwner1, addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore);
-            }
-            finally
-            {
-                Cleanup();
-            }
+            bridge.Login(storeOwner1, password);
+            bridge.AddStoreManager(storeId, storeOwner1, addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore);  
+        }
+
+        private void createOwner()
+        {
+            bridge.Login(storeOwner1, password);
+            bridge.AddStoreManager(storeId, storeOwner1, true, true, true, true);
 
         }
 
@@ -133,9 +131,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
             try
             {
                 Init();
-                createManagerWithRoles(false, false, false, true);
+                createOwner();
 
-                bridge.Login(storeManager1, password);
+                bridge.Login(storeOwner1, password);
                 bool result = bridge.CloseStore(storeId);
                 bridge.Logout();
 
