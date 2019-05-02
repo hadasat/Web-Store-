@@ -264,9 +264,9 @@ namespace Users
             ConnectionStubTemp.registerNewUser(username, password, "", -1);
         }
 
-        public void registerNewUser(string username, string password, string countery, int age)
+        public void registerNewUser(string username, string password, string country, int age)
         {
-            ConnectionStubTemp.registerNewUser(username, password, countery, age);
+            ConnectionStubTemp.registerNewUser(username, password, country, age);
         }
 
         /****************************************************************/

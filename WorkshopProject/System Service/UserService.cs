@@ -114,6 +114,20 @@ namespace WorkshopProject.System_Service
             return successJason();
         }
 
+        internal string Register(string username, string password, string country, int age)
+        {
+            try
+            {
+                user.registerNewUser(username, password, country, age);
+            }
+            catch (Exception exception)
+            {
+                return generateMessageFormatJason(exception.ToString());
+            }
+
+            return successJason();
+        }
+
         internal string RemoveStoreManager(int storeId, string username)
         {
             if (!(user is Member))

@@ -149,6 +149,10 @@ namespace WorkshopProject.System_Service
         {
             return userS.Register(user, password);
         }
+        public string Register(string user, string password, string country, int age)
+        {
+            return userS.Register(user, password, country, age);
+        }
 
         public string removeDiscountPolicy(int storeId)
         {

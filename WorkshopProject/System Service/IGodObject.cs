@@ -48,7 +48,7 @@ namespace WorkshopProject.System_Service
 
         public int addMember(string username, string password)
         {
-            ConnectionStubTemp.registerNewUser(username, password);
+            ConnectionStubTemp.registerNewUser(username, password, "", -1);
             return ConnectionStubTemp.memberIDGenerator - 1;
 
         }
