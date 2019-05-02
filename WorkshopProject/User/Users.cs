@@ -108,6 +108,7 @@ namespace Users
             sanitizeInput(username, password);
             int id;
             if(mapIDUsermane.TryGetValue(username, out id)) {
+                Logger.Log("file", logLevel.INFO, "user try to register with taken username:" + username);
                 throw new Exception("this username is already taken. try somthing else");
             }
             id = getID();
@@ -118,9 +119,13 @@ namespace Users
             else
                 newMember = new Member(username, id, country, age);
             if (username == "Admin" && password == "Admin")
+            {
                 newMember = new SystemAdmin(username, id);
+                Logger.Log("file", logLevel.INFO, "Admin has logged in");
+            }
             members[id] = newMember;
             mapIDUsermane[username] = id;
+            Logger.Log("file", logLevel.INFO, "user:" + username + " succesfully registered");
         }
 
 
@@ -256,14 +261,12 @@ namespace Users
 
         public void registerNewUser(string username, string password)
         {
-            ConnectionStubTemp.registerNewUser(username, password);
-            //need to deside whats happen in this senario
+            ConnectionStubTemp.registerNewUser(username, password, "", -1);
         }
 
         public void registerNewUser(string username, string password, string countery, int age)
         {
-            ConnectionStubTemp.registerNewUser(username, password);
-            //need to deside whats happen in this senario
+            ConnectionStubTemp.registerNewUser(username, password, countery, age);
         }
 
         /****************************************************************/
@@ -303,6 +306,7 @@ namespace Users
         /*** SERVICE LAYER FUNCTIONS***/
         public void logOut()
         {
+            Logger.Log("file", logLevel.INFO, "user: " + this.username + "log out and succses");
             ConnectionStubTemp.logout(username);
         }
 
@@ -314,6 +318,7 @@ namespace Users
             Roles storeOwner = new Roles(true, true, true, true, true, true, true, true);
             StoreManager storeOwnerManager = new StoreManager(store, storeOwner);
             storeManaging.AddFirst(storeOwnerManager);
+            Logger.Log("file", logLevel.INFO, "user: " + this.username + "created succesfully new store: " + store.Id);
         }
 
         public void addStoreToMe(StoreManager storeManager)
@@ -347,6 +352,7 @@ namespace Users
                     break;
                 }
             }
+            Logger.Log("file", logLevel.INFO, "user: " + this.username + "closed succesfully store: " + store.Id);
         }
 
         public bool isStoresManagers()
@@ -423,6 +429,7 @@ namespace Users
         //TODO : is there  need for remove manager option?
         public bool removeManager(string username, Store store)
         {
+            Logger.Log("file", logLevel.INFO, "user: " + this.username + "try to remove user: "+ username);
             StoreManager myStoreRoles = getStoreManagerOb(store);
             Member memberToRemove = ConnectionStubTemp.getMember(username);
             bool res = myStoreRoles.removeManager(memberToRemove.getStoreManagerOb(store));
@@ -432,6 +439,7 @@ namespace Users
 
         public bool removeManager(string username, int StoreID)
         {
+            Logger.Log("file", logLevel.INFO, "user: " + this.username + "try to remove user: " + username);
             Store store = GetStore(StoreID);
             StoreManager myStoreRoles = getStoreManagerOb(store);
             Member memberToRemove = ConnectionStubTemp.getMember(username);
@@ -487,8 +495,16 @@ namespace Users
 
         public bool RemoveUser(string userName)
         {
-            
-            Member member = ConnectionStubTemp.getMember(userName);
+            Member member;
+            try
+            {
+                member = ConnectionStubTemp.getMember(userName);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("file", logLevel.INFO, "Admin fail removed user: " + userName + " user doen't exist");
+                return false;
+            }
             if (member.isStoresManagers())
             {
                 foreach (StoreManager st in storeManaging)
@@ -505,13 +521,16 @@ namespace Users
                     }
                 }
                 ConnectionStubTemp.removeMember(member);
+                Logger.Log("file", logLevel.INFO, "Admin succesfully removed user: " + userName);
                 return ConnectionStubTemp.removeUser(userName, this);
             }
             else
             {
+                Logger.Log("file", logLevel.INFO, "Admin succesfully removed user: " + userName);
                 ConnectionStubTemp.removeMember(member);
                 return ConnectionStubTemp.removeUser(userName, this);
             }
+            
         }
     }
 
