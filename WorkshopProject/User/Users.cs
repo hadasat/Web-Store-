@@ -260,6 +260,8 @@ namespace Users
         public int ID; //why do we need id?
         public string username;
         public LinkedList<StoreManager> storeManaging;
+        private string country;
+        private int age;
         
         
         public Member(string username, int ID) : base()//Register
@@ -267,6 +269,17 @@ namespace Users
             this.ID = ID;
             this.username = username;
             this.storeManaging = new LinkedList<StoreManager>();
+            this.country = "none";
+            this.age = -1;
+        }
+
+        public Member(string username, int ID, string country, int age) : base()//Register
+        {
+            this.ID = ID;
+            this.username = username;
+            this.storeManaging = new LinkedList<StoreManager>();
+            this.country = country;
+            this.age = age;
         }
 
         /*** SERVICE LAYER FUNCTIONS***/
@@ -433,6 +446,15 @@ namespace Users
             return roles != null && roles.AddRemoveStoreManger;
         }
 
+        public string getCountry ()
+        {
+            return this.country;
+        }
+
+        public int getAge()
+        {
+            return this.age;
+        }
         
     }
 
@@ -442,6 +464,8 @@ namespace Users
     public class SystemAdmin : Member
     {
         public SystemAdmin(string username, int ID) : base(username, ID) { }
+
+        public SystemAdmin(string username, int ID, string country, int age) : base(username, ID, country, age) { }
 
         public bool RemoveUser(string userName)
         {
