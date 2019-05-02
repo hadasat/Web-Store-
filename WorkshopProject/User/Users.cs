@@ -7,6 +7,7 @@ using Password;
 using Managment;
 using WorkshopProject;
 using Shopping;
+using WorkshopProject.Log;
 
 namespace Users
 {
@@ -72,7 +73,7 @@ namespace Users
         {
             //very tmp until database! TODO: change
             if (username == "Admin")
-                registerNewUser(username, password);
+                registerNewUser(username, password, "all", 120);
             try
             {
                 int ID = mapIDUsermane[username];
@@ -85,7 +86,7 @@ namespace Users
             return -1;
         }
         //sign up
-        public static void registerNewUser(string username, string password)
+        public static void registerNewUser(string username, string password, string country, int age)
         {
             //Member m = null;
             //int ID = getID();
@@ -111,12 +112,18 @@ namespace Users
             }
             id = getID();
             pHandler.hashPassword(password, id);
-            Member newMember = new Member(username, id);
+            Member newMember;
+            if (age < 0 )
+                newMember = new Member(username, id);
+            else
+                newMember = new Member(username, id, country, age);
             if (username == "Admin" && password == "Admin")
                 newMember = new SystemAdmin(username, id);
             members[id] = newMember;
             mapIDUsermane[username] = id;
         }
+
+
 
 
         private static bool sanitizeInput(string username, string password)
@@ -203,6 +210,7 @@ namespace Users
         public User()
         {
             this.shoppingBasket = new ShoppingBasket();
+            Logger.Log("file", logLevel.INFO, "New user been created");
         }
 
         public virtual bool hasAddRemoveDiscountPermission(Store store)
@@ -236,13 +244,23 @@ namespace Users
 
             int ID = ConnectionStubTemp.identifyUser(username, password);
             if (ID == -1)
+            {
+                //don't log password!
+                Logger.Log("file", logLevel.INFO, "user: " + username + "tried to log in and failed");
                 throw new Exception("username or password does not correct");
-            
+            }
+            Logger.Log("file", logLevel.INFO, "user: " + username + "log in and succses");
             return ConnectionStubTemp.getMember(ID);
            
         }
 
         public void registerNewUser(string username, string password)
+        {
+            ConnectionStubTemp.registerNewUser(username, password);
+            //need to deside whats happen in this senario
+        }
+
+        public void registerNewUser(string username, string password, string countery, int age)
         {
             ConnectionStubTemp.registerNewUser(username, password);
             //need to deside whats happen in this senario
