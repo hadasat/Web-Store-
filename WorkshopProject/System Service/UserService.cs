@@ -162,7 +162,7 @@ namespace WorkshopProject.System_Service
                 return generateMessageFormatJason("user or member can't do this");
             try
             {
-                ((SystemAdmin)user).RemoveUser(username);
+                bool res = ((SystemAdmin)user).RemoveUser(username);
             }
             catch (Exception exception)
             {

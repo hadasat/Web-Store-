@@ -23,10 +23,21 @@ namespace Users
 
         public static int memberIDGenerator = 0;
 
-       
+        public static void init()
+        {
+            registerNewUser("Admin", "Admin", "all", 120);
+            
+        }
+
+        static ConnectionStubTemp()
+        {
+            init();
+        }
 
         public static void removeMember(Member m)
         {
+            if (m.ID == 0)
+                throw new Exception("don't remove Admin!");
             try
             {
                 members.Remove(m.ID);
@@ -34,7 +45,7 @@ namespace Users
             }
             catch (Exception ex)
             {
-                throw new Exception("this should noy happen, member doesn't exist");
+                throw new Exception("this should not happen, member doesn't exist");
             }
         }
 
@@ -72,8 +83,9 @@ namespace Users
         public static int identifyUser(string username, string password)
         {
             //very tmp until database! TODO: change
+            /*
             if (username == "Admin")
-                registerNewUser(username, password, "all", 120);
+                registerNewUser(username, password, "all", 120);*/
             try
             {
                 int ID = mapIDUsermane[username];
@@ -120,7 +132,7 @@ namespace Users
                 newMember = new Member(username, id, country, age);
             if (username == "Admin" && password == "Admin")
             {
-                newMember = new SystemAdmin(username, id);
+                newMember = new SystemAdmin(username, id, country, age);
                 Logger.Log("file", logLevel.INFO, "Admin has logged in");
             }
             members[id] = newMember;
@@ -503,7 +515,7 @@ namespace Users
             catch (Exception ex)
             {
                 Logger.Log("file", logLevel.INFO, "Admin fail removed user: " + userName + " user doen't exist");
-                return false;
+                throw new Exception(ex.ToString());
             }
             if (member.isStoresManagers())
             {

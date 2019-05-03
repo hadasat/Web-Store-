@@ -107,7 +107,7 @@ namespace Managment
           manager (needs to be like hes and below) */
         public bool CreateNewManager(Member member, Roles roles)
         {
-            if (myRoles.isStoreOwner() && myRoles.CompareRoles(roles))
+            if (myRoles.isStoreOwner() && myRoles.CompareRoles(roles) && checkNotAManager(member))
             {
                 StoreManager newSubStoreManager = new StoreManager(this.store, roles);
                 newSubStoreManager.setFather(this);
@@ -121,6 +121,19 @@ namespace Managment
                 Logger.Log("file", logLevel.INFO, "store:" + store.Id + " failed add new manager: " + member.username);
                 throw new Exception("this manager try to give more roles than he can");
             }
+        }
+
+        private bool checkNotAManager(Member member)
+        {
+            foreach (StoreManager sm in member.storeManaging)
+            {
+                if (sm.GetStore().Id == this.store.Id)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public void setFather(StoreManager father)

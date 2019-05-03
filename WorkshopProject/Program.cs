@@ -12,6 +12,7 @@ using WorkshopProject.Communication;
 using WorkshopProject.Examples;
 using WorkshopProject.System_Service;
 
+
 namespace WorkshopProject
 {
 
@@ -23,6 +24,7 @@ namespace WorkshopProject
         {
             //Console.ReadLine();
             CommunicationManager manager = new CommunicationManager();
+            
         }
     }
 }

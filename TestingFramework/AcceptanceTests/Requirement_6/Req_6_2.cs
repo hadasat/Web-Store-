@@ -18,7 +18,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
         public override void Cleanup()
         {
             bool result = bridge.Logout();
-            removeTestStoreOwner1FromSystem();
+            //removeTestStoreOwner1FromSystem();
             removeTestMemberFromSystem();
         }
 
@@ -28,7 +28,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
         {
             try
             {
-                Init();
+                //Init();
+                addTestMemberToSystem();
+                bridge.Login(adminUser, adminPass);
                 bool result = bridge.RemoveUser(user);
                 Assert.IsTrue(result);
 
@@ -48,14 +50,14 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
             try
             {
                 Init();
-                RemoveNormalMemberSuccess();
-
+                //RemoveNormalMemberSuccess();
                 bool result = bridge.RemoveUser(user);
+                result = bridge.RemoveUser(user);
                 Assert.IsFalse(result);
             }
             finally
             {
-                Cleanup();
+                //Cleanup();
             }
         }
 
