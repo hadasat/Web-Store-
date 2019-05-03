@@ -37,7 +37,7 @@ namespace WorkshopProject.System_Service
                 ((Member)user).addManager(username, rolesOb, storeId);
             } catch (Exception exception)
             {
-                generateMessageFormatJason(exception.ToString());
+                return generateMessageFormatJason(exception.ToString());
             }
             return successJason();
         }

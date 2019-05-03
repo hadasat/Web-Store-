@@ -30,14 +30,20 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             try
             {
                 Init();
-                bool result = bridge.AddStoreManager(storeId, storeManager2);
-                Assert.IsTrue(result);
+                AddStoreManagerSuccessInner();
             }
             finally
             {
                 Cleanup();
             }
         }
+
+        private void AddStoreManagerSuccessInner()
+        {
+            bool result = bridge.AddStoreManager(storeId, storeManager2);
+            Assert.IsTrue(result);
+        }
+
 
         [TestMethod]
         [TestCategory("Req_4")]
@@ -46,7 +52,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             try
             {
                 Init();
-                AddStoreManagerSuccess();
+                AddStoreManagerSuccessInner();
                 bool result = bridge.AddStoreManager(storeId, storeManager2);
                 Assert.IsFalse(result);
             }
