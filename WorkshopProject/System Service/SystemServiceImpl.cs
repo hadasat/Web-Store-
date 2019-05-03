@@ -206,6 +206,12 @@ namespace WorkshopProject.System_Service
             return JsonConvert.SerializeObject(msg);
         }
 
+        private string notActiveStoreError()
+        {
+            Message msg = new Message("Store not Active");
+            return JsonConvert.SerializeObject(msg);
+        }
+
         //jonathan - no idea how SystemAdmin object can be added
         //private string addAdmin()
         //{
