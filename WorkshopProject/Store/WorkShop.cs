@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static WorkshopProject.Category;
 using Users;
+using WorkshopProject.Log;
 
 namespace WorkshopProject
 {
@@ -65,6 +66,7 @@ namespace WorkshopProject
             int currID = id;
             id++;
             owner.addStore(store);
+            Logger.Log("file", logLevel.INFO,"store " + currID + " has added");
             return currID;
         }
 
@@ -78,6 +80,7 @@ namespace WorkshopProject
             {
                 return false;
             }
+            Logger.Log("file", logLevel.INFO, "store " + storeId + " has closed");
             return true;
         }
 

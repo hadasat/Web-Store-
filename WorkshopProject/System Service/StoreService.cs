@@ -26,7 +26,7 @@ namespace WorkshopProject.System_Service
             this.id = id;
         }
     }
-
+   
     public class StoreService
     {
         internal User user;
@@ -35,6 +35,12 @@ namespace WorkshopProject.System_Service
         {
             this.user = user;
         }
+        private string notActiveStoreError()
+        {
+            Message msg = new Message("Store not Active");
+            return JsonConvert.SerializeObject(msg);
+        }
+
 
         private string successJason()
         {
@@ -51,6 +57,8 @@ namespace WorkshopProject.System_Service
             Store store = WorkShop.getStore(storeId);
             if (store == null)
                 return generateMessageFormatJason("Store does not exist");
+            if (!store.isActive)
+                return notActiveStoreError();
 
 
             //TODO
@@ -64,6 +72,8 @@ namespace WorkshopProject.System_Service
             Store store = WorkShop.getStore(storeId);
             if (store == null)
                 return generateMessageFormatJason("Store does not exist");
+            if (!store.isActive)
+                return notActiveStoreError();
 
             Product product = store.getProduct(productId);
             if (product == null)
@@ -90,6 +100,8 @@ namespace WorkshopProject.System_Service
             Store store = WorkShop.getStore(storeId);
             if (store == null)
                 return generateMessageFormatJason("Store does not exist");
+            if (!store.isActive)
+                return notActiveStoreError();
             int id = store.addProduct(user, name, desc, price, category);
             if (id == -1)
                 return generateMessageFormatJason("User does not have permission");
@@ -122,6 +134,8 @@ namespace WorkshopProject.System_Service
             Store store = WorkShop.getStore(storeId);
             if (store == null)
                 return generateMessageFormatJason("Store does not exist");
+            if (!store.isActive)
+                return notActiveStoreError();
 
             if (!store.changeProductInfo(user, productId, name, desc, price, category, amount))
                 return generateMessageFormatJason("Error: User does not have permission Or Product does not exist");
@@ -158,6 +172,8 @@ namespace WorkshopProject.System_Service
             Store store = WorkShop.getStore(storeId);
             if (store == null)
                 return generateMessageFormatJason("Store does not exist");
+            if (!store.isActive)
+                return notActiveStoreError();
 
             Product product = store.getProduct(productId);
             if (product == null)
