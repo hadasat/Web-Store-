@@ -18,6 +18,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             bridge.Logout();
             removeTestMemberFromSystem();
+            godObject.cleanUpAllData();
         }
 
         [TestMethod]

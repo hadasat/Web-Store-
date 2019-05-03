@@ -20,6 +20,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
             bool result = bridge.Logout();
             removeTestStoreOwner1FromSystem();
             removeTestMemberFromSystem();
+            godObject.cleanUpAllData();
         }
 
         [TestMethod]
