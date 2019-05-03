@@ -128,7 +128,7 @@ namespace TestingFramework.AcceptanceTests
             }
             finally
             {
-                storeId = godObject.addStore(storeName, storeRank, storeOwner2Id);
+                //storeId = godObject.addStore(storeName, storeRank, storeOwner2Id);
             }
         }
 
@@ -179,7 +179,7 @@ namespace TestingFramework.AcceptanceTests
         {
             try
             {
-                storeManager1Id = godObject.addMember(storeManager1, password);
+                storeManager2Id = godObject.addMember(storeManager2, password);
             }
             catch (Exception e)
             {

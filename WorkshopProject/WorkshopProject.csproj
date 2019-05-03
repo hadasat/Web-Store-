@@ -63,7 +63,13 @@
     <Compile Include="External Services\PaymentStub.cs" />
     <Compile Include="External Services\SupplyStub.cs" />
     <Compile Include="Logger\Log.cs" />
-    <Compile Include="Polices\RelevantStuff.cs" />
+    <Compile Include="Policies\ConcreteBooleanExpression.cs" />
+    <Compile Include="Policies\ConcreteOutcome.cs" />
+    <Compile Include="Policies\IBooleanExpression.cs" />
+    <Compile Include="Policies\Discount.cs" />
+    <Compile Include="Policies\IOutcome.cs" />
+    <Compile Include="Policies\ItemFilter.cs" />
+    <Compile Include="Policies\ProductAmountPrice.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
