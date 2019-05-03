@@ -63,6 +63,13 @@
     <Compile Include="External Services\PaymentStub.cs" />
     <Compile Include="External Services\SupplyStub.cs" />
     <Compile Include="Logger\Log.cs" />
+    <Compile Include="Policies\ConcreteBooleanExpression.cs" />
+    <Compile Include="Policies\ConcreteOutcome.cs" />
+    <Compile Include="Policies\IBooleanExpression.cs" />
+    <Compile Include="Policies\Discount.cs" />
+    <Compile Include="Policies\IOutcome.cs" />
+    <Compile Include="Policies\ItemFilter.cs" />
+    <Compile Include="Policies\ProductAmountPrice.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -104,9 +111,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Polices\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
