@@ -32,31 +32,32 @@ namespace TestingFramework.UnitTests.PoliciesJsonTests
                 TypeNameHandling = TypeNameHandling.Auto
             });
             Assert.IsInstanceOfType(result, typeof(MaxAmount));
+            Assert.AreEqual(((MaxAmount)result).amount, 10);
         }
 
         [TestMethod]
         [TestCategory("JSON")]
         public void BooleanExpressionComplexSerializeTest()
         {
-            string json = @"{
-                'id': '1',
-                'msg': 'abc',
-                'arr': [{ 
-                    'id': '2',
-                    'msg': 'def'
-                    }]
-            }";
-            JObject obj = JObject.Parse(json);
-            int id = (int)obj["id"];
-            string msg = (string)obj["msg"];
-            Assert.AreEqual(id, 1);
-            Assert.AreEqual(msg, "abc");
+            ItemFilter filter1 = new CategoryFilter("cat");
+            IBooleanExpression leaf1 = new MaxAmount(10, filter1);
+            ItemFilter filter2 = new AllProductsFilter();
+            IBooleanExpression leaf2 = new UserCountry("Wakanda forever", filter2);
+            IBooleanExpression complex = new XorExpression();
+            complex.addChildren(leaf1, leaf2);
 
-            JArray arr = (JArray)obj["arr"];
-            id = (int)arr[0]["id"];
-            msg = (string)arr[0]["msg"];
-            Assert.AreEqual(id, 2);
-            Assert.AreEqual(msg, "def");
+            string json = JsonConvert.SerializeObject(complex, /*Formatting.Indented,*/ new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            });
+
+            IBooleanExpression result = JsonConvert.DeserializeObject<IBooleanExpression>(json, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+            Assert.IsInstanceOfType(result, typeof(XorExpression));
+            Assert.IsInstanceOfType(((XorExpression)result).firstChild, typeof(MaxAmount));
+            Assert.IsInstanceOfType(((XorExpression)result).secondChild, typeof(UserCountry));
         }
 
     }
