@@ -63,6 +63,7 @@
     <Compile Include="External Services\ConsistencyStub.cs" />
     <Compile Include="External Services\PaymentStub.cs" />
     <Compile Include="External Services\SupplyStub.cs" />
+    <Compile Include="JsonHandler.cs" />
     <Compile Include="Logger\Log.cs" />
     <Compile Include="Policies\ConcreteBooleanExpression.cs" />
     <Compile Include="Policies\ConcreteOutcome.cs" />

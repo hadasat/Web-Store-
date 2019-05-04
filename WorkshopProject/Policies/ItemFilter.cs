@@ -25,7 +25,8 @@ namespace WorkshopProject.Policies
 
     public class ProductListFilter : ItemFilter
     {
-        List<int> productIds;
+        public List<int> productIds;
+        public ProductListFilter() {/*forJson*/ }
 
         public ProductListFilter(List<int> productIds) {
             this.productIds = productIds;
@@ -46,7 +47,9 @@ namespace WorkshopProject.Policies
 
     public class CategoryFilter : ItemFilter
     {
-        private string category;
+        public string category;
+
+        public CategoryFilter() {/*forJson*/ }
 
         public CategoryFilter(string category) {
             this.category = category.ToLower();
