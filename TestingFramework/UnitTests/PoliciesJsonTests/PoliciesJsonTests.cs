@@ -22,7 +22,7 @@ namespace TestingFramework.UnitTests.PoliciesJsonTests
             ItemFilter filter = new CategoryFilter("cat");
             IBooleanExpression leaf = new MaxAmount(10, filter);
 
-            string json = JsonConvert.SerializeObject(leaf, /*Formatting.Indented,*/ new JsonSerializerSettings
+            string json = JsonConvert.SerializeObject(leaf, Formatting.Indented, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All
             });
@@ -46,7 +46,7 @@ namespace TestingFramework.UnitTests.PoliciesJsonTests
             IBooleanExpression complex = new XorExpression();
             complex.addChildren(leaf1, leaf2);
 
-            string json = JsonConvert.SerializeObject(complex, /*Formatting.Indented,*/ new JsonSerializerSettings
+            string json = JsonConvert.SerializeObject(complex, Formatting.Indented, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All
             });
@@ -78,7 +78,7 @@ namespace TestingFramework.UnitTests.PoliciesJsonTests
 
 
 
-            string json = JsonConvert.SerializeObject(complex, /*Formatting.Indented,*/ new JsonSerializerSettings
+            string json = JsonConvert.SerializeObject(complex, Formatting.Indented, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All
             });
