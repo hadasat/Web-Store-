@@ -8,9 +8,9 @@ namespace WorkshopProject.Policies
 {
     public class ProductAmountPrice
     {
-        public Product product;
-        public int amount;
-        public double price;
+        public Product product { get; set; }
+        public int amount{ get; set; }
+        public double price { get; set; }
 
         public ProductAmountPrice(Product product, int amount, double price)
         {

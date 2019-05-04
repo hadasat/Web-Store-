@@ -1,4 +1,4 @@
-﻿using WorkshopProject.External_Services;
+﻿using External_Services;
 using Shopping;
 using System;
 using System.Collections;
@@ -13,11 +13,11 @@ namespace Tansactions
 {
     public static class Transaction
     {
-        static int transactionCounter = 0;
+        static int transactionCounter = 1;
 
         public static int purchase(User user)
         {
-            bool fail = false;
+            int output = 0;
             double totalPrice = 0;
             ShoppingBasket basket = user.shoppingBasket;
             //check the basket is empty
@@ -32,23 +32,27 @@ namespace Tansactions
             {
                 Store currStore = c.Key;
                 ShoppingCart currShoppingCart = c.Value;
-
-                //check if the item in the stock and the policies consistency
-
+            
                 Dictionary<Product, int> itemsPerStore = currShoppingCart.getProducts();
                 foreach (KeyValuePair<Product, int> item in itemsPerStore)
                 {
                     Product currProduct = item.Key;
                     int currAmount = item.Value;
                     //check consistency
-                    if (!checkConsistency(user, currStore, currProduct))
-                        return -2;
+                    if (!checkConsistency(currShoppingCart, currStore, currProduct))
+                    {
+                        output = -2;
+                        break;
+                    }
                      
                     //buy from store
                     Store.callback currCallBack = currStore.buyProduct(currProduct, currAmount);
                     //store disconfirm the purchase
                     if (currCallBack == null)
-                        return -3;
+                    {
+                        output = -3;
+                        break;
+                    }
                     callbacks.Add(currCallBack);
                     //list of product to remove from basket
                     purchasedProducts.Add(currProduct,currStore);
@@ -59,19 +63,20 @@ namespace Tansactions
             //parches 
             //send products
 
-            if (fail)
+            if (output < 0)
             {
                 foreach (Store.callback call in callbacks)
                     call();
-                return -4;
+                output = - 4;
             }
             //clean purches product from basket
             else
             {
                 foreach (KeyValuePair<Product, Store> p in purchasedProducts)
                     basket.setProductAmount(p.Value, p.Key, 0);
-                return ++transactionCounter;
+                output = ++transactionCounter;
             }
+            return output;
             
         }
 
@@ -80,13 +85,12 @@ namespace Tansactions
             return amount * (p.getPrice());
         }
 
-        public static bool checkConsistency(User user,Store store, Product product)
+        private static bool checkConsistency(ShoppingCart cart,Store store, Product product)
         {
+            ConsistencyStub.setRet(true);
             List<DiscountPolicy> discount = store.discountPolicy;
-            discount.Add(product.discount);
             List<PurchasePolicy> purchase = new List<PurchasePolicy>();
-            purchase.Add(store.purchase_policy);
-            return ConsistencyStub.checkConsistency(purchase, discount);
+            return ConsistencyStub.checkConsistency(purchase, discount,cart);
         }
     }
 }

@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client\HtmlPageManager.cs" />
+    <Compile Include="CommunicationManager.cs" />
     <Compile Include="Communication\CommunicationManager.cs" />
     <Compile Include="Communication\Server\INewConnectionHandler.cs" />
     <Compile Include="Communication\Server\IServer.cs" />

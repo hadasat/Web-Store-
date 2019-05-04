@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
 
-namespace WorkshopProject.External_Services
+namespace External_Services
 {
 
     public static class ConsistencyStub

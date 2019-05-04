@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 
-namespace WorkshopProject.External_Services
+namespace External_Services
 {
     public static class SupplyStub
     {
