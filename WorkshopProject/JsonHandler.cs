@@ -12,14 +12,15 @@ namespace WorkshopProject
     /// </summary>
     public static class JsonHandler
     {
-
         private static Formatting format = Formatting.Indented;
-        private static JsonSerializerSettings settings = new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.All
-        };
+        private static JsonSerializerSettings settings = new JsonSerializerSettings{TypeNameHandling = TypeNameHandling.All};
 
         public static string SerializeObject(object value)
+        {
+            return JsonConvert.SerializeObject(value, format, settings);
+        }
+
+        public static string SerializeObjectDynamic()
         {
             return JsonConvert.SerializeObject(value, format, settings);
         }
