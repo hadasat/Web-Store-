@@ -50,7 +50,7 @@ namespace WorkshopProject.System_Service
 
         public int addMember(string username, string password)
         {
-            ConnectionStubTemp.registerNewUser(username, password);
+            ConnectionStubTemp.registerNewUser(username, password, "", -1);
             return ConnectionStubTemp.memberIDGenerator - 1;
 
         }
@@ -172,6 +172,7 @@ namespace WorkshopProject.System_Service
             ConnectionStubTemp.members = new Dictionary<int, Member>();
             ConnectionStubTemp.mapIDUsermane = new Dictionary<string, int>();
             ConnectionStubTemp.memberIDGenerator = 0;
+            ConnectionStubTemp.init();
         }
     }
 }

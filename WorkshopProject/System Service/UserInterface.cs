@@ -33,6 +33,9 @@ namespace WorkshopProject.System_Service
         //Return: Message Format
         String Register(string user, string password);
 
+        //Return: Message Format
+        String Register(string user, string password, string country, int age);
+
         //Return: Search Format
         String SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank);
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
+using WorkshopProject.Log;
 
 namespace Managment
 {
@@ -106,18 +107,33 @@ namespace Managment
           manager (needs to be like hes and below) */
         public bool CreateNewManager(Member member, Roles roles)
         {
-            if (myRoles.isStoreOwner() && myRoles.CompareRoles(roles))
+            if (myRoles.isStoreOwner() && myRoles.CompareRoles(roles) && checkNotAManager(member))
             {
                 StoreManager newSubStoreManager = new StoreManager(this.store, roles);
                 newSubStoreManager.setFather(this);
                 subManagers.AddFirst(newSubStoreManager);
                 member.addStoreToMe(newSubStoreManager);
+                Logger.Log("file", logLevel.INFO, "store:" + store.Id + " succesfully add new manager: "+ member.username);
                 return true;
             }
             else
             {
+                Logger.Log("file", logLevel.INFO, "store:" + store.Id + " failed add new manager: " + member.username);
                 throw new Exception("this manager try to give more roles than he can");
             }
+        }
+
+        private bool checkNotAManager(Member member)
+        {
+            foreach (StoreManager sm in member.storeManaging)
+            {
+                if (sm.GetStore().Id == this.store.Id)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public void setFather(StoreManager father)
@@ -132,9 +148,11 @@ namespace Managment
             if (subManagers.Contains(managerToRemove))
             {
                 recursiveCleanManager(managerToRemove);
+                Logger.Log("file", logLevel.INFO, "success remove");
                 return subManagers.Remove(managerToRemove);
             } else
             {
+                Logger.Log("file", logLevel.INFO, "fail remove");
                 throw new Exception("The manager to remove is not below to this manager");
             }
         }
