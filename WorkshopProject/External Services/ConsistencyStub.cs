@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shopping;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace External_Services
             ret = newRet;
         }
 
-        public static bool checkConsistency(List<PurchasePolicy> policies, List<DiscountPolicy> discounts)
+        public static bool checkConsistency(List<PurchasePolicy> policies, List<DiscountPolicy> discounts,ShoppingCart cart)
         {
             return ret;
         }

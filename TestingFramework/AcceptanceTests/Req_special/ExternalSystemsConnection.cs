@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WorkshopProject.External_Services;
+using External_Services;
 
 
 namespace TestingFramework.AcceptanceTests.Req_special
