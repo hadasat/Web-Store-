@@ -9,7 +9,10 @@ namespace WorkshopProject.Policies
 {
     public class MaxAmount : IBooleanExpression
     {
-        private int amount;
+        //public string name = "MaxAmount";
+        public int amount;
+
+        public MaxAmount() {/*for json*/ }
 
         public MaxAmount(int amount, ItemFilter filter)
         {
@@ -32,7 +35,10 @@ namespace WorkshopProject.Policies
 
     public class MinAmount : IBooleanExpression
     {
-        private int amount;
+       // public string name = "MinAmount";
+        public int amount;
+
+        public MinAmount() {/*for json*/ }
 
         public MinAmount(int amount, ItemFilter filter)
         {
@@ -55,7 +61,10 @@ namespace WorkshopProject.Policies
 
     public class UserAge : IBooleanExpression
     {
-        private int age;
+        public int age;
+        //public string name = "UserAge";
+
+        public UserAge() {/*for json*/ }
 
         public UserAge(int age, ItemFilter filter)
         {
@@ -78,7 +87,10 @@ namespace WorkshopProject.Policies
 
     public class UserCountry : IBooleanExpression
     {
-        private string country;
+        public string country;
+        //public string name = "UserCountry";
+
+        public UserCountry() {/*for json*/ }
 
         public UserCountry(string country, ItemFilter filter)
         {
@@ -101,6 +113,8 @@ namespace WorkshopProject.Policies
 
     public class TrueCondition : IBooleanExpression
     {
+        //public string name = "TrueCondition";
+
         public TrueCondition()
         {
         }
@@ -119,6 +133,7 @@ namespace WorkshopProject.Policies
 
     public class FalseCondition : IBooleanExpression
     {
+        //public string name = "FalseCondition";
         public FalseCondition()
         {
         }
@@ -137,8 +152,7 @@ namespace WorkshopProject.Policies
 
     public class AndExpression : IBooleanExpression
     {
-        private IBooleanExpression firstChild;
-        private IBooleanExpression secondChild;
+        //public string name = "AndExpression";
 
         public AndExpression()
         {
@@ -149,17 +163,11 @@ namespace WorkshopProject.Policies
             return (firstChild.evaluate(cart, products) && secondChild.evaluate(cart, products));
         }
 
-        public override void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
-        {
-            this.firstChild = firstChild;
-            this.secondChild = secondChild;
-        }
     }
 
     public class OrExpression : IBooleanExpression
     {
-        private IBooleanExpression firstChild;
-        private IBooleanExpression secondChild;
+       // public string name = "OrExpression";
 
         public OrExpression()
         {
@@ -170,17 +178,12 @@ namespace WorkshopProject.Policies
             return (firstChild.evaluate(cart, products) || secondChild.evaluate(cart, products));
         }
 
-        public override void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
-        {
-            this.firstChild = firstChild;
-            this.secondChild = secondChild;
-        }
     }
 
     public class XorExpression : IBooleanExpression
     {
-        private IBooleanExpression firstChild;
-        private IBooleanExpression secondChild;
+        //public string name = "XorExpression";
+
 
         public XorExpression()
         {
@@ -191,10 +194,6 @@ namespace WorkshopProject.Policies
             return firstChild.evaluate(cart, products) ^ secondChild.evaluate(cart, products);
         }
 
-        public override void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
-        {
-            this.firstChild = firstChild;
-            this.secondChild = secondChild;
-        }
+
     }
 }
