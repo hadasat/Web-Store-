@@ -19,6 +19,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         public override void Cleanup()
         {
             removeTestProductFromSystem();
+            godObject.cleanUpAllData();
         }
 
         [TestMethod]
