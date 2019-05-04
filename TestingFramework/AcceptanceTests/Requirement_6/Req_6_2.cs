@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+
 namespace TestingFramework.AcceptanceTests.Requirement_1
 {
     [TestClass]
@@ -18,7 +19,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
         public override void Cleanup()
         {
             bool result = bridge.Logout();
-            //removeTestStoreOwner1FromSystem();
+            removeTestStoreOwner1FromSystem();
             removeTestMemberFromSystem();
             godObject.cleanUpAllData();
         }
@@ -29,9 +30,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
         {
             try
             {
-                //Init();
-                addTestMemberToSystem();
-                bridge.Login(adminUser, adminPass);
+                Init();
                 bool result = bridge.RemoveUser(user);
                 Assert.IsTrue(result);
 
@@ -51,14 +50,14 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
             try
             {
                 Init();
-                //RemoveNormalMemberSuccess();
+                RemoveNormalMemberSuccess();
+
                 bool result = bridge.RemoveUser(user);
-                result = bridge.RemoveUser(user);
                 Assert.IsFalse(result);
             }
             finally
             {
-                //Cleanup();
+                Cleanup();
             }
         }
 

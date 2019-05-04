@@ -172,6 +172,7 @@ namespace WorkshopProject.System_Service
             ConnectionStubTemp.members = new Dictionary<int, Member>();
             ConnectionStubTemp.mapIDUsermane = new Dictionary<string, int>();
             ConnectionStubTemp.memberIDGenerator = 0;
+            ConnectionStubTemp.init();
         }
     }
 }
