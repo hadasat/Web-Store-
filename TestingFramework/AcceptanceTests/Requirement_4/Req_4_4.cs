@@ -22,6 +22,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             //removeTestStoreOwner3FromSystem();
             removeTestStoreOwner2FromSystem();
             removeTestStoreOwner1FromSystem();
+            godObject.cleanUpAllData();
         }
 
         [TestMethod]

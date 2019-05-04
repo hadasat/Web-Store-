@@ -17,6 +17,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
         public override void Cleanup()
         {
             removeTestMemberFromSystem();
+            godObject.cleanUpAllData();
         }
 
         [TestMethod]

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static WorkshopProject.Category;
 using Users;
+using WorkshopProject.Log;
 
 namespace WorkshopProject
 {
@@ -28,17 +29,10 @@ namespace WorkshopProject
             List<Product> matched_products = new List<Product>();
             foreach (Store store in stores.Values)
             {
-                /*Store store = getStore(store_id);*/
-                Dictionary<int, Product> products = store.GetStock();
-                foreach (Product item in products.Values) {
-                    if ((name == null || name == item.name) && (category == null || category == item.category)
-                        && (endPrice == -1 || endPrice > item.getPrice()) && (startPrice == -1 || startPrice < item.getPrice())
-                        && (storeRanking==-1 || storeRanking<store.rank) && (productRanking == -1 || productRanking<item.rank))
-                    {
-                        //All the non-empty search filters has been matched
-                        matched_products.Add(item);
-                    }
-                }
+                List<Product> res = store.searchProducts(name,category,startPrice,endPrice,
+                    productRanking, storeRanking);
+                matched_products = matched_products.Concat(res).ToList();
+                   
             }
             return matched_products;
         }
@@ -72,6 +66,7 @@ namespace WorkshopProject
             int currID = id;
             id++;
             owner.addStore(store);
+            Logger.Log("file", logLevel.INFO,"store " + currID + " has added");
             return currID;
         }
 
@@ -85,6 +80,7 @@ namespace WorkshopProject
             {
                 return false;
             }
+            Logger.Log("file", logLevel.INFO, "store " + storeId + " has closed");
             return true;
         }
 

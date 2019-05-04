@@ -23,6 +23,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             bridge.Logout();
             removeTestProductFromSystem();
             removeTestMemberFromSystem();
+            godObject.cleanUpAllData();
         }
 
         //TODO dependant test

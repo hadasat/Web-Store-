@@ -21,6 +21,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             bridge.Logout();
             removeTestStoreOwner2FromSystem();
             removeTestStoreOwner1FromSystem();
+            godObject.cleanUpAllData();
         }
 
         [TestMethod]
@@ -30,13 +31,18 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             try
             {
                 Init();
-                bool result = bridge.AddStoreOwner(storeId, storeOwner2);
-                Assert.IsTrue(result);
+                AddStoreOwnerSuccessInner();
             }
             finally
             {
                 Cleanup();
             }
+        }
+
+        private void AddStoreOwnerSuccessInner()
+        {
+            bool result = bridge.AddStoreOwner(storeId, storeOwner2);
+            Assert.IsTrue(result);
         }
 
         [TestMethod]
@@ -46,7 +52,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             try
             {
                 Init();
-                AddStoreOwnerSuccess();
+                AddStoreOwnerSuccessInner();
                 bool result = bridge.AddStoreOwner(storeId, storeOwner2);
                 Assert.IsFalse(result);
             }
