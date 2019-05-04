@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.CSharp.RuntimeBinder;
 using System.Dynamic;
-
+using WorkshopProject;
 
 namespace TestingFramework.AcceptanceTests
 {
@@ -54,13 +54,13 @@ namespace TestingFramework.AcceptanceTests
 
         private string createRolesJson(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
         {
-            return JsonConvert.SerializeObject(
+            return JsonHandler.SerializeObject(
                 new ManagerRolesContainer(
                     addRemovePurchasing,
                     addRemoveDiscountPolicy,
                     addRemoveStoreManger,
                     closeStore)
-                , Formatting.Indented);
+                );
         }
 
         //{id : int , name :string , price : int , rank : int  , category : string  }
@@ -239,10 +239,11 @@ namespace TestingFramework.AcceptanceTests
         {
             List<int> ret = new List<int>();
             string msg = service.SearchProducts(name, category, keyword, startPrice, endPrice, productRank, storeRank);
-            JArray json = JArray.Parse(msg);
-            foreach (JObject product in json)
+            //JArray json = JArray.Parse(msg);
+            List<Product> json = JsonHandler.DeserializeObject<List<Product>>(msg);
+            foreach (Product product in json)
             {
-                ret.Add(getId(product));
+                ret.Add(product.getId());
             }
             return ret;
         }
