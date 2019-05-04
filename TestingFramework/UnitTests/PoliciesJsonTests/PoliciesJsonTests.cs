@@ -60,5 +60,39 @@ namespace TestingFramework.UnitTests.PoliciesJsonTests
             Assert.IsInstanceOfType(((XorExpression)result).secondChild, typeof(UserCountry));
         }
 
+
+        //[TestMethod]
+        //[TestCategory("JSON")]
+        public void DiscountSerializeTest()
+        {
+            ItemFilter filter1 = new CategoryFilter("cat");
+            IBooleanExpression leaf1 = new MaxAmount(10, filter1);
+            ItemFilter filter2 = new AllProductsFilter();
+            IBooleanExpression leaf2 = new UserCountry("Wakanda forever", filter2);
+            IBooleanExpression complex = new XorExpression();
+            complex.addChildren(leaf1, leaf2);
+
+            //TODO: when there are concrete Outcomes, we can test this
+            //IOutcome outcome = new 
+            //Discount discount = new Discount(complex,)
+
+
+
+            string json = JsonConvert.SerializeObject(complex, /*Formatting.Indented,*/ new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            });
+
+            IBooleanExpression result = JsonConvert.DeserializeObject<IBooleanExpression>(json, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+            Assert.IsInstanceOfType(result, typeof(XorExpression));
+            Assert.IsInstanceOfType(((XorExpression)result).firstChild, typeof(MaxAmount));
+            Assert.IsInstanceOfType(((XorExpression)result).secondChild, typeof(UserCountry));
+        }
+
+
+
     }
 }
