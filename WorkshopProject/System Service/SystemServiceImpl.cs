@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Shopping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +62,16 @@ namespace WorkshopProject.System_Service
 
         public string AddProductToBasket(int storeId,int productId, int amount)
         {
-            return transactionS.AddProductToBasket(storeId,productId, amount);
+            bool ret;
+            try
+            {
+                ret = transactionS.AddProductToBasket(storeId, productId, amount);
+                return resultJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string AddProductToStock(int storeId, int productId, int amount)
@@ -135,7 +145,16 @@ namespace WorkshopProject.System_Service
         {
             //if (!loggedIn)
             //    throw new Exception("Not logged in");
-            return transactionS.BuyShoppingBasket();
+            int ret;
+            try
+            {
+                ret = transactionS.BuyShoppingBasket();
+                return intJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount)
@@ -186,12 +205,30 @@ namespace WorkshopProject.System_Service
 
         public string GetShoppingCart(int storeId)
         {
-            return transactionS.GetShoppingCart(storeId);
+            JsonShoppingCart ret;
+            try
+            {
+                ret = transactionS.GetShoppingCart(storeId);
+                return objDynamicJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string GetShoppingBasket()
         {
-            return transactionS.GetShoppingBasket();
+            JsonShoppingBasket ret;
+            try
+            {
+                ret = transactionS.GetShoppingBasket();
+                return objDynamicJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string login(string username, string password)
@@ -287,7 +324,16 @@ namespace WorkshopProject.System_Service
 
         public string SetProductAmountInBasket(int storeId,int productId, int amount)
         {
-            return transactionS.SetProductAmountInBasket(storeId,productId, amount);
+            bool ret;
+            try
+            {
+                ret = transactionS.SetProductAmountInBasket(storeId, productId, amount);
+                return resultJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
 

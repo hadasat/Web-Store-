@@ -102,9 +102,6 @@ namespace Shopping
             this.product = product;
             this.amount = amount;
         }
-
-        
-
     }
 
     public class JsonShoppingCart

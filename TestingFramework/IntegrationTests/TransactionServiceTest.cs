@@ -84,7 +84,7 @@ namespace IntegrationTests
             int storeIndex = index % 2;
             string msg = user.AddProductToBasket(storeId[storeIndex], productId[index], amount);
             string returnMsg = JsonConvert.DeserializeObject<Message>(msg).message;
-            Assert.AreEqual(successMsg, returnMsg,"product "+index + " to store " + storeIndex);
+            Assert.AreEqual(successMsg.ToLower(), returnMsg.ToLower(), "product "+index + " to store " + storeIndex);
         }
 
         [TestMethod()]
