@@ -18,8 +18,11 @@ namespace WorkshopProject.System_Service
         Boolean loggedIn;
         public User user { get; set; }
 
-        private string adminUsername = "Admin";
-        private string adminPassword = "Admin";
+        private static string successMsg = "Success";
+        private static string failMsg = "Fail";
+
+        //private string adminUsername = "Admin";
+        //private string adminPassword = "Admin";
 
         public SystemServiceImpl()
         {
@@ -43,7 +46,17 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 return notLoggedInError();
-            return storeS.addDiscountPolicy(storeId);
+
+            bool ret;
+            try
+            {
+                ret = storeS.addDiscountPolicy(storeId);
+                return resultJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string AddProductToBasket(int storeId,int productId, int amount)
@@ -55,14 +68,32 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 return notLoggedInError();
-            return storeS.AddProductToStock(storeId, productId, amount);
+            bool ret;
+            try
+            {
+                ret = storeS.AddProductToStock(storeId, productId, amount);
+                return resultJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string AddProductToStore(int storeId, string name, string desc, double price, string category)
         {
             if (!loggedIn)
                 return notLoggedInError();
-            return storeS.AddProductToStore(storeId, name, desc, price, category);
+            int ret;
+            try
+            {
+                ret = storeS.AddProductToStore(storeId, name, desc, price, category);
+                return intJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string addPurchasingPolicy(int storeId)
@@ -74,7 +105,16 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 return notLoggedInError();
-            return storeS.AddStore(storeName);
+            int ret;
+            try
+            {
+                ret = storeS.AddStore(storeName);
+                return intJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string AddStoreManager(int storeId, string user, string roles)
@@ -102,19 +142,46 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 return notLoggedInError();
-            return storeS.ChangeProductInfo(storeId, productId, name, desc, price, category, amount);
+            bool ret;
+            try
+            {
+                ret = storeS.ChangeProductInfo(storeId, productId, name, desc, price, category, amount);
+                return resultJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string closeStore(int storeID)
         {
             if (!loggedIn)
                 return notLoggedInError();
-            return storeS.CloseStore(storeID);
+            bool ret;
+            try
+            {
+                ret = storeS.CloseStore(storeID);
+                return resultJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string GetProductInfo(int productId)
         {
-            return  storeS.GetProductInfo(productId);
+            Product ret;
+            try
+            {
+                ret = storeS.GetProductInfo(productId);
+                return objDynamicJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string GetShoppingCart(int storeId)
@@ -171,7 +238,16 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 return notLoggedInError();
-            return storeS.RemoveProductFromStore(storeId, productId);
+            bool ret;
+            try
+            {
+                ret = storeS.RemoveProductFromStore(storeId, productId);
+                return resultJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string removePurchasingPolicy(int storeId)
@@ -197,7 +273,16 @@ namespace WorkshopProject.System_Service
 
         public string SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank)
         {
-            return storeS.SearchProducts(name, category, keyword, startPrice, endPrice, productRank, storeRank);
+            List<Product> ret;
+            try
+            {
+                ret = storeS.SearchProducts(name, category, keyword, startPrice, endPrice, productRank, storeRank);
+                return objDynamicJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string SetProductAmountInBasket(int storeId,int productId, int amount)
@@ -205,7 +290,7 @@ namespace WorkshopProject.System_Service
             return transactionS.SetProductAmountInBasket(storeId,productId, amount);
         }
 
-        //jonathan
+
         private string notLoggedInError()
         {
             Message msg = new Message("User not logged in");
@@ -218,10 +303,52 @@ namespace WorkshopProject.System_Service
             return JsonConvert.SerializeObject(msg);
         }
 
+        private string resultJson(bool ret)
+        {
+            string msg = ret ? successMsg : failMsg;
+            return generateMessageFormatJason(msg);
+        }
+
+        private string intJson(int ret)
+        {
+            IdMessage idMsg = new IdMessage(ret);
+            return JsonConvert.SerializeObject(idMsg);
+        }
+
+        private string successJson()
+        {
+            return JsonConvert.SerializeObject(new Message("Success"));
+        }
+
+        private string failJson()
+        {
+            return JsonConvert.SerializeObject(new Message("Fail"));
+        }
+
+        private string objDynamicJson(Object obj)
+        {
+            return JsonHandler.SerializeObjectDynamic(obj);
+        }
+
+        private string generateMessageFormatJason(string message)
+        {
+            return JsonConvert.SerializeObject(new Message(message));
+        }
+ 
+
         //jonathan - no idea how SystemAdmin object can be added
         //private string addAdmin()
         //{
         //    return Register(adminUsername, adminPassword);
         //}
+    }
+
+    public class Message
+    {
+        public string message;
+        public Message(string message)
+        {
+            this.message = message;
+        }
     }
 }
