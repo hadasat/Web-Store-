@@ -27,19 +27,13 @@ namespace WorkshopProject.System_Service
         /// <param name="username"></param>
         /// <param name="roles"></param>
         /// <returns></returns>
-        internal string AddStoreManager(int storeId, string username, string roles)
+        internal bool AddStoreManager(int storeId, string username, string roles)
         {
             Roles rolesOb = createRole(roles);
             if(rolesOb == null)
-                return generateMessageFormatJason("illegal roles was enterd");
-            try
-            {
+                throw new Exception("illegal roles was enterd");
                 ((Member)user).addManager(username, rolesOb, storeId);
-            } catch (Exception exception)
-            {
-                return generateMessageFormatJason(exception.ToString());
-            }
-            return successJason();
+            return true;
         }
 
         //private Roles createRole(string roles)
@@ -68,118 +62,61 @@ namespace WorkshopProject.System_Service
             return new Roles(true, addRemoveDiscountPolicy, addRemoveDiscountPolicy, true, closeStore, true, true, true);
         }
 
-        internal string AddStoreOwner(int storeId, string username)
+        internal bool AddStoreOwner(int storeId, string username)
         {
             Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true);
             if(!(user is Member))
-                return generateMessageFormatJason("user can't do this");
-            try
-            {
-                ((Member)user).addManager(username, ownerRoles, storeId);
-            } catch(Exception exception)
-            {
-                return generateMessageFormatJason(exception.ToString());
-            }
-            return successJason();
+                throw new Exception("user can't do this");
+
+            ((Member)user).addManager(username, ownerRoles, storeId);
+
+            return true;
         }
 
-        internal string login(string username, string password)
+        internal bool login(string username, string password)
         {
-            try
-            {
-                Member member = user.loginMember(username, password);
-                user = member;
-            }
-            catch (Exception exception)
-            {
-                //TODO change return format
-                return generateMessageFormatJason(exception.ToString());
-            }
-            return successJason();
+            Member member = user.loginMember(username, password);
+            user = member;
+            return true;
         }
 
-        internal string logout()
+        internal bool logout()
         {
             if (!(user is Member))
-                return generateMessageFormatJason("user can't do this");
-            try
-            {
-                ((Member)user).logOut();
-            }
-            catch (Exception exception)
-            {
-                return generateMessageFormatJason(exception.ToString());
-            }
-            return successJason();
+                throw new Exception("user can't do this");
+
+            ((Member)user).logOut();
+            return true;
         }
 
-        internal string Register(string username, string password)
+        internal bool Register(string username, string password)
         {
-            try
-            {
-                user.registerNewUser(username, password);
-            }
-            catch (Exception exception)
-            {
-                return generateMessageFormatJason(exception.ToString());
-            }
-            
-            return successJason();
+            user.registerNewUser(username, password);
+            return true;
         }
 
-        internal string Register(string username, string password, string country, int age)
+        internal bool Register(string username, string password, string country, int age)
         {
-            try
-            {
-                user.registerNewUser(username, password, country, age);
-            }
-            catch (Exception exception)
-            {
-                return generateMessageFormatJason(exception.ToString());
-            }
-
-            return successJason();
+            user.registerNewUser(username, password, country, age);
+            return true;
         }
 
-        internal string RemoveStoreManager(int storeId, string username)
+        internal bool RemoveStoreManager(int storeId, string username)
         {
             if (!(user is Member))
-                return generateMessageFormatJason("user can't do this");
-            try
-            {
-                ((Member)user).removeManager(username, storeId);
-            }
-            catch (Exception exception)
-            {
-                return generateMessageFormatJason(exception.ToString());
-            }
-            return successJason();
+                throw new Exception("user can't do this");
+
+            ((Member)user).removeManager(username, storeId);
+            return true;
         }
 
-        internal string RemoveUser(string username)
+        internal bool RemoveUser(string username)
         {
             if (!(user is SystemAdmin))
-                return generateMessageFormatJason("user or member can't do this");
-            try
-            {
-                bool res = ((SystemAdmin)user).RemoveUser(username);
-            }
-            catch (Exception exception)
-            {
-                return generateMessageFormatJason(exception.ToString());
-            }
-            return successJason();
-        }
+                throw new Exception("user or member can't do this");
 
-
-        private string generateMessageFormatJason(string message)
-        {
-            return JsonConvert.SerializeObject(new Message(message));
-        }
-
-        private string successJason()
-        {
-            return JsonConvert.SerializeObject(new Message("Success"));
+            bool res = ((SystemAdmin)user).RemoveUser(username);
+            return true;
         }
     }
 }

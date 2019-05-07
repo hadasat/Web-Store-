@@ -22,7 +22,7 @@ namespace WorkshopProject
 
         public static string SerializeObjectDynamic(object value)
         {
-            return JsonConvert.SerializeObject(value, format, settings);
+            return JsonConvert.SerializeObject(value, format);
         }
 
         public static T DeserializeObject<T>(string json){
