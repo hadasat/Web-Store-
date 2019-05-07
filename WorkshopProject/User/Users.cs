@@ -200,22 +200,28 @@ namespace Users
         public ShoppingBasket shoppingBasket;
 
 
+
         public User()
         {
             this.shoppingBasket = new ShoppingBasket();
         }
 
-        public virtual bool hasAddRemoveDiscountPermission(Store store)
+        public virtual bool hasAddRemoveDiscountPolicies(Store store)
+        {
+            return false;
+        }
+
+        public virtual bool hasAddRemovePurchasingPolicies(Store store)
+        {
+            return false;
+        }
+
+        public virtual bool hasAddRemoveStorePolicies(Store store)
         {
             return false;
         }
 
         public virtual bool hasAddRemoveProductsPermission(Store store)
-        {
-            return false;
-        }
-
-        public virtual bool hasAddRemovePurchasingPermission(Store store)
         {
             return false;
         }
@@ -259,14 +265,19 @@ namespace Users
     {
         public int ID; //why do we need id?
         public string username;
+        public DateTime birthdate;
+        public String country;
         public LinkedList<StoreManager> storeManaging;
         
         
-        public Member(string username, int ID) : base()//Register
+        public Member(string username, int ID, DateTime birthdate,string country) : base()//Register
         {
             this.ID = ID;
             this.username = username;
+            this.birthdate = birthdate;
+            this.country = country;
             this.storeManaging = new LinkedList<StoreManager>();
+
         }
 
         /*** SERVICE LAYER FUNCTIONS***/
@@ -409,7 +420,7 @@ namespace Users
             return res;
         }
 
-        public override bool hasAddRemoveDiscountPermission(Store store)
+        public override bool hasAddRemoveDiscountPolicies(Store store)
         {
             Roles roles = getStoreManagerRoles(store);
             return roles != null && roles.AddRemoveProducts;
@@ -421,7 +432,7 @@ namespace Users
             return roles != null && roles.AddRemoveDiscountPolicy;
         }
 
-        public override bool hasAddRemovePurchasingPermission(Store store)
+        public override bool hasAddRemovePurchasingPolicies(Store store)
         {
             Roles roles = getStoreManagerRoles(store);
             return roles != null && roles.AddRemovePurchasing;
@@ -478,9 +489,9 @@ namespace Users
     {
         bool hasAddRemoveProductsPermission(Store store);
 
-        bool hasAddRemoveDiscountPermission(Store store);
+        bool hasAddRemoveDiscountPolicies(Store store);
 
-        bool hasAddRemovePurchasingPermission(Store store);
+        bool hasAddRemovePurchasingPolicies(Store store);
 
         bool hasAddRemoveStoreManagerPermission(Store store);
     }

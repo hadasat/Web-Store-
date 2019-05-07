@@ -9,9 +9,9 @@ namespace WorkshopProject.Policies
 {
     public class ProductAmountPrice
     {
-        public Product product { get; set; }
-        public int amount{ get; set; }
-        public double price { get; set; }
+        public Product product;
+        public int amount;
+        public double price;
 
         public ProductAmountPrice(Product product, int amount, double price)
         {
@@ -20,6 +20,7 @@ namespace WorkshopProject.Policies
             this.price = price;
         }
 
+        public ProductAmountPrice(){ }
         //public static Product FromJson(string json)
         //{
         //    return JsonConvert.DeserializeObject<Product>(json);

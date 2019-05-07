@@ -8,25 +8,8 @@ using Users;
 
 namespace WorkshopProject.System_Service
 {
-    public class Message
-    {
-        public string message;
-        public Message(string message)
-        {
-            this.message = message;
-        }
-    }
+    
 
-    //TODO: jonathan added this just to return store IDs when using AddStore
-    public class IdMessage
-    {
-        public int id;
-        public IdMessage(int id)
-        {
-            this.id = id;
-        }
-    }
-   
     public class StoreService
     {
         internal User user;
@@ -35,55 +18,40 @@ namespace WorkshopProject.System_Service
         {
             this.user = user;
         }
-        private string notActiveStoreError()
-        {
-            Message msg = new Message("Store not Active");
-            return JsonConvert.SerializeObject(msg);
-        }
 
+        //private string notActiveStoreError()
+        //{
+        //    Message msg = new Message("Store not Active");
+        //    return JsonConvert.SerializeObject(msg);
+        //}
 
-        private string successJason()
-        {
-            return JsonConvert.SerializeObject(new Message("Success"));
-        }
+        //private string successJason()
+        //{
+        //    return JsonConvert.SerializeObject(new Message("Success"));
+        //}
 
-        private string generateMessageFormatJason(string message)
-        {
-            return JsonConvert.SerializeObject(new Message(message));
-        }
-
-        internal string addDiscountPolicy(int storeId)
-        {
-            Store store = WorkShop.getStore(storeId);
-            if (store == null)
-                return generateMessageFormatJason("Store does not exist");
-            if (!store.isActive)
-                return notActiveStoreError();
-
-
-            //TODO
-
-            return successJason(); //All Valid
-
-        }
+        //private string generateMessageFormatJason(string message)
+        //{
+        //    return JsonConvert.SerializeObject(new Message(message));
+        //}
 
         internal string AddProductToStock(int storeId, int productId, int amount)
         {
             Store store = WorkShop.getStore(storeId);
             if (store == null)
-                return generateMessageFormatJason("Store does not exist");
+                return JMessage.generateMessageFormatJason("Store does not exist");
             if (!store.isActive)
-                return notActiveStoreError();
+                return JMessage.notActiveStoreError();
 
             Product product = store.getProduct(productId);
             if (product == null)
-                return generateMessageFormatJason("Product does not exist in store id" + storeId);
+                return JMessage.generateMessageFormatJason("Product does not exist in store id" + storeId);
 
 
             if (!store.addProductTostock(user, product, amount))
-                return generateMessageFormatJason("User does not have permission");
+                return JMessage.generateMessageFormatJason("User does not have permission");
 
-            return successJason(); //All Valid
+            return JMessage.successJason(); //All Valid
         }
 
         internal string AddProductToStore(int storeId, string name, string desc, double price, string category)
@@ -95,16 +63,16 @@ namespace WorkshopProject.System_Service
             }
             catch (Exception e)
             {
-                return generateMessageFormatJason(e.Message);
+                return JMessage.generateMessageFormatJason(e.Message);
             }
             Store store = WorkShop.getStore(storeId);
             if (store == null)
-                return generateMessageFormatJason("Store does not exist");
+                return JMessage.generateMessageFormatJason("Store does not exist");
             if (!store.isActive)
-                return notActiveStoreError();
+                return JMessage.notActiveStoreError();
             int id = store.addProduct(user, name, desc, price, category);
             if (id == -1)
-                return generateMessageFormatJason("User does not have permission");
+                return JMessage.generateMessageFormatJason("User does not have permission");
 
             //return successJason(); //All Valid
             //jonathan - we need the id of the new store, not a message
@@ -120,7 +88,7 @@ namespace WorkshopProject.System_Service
             }
             catch (Exception e)
             {
-                return generateMessageFormatJason(e.Message);
+                return JMessage.generateMessageFormatJason(e.Message);
             }
             int id = WorkShop.createNewStore(storeName, 0, true, (Member)user);
             //return successJason(); //All Valid
@@ -133,56 +101,51 @@ namespace WorkshopProject.System_Service
         {
             Store store = WorkShop.getStore(storeId);
             if (store == null)
-                return generateMessageFormatJason("Store does not exist");
+                return JMessage.generateMessageFormatJason("Store does not exist");
             if (!store.isActive)
-                return notActiveStoreError();
+                return JMessage.notActiveStoreError();
 
             if (!store.changeProductInfo(user, productId, name, desc, price, category, amount))
-                return generateMessageFormatJason("Error: User does not have permission Or Product does not exist");
+                return JMessage.generateMessageFormatJason("Error: User does not have permission Or Product does not exist");
 
-            return successJason(); //All Valid
+            return JMessage.successJason(); //All Valid
         }
 
         internal string CloseStore(int storeID)
         {
             if (!WorkShop.closeStore(storeID, (Member)user))
-                return generateMessageFormatJason("Error: User does not have permission");
+                return JMessage.generateMessageFormatJason("Error: User does not have permission");
 
-            return successJason(); //All Valid
+            return JMessage.successJason(); //All Valid
         }
 
         internal string GetProductInfo(int productId)
         {
             Product product = WorkShop.getProduct(productId);
             if (product == null)
-                return generateMessageFormatJason("Product does not exist in store id");
+                return JMessage.generateMessageFormatJason("Product does not exist in store id");
 
             return JsonConvert.SerializeObject(product);
 
 
         }
 
-        internal string removeDiscountPolicy(int storeId)
-        {
-            throw new NotImplementedException();
-        }
-
         internal string RemoveProductFromStore(int storeId, int productId)
         {
             Store store = WorkShop.getStore(storeId);
             if (store == null)
-                return generateMessageFormatJason("Store does not exist");
+                return JMessage.generateMessageFormatJason("Store does not exist");
             if (!store.isActive)
-                return notActiveStoreError();
+                return JMessage.notActiveStoreError();
 
             Product product = store.getProduct(productId);
             if (product == null)
-                return generateMessageFormatJason("Product does not exist in store id" + storeId);
+                return JMessage.generateMessageFormatJason("Product does not exist in store id" + storeId);
 
             if (!store.removeProductFromStore(user, product))
-                return generateMessageFormatJason("Error: User does not have permission");
+                return JMessage.generateMessageFormatJason("Error: User does not have permission");
 
-            return successJason(); //All Valid
+            return JMessage.successJason(); //All Valid
         }
 
 
@@ -191,11 +154,6 @@ namespace WorkshopProject.System_Service
             return JsonConvert.SerializeObject(WorkShop.search(name, category, startPrice, endPrice, productRank, storeRank));
         }
 
-
-        internal string removePurchasingPolicy(int storeId)
-        {
-            throw new NotImplementedException();
-        }
 
         //jonathan
         private bool checkPrice(double price)
@@ -209,7 +167,7 @@ namespace WorkshopProject.System_Service
 
         private bool sanitizeName(string storeName)
         {
-        string[] illegalChars = { ";" };
+            string[] illegalChars = { ";" };
             foreach (string c in illegalChars)
             {
                 if (storeName.Contains(c))
@@ -222,4 +180,5 @@ namespace WorkshopProject.System_Service
         }
 
     }
+
 }

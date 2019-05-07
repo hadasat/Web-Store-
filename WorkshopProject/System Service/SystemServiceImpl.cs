@@ -13,6 +13,7 @@ namespace WorkshopProject.System_Service
         StoreService storeS;
         TransactionService transactionS;
         UserService userS;
+        PolicyService policyS;
 
         //Those fileds are temporary
         Boolean loggedIn;
@@ -27,6 +28,7 @@ namespace WorkshopProject.System_Service
             storeS = new StoreService(user);
             transactionS = new TransactionService(user);
             userS = new UserService(user);
+            policyS = new PolicyService(user);
             loggedIn = false;
         }
 
@@ -35,15 +37,8 @@ namespace WorkshopProject.System_Service
             storeS.user = member;
             transactionS.user = member;
             user = member;
-            //userS.user = member;
+            policyS.user = member;
             this.user = member;
-        }
-
-        public string addDiscountPolicy(int storeId)
-        {
-            if (!loggedIn)
-                return notLoggedInError();
-            return storeS.addDiscountPolicy(storeId);
         }
 
         public string AddProductToBasket(int storeId,int productId, int amount)
@@ -63,11 +58,6 @@ namespace WorkshopProject.System_Service
             if (!loggedIn)
                 return notLoggedInError();
             return storeS.AddProductToStore(storeId, name, desc, price, category);
-        }
-
-        public string addPurchasingPolicy(int storeId)
-        {
-            throw new NotImplementedException();
         }
 
         public string AddStore(string storeName)
@@ -150,25 +140,13 @@ namespace WorkshopProject.System_Service
             return userS.Register(user, password);
         }
 
-        public string removeDiscountPolicy(int storeId)
-        {
-            if (!loggedIn)
-                return notLoggedInError();
-            return storeS.removeDiscountPolicy(storeId);
-        }
+       
 
         public string RemoveProductFromStore(int storeId, int productId)
         {
             if (!loggedIn)
                 return notLoggedInError();
             return storeS.RemoveProductFromStore(storeId, productId);
-        }
-
-        public string removePurchasingPolicy(int storeId)
-        {
-            if (!loggedIn)
-                return notLoggedInError();
-            return storeS.removePurchasingPolicy(storeId);
         }
 
         public string RemoveStoreManager(int storeId, string user)
@@ -195,6 +173,54 @@ namespace WorkshopProject.System_Service
             return transactionS.SetProductAmountInBasket(storeId,productId, amount);
         }
 
+        //policies
+
+        internal string addDiscountPolicy(int storeId,string policy)
+        {
+            if (!loggedIn)
+                return notLoggedInError();
+            return policyS.addDiscountPolicy(storeId, policy);
+
+        }
+
+        internal string removeDiscountPolicy(int storeId,int policyId)
+        {
+            if (!loggedIn)
+                return notLoggedInError();
+            return policyS.removeDiscountPolicy(storeId, policyId);
+        }
+
+        //purchasing
+        internal string addPurchasingPolicy(int storeId,String policy)
+        {
+            if (!loggedIn)
+                return notLoggedInError();
+            return policyS.addPurchasingPolicy(storeId, policy);
+        }
+
+        internal string removePurchasingPolicy(int storeId,int policyId)
+        {
+            if (!loggedIn)
+                return notLoggedInError();
+            return policyS.removePurchasingPolicy(storeId, policyId);
+        }
+
+        //store
+        internal string addStorePolicy(int storeId, String policy)
+        {
+            if (!loggedIn)
+                return notLoggedInError();
+            return policyS.addStorePolicy(storeId,policy);
+
+        }
+
+        internal string removeStorePolicy(int storeId, int policyId)
+        {
+            if (!loggedIn)
+                return notLoggedInError();
+            return policyS.removeStorePolicy(storeId, policyId);
+        }
+
         //jonathan
         private string notLoggedInError()
         {
@@ -213,5 +239,50 @@ namespace WorkshopProject.System_Service
         //{
         //    return Register(adminUsername, adminPassword);
         //}
+    }
+
+    //messages:
+
+    public class Message
+    {
+        public string message;
+        public Message(string message)
+        {
+            this.message = message;
+        }
+    }
+
+    //TODO: jonathan added this just to return store IDs when using AddStore
+    public class IdMessage
+    {
+        public int id;
+        public IdMessage(int id)
+        {
+            this.id = id;
+        }
+    }
+
+    public static class JMessage
+    {
+        public static string notActiveStoreError()
+        {
+            Message msg = new Message("Store not Active");
+            return JsonConvert.SerializeObject(msg);
+        }
+
+        public static string successJason()
+        {
+            return JsonConvert.SerializeObject(new Message("Success"));
+        }
+
+        public static string generateMessageFormatJason(string message)
+        {
+            return JsonConvert.SerializeObject(new Message(message));
+        }
+
+        public static string generateIDMessageFormatJason(int id)
+        {
+            return JsonConvert.SerializeObject(new IdMessage(id));
+        }
     }
 }

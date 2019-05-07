@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject.Log;
+using WorkshopProject.Policies;
 
 namespace WorkshopProject
 {
@@ -17,8 +18,9 @@ namespace WorkshopProject
         public Boolean isActive;
 
         public Dictionary<int, Product> Stock;
-        public PurchasePolicy purchase_policy;
-        public List<DiscountPolicy> discountPolicy;
+        public IBooleanExpression purchasePolcies;
+        public IBooleanExpression discountPolcies;
+        public IBooleanExpression storePolicies;
 
         public int Id { get => id; }
 
@@ -29,7 +31,6 @@ namespace WorkshopProject
             this.rank = rank;
             this.isActive = isActive;
             Stock = new Dictionary<int, Product>();
-            discountPolicy = new List<DiscountPolicy>();
 
         }
 
@@ -115,6 +116,11 @@ namespace WorkshopProject
             return true;
         }
 
+        public int getNewId()
+        {
+            return 
+        }
+        /*
         public Boolean addDiscount(User user, DiscountPolicy discount)
         {
             if (!isActive)
@@ -124,7 +130,7 @@ namespace WorkshopProject
                 return false;
             return true;
         }
-
+        
         public Boolean removeDiscount(User user, DiscountPolicy discount)
         {
             if (!user.hasAddRemoveDiscountPermission(this))   //Verify Premission
@@ -148,7 +154,7 @@ namespace WorkshopProject
                 return false;
 
             return true;
-        }
+        }*/
         public delegate void callback();
         /// <summary>
         /// succseed - callback that return the products to the stock. if fail - returns null
@@ -234,7 +240,89 @@ namespace WorkshopProject
             return output;
         }
 
+        //policies
+
+        public int AddDiscountPolicy(User user, IBooleanExpression discountPolicy)
+        {
+            if (!isActive)
+                return -1;
+            if (!user.hasAddRemoveDiscountPolicies(this))   //Verify Premission
+                return -2;
+            //check policy validation
+            int newPolicyId = IBooleanExpression.checkExpression(discountPolicy);
+            if (newPolicyId < 0)
+                return -3;
+            this.discountPolcies = discountPolicy;
+            return newPolicyId;
+        }
+
+        public int RemoveDiscountPolicy(User user,int policyId)
+        {
+            if (!isActive)
+                return -1;
+            if (!user.hasAddRemoveDiscountPolicies(this))   //Verify Premission
+                return -2;
+            if (discountPolcies == null)
+                return -3;
+            this.discountPolcies = discountPolcies.removePolicy(policyId);
+            return policyId;
+        }
+
+        public int AddPurchasPolicy(User user, IBooleanExpression purchasPolicy)
+        {
+            if (!isActive)
+                return -1;
+            if (!user.hasAddRemovePurchasingPolicies(this))     //Verify Premission
+                return -2;
+            if (purchasePolcies == null)
+                return -3;
+            //check policy validation
+            int newPolicyId = IBooleanExpression.checkExpression(purchasPolicy);
+            if (newPolicyId < 0)
+                return -3;
+            this.purchasePolcies = purchasPolicy;
+            return newPolicyId;
+        }
+
+        public int RemovePurchasPolicy(User user, int policyId)
+        {
+            if (!isActive)
+                return -1;
+            if (!user.hasAddRemovePurchasingPolicies(this))     //Verify Premission
+                return -2;
+            if (purchasePolcies == null)
+                return -3;
+            this.discountPolcies = discountPolcies.removePolicy(policyId);
+            return policyId;
+        }
+
+        public int AddStorePolicy(User user, IBooleanExpression storePolicy)
+        {
+            if (!isActive)
+                return -1;
+            if (!user.hasAddRemoveStorePolicies(this))     //Verify Premission
+                return -2;
+            if (storePolicies == null)
+                return -3;
+            //check policy validation
+            int newPolicyId = IBooleanExpression.checkExpression(storePolicy);
+            if (newPolicyId < 0)
+                return -3;
+            this.storePolicies = storePolicy;
+            return newPolicyId;
+        }
+
+        public int RemoveStorePolicy(User user, int policyId)
+        {
+            if (!isActive)
+                return -1;
+            if (!user.hasAddRemoveStorePolicies(this))     //Verify Premission
+                return -2;
+            if (storePolicies == null)
+                return -3;
+            this.storePolicies = storePolicies.removePolicy(policyId);
+            return policyId;
+        }
+
     }
-
-
 }
