@@ -3,44 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>WorkShop</title>
-    <script type="text/javascript">
-        var myId =-1;
-        var createJsonToSend = function (message){
-            var msg = {
-                type: "message",
-                text: message,
-                date: Date.now(),
-                id: myId};
-            return JSON.stringify(msg);
-        };
-        var start = function () {
-            const printArea = document.getElementById('incoming');
-            const form = document.getElementById('sendForm');
-            const input = document.getElementById('sendText');
-            const urlAdress = "ws://localhost:8080/wot"
-            printArea.innerHTML += "connecting to server "+urlAdress+ " "+" <br/>";
-            const webSocketClient = new WebSocket(urlAdress);
-            //when connection opens
-            webSocketClient.onopen = function (event) {
-                printArea.innerHTML += "connected to server :) <br/>"
-            }
-            webSocketClient.onclose = function (event) {
-                printArea.innerHTML += "connection closed :( <br/>"
-            }
-            webSocketClient.onmessage = function (event) {
-                printArea.innerHTML += event.data+ "<br/>";
-            }
-            webSocketClient.onsend
-            //send action
-            form.addEventListener('submit',function (e){
-                e.preventDefault();
-                webSocketClient.send(input.value);
-                input.value ="";
-            })
-
-        }
-        window.onload = start;
-    </script>
+    <script type="text/javascript" src="communication.js"></script>
 
     <!-- BOOTSTRAP FILES -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> 
@@ -60,7 +23,6 @@
                 <li id="nav_signin" class="nav-item">
                     <a class="nav-link" href="#">Sign In</a>
                 </li>
-
                 <!-- visible only when the user is logged in -->
                 <li id="nav_userName" class="nav-item"></li>
                 <li id="nav_signOut" class="nav-item">
@@ -69,13 +31,10 @@
                 <li id="nav_opensStore" class="nav-item">
                     <a class="nav-link" href="#">New Store </a>
                 </li>
-               
                 <!-- end  -->
-
                 <li class="nav-item">
                 <a class="nav-link" href="#">Shopping Cart</a>
-                </li>
-                    
+                </li>      
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
@@ -89,38 +48,8 @@
             </form>
         </div>
         </nav>
-<script>
-    // <!-- NavBar  Script -->
-    function setUpOptBtn(){
-        if(localStorage.getItem("loggedIn") === "true"){
-            $("#nav_signin").hide();
-            $("#nav_signOut").show();
-            $("#nav_userName").append(`<span class="nav-link"><strong>Hello ${localStorage.getItem("username")}!</strong></span>`);
-            $("#nav_userName").show();
-            $("#nav_opensStore").show();
-            
-        }else{
 
-            $("#nav_signin").show();
-            $("#nav_signOut").hide();
-            $("#nav_userName").hide();
-            $("#nav_opensStore").hide();
-        }
-    }
-
-    $('#nav_signOut').on('click', ()=>{
-        // sendMessage({type: "action", info: "signout" , data: localStorage.getItem("userId")});
-        signOut();
-    })
-
-    function signOut(){
-        localStorage.setItem("loggedIn","false");
-        localStorage.setItem("username","");
-        setUpOptBtn();
-    }
-
-    setUpOptBtn();
-</script>
+<script type="text/javascript" src="navbar.js"></script>
 </head>
 <body>
 
@@ -184,27 +113,17 @@
 </div>
 
 <script>
-     sendRequest({type: "data",info:"stores"});
-    function setUserId(){
-        var localId = localStorage.getItem("userId");
-        localId? 
-            sendRequest({type: "updateId",info: "set" ,data: localId}) :
-            sendRequest({type: "updateId", info: "get"})
-    }
-    //---FOR TEST ONLY
-    handleMessage(`[{\"id\":0,\"rank\":1,\"name\":\"store_test\",\"products\":null}]`);
-
-    //--END TEST
-    
-    function handleMessage(msg){
-        msg?
-        displayStores(JSON.parse(msg)) :
-        alert("error loading stores");     
-    }
+    sendRequest("data","getAllStores",null);
+    var handleMessage = (msg)=>{
+        msg.info=="success"?
+        displayStores(JSON.parse(msg.data)) :
+        alert(msg.data.msg);     
+    };
+    updateHandler(handleMessage);
 
     function displayStores(stores){
         stores.map(store => $(".grid").append(createStoreCardHtml(store)));
-    }
+    };
 
     function createStoreCardHtml(store){
         // Card Html Component String
@@ -219,8 +138,7 @@
                 `</div>`;
        
     }
-
-</script>    
+</script>
    
 </body>
 </html>

@@ -3,44 +3,7 @@
     <head>
             <meta charset="UTF-8">
             <title>WorkShop</title>
-            <script type="text/javascript">
-                var myId =-1;
-                var createJsonToSend = function (message){
-                    var msg = {
-                        type: "message",
-                        text: message,
-                        date: Date.now(),
-                        id: myId};
-                    return JSON.stringify(msg);
-                };
-                var start = function () {
-                    const printArea = document.getElementById('incoming');
-                    const form = document.getElementById('sendForm');
-                    const input = document.getElementById('sendText');
-                    const urlAdress = "ws://localhost:8080/wot"
-                    printArea.innerHTML += "connecting to server "+urlAdress+ " "+" <br/>";
-                    const webSocketClient = new WebSocket(urlAdress);
-                    //when connection opens
-                    webSocketClient.onopen = function (event) {
-                        printArea.innerHTML += "connected to server :) <br/>"
-                    }
-                    webSocketClient.onclose = function (event) {
-                        printArea.innerHTML += "connection closed :( <br/>"
-                    }
-                    webSocketClient.onmessage = function (event) {
-                        printArea.innerHTML += event.data+ "<br/>";
-                    }
-                    webSocketClient.onsend
-                    //send action
-                    form.addEventListener('submit',function (e){
-                        e.preventDefault();
-                        webSocketClient.send(input.value);
-                        input.value ="";
-                    })
-        
-                }
-                window.onload = start;
-            </script>
+            <script type="text/javascript" src="communication.js"></script>
         
             <!-- BOOTSTRAP FILES -->
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> 
@@ -89,38 +52,8 @@
                     </form>
                 </div>
                 </nav>
-        <script>
-            // <!-- NavBar  Script -->
-            function setUpOptBtn(){
-                if(localStorage.getItem("loggedIn") === "true"){
-                    $("#nav_signin").hide();
-                    $("#nav_signOut").show();
-                    $("#nav_userName").append(`<span class="nav-link"><strong>Hello ${localStorage.getItem("username")}!</strong></span>`);
-                    $("#nav_userName").show();
-                    $("#nav_opensStore").show();
-                    
-                }else{
 
-                    $("#nav_signin").show();
-                    $("#nav_signOut").hide();
-                    $("#nav_userName").hide();
-                    $("#nav_opensStore").hide();
-                }
-            }
-
-            $('#nav_signOut').on('click', ()=>{
-                // sendMessage({type: "action", info: "signout" , data: localStorage.getItem("userId")});
-                signOut();
-            })
-
-            function signOut(){
-                localStorage.setItem("loggedIn","false");
-                localStorage.setItem("username","");
-                setUpOptBtn();
-            }
-
-            setUpOptBtn();
-        </script>
+        <script type="text/javascript" src="navbar.js"></script>
         </head>   
     <body>
         <link rel="stylesheet" href="SignIn.css">
@@ -154,20 +87,25 @@
         <script>
            
             $('#signin_btn').on('click', ()=>{
-                // sendMessage({name: $("#inputUserame").val(), password: $("#inputPassword").val()});
-                handleMessage({id: 5});
+                var pass = $("#inputPassword").val();
+                var name = $("#inputUserame").val();
+                pass && name ?
+                 sendRequest("action","signin",{name: $("#inputUserame").val(), password: $("#inputPassword").val()})
+                 :
+                 alert("Please fill all the required fields");
             });
-            function handleMessage(msg){
-                if(msg.id){
+            var handleMessage = (msg) => {
+                if(msg.info=="success"){
                     //msg is and idMessage object
                     localStorage.setItem("loggedIn","true");
                     localStorage.setItem("username",$("#inputUserame").val());
-                    window.location.href = "file:///C:/Users/ofirbed/Desktop/WorkShop%20Project/WorkshopProject/WorkshopProject/Client/HtmlPages/index.html";
+                    window.location.href = "/wot/main";
                 }else{    
                     //msg is an error message
-                    alert(msg);
+                    alert(msg.data.msg);
                 }   
-            }
+            };
+            updateHandler(handleMessage);
         </script>
     </body>
 </html>
