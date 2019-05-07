@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset="UTF-8">
+            <title>WorkShop</title>
+            <script type="text/javascript">
+                var myId =-1;
+                var createJsonToSend = function (message){
+                    var msg = {
+                        type: "message",
+                        text: message,
+                        date: Date.now(),
+                        id: myId};
+                    return JSON.stringify(msg);
+                };
+                var start = function () {
+                    const printArea = document.getElementById('incoming');
+                    const form = document.getElementById('sendForm');
+                    const input = document.getElementById('sendText');
+                    const urlAdress = "ws://localhost:8080/wot"
+                    printArea.innerHTML += "connecting to server "+urlAdress+ " "+" <br/>";
+                    const webSocketClient = new WebSocket(urlAdress);
+                    //when connection opens
+                    webSocketClient.onopen = function (event) {
+                        printArea.innerHTML += "connected to server :) <br/>"
+                    }
+                    webSocketClient.onclose = function (event) {
+                        printArea.innerHTML += "connection closed :( <br/>"
+                    }
+                    webSocketClient.onmessage = function (event) {
+                        printArea.innerHTML += event.data+ "<br/>";
+                    }
+                    webSocketClient.onsend
+                    //send action
+                    form.addEventListener('submit',function (e){
+                        e.preventDefault();
+                        webSocketClient.send(input.value);
+                        input.value ="";
+                    })
+        
+                }
+                window.onload = start;
+            </script>
+        
+            <!-- BOOTSTRAP FILES -->
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> 
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        
+            <!-- NAVBAR -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="#">WorkShop</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li id="nav_signin" class="nav-item">
+                            <a class="nav-link" href="#">Sign In</a>
+                        </li>
+
+                        <!-- visible only when the user is logged in -->
+                        <li id="nav_userName" class="nav-item"></li>
+                        <li id="nav_signOut" class="nav-item">
+                            <a class="nav-link" href="#">Sign Out</a>
+                        </li>                      
+                        <li id="nav_opensStore" class="nav-item">
+                            <a class="nav-link" href="#">New Store </a>
+                        </li>
+                       
+                        <!-- end  -->
+
+                        <li class="nav-item">
+                        <a class="nav-link" href="#">Shopping Cart</a>
+                        </li>
+                            
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                                <a class="nav-link" href="#">Advance Search</a>
+                        </li>
+                    </ul>
+        
+                    <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </div>
+                </nav>
+        <script>
+            // <!-- NavBar  Script -->
+            function setUpOptBtn(){
+                if(localStorage.getItem("loggedIn") === "true"){
+                    $("#nav_signin").hide();
+                    $("#nav_signOut").show();
+                    $("#nav_userName").append(`<span class="nav-link"><strong>Hello ${localStorage.getItem("username")}!</strong></span>`);
+                    $("#nav_userName").show();
+                    $("#nav_opensStore").show();
+                    
+                }else{
+
+                    $("#nav_signin").show();
+                    $("#nav_signOut").hide();
+                    $("#nav_userName").hide();
+                    $("#nav_opensStore").hide();
+                }
+            }
+
+            $('#nav_signOut').on('click', ()=>{
+                // sendMessage({type: "action", info: "signout" , data: localStorage.getItem("userId")});
+                signOut();
+            })
+
+            function signOut(){
+                localStorage.setItem("loggedIn","false");
+                localStorage.setItem("username","");
+                setUpOptBtn();
+            }
+
+            setUpOptBtn();
+        </script>
+        </head>   
+    <body>
+        <link rel="stylesheet" href="SignIn.css">
+        <div class="container">
+            <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Sign In</h5>
+                    <form class="form-signin">
+                    <div class="form-label-group">
+                        <input type="username" id="inputUserame" class="form-control" placeholder="User Name" required autofocus>
+                        <label for="inputUserame">User Name</label>
+                    </div>
+        
+                    <div class="form-label-group">
+                        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                        <label for="inputPassword">Password</label>
+                    </div>
+        
+                    <button id="signin_btn" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+                    <hr class="my-4">
+                    <h2 class="card-title">New To WorkShop?</h2>
+                    <button id="register_btn" class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"> Create Account</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+            </div>
+    </div>
+        <script>
+           
+            $('#signin_btn').on('click', ()=>{
+                // sendMessage({name: $("#inputUserame").val(), password: $("#inputPassword").val()});
+                handleMessage({id: 5});
+            });
+            function handleMessage(msg){
+                if(msg.id){
+                    //msg is and idMessage object
+                    localStorage.setItem("loggedIn","true");
+                    localStorage.setItem("username",$("#inputUserame").val());
+                    window.location.href = "file:///C:/Users/ofirbed/Desktop/WorkShop%20Project/WorkshopProject/WorkshopProject/Client/HtmlPages/index.html";
+                }else{    
+                    //msg is an error message
+                    alert(msg);
+                }   
+            }
+        </script>
+    </body>
+</html>
