@@ -132,5 +132,10 @@ namespace TestingFramework.AcceptanceTests
         {
             throw new NotImplementedException();
         }
+
+        public bool Register(string user, string password, DateTime birthday, string country)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

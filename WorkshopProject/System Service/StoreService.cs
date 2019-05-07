@@ -28,7 +28,7 @@ namespace WorkshopProject.System_Service
             //return JsonConvert.SerializeObject(msg);
         }
 
-        public static bool addDiscountPolicy(int storeId)
+        /*public static bool addDiscountPolicy(int storeId)
         {
             Store store = WorkShop.getStore(storeId);
             if (store == null)
@@ -38,7 +38,7 @@ namespace WorkshopProject.System_Service
 
             return true; //All Valid
         }
-
+        */
         public static bool AddProductToStock(User user, int storeId, int productId, int amount)
         {
             Store store = WorkShop.getStore(storeId);

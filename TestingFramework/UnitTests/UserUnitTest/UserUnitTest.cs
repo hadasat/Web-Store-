@@ -293,14 +293,14 @@ namespace Users.Tests
     public class TestSystemAdmin
     {
 
-        SystemAdmin admin = new SystemAdmin("admin", 1);
+        SystemAdmin admin = new SystemAdmin("admin", 1, DateTime.Today.AddYears(-25), "");
         User user;
         Member member;
 
         //[TestInitialize]
         public void Init()
         {
-            admin = new SystemAdmin("admin", 1);
+            admin = new SystemAdmin("admin", 1, DateTime.Today.AddYears(-25), "");
             user = new User();
             user.registerNewUser("username","password");
             member = user.loginMember("username", "password");

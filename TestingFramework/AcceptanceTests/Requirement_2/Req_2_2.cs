@@ -22,7 +22,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             try
             {
-                bool result = bridge.Register(user, password);
+                bool result = bridge.Register(user, password,DateTime.Today.AddYears(-25),"");
 
                 Assert.IsTrue(result);
 
@@ -43,9 +43,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             try
             {
-                bridge.Register(user, password);
+                bridge.Register(user, password, DateTime.Today.AddYears(-25), "");
 
-                bool result = bridge.Register(user, password);
+                bool result = bridge.Register(user, password, DateTime.Today.AddYears(-25), "");
 
                 Assert.IsFalse(result);
             }
@@ -65,7 +65,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
                 string user = ";";
                 string password = "123456";
 
-                bool result = bridge.Register(user, password);
+                bool result = bridge.Register(user, password, DateTime.Today.AddYears(-25), "");
 
                 Assert.IsFalse(result);
 
@@ -73,7 +73,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
                 user = "User";
                 password = "";
 
-                result = bridge.Register(user, password);
+                result = bridge.Register(user, password, DateTime.Today.AddYears(-25), "");
 
                 Assert.IsFalse(result);
 

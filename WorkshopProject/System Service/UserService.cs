@@ -83,24 +83,10 @@ namespace WorkshopProject.System_Service
             return true;
         }
 
-        public static bool Register(string username, string password)
+        public static bool Register(User user, string username, string password, DateTime birthday, string country)
         {
-            (new User()).registerNewUser(username, password);
+            user.registerNewUser(username, password, birthday, country);
             return true;
-        }
-
-        public string Register(string username, string password, DateTime birthday, string country)
-        {
-            try
-            {
-                user.registerNewUser(username, password, birthday, country);
-            }
-            catch (Exception exception)
-            {
-                return generateMessageFormatJason(exception.ToString());
-            }
-
-            return successJason();
         }
 
 
