@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TestingFramework.AcceptanceTests.Requirement_2
 {
-
+    
     [TestClass]
     public class Req_2_5 : AcceptanceTest
     {

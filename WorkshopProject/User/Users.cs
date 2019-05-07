@@ -7,6 +7,7 @@ using Password;
 using Managment;
 using WorkshopProject;
 using Shopping;
+using WorkshopProject.Log;
 
 namespace Users
 {
@@ -22,10 +23,21 @@ namespace Users
 
         public static int memberIDGenerator = 0;
 
-       
+        public static void init()
+        {
+            registerNewUser("Admin", "Admin", "all", 120);
+            
+        }
+
+        static ConnectionStubTemp()
+        {
+            init();
+        }
 
         public static void removeMember(Member m)
         {
+            if (m.ID == 0)
+                throw new Exception("don't remove Admin!");
             try
             {
                 members.Remove(m.ID);
@@ -33,7 +45,7 @@ namespace Users
             }
             catch (Exception ex)
             {
-                throw new Exception("this should noy happen, member doesn't exist");
+                throw new Exception("this should not happen, member doesn't exist");
             }
         }
 
@@ -71,8 +83,9 @@ namespace Users
         public static int identifyUser(string username, string password)
         {
             //very tmp until database! TODO: change
+            /*
             if (username == "Admin")
-                registerNewUser(username, password);
+                registerNewUser(username, password, "all", 120);*/
             try
             {
                 int ID = mapIDUsermane[username];
@@ -85,7 +98,7 @@ namespace Users
             return -1;
         }
         //sign up
-        public static void registerNewUser(string username, string password)
+        public static void registerNewUser(string username, string password, string country, int age)
         {
             //Member m = null;
             //int ID = getID();
@@ -107,16 +120,27 @@ namespace Users
             sanitizeInput(username, password);
             int id;
             if(mapIDUsermane.TryGetValue(username, out id)) {
+                Logger.Log("file", logLevel.INFO, "user try to register with taken username:" + username);
                 throw new Exception("this username is already taken. try somthing else");
             }
             id = getID();
             pHandler.hashPassword(password, id);
-            Member newMember = new Member(username, id);
+            Member newMember;
+            if (age < 0 )
+                newMember = new Member(username, id);
+            else
+                newMember = new Member(username, id, country, age);
             if (username == "Admin" && password == "Admin")
-                newMember = new SystemAdmin(username, id);
+            {
+                newMember = new SystemAdmin(username, id, country, age);
+                Logger.Log("file", logLevel.INFO, "Admin has logged in");
+            }
             members[id] = newMember;
             mapIDUsermane[username] = id;
+            Logger.Log("file", logLevel.INFO, "user:" + username + " succesfully registered");
         }
+
+
 
 
         private static bool sanitizeInput(string username, string password)
@@ -204,6 +228,7 @@ namespace Users
         public User()
         {
             this.shoppingBasket = new ShoppingBasket();
+            Logger.Log("file", logLevel.INFO, "New user been created");
         }
 
         public virtual bool hasAddRemoveDiscountPolicies(Store store)
@@ -242,16 +267,24 @@ namespace Users
 
             int ID = ConnectionStubTemp.identifyUser(username, password);
             if (ID == -1)
+            {
+                //don't log password!
+                Logger.Log("file", logLevel.INFO, "user: " + username + "tried to log in and failed");
                 throw new Exception("username or password does not correct");
-            
+            }
+            Logger.Log("file", logLevel.INFO, "user: " + username + "log in and succses");
             return ConnectionStubTemp.getMember(ID);
            
         }
 
         public void registerNewUser(string username, string password)
         {
-            ConnectionStubTemp.registerNewUser(username, password);
-            //need to deside whats happen in this senario
+            ConnectionStubTemp.registerNewUser(username, password, "", -1);
+        }
+
+        public void registerNewUser(string username, string password, string country, int age)
+        {
+            ConnectionStubTemp.registerNewUser(username, password, country, age);
         }
 
         /****************************************************************/
@@ -268,9 +301,10 @@ namespace Users
         public DateTime birthdate;
         public String country;
         public LinkedList<StoreManager> storeManaging;
+        private string country;
+
         
-        
-        public Member(string username, int ID, DateTime birthdate,string country) : base()//Register
+         public Member(string username, int ID, DateTime birthdate,string country) : base()//Register
         {
             this.ID = ID;
             this.username = username;
@@ -280,9 +314,19 @@ namespace Users
 
         }
 
+        public Member(string username, int ID, string country, int age) : base()//Register
+        {
+            this.ID = ID;
+            this.username = username;
+            this.storeManaging = new LinkedList<StoreManager>();
+            this.country = country;
+            this.age = age;
+        }
+
         /*** SERVICE LAYER FUNCTIONS***/
         public void logOut()
         {
+            Logger.Log("file", logLevel.INFO, "user: " + this.username + "log out and succses");
             ConnectionStubTemp.logout(username);
         }
 
@@ -294,6 +338,7 @@ namespace Users
             Roles storeOwner = new Roles(true, true, true, true, true, true, true, true);
             StoreManager storeOwnerManager = new StoreManager(store, storeOwner);
             storeManaging.AddFirst(storeOwnerManager);
+            Logger.Log("file", logLevel.INFO, "user: " + this.username + "created succesfully new store: " + store.Id);
         }
 
         public void addStoreToMe(StoreManager storeManager)
@@ -327,6 +372,7 @@ namespace Users
                     break;
                 }
             }
+            Logger.Log("file", logLevel.INFO, "user: " + this.username + "closed succesfully store: " + store.Id);
         }
 
         public bool isStoresManagers()
@@ -403,6 +449,7 @@ namespace Users
         //TODO : is there  need for remove manager option?
         public bool removeManager(string username, Store store)
         {
+            Logger.Log("file", logLevel.INFO, "user: " + this.username + "try to remove user: "+ username);
             StoreManager myStoreRoles = getStoreManagerOb(store);
             Member memberToRemove = ConnectionStubTemp.getMember(username);
             bool res = myStoreRoles.removeManager(memberToRemove.getStoreManagerOb(store));
@@ -412,6 +459,7 @@ namespace Users
 
         public bool removeManager(string username, int StoreID)
         {
+            Logger.Log("file", logLevel.INFO, "user: " + this.username + "try to remove user: " + username);
             Store store = GetStore(StoreID);
             StoreManager myStoreRoles = getStoreManagerOb(store);
             Member memberToRemove = ConnectionStubTemp.getMember(username);
@@ -444,6 +492,15 @@ namespace Users
             return roles != null && roles.AddRemoveStoreManger;
         }
 
+        public string getCountry ()
+        {
+            return this.country;
+        }
+
+        public int getAge()
+        {
+            return this.age;
+        }
         
     }
 
@@ -454,10 +511,20 @@ namespace Users
     {
         public SystemAdmin(string username, int ID) : base(username, ID) { }
 
+        public SystemAdmin(string username, int ID, string country, int age) : base(username, ID, country, age) { }
+
         public bool RemoveUser(string userName)
         {
-            
-            Member member = ConnectionStubTemp.getMember(userName);
+            Member member;
+            try
+            {
+                member = ConnectionStubTemp.getMember(userName);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("file", logLevel.INFO, "Admin fail removed user: " + userName + " user doen't exist");
+                throw new Exception(ex.ToString());
+            }
             if (member.isStoresManagers())
             {
                 foreach (StoreManager st in storeManaging)
@@ -474,13 +541,16 @@ namespace Users
                     }
                 }
                 ConnectionStubTemp.removeMember(member);
+                Logger.Log("file", logLevel.INFO, "Admin succesfully removed user: " + userName);
                 return ConnectionStubTemp.removeUser(userName, this);
             }
             else
             {
+                Logger.Log("file", logLevel.INFO, "Admin succesfully removed user: " + userName);
                 ConnectionStubTemp.removeMember(member);
                 return ConnectionStubTemp.removeUser(userName, this);
             }
+            
         }
     }
 

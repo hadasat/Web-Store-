@@ -119,9 +119,15 @@ namespace WorkshopProject.System_Service
 
         public string login(string username, string password)
         {
-            loggedIn = true; //TODO: why does the field turn to TRUE even if we fail ?!?!
+            //loggedIn = true; //TODO: why does the field turn to TRUE even if we fail ?!?!
             String toReturn =  userS.login(username, password);
             updateMember(userS.user);
+            if (user is Member)
+            {
+                loggedIn = true;
+            }
+            else
+                loggedIn = false;
             return toReturn;
         }
 
@@ -138,6 +144,10 @@ namespace WorkshopProject.System_Service
         public string Register(string user, string password)
         {
             return userS.Register(user, password);
+        }
+        public string Register(string user, string password, string country, int age)
+        {
+            return userS.Register(user, password, country, age);
         }
 
        
