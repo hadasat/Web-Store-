@@ -78,7 +78,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Store\Category.cs" />
-    <Compile Include="Store\DiscountPolicy.cs" />
     <Compile Include="System Service\IGodObject.cs" />
     <Compile Include="System Service\PolicyService.cs" />
     <Compile Include="System Service\StoreService.cs" />

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
+using WorkshopProject.Policies;
 
 namespace Tansactions
 {
@@ -88,7 +89,7 @@ namespace Tansactions
         private static bool checkConsistency(ShoppingCart cart,Store store, Product product)
         {
             ConsistencyStub.setRet(true);
-            List<DiscountPolicy> discount = store.discountPolicy;
+            IBooleanExpression discount = store.discountPolcies;
             List<PurchasePolicy> purchase = new List<PurchasePolicy>();
             return ConsistencyStub.checkConsistency(purchase, discount,cart);
         }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
+using WorkshopProject.Policies;
 
 namespace External_Services
 {
@@ -24,7 +25,7 @@ namespace External_Services
             ret = newRet;
         }
 
-        public static bool checkConsistency(List<PurchasePolicy> policies, List<DiscountPolicy> discounts,ShoppingCart cart)
+        public static bool checkConsistency(List<PurchasePolicy> policies, IBooleanExpression discounts,ShoppingCart cart)
         {
             return ret;
         }

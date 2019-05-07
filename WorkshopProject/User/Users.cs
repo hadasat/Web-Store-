@@ -25,8 +25,7 @@ namespace Users
 
         public static void init()
         {
-            registerNewUser("Admin", "Admin", "all", 120);
-            
+            registerNewUser("Admin", "Admin",DateTime.Today.AddYears(-120) , "all");
         }
 
         static ConnectionStubTemp()
@@ -98,7 +97,7 @@ namespace Users
             return -1;
         }
         //sign up
-        public static void registerNewUser(string username, string password, string country, int age)
+        public static void registerNewUser(string username, string password, DateTime birthday, string country)
         {
             //Member m = null;
             //int ID = getID();
@@ -126,13 +125,13 @@ namespace Users
             id = getID();
             pHandler.hashPassword(password, id);
             Member newMember;
-            if (age < 0 )
-                newMember = new Member(username, id);
-            else
-                newMember = new Member(username, id, country, age);
+            if (birthday < DateTime.Today)
+                newMember = new Member(username, id, birthday, country);
+            else //TODO: what this is spouse to do??
+                newMember = new Member(username, id, birthday, country);
             if (username == "Admin" && password == "Admin")
             {
-                newMember = new SystemAdmin(username, id, country, age);
+                newMember = new SystemAdmin(username, id,birthday, country);
                 Logger.Log("file", logLevel.INFO, "Admin has logged in");
             }
             members[id] = newMember;
@@ -279,12 +278,12 @@ namespace Users
 
         public void registerNewUser(string username, string password)
         {
-            ConnectionStubTemp.registerNewUser(username, password, "", -1);
+            ConnectionStubTemp.registerNewUser(username, password,DateTime.Today.AddYears(-1) , "");
         }
 
-        public void registerNewUser(string username, string password, string country, int age)
+        public void registerNewUser(string username, string password, DateTime birthday, string country)
         {
-            ConnectionStubTemp.registerNewUser(username, password, country, age);
+            ConnectionStubTemp.registerNewUser(username, password, birthday, country);
         }
 
         /****************************************************************/
@@ -301,7 +300,6 @@ namespace Users
         public DateTime birthdate;
         public String country;
         public LinkedList<StoreManager> storeManaging;
-        private string country;
 
         
          public Member(string username, int ID, DateTime birthdate,string country) : base()//Register
@@ -313,16 +311,7 @@ namespace Users
             this.storeManaging = new LinkedList<StoreManager>();
 
         }
-
-        public Member(string username, int ID, string country, int age) : base()//Register
-        {
-            this.ID = ID;
-            this.username = username;
-            this.storeManaging = new LinkedList<StoreManager>();
-            this.country = country;
-            this.age = age;
-        }
-
+        
         /*** SERVICE LAYER FUNCTIONS***/
         public void logOut()
         {
@@ -497,9 +486,14 @@ namespace Users
             return this.country;
         }
 
-        public int getAge()
+        public double getAge()
         {
-            return this.age;
+            int age = DateTime.Now.Year - birthdate.Year;
+
+            if ((birthdate.Month > DateTime.Now.Month) || (birthdate.Month == DateTime.Now.Month && birthdate.Day > DateTime.Now.Day))
+                age--;
+
+            return age;
         }
         
     }
@@ -509,9 +503,8 @@ namespace Users
 
     public class SystemAdmin : Member
     {
-        public SystemAdmin(string username, int ID) : base(username, ID) { }
 
-        public SystemAdmin(string username, int ID, string country, int age) : base(username, ID, country, age) { }
+        public SystemAdmin(string username, int ID,DateTime birthday, string country) : base(username, ID, birthday,country) { }
 
         public bool RemoveUser(string userName)
         {
@@ -562,6 +555,8 @@ namespace Users
         bool hasAddRemoveDiscountPolicies(Store store);
 
         bool hasAddRemovePurchasingPolicies(Store store);
+
+        bool hasAddRemoveStorePolicies(Store store);
 
         bool hasAddRemoveStoreManagerPermission(Store store);
     }

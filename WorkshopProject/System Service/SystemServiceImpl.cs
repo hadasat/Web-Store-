@@ -141,17 +141,11 @@ namespace WorkshopProject.System_Service
             return toReturn;
         }
 
-        public string Register(string user, string password)
+        public string Register(string user, string password,DateTime birthday, string country)
         {
-            return userS.Register(user, password);
+            return userS.Register(user, password, birthday, country);
         }
-        public string Register(string user, string password, string country, int age)
-        {
-            return userS.Register(user, password, country, age);
-        }
-
-       
-
+        
         public string RemoveProductFromStore(int storeId, int productId)
         {
             if (!loggedIn)
@@ -184,8 +178,7 @@ namespace WorkshopProject.System_Service
         }
 
         //policies
-
-        internal string addDiscountPolicy(int storeId,string policy)
+        public string addDiscountPolicy(int storeId,string policy)
         {
             if (!loggedIn)
                 return notLoggedInError();
@@ -193,7 +186,7 @@ namespace WorkshopProject.System_Service
 
         }
 
-        internal string removeDiscountPolicy(int storeId,int policyId)
+        public string removeDiscountPolicy(int storeId,int policyId)
         {
             if (!loggedIn)
                 return notLoggedInError();
@@ -201,14 +194,14 @@ namespace WorkshopProject.System_Service
         }
 
         //purchasing
-        internal string addPurchasingPolicy(int storeId,String policy)
+        public string addPurchasingPolicy(int storeId,String policy)
         {
             if (!loggedIn)
                 return notLoggedInError();
             return policyS.addPurchasingPolicy(storeId, policy);
         }
 
-        internal string removePurchasingPolicy(int storeId,int policyId)
+        public string removePurchasingPolicy(int storeId,int policyId)
         {
             if (!loggedIn)
                 return notLoggedInError();
@@ -216,7 +209,7 @@ namespace WorkshopProject.System_Service
         }
 
         //store
-        internal string addStorePolicy(int storeId, String policy)
+        public string addStorePolicy(int storeId, String policy)
         {
             if (!loggedIn)
                 return notLoggedInError();
@@ -224,7 +217,7 @@ namespace WorkshopProject.System_Service
 
         }
 
-        internal string removeStorePolicy(int storeId, int policyId)
+        public string removeStorePolicy(int storeId, int policyId)
         {
             if (!loggedIn)
                 return notLoggedInError();

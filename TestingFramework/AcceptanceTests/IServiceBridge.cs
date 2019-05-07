@@ -12,7 +12,7 @@ namespace TestingFramework.AcceptanceTests
         //bool Initialize(string admin, string password);
 
         //Reg 2_2
-        bool Register(string user, string password);
+        bool Register(string user, string password,DateTime birthday, string country);
 
         //Reg 2_3
         bool Login(string user, string password);

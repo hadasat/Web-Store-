@@ -43,7 +43,6 @@ namespace WorkshopProject.Policies
         }
     }
 
-
     public class MinAmount : IBooleanExpression
     {
        // public string name = "MinAmount";
@@ -140,8 +139,7 @@ namespace WorkshopProject.Policies
             {
                 List<ProductAmountPrice> filterProdact = filter.getFilteredItems(products);
                 string userCountry = ((Member)user).country;
-                DateTime minBirthDate = DateTime.Today.AddYears(-age);
-                if ((filterProdact.Count > 0 && userCountry.Equals(country)) || (filterProdact.Count == 0))
+                if ((filterProdact.Count > 0 && !userCountry.Equals(country)) || (filterProdact.Count == 0))
                 {
                     return true;
                 }

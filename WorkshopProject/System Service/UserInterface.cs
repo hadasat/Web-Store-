@@ -31,10 +31,10 @@ namespace WorkshopProject.System_Service
         String login(string username, string password);
 
         //Return: Message Format
-        String Register(string user, string password);
+        //String Register(string user, string password);
 
         //Return: Message Format
-        String Register(string user, string password, string country, int age);
+        String Register(string user, string password, DateTime birthday, string country);
 
         //Return: Search Format
         String SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank);
@@ -103,16 +103,22 @@ namespace WorkshopProject.System_Service
         String RemoveUser(string user);
 
         //Return: Message Format
-        String addPurchasingPolicy(int storeId);
+        String addPurchasingPolicy(int storeId,string policy);
 
         //Return: Message Format
-        String removePurchasingPolicy(int storeId);
+        String removePurchasingPolicy(int storeId,int policyId);
 
         //Return: Message Format
-        String addDiscountPolicy(int storeId);
+        String addDiscountPolicy(int storeId, string policy);
 
         //Return: Message Format
-        String removeDiscountPolicy(int storeId);
+        String removeDiscountPolicy(int storeId, int policyId);
+
+        //Return: Message Format
+        String addStorePolicy(int storeId, string policy);
+
+        //Return: Message Format
+        String removeStorePolicy(int storeId, int policyId);
 
         //Return: Message Format
         String closeStore(int storeID);

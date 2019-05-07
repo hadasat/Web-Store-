@@ -19,7 +19,6 @@ namespace WorkshopProject
         public int amount;
         public int storeId;
 
-        public DiscountPolicy discount { get; }
 
         public Product(string name , double price, string desc, string category,int rank,int amount , int storeId)
         {
@@ -29,7 +28,6 @@ namespace WorkshopProject
             this.category = category;
             this.rank = rank;
             this.storeId = storeId;
-            discount = new DiscountPolicy();
             this.description = desc;
             this.amount = amount;
         }
@@ -43,11 +41,9 @@ namespace WorkshopProject
             return id;
         }
 
-       
-
         public double getPrice()
         {
-            return price - discount.amount;
+            return price;
         }
 
         public void setPrice(double newPrice)

@@ -116,10 +116,6 @@ namespace WorkshopProject
             return true;
         }
 
-        public int getNewId()
-        {
-            return 
-        }
         /*
         public Boolean addDiscount(User user, DiscountPolicy discount)
         {

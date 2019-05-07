@@ -200,9 +200,9 @@ namespace TestingFramework.AcceptanceTests
             return wasSuccessful(json);
         }
 
-        public bool Register(string user, string password)
+        public bool Register(string user, string password, DateTime birthday, string country)
         {
-            string msg = service.Register(user, password);
+            string msg = service.Register(user, password, birthday, country);
             JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
         }

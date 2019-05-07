@@ -127,11 +127,11 @@ namespace WorkshopProject.System_Service
             return successJason();
         }
 
-        internal string Register(string username, string password, string country, int age)
+        internal string Register(string username, string password, DateTime birthday, string country)
         {
             try
             {
-                user.registerNewUser(username, password, country, age);
+                user.registerNewUser(username, password, birthday, country);
             }
             catch (Exception exception)
             {

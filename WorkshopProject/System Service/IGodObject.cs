@@ -50,7 +50,7 @@ namespace WorkshopProject.System_Service
 
         public int addMember(string username, string password)
         {
-            ConnectionStubTemp.registerNewUser(username, password, "", -1);
+            ConnectionStubTemp.registerNewUser(username, password, DateTime.Today.AddYears(-1), "");
             return ConnectionStubTemp.memberIDGenerator - 1;
 
         }
