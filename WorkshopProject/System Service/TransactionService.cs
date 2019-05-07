@@ -9,27 +9,18 @@ using Tansactions;
 using Users;
 
 
-
-
 namespace WorkshopProject.System_Service
 {
 
     //Message Format: {message: String}
     //Search Format: {List<Product> products}
 
-public class TransactionService
+public static class TransactionService
     {
-        internal User user;
-        public string successMsg = "success";
 
-        public TransactionService(User user)
+        public static bool AddProductToBasket(User user, int storeId, int productId, int amount)
         {
-            this.user = user;
-        }
-
-        internal string AddProductToBasket(int storeId, int productId, int amount)
-        {
-            Message msg;
+            bool ret;
             ShoppingBasket userShoppingBasket = user.shoppingBasket;
             Store store = WorkShop.getStore(storeId);
             Product product;
@@ -38,51 +29,49 @@ public class TransactionService
                     bool sucss;
                 sucss = userShoppingBasket.addProduct(store, product, amount);
                 if (sucss)
-                    msg = new Message(successMsg);
+                    ret = true;
                 else
-                    msg = new Message("request Fail");
+                    ret = false;
             }
             else
-                msg = new Message("Illegal Product id");
-            return JsonConvert.SerializeObject(msg);
+                throw new Exception("Illegal Product id");
+            return ret;
         }
 
-        internal string BuyShoppingBasket()
+        public static int BuyShoppingBasket(User user)
         {
             int transId = Transaction.purchase(user);
-            return JsonConvert.SerializeObject(new IdMessage(transId));
-            
+            return transId;
+
+            //return JsonConvert.SerializeObject(new IdMessage(transId));
         }
         
-        internal string GetShoppingCart(int storeId)
+        public static JsonShoppingCart GetShoppingCart(User user, int storeId)
         {
-            Message msg;
             //find the product store;
             Store store = WorkShop.getStore(storeId);
             if (store == null) { 
-                msg = new Message("Illegal store id");
-                return JsonConvert.SerializeObject(msg);
+                throw new Exception("Illegal store id");
             }
             ShoppingCart shoppingCart;
             user.shoppingBasket.carts.TryGetValue(store,out shoppingCart);
             if(shoppingCart == null)
             {
-                msg = new Message("Illegal store id for this user");
-                return JsonConvert.SerializeObject(msg);
+                throw new Exception("Illegal store id for this user");
             }
             JsonShoppingCart jsc = new JsonShoppingCart(shoppingCart);
-            return JsonConvert.SerializeObject(jsc);
+            return jsc;
         }
 
-        internal string GetShoppingBasket()
+        public static JsonShoppingBasket GetShoppingBasket(User user)
         {
             JsonShoppingBasket jsb = new JsonShoppingBasket(user.shoppingBasket);
-            return JsonConvert.SerializeObject(jsb);
+            return jsb;
         }
 
-        internal string SetProductAmountInBasket(int storeId,int productId, int amount)
+        public static bool SetProductAmountInBasket(User user, int storeId,int productId, int amount)
         {
-            Message msg;
+            bool ret;
             ShoppingBasket userShoppingBasket = user.shoppingBasket;
             Store store = WorkShop.getStore(storeId);
             Product product;
@@ -95,13 +84,13 @@ public class TransactionService
                // else
                //     sucss = false;
                 if (sucss)
-                    msg = new Message(successMsg);
+                    ret = true;
                 else
-                    msg = new Message("request Fail");
+                    ret = false;
             }
             else
-                msg = new Message("Illegal Product id");
-            return JsonConvert.SerializeObject(msg);
+                throw new Exception("Illegal Product id");
+            return ret;
         }
     }
 }
