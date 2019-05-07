@@ -8,155 +8,159 @@ using Users;
 
 namespace WorkshopProject.System_Service
 {
-    
-
-    public class StoreService
+    //TODO: jonathan added this just to return store IDs when using AddStore
+    public class IdMessage
     {
-        internal User user;
-
-        public StoreService(User user)
+        public int id;
+        public IdMessage(int id)
         {
-            this.user = user;
+            this.id = id;
+        }
+    }
+   
+    public static class StoreService
+    {
+        private static void notActiveStoreError()
+        {
+            throw new Exception("Store not Active");
+
+            //Message msg = new Message("Store not Active");
+            //return JsonConvert.SerializeObject(msg);
         }
 
-        //private string notActiveStoreError()
-        //{
-        //    Message msg = new Message("Store not Active");
-        //    return JsonConvert.SerializeObject(msg);
-        //}
-
-        //private string successJason()
-        //{
-        //    return JsonConvert.SerializeObject(new Message("Success"));
-        //}
-
-        //private string generateMessageFormatJason(string message)
-        //{
-        //    return JsonConvert.SerializeObject(new Message(message));
-        //}
-
-        internal string AddProductToStock(int storeId, int productId, int amount)
+        public static bool addDiscountPolicy(int storeId)
         {
             Store store = WorkShop.getStore(storeId);
             if (store == null)
-                return JMessage.generateMessageFormatJason("Store does not exist");
+                throw new Exception("Store does not exist");
             if (!store.isActive)
-                return JMessage.notActiveStoreError();
+                throw new Exception("Store does not exist");
+
+            return true; //All Valid
+        }
+
+        public static bool AddProductToStock(User user, int storeId, int productId, int amount)
+        {
+            Store store = WorkShop.getStore(storeId);
+            if (store == null)
+               throw new Exception("Store does not exist");
+            if (!store.isActive)
+                notActiveStoreError();
 
             Product product = store.getProduct(productId);
             if (product == null)
-                return JMessage.generateMessageFormatJason("Product does not exist in store id" + storeId);
+                throw new Exception("Product does not exist in store id" + storeId);
 
 
             if (!store.addProductTostock(user, product, amount))
-                return JMessage.generateMessageFormatJason("User does not have permission");
+                throw new Exception("User does not have permission");
 
-            return JMessage.successJason(); //All Valid
+            return true; //All Valid
         }
 
-        internal string AddProductToStore(int storeId, string name, string desc, double price, string category)
+        public static int AddProductToStore(User user, int storeId, string name, string desc, double price, string category)
         {
-            try
-            {
-                sanitizeName(name);
-                checkPrice(price);
-            }
-            catch (Exception e)
-            {
-                return JMessage.generateMessageFormatJason(e.Message);
-            }
+            sanitizeName(name);
+            checkPrice(price);
             Store store = WorkShop.getStore(storeId);
             if (store == null)
-                return JMessage.generateMessageFormatJason("Store does not exist");
+                throw new Exception("Store does not exist");
             if (!store.isActive)
-                return JMessage.notActiveStoreError();
+                notActiveStoreError();
             int id = store.addProduct(user, name, desc, price, category);
             if (id == -1)
-                return JMessage.generateMessageFormatJason("User does not have permission");
+                throw new Exception("User does not have permission");
 
             //return successJason(); //All Valid
             //jonathan - we need the id of the new store, not a message
-            IdMessage idMsg = new IdMessage(id);
-            return JsonConvert.SerializeObject(idMsg);
+            //IdMessage idMsg = new IdMessage(id);
+            //return JsonConvert.SerializeObject(idMsg);
+
+            return id;
         }
 
-        internal string AddStore(string storeName)
+        public static int AddStore(User user, string storeName)
         {
-            try
-            {
-                sanitizeName(storeName);
-            }
-            catch (Exception e)
-            {
-                return JMessage.generateMessageFormatJason(e.Message);
-            }
+            sanitizeName(storeName);
             int id = WorkShop.createNewStore(storeName, 0, true, (Member)user);
             //return successJason(); //All Valid
             //jonathan - we need the id of the new store, not a message
-            IdMessage idMsg = new IdMessage(id);
-            return JsonConvert.SerializeObject(idMsg);
+            //IdMessage idMsg = new IdMessage(id);
+            //return JsonConvert.SerializeObject(idMsg);
+
+            return id;
         }
 
-        internal string ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount)
+        public static bool ChangeProductInfo(User user, int storeId, int productId, string name, string desc, double price, string category, int amount)
         {
             Store store = WorkShop.getStore(storeId);
             if (store == null)
-                return JMessage.generateMessageFormatJason("Store does not exist");
+                throw new Exception("Store does not exist");
             if (!store.isActive)
-                return JMessage.notActiveStoreError();
+                notActiveStoreError();
 
             if (!store.changeProductInfo(user, productId, name, desc, price, category, amount))
-                return JMessage.generateMessageFormatJason("Error: User does not have permission Or Product does not exist");
+                throw new Exception("Error: User does not have permission Or Product does not exist");
 
-            return JMessage.successJason(); //All Valid
+            return true; //All Valid
         }
 
-        internal string CloseStore(int storeID)
+        public static bool CloseStore(User user, int storeID)
         {
             if (!WorkShop.closeStore(storeID, (Member)user))
-                return JMessage.generateMessageFormatJason("Error: User does not have permission");
+                throw new Exception("Error: User does not have permission");
 
-            return JMessage.successJason(); //All Valid
+            return true; //All Valid
         }
 
-        internal string GetProductInfo(int productId)
+        public static Product GetProductInfo(int productId)
         {
             Product product = WorkShop.getProduct(productId);
             if (product == null)
-                return JMessage.generateMessageFormatJason("Product does not exist in store id");
-
-            return JsonConvert.SerializeObject(product);
-
-
+                throw new Exception("Product does not exist in store id");
+            
+            return product;
         }
 
-        internal string RemoveProductFromStore(int storeId, int productId)
+        public static string removeDiscountPolicy(int storeId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool RemoveProductFromStore(User user, int storeId, int productId)
         {
             Store store = WorkShop.getStore(storeId);
             if (store == null)
-                return JMessage.generateMessageFormatJason("Store does not exist");
+                throw new Exception("Store does not exist");
             if (!store.isActive)
-                return JMessage.notActiveStoreError();
+                notActiveStoreError();
 
             Product product = store.getProduct(productId);
             if (product == null)
-                return JMessage.generateMessageFormatJason("Product does not exist in store id" + storeId);
+                throw new Exception("Product does not exist in store id" + storeId);
 
             if (!store.removeProductFromStore(user, product))
-                return JMessage.generateMessageFormatJason("Error: User does not have permission");
+                throw new Exception("Error: User does not have permission");
 
-            return JMessage.successJason(); //All Valid
+            return true; //All Valid
         }
 
 
-        internal string SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank)
+        public static List<Product> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank)
         {
-            return JsonConvert.SerializeObject(WorkShop.search(name, category, startPrice, endPrice, productRank, storeRank));
+            List<Product> products = WorkShop.search(name, category, startPrice, endPrice, productRank, storeRank);
+            return products;
+            //return JsonConvert.SerializeObject(products);
         }
 
+
+        public static string removePurchasingPolicy(int storeId)
+        {
+            throw new NotImplementedException();
+        }
 
         //jonathan
-        private bool checkPrice(double price)
+        private static bool checkPrice(double price)
         {
             if (price <= 0)
             {
@@ -165,9 +169,9 @@ namespace WorkshopProject.System_Service
             return true;
         }
 
-        private bool sanitizeName(string storeName)
+        private static bool sanitizeName(string storeName)
         {
-            string[] illegalChars = { ";" };
+        string[] illegalChars = { ";" };
             foreach (string c in illegalChars)
             {
                 if (storeName.Contains(c))
@@ -180,5 +184,4 @@ namespace WorkshopProject.System_Service
         }
 
     }
-
 }
