@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Managment;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,17 +8,7 @@ using System.Threading.Tasks;
 using Users;
 
 namespace WorkshopProject.System_Service
-{
-    //TODO: jonathan added this just to return store IDs when using AddStore
-    public class IdMessage
-    {
-        public int id;
-        public IdMessage(int id)
-        {
-            this.id = id;
-        }
-    }
-   
+{ 
     public static class StoreService
     {
         private static void notActiveStoreError()
@@ -159,6 +150,50 @@ namespace WorkshopProject.System_Service
             throw new NotImplementedException();
         }
 
+        //TODO: add unit test
+        public static List<Store> GetAllStores()
+        {
+            return WorkShop.stores.Values.ToList();
+        }
+
+        //TODO: add unit test
+        public static List<Member> getAllManagers(int storeId)
+        {
+            List<Member> ret = new List<Member>();
+            List<Member> members = UserService.GetAllMembers();
+            foreach (Member member in members)
+            {
+                List<StoreManager> managers = UserService.GetRoles(member);
+                foreach(StoreManager manager in managers)
+                {
+                    if(manager.GetStore().Id == storeId)
+                    {
+                        ret.Add(member);
+                    }
+                }
+            }
+            return ret;
+        }
+
+        //TODO: add unit test
+        public static List<Member> getAllOwners(int storeId)
+        {
+            List<Member> ret = new List<Member>();
+            List<Member> members = UserService.GetAllMembers();
+            foreach (Member member in members)
+            {
+                List<StoreManager> managers = UserService.GetRoles(member);
+                foreach (StoreManager manager in managers)
+                {
+                    if (manager.GetStore().Id == storeId && manager.GetRoles().isStoreOwner())
+                    {
+                        ret.Add(member);
+                    }
+                }
+            }
+            return ret;
+        }
+
         //jonathan
         private static bool checkPrice(double price)
         {
@@ -182,6 +217,16 @@ namespace WorkshopProject.System_Service
             }
             return true;
         }
+    }
 
+
+    //TODO: jonathan added this just to return store IDs when using AddStore
+    public class IdMessage
+    {
+        public int id;
+        public IdMessage(int id)
+        {
+            this.id = id;
+        }
     }
 }

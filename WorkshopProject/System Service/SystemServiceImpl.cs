@@ -11,9 +11,7 @@ namespace WorkshopProject.System_Service
 {
     public class SystemServiceImpl : UserInterface
     {
-
-
-        //Those fileds are temporary
+        //Those fields are temporary
         bool loggedIn;
         public User user { get; set; }
 
