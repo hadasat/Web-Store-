@@ -44,7 +44,7 @@ namespace WorkshopProject.System_Service
         //    if (roles[7] == 't') b8 = true; else if (roles[7] == 'f') b8 = false; else return null;
         //    return new Roles(b1, b2, b3, b4, b5, b6, b7, b8);
         //}
-
+    
         private static Roles createRole(string roles)
         {
             JObject json = JObject.Parse(roles);
@@ -111,6 +111,38 @@ namespace WorkshopProject.System_Service
 
             bool res = ((SystemAdmin)user).RemoveUser(username);
             return true;
+        }
+
+
+        //TODO: add unit test
+        public static List<StoreManager> GetRoles(User user)
+        {
+            if (!(user is Member))
+            {
+                throw new Exception("only members have roles");
+            }
+            List<StoreManager> roles = ((Member)user).storeManaging.ToList();
+            return roles;
+        }
+
+        //TODO: add unit test
+        public static List<Member> GetAllMembers()
+        {
+            return ConnectionStubTemp.members.Values.ToList();
+        }
+
+        //TODO: add unit test
+        public static void SendMessage(int memberId, string message)
+        {
+            Member member = ConnectionStubTemp.getMember(memberId);
+            member.notifications.Add(message);
+        }
+
+        //TODO: add unit test
+        public static List<string> GetMessages(int memberId)
+        {
+            Member member = ConnectionStubTemp.getMember(memberId);
+            return member.notifications;
         }
     }
 }

@@ -295,15 +295,17 @@ namespace Users
         public LinkedList<StoreManager> storeManaging;
         private string country;
         private int age;
-        
+        public List<string> notifications;
         
         public Member(string username, int ID) : base()//Register
         {
             this.ID = ID;
             this.username = username;
+            this.notifications = new List<string>();
             this.storeManaging = new LinkedList<StoreManager>();
             this.country = "none";
             this.age = -1;
+            
         }
 
         public Member(string username, int ID, string country, int age) : base()//Register

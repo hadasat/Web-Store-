@@ -101,8 +101,6 @@ namespace Managment
             this.father = null; //change to super father
         }
 
-
-
         /*about roles: the client will choose what roles he wants to give the new
           manager (needs to be like hes and below) */
         public bool CreateNewManager(Member member, Roles roles)
