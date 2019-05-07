@@ -131,14 +131,32 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 return notLoggedInError();
-            return userS.AddStoreManager(storeId, user, roles);    ///TODO:::::::::::::::::;///////////// :))))))
+            bool ret;
+            try
+            {
+                ret = userS.AddStoreManager(storeId, user, roles);
+                return resultJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string AddStoreOwner(int storeId, string user)
         {
             if (!loggedIn)
                 return notLoggedInError();
-            return userS.AddStoreOwner(storeId, user);
+            bool ret;
+            try
+            {
+                ret = userS.AddStoreOwner(storeId, user);
+                return resultJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string BuyShoppingBasket()
@@ -233,16 +251,27 @@ namespace WorkshopProject.System_Service
 
         public string login(string username, string password)
         {
-            //loggedIn = true; //TODO: why does the field turn to TRUE even if we fail ?!?!
-            String toReturn =  userS.login(username, password);
-            updateMember(userS.user);
-            if (user is Member)
+            bool ret;
+            try
             {
-                loggedIn = true;
+                ret = userS.login(username, password);
             }
-            else
-                loggedIn = false;
-            return toReturn;
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
+
+            if (ret)
+            {
+                updateMember(userS.user);
+                if (user is Member)
+                {
+                    loggedIn = true;
+                }
+                else
+                    loggedIn = false;
+            }
+            return resultJson(ret);
         }
 
         public string logout()
@@ -250,18 +279,44 @@ namespace WorkshopProject.System_Service
             if (!loggedIn)
                 return notLoggedInError();
             loggedIn = false;
-            String toReturn =  userS.logout();
+            bool ret;
+            try
+            {
+                ret = userS.logout();
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
             updateMember(new User());
-            return toReturn;
+            return resultJson(ret);
         }
 
         public string Register(string user, string password)
         {
-            return userS.Register(user, password);
+            bool ret;
+            try
+            {
+                ret = userS.Register(user, password);
+                return resultJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
         public string Register(string user, string password, string country, int age)
         {
-            return userS.Register(user, password, country, age);
+            bool ret;
+            try
+            {
+                ret = userS.Register(user, password, country, age);
+                return resultJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string removeDiscountPolicy(int storeId)
@@ -298,14 +353,32 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 return notLoggedInError();
-            return userS.RemoveStoreManager(storeId, user);
+            bool ret;
+            try
+            {
+                ret = userS.RemoveStoreManager(storeId, user);
+                return resultJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string RemoveUser(string user)
         {
             if (!loggedIn)
                 return notLoggedInError();
-            return userS.RemoveUser(user);
+            bool ret;
+            try
+            {
+                ret = userS.RemoveUser(user);
+                return resultJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
         }
 
         public string SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank)
