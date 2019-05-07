@@ -9,25 +9,16 @@ using Tansactions;
 using Users;
 
 
-
-
 namespace WorkshopProject.System_Service
 {
 
     //Message Format: {message: String}
     //Search Format: {List<Product> products}
 
-public class TransactionService
+public static class TransactionService
     {
-        internal User user;
-        public string successMsg = "success";
 
-        public TransactionService(User user)
-        {
-            this.user = user;
-        }
-
-        internal bool AddProductToBasket(int storeId, int productId, int amount)
+        public static bool AddProductToBasket(User user, int storeId, int productId, int amount)
         {
             bool ret;
             ShoppingBasket userShoppingBasket = user.shoppingBasket;
@@ -47,7 +38,7 @@ public class TransactionService
             return ret;
         }
 
-        internal int BuyShoppingBasket()
+        public static int BuyShoppingBasket(User user)
         {
             int transId = Transaction.purchase(user);
             return transId;
@@ -55,7 +46,7 @@ public class TransactionService
             //return JsonConvert.SerializeObject(new IdMessage(transId));
         }
         
-        internal JsonShoppingCart GetShoppingCart(int storeId)
+        public static JsonShoppingCart GetShoppingCart(User user, int storeId)
         {
             //find the product store;
             Store store = WorkShop.getStore(storeId);
@@ -72,13 +63,13 @@ public class TransactionService
             return jsc;
         }
 
-        internal JsonShoppingBasket GetShoppingBasket()
+        public static JsonShoppingBasket GetShoppingBasket(User user)
         {
             JsonShoppingBasket jsb = new JsonShoppingBasket(user.shoppingBasket);
             return jsb;
         }
 
-        internal bool SetProductAmountInBasket(int storeId,int productId, int amount)
+        public static bool SetProductAmountInBasket(User user, int storeId,int productId, int amount)
         {
             bool ret;
             ShoppingBasket userShoppingBasket = user.shoppingBasket;
