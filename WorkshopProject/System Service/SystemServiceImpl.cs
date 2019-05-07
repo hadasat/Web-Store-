@@ -48,19 +48,7 @@ namespace WorkshopProject.System_Service
 
         public string addDiscountPolicy(int storeId)
         {
-            if (!loggedIn)
-                return notLoggedInError();
-
-            bool ret;
-            try
-            {
-                ret = StoreService.addDiscountPolicy(storeId);
-                return resultJson(ret);
-            }
-            catch (Exception e)
-            {
-                return generateMessageFormatJason(e.Message);
-            }
+            throw new NotImplementedException();
         }
 
         public string AddProductToBasket(int storeId,int productId, int amount)
