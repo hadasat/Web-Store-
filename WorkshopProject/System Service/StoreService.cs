@@ -150,6 +150,11 @@ namespace WorkshopProject.System_Service
             throw new NotImplementedException();
         }
 
+        public static Store GetStore(int storeId)
+        {
+            return WorkShop.getStore(storeId);
+        }
+
         //TODO: add unit test
         public static List<Store> GetAllStores()
         {

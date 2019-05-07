@@ -117,7 +117,20 @@ namespace WorkshopProject.System_Service
         //Return: Message Format
         String closeStore(int storeID);
 
-        
+        String GetStore(int storeId);
 
+        String GetAllStores();
+
+        String getAllManagers(int storeId);
+
+        String getAllOwners(int storeId);
+
+        String GetRoles();
+
+        String GetAllMembers();
+
+        String SendMessage(int memberId, string message);
+
+        String GetMessages(int memberId);
     }
 }

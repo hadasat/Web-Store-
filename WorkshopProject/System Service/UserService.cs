@@ -132,14 +132,14 @@ namespace WorkshopProject.System_Service
         }
 
         //TODO: add unit test
-        public static void sendMessage(int memberId, string message)
+        public static void SendMessage(int memberId, string message)
         {
             Member member = ConnectionStubTemp.getMember(memberId);
             member.notifications.Add(message);
         }
 
         //TODO: add unit test
-        public static List<string> getMessages(int memberId)
+        public static List<string> GetMessages(int memberId)
         {
             Member member = ConnectionStubTemp.getMember(memberId);
             return member.notifications;

@@ -442,7 +442,55 @@ namespace WorkshopProject.System_Service
         {
             return JsonConvert.SerializeObject(new Message(message));
         }
- 
+
+        public string GetStore(int storeId)
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
+        public string GetAllStores()
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
+        public string getAllManagers(int storeId)
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
+        public string getAllOwners(int storeId)
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
+        public string GetRoles()
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
+        public string GetAllMembers()
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
+        public string SendMessage(int memberId, string message)
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
+        public string GetMessages(int memberId)
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
 
         //jonathan - no idea how SystemAdmin object can be added
         //private string addAdmin()
