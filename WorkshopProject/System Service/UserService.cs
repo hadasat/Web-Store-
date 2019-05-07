@@ -12,14 +12,8 @@ using Newtonsoft.Json.Linq;
 
 namespace WorkshopProject.System_Service
 {
-    public class UserService
+    public static class UserService
     {
-        internal User user;
-    
-        public UserService(User user)
-        {
-            this.user = user;
-        }
         /// <summary>
         /// Role format will be string of 8 chars f or t examples: tttttttt, ttttffff, ffffffft
         /// </summary>
@@ -27,7 +21,7 @@ namespace WorkshopProject.System_Service
         /// <param name="username"></param>
         /// <param name="roles"></param>
         /// <returns></returns>
-        internal bool AddStoreManager(int storeId, string username, string roles)
+        public static bool AddStoreManager(User user, int storeId, string username, string roles)
         {
             Roles rolesOb = createRole(roles);
             if(rolesOb == null)
@@ -51,7 +45,7 @@ namespace WorkshopProject.System_Service
         //    return new Roles(b1, b2, b3, b4, b5, b6, b7, b8);
         //}
 
-        private Roles createRole(string roles)
+        private static Roles createRole(string roles)
         {
             JObject json = JObject.Parse(roles);
             bool addRemovePurchasing = (bool)json["addRemovePurchasing"];
@@ -62,7 +56,7 @@ namespace WorkshopProject.System_Service
             return new Roles(true, addRemoveDiscountPolicy, addRemoveDiscountPolicy, true, closeStore, true, true, true);
         }
 
-        internal bool AddStoreOwner(int storeId, string username)
+        public static bool AddStoreOwner(User user, int storeId, string username)
         {
             Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true);
             if(!(user is Member))
@@ -73,14 +67,14 @@ namespace WorkshopProject.System_Service
             return true;
         }
 
-        internal bool login(string username, string password)
+        public static Member login(string username, string password)
         {
-            Member member = user.loginMember(username, password);
-            user = member;
-            return true;
+            Member member = (new User()).loginMember(username, password);
+            //user = member;
+            return member;
         }
 
-        internal bool logout()
+        public static bool logout(User user)
         {
             if (!(user is Member))
                 throw new Exception("user can't do this");
@@ -89,19 +83,19 @@ namespace WorkshopProject.System_Service
             return true;
         }
 
-        internal bool Register(string username, string password)
+        public static bool Register(string username, string password)
         {
-            user.registerNewUser(username, password);
+            (new User()).registerNewUser(username, password);
             return true;
         }
 
-        internal bool Register(string username, string password, string country, int age)
+        public static bool Register(string username, string password, string country, int age)
         {
-            user.registerNewUser(username, password, country, age);
+            (new User()).registerNewUser(username, password, country, age);
             return true;
         }
 
-        internal bool RemoveStoreManager(int storeId, string username)
+        public static bool RemoveStoreManager(User user, int storeId, string username)
         {
             if (!(user is Member))
                 throw new Exception("user can't do this");
@@ -110,7 +104,7 @@ namespace WorkshopProject.System_Service
             return true;
         }
 
-        internal bool RemoveUser(string username)
+        public static bool RemoveUser(User user, string username)
         {
             if (!(user is SystemAdmin))
                 throw new Exception("user or member can't do this");

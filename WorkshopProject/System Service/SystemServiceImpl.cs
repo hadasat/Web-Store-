@@ -11,12 +11,10 @@ namespace WorkshopProject.System_Service
 {
     public class SystemServiceImpl : UserInterface
     {
-        StoreService storeS;
-        TransactionService transactionS;
-        UserService userS;
+
 
         //Those fileds are temporary
-        Boolean loggedIn;
+        bool loggedIn;
         public User user { get; set; }
 
         private static string successMsg = "Success";
@@ -24,21 +22,26 @@ namespace WorkshopProject.System_Service
 
         //private string adminUsername = "Admin";
         //private string adminPassword = "Admin";
+        //StoreService storeS;
+        //TransactionService transactionS;
+        //UserService userS;
 
         public SystemServiceImpl()
         {
             user = new User();
-            storeS = new StoreService(user);
-            transactionS = new TransactionService(user);
-            userS = new UserService(user);
             loggedIn = false;
+
+
+            //storeS = new StoreService(user);
+            //transactionS = new TransactionService(user);
+            //userS = new UserService(user);
         }
 
         public void updateMember(User member)
         {
-            storeS.user = member;
-            transactionS.user = member;
-            user = member;
+            //storeS.user = member;
+            //transactionS.user = member;
+            //user = member;
             //userS.user = member;
             this.user = member;
         }
@@ -51,7 +54,7 @@ namespace WorkshopProject.System_Service
             bool ret;
             try
             {
-                ret = storeS.addDiscountPolicy(storeId);
+                ret = StoreService.addDiscountPolicy(storeId);
                 return resultJson(ret);
             }
             catch (Exception e)
@@ -65,7 +68,7 @@ namespace WorkshopProject.System_Service
             bool ret;
             try
             {
-                ret = transactionS.AddProductToBasket(storeId, productId, amount);
+                ret = TransactionService.AddProductToBasket(user, storeId, productId, amount);
                 return resultJson(ret);
             }
             catch (Exception e)
@@ -81,7 +84,7 @@ namespace WorkshopProject.System_Service
             bool ret;
             try
             {
-                ret = storeS.AddProductToStock(storeId, productId, amount);
+                ret = StoreService.AddProductToStock(user, storeId, productId, amount);
                 return resultJson(ret);
             }
             catch (Exception e)
@@ -97,7 +100,7 @@ namespace WorkshopProject.System_Service
             int ret;
             try
             {
-                ret = storeS.AddProductToStore(storeId, name, desc, price, category);
+                ret = StoreService.AddProductToStore(user, storeId, name, desc, price, category);
                 return intJson(ret);
             }
             catch (Exception e)
@@ -118,7 +121,7 @@ namespace WorkshopProject.System_Service
             int ret;
             try
             {
-                ret = storeS.AddStore(storeName);
+                ret = StoreService.AddStore(user, storeName);
                 return intJson(ret);
             }
             catch (Exception e)
@@ -127,14 +130,14 @@ namespace WorkshopProject.System_Service
             }
         }
 
-        public string AddStoreManager(int storeId, string user, string roles)
+        public string AddStoreManager(int storeId, string userToAdd, string roles)
         {
             if (!loggedIn)
                 return notLoggedInError();
             bool ret;
             try
             {
-                ret = userS.AddStoreManager(storeId, user, roles);
+                ret = UserService.AddStoreManager(user, storeId, userToAdd, roles);
                 return resultJson(ret);
             }
             catch (Exception e)
@@ -143,14 +146,14 @@ namespace WorkshopProject.System_Service
             }
         }
 
-        public string AddStoreOwner(int storeId, string user)
+        public string AddStoreOwner(int storeId, string userToAdd)
         {
             if (!loggedIn)
                 return notLoggedInError();
             bool ret;
             try
             {
-                ret = userS.AddStoreOwner(storeId, user);
+                ret = UserService.AddStoreOwner(user, storeId, userToAdd);
                 return resultJson(ret);
             }
             catch (Exception e)
@@ -166,7 +169,7 @@ namespace WorkshopProject.System_Service
             int ret;
             try
             {
-                ret = transactionS.BuyShoppingBasket();
+                ret = TransactionService.BuyShoppingBasket(user);
                 return intJson(ret);
             }
             catch (Exception e)
@@ -182,7 +185,7 @@ namespace WorkshopProject.System_Service
             bool ret;
             try
             {
-                ret = storeS.ChangeProductInfo(storeId, productId, name, desc, price, category, amount);
+                ret = StoreService.ChangeProductInfo(user, storeId, productId, name, desc, price, category, amount);
                 return resultJson(ret);
             }
             catch (Exception e)
@@ -198,7 +201,7 @@ namespace WorkshopProject.System_Service
             bool ret;
             try
             {
-                ret = storeS.CloseStore(storeID);
+                ret = StoreService.CloseStore(user, storeID);
                 return resultJson(ret);
             }
             catch (Exception e)
@@ -212,7 +215,7 @@ namespace WorkshopProject.System_Service
             Product ret;
             try
             {
-                ret = storeS.GetProductInfo(productId);
+                ret = StoreService.GetProductInfo(productId);
                 return objDynamicJson(ret);
             }
             catch (Exception e)
@@ -226,7 +229,7 @@ namespace WorkshopProject.System_Service
             JsonShoppingCart ret;
             try
             {
-                ret = transactionS.GetShoppingCart(storeId);
+                ret = TransactionService.GetShoppingCart(user, storeId);
                 return objDynamicJson(ret);
             }
             catch (Exception e)
@@ -240,7 +243,7 @@ namespace WorkshopProject.System_Service
             JsonShoppingBasket ret;
             try
             {
-                ret = transactionS.GetShoppingBasket();
+                ret = TransactionService.GetShoppingBasket(user);
                 return objDynamicJson(ret);
             }
             catch (Exception e)
@@ -251,19 +254,19 @@ namespace WorkshopProject.System_Service
 
         public string login(string username, string password)
         {
-            bool ret;
+            Member ret;
             try
             {
-                ret = userS.login(username, password);
+                ret = UserService.login(username, password);
             }
             catch (Exception e)
             {
                 return generateMessageFormatJason(e.Message);
             }
 
-            if (ret)
+            if (ret != null)
             {
-                updateMember(userS.user);
+                updateMember(ret);
                 if (user is Member)
                 {
                     loggedIn = true;
@@ -271,7 +274,7 @@ namespace WorkshopProject.System_Service
                 else
                     loggedIn = false;
             }
-            return resultJson(ret);
+            return resultJson(ret != null);
         }
 
         public string logout()
@@ -282,7 +285,7 @@ namespace WorkshopProject.System_Service
             bool ret;
             try
             {
-                ret = userS.logout();
+                ret = UserService.logout(user);
             }
             catch (Exception e)
             {
@@ -292,12 +295,12 @@ namespace WorkshopProject.System_Service
             return resultJson(ret);
         }
 
-        public string Register(string user, string password)
+        public string Register(string username, string password)
         {
             bool ret;
             try
             {
-                ret = userS.Register(user, password);
+                ret = UserService.Register(username, password);
                 return resultJson(ret);
             }
             catch (Exception e)
@@ -305,12 +308,12 @@ namespace WorkshopProject.System_Service
                 return generateMessageFormatJason(e.Message);
             }
         }
-        public string Register(string user, string password, string country, int age)
+        public string Register(string username, string password, string country, int age)
         {
             bool ret;
             try
             {
-                ret = userS.Register(user, password, country, age);
+                ret = UserService.Register(username, password, country, age);
                 return resultJson(ret);
             }
             catch (Exception e)
@@ -323,7 +326,7 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 return notLoggedInError();
-            return storeS.removeDiscountPolicy(storeId);
+            return StoreService.removeDiscountPolicy(storeId);
         }
 
         public string RemoveProductFromStore(int storeId, int productId)
@@ -333,7 +336,7 @@ namespace WorkshopProject.System_Service
             bool ret;
             try
             {
-                ret = storeS.RemoveProductFromStore(storeId, productId);
+                ret = StoreService.RemoveProductFromStore(user, storeId, productId);
                 return resultJson(ret);
             }
             catch (Exception e)
@@ -346,17 +349,17 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 return notLoggedInError();
-            return storeS.removePurchasingPolicy(storeId);
+            return StoreService.removePurchasingPolicy(storeId);
         }
 
-        public string RemoveStoreManager(int storeId, string user)
+        public string RemoveStoreManager(int storeId, string managerName)
         {
             if (!loggedIn)
                 return notLoggedInError();
             bool ret;
             try
             {
-                ret = userS.RemoveStoreManager(storeId, user);
+                ret = UserService.RemoveStoreManager(user, storeId, managerName);
                 return resultJson(ret);
             }
             catch (Exception e)
@@ -365,14 +368,14 @@ namespace WorkshopProject.System_Service
             }
         }
 
-        public string RemoveUser(string user)
+        public string RemoveUser(string usernameToRemove)
         {
             if (!loggedIn)
                 return notLoggedInError();
             bool ret;
             try
             {
-                ret = userS.RemoveUser(user);
+                ret = UserService.RemoveUser(user, usernameToRemove);
                 return resultJson(ret);
             }
             catch (Exception e)
@@ -386,7 +389,7 @@ namespace WorkshopProject.System_Service
             List<Product> ret;
             try
             {
-                ret = storeS.SearchProducts(name, category, keyword, startPrice, endPrice, productRank, storeRank);
+                ret = StoreService.SearchProducts(name, category, keyword, startPrice, endPrice, productRank, storeRank);
                 return objDynamicJson(ret);
             }
             catch (Exception e)
@@ -400,7 +403,7 @@ namespace WorkshopProject.System_Service
             bool ret;
             try
             {
-                ret = transactionS.SetProductAmountInBasket(storeId, productId, amount);
+                ret = TransactionService.SetProductAmountInBasket(user, storeId, productId, amount);
                 return resultJson(ret);
             }
             catch (Exception e)

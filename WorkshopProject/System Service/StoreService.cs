@@ -18,15 +18,9 @@ namespace WorkshopProject.System_Service
         }
     }
    
-    public class StoreService
+    public static class StoreService
     {
-        internal User user;
-
-        public StoreService(User user)
-        {
-            this.user = user;
-        }
-        private void notActiveStoreError()
+        private static void notActiveStoreError()
         {
             throw new Exception("Store not Active");
 
@@ -34,7 +28,7 @@ namespace WorkshopProject.System_Service
             //return JsonConvert.SerializeObject(msg);
         }
 
-        internal bool addDiscountPolicy(int storeId)
+        public static bool addDiscountPolicy(int storeId)
         {
             Store store = WorkShop.getStore(storeId);
             if (store == null)
@@ -45,7 +39,7 @@ namespace WorkshopProject.System_Service
             return true; //All Valid
         }
 
-        internal bool AddProductToStock(int storeId, int productId, int amount)
+        public static bool AddProductToStock(User user, int storeId, int productId, int amount)
         {
             Store store = WorkShop.getStore(storeId);
             if (store == null)
@@ -64,7 +58,7 @@ namespace WorkshopProject.System_Service
             return true; //All Valid
         }
 
-        internal int AddProductToStore(int storeId, string name, string desc, double price, string category)
+        public static int AddProductToStore(User user, int storeId, string name, string desc, double price, string category)
         {
             sanitizeName(name);
             checkPrice(price);
@@ -85,7 +79,7 @@ namespace WorkshopProject.System_Service
             return id;
         }
 
-        internal int AddStore(string storeName)
+        public static int AddStore(User user, string storeName)
         {
             sanitizeName(storeName);
             int id = WorkShop.createNewStore(storeName, 0, true, (Member)user);
@@ -97,7 +91,7 @@ namespace WorkshopProject.System_Service
             return id;
         }
 
-        internal bool ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount)
+        public static bool ChangeProductInfo(User user, int storeId, int productId, string name, string desc, double price, string category, int amount)
         {
             Store store = WorkShop.getStore(storeId);
             if (store == null)
@@ -111,7 +105,7 @@ namespace WorkshopProject.System_Service
             return true; //All Valid
         }
 
-        internal bool CloseStore(int storeID)
+        public static bool CloseStore(User user, int storeID)
         {
             if (!WorkShop.closeStore(storeID, (Member)user))
                 throw new Exception("Error: User does not have permission");
@@ -119,7 +113,7 @@ namespace WorkshopProject.System_Service
             return true; //All Valid
         }
 
-        internal Product GetProductInfo(int productId)
+        public static Product GetProductInfo(int productId)
         {
             Product product = WorkShop.getProduct(productId);
             if (product == null)
@@ -128,12 +122,12 @@ namespace WorkshopProject.System_Service
             return product;
         }
 
-        internal string removeDiscountPolicy(int storeId)
+        public static string removeDiscountPolicy(int storeId)
         {
             throw new NotImplementedException();
         }
 
-        internal bool RemoveProductFromStore(int storeId, int productId)
+        public static bool RemoveProductFromStore(User user, int storeId, int productId)
         {
             Store store = WorkShop.getStore(storeId);
             if (store == null)
@@ -152,7 +146,7 @@ namespace WorkshopProject.System_Service
         }
 
 
-        internal List<Product> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank)
+        public static List<Product> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank)
         {
             List<Product> products = WorkShop.search(name, category, startPrice, endPrice, productRank, storeRank);
             return products;
@@ -160,13 +154,13 @@ namespace WorkshopProject.System_Service
         }
 
 
-        internal string removePurchasingPolicy(int storeId)
+        public static string removePurchasingPolicy(int storeId)
         {
             throw new NotImplementedException();
         }
 
         //jonathan
-        private bool checkPrice(double price)
+        private static bool checkPrice(double price)
         {
             if (price <= 0)
             {
@@ -175,7 +169,7 @@ namespace WorkshopProject.System_Service
             return true;
         }
 
-        private bool sanitizeName(string storeName)
+        private static bool sanitizeName(string storeName)
         {
         string[] illegalChars = { ";" };
             foreach (string c in illegalChars)
