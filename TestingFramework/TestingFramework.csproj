@@ -124,6 +124,12 @@
   <ItemGroup>
     <None Include="Resources\WSSclientExample.html" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SignIn.html" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

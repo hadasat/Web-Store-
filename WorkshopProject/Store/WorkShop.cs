@@ -49,7 +49,7 @@ namespace WorkshopProject
             {
                 return stores[store_id];
             }
-            catch (KeyNotFoundException e)
+            catch (KeyNotFoundException ignore)
             {
                 return null;
             }
@@ -76,7 +76,7 @@ namespace WorkshopProject
             {
                 owner.closeStore(stores[storeId]);
                 stores[storeId].isActive = false;
-            }catch(Exception e)
+            }catch(Exception ignore)
             {
                 return false;
             }

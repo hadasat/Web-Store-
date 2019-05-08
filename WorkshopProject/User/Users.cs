@@ -43,7 +43,7 @@ namespace Users
                 members.Remove(m.ID);
                 mapIDUsermane.Remove(m.username);
             }
-            catch (Exception ex)
+            catch (Exception ignore)
             {
                 throw new Exception("this should not happen, member doesn't exist");
             }
@@ -55,7 +55,7 @@ namespace Users
             {
                 return members[id];
             }
-            catch (Exception ex)
+            catch (Exception ignore)
             {
                 throw new Exception("this should not happen, member doesn't exist");
             }
@@ -67,7 +67,7 @@ namespace Users
             {
                 return members[(mapIDUsermane[username])];
             }
-            catch (Exception ex)
+            catch (Exception ignore)
             {
                 throw new Exception("this should noy happen, member doesn't exist");
             }
@@ -91,7 +91,7 @@ namespace Users
                 int ID = mapIDUsermane[username];
                 if (pHandler.IdentifyPassword(password, ID))
                     return ID;
-            } catch(Exception ex)
+            } catch(Exception ignore)
             {
                 return -1;
             }

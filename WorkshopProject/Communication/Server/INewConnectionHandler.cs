@@ -10,7 +10,7 @@ namespace WorkshopProject.Communication.Server
 {
     public interface INewConnectionHandler
     {
-        Task<string> httpNewConnectionHandler(HttpListenerContext context);
-        Task<IWebScoketHandler> webSocketNewConnectionHandler(WebSocketContext context, uint id);
+        string httpNewConnectionHandler(HttpListenerContext context);
+        IWebScoketHandler webSocketNewConnectionHandler(WebSocketContext context, uint id);
     }
 }
