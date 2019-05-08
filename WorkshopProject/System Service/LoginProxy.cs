@@ -79,8 +79,6 @@ namespace WorkshopProject.System_Service
 
         public int BuyShoppingBasket()
         {
-            if (!loggedIn)
-                notLoggedInException();
             return TransactionService.BuyShoppingBasket(user);
         }
 
@@ -100,22 +98,16 @@ namespace WorkshopProject.System_Service
 
         public Product GetProductInfo(int productId)
         {
-            if (!loggedIn)
-                notLoggedInException();
             return StoreService.GetProductInfo(productId);
         }
 
         public JsonShoppingCart GetShoppingCart(int storeId)
         {
-            if (!loggedIn)
-                notLoggedInException();
             return TransactionService.GetShoppingCart(user, storeId);
         }
 
         public JsonShoppingBasket GetShoppingBasket()
         {
-            if (!loggedIn)
-                notLoggedInException();
             return TransactionService.GetShoppingBasket(user);
         }
 
@@ -149,14 +141,10 @@ namespace WorkshopProject.System_Service
 
         public bool Register(string username, string password)
         {
-            if (!loggedIn)
-                notLoggedInException();
             return UserService.Register(username, password);
         }
         public bool Register(string username, string password, string country, int age)
         {
-            if (!loggedIn)
-                notLoggedInException();
             return UserService.Register(username, password, country, age);
         }
 
@@ -195,43 +183,31 @@ namespace WorkshopProject.System_Service
 
         public List<Product> SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank)
         {
-            if (!loggedIn)
-                notLoggedInException();
             return StoreService.SearchProducts(name, category, keyword, startPrice, endPrice, productRank, storeRank);
         }
 
         public bool SetProductAmountInBasket(int storeId, int productId, int amount)
         {
-            if (!loggedIn)
-                notLoggedInException();
             return TransactionService.SetProductAmountInBasket(user, storeId, productId, amount);
         }
 
         public Store GetStore(int storeId)
         {
-            if (!loggedIn)
-                notLoggedInException();
             return StoreService.GetStore(storeId);
         }
 
         public List<Store> GetAllStores()
         {
-            if (!loggedIn)
-                notLoggedInException();
             return StoreService.GetAllStores();
         }
 
         public List<Member> GetAllManagers(int storeId)
         {
-            if (!loggedIn)
-                notLoggedInException();
             return StoreService.getAllManagers(storeId);
         }
 
         public List<Member> GetAllOwners(int storeId)
         {
-            if (!loggedIn)
-                notLoggedInException();
             return StoreService.getAllManagers(storeId);
         }
 
@@ -244,23 +220,17 @@ namespace WorkshopProject.System_Service
 
         public List<Member> GetAllMembers()
         {
-            if (!loggedIn)
-                notLoggedInException();
             return UserService.GetAllMembers();
         }
 
         public bool SendMessage(int memberId, string message)
         {
-            if (!loggedIn)
-                notLoggedInException();
             UserService.SendMessage(memberId, message);
             return true;
         }
 
         public List<string> GetMessages(int memberId)
         {
-            if (!loggedIn)
-                notLoggedInException();
             return UserService.GetMessages(memberId);
         }
 
