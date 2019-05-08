@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using Users;
 using Managment;
 using Password;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace WorkshopProject.System_Service

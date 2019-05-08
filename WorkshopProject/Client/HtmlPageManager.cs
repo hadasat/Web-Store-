@@ -12,7 +12,8 @@ namespace WorkshopProject.Client
         public enum PagesNames
         {
             Main,
-            Error
+            Error,
+            signIn
         };
 
         private static readonly Dictionary<string, PagesNames> enumStringMapping = new Dictionary<string, PagesNames>()
@@ -20,22 +21,16 @@ namespace WorkshopProject.Client
             {"/wot/main",PagesNames.Main },
             {"/wot/",PagesNames.Main },
             {"/wot",PagesNames.Main },
+            {"/wot/index",PagesNames.Main },
+            {"/wot/signin",PagesNames.signIn },
+            {"/wot/signIn",PagesNames.signIn }
         };
 
         public static readonly Dictionary<PagesNames, string> htmlPages = new Dictionary<PagesNames, string>()
         {
-            {PagesNames.Main , Properties.Resources.WSClientExample },
-            {PagesNames.Error,"<html><body>error path not found>" }
-        };
-
-        //todo check this
-        /// <summary>
-        /// first string is name second string is the file or path to file?? 
-        /// </summary>
-        public static readonly Dictionary<PagesNames, string> htmlPagesSecure = new Dictionary<PagesNames, string>()
-        {
-            {PagesNames.Main , Properties.Resources.WSSclientExample },
-            {PagesNames.Error,"<html><body>error path not found>" }
+            {PagesNames.Main , Properties.Resources.index },
+            {PagesNames.signIn,Properties.Resources.SignIn },
+            {PagesNames.Error,"<html><body>error path not found>" },
         };
 
         public static PagesNames getEnumByName(string name)
@@ -52,14 +47,10 @@ namespace WorkshopProject.Client
         }
 
 
-        public static string findPageByName(bool isSecureConnection, string requestedPage)
+        public static string findPageByName( string requestedPage)
         {
             PagesNames pageName = HtmlPageManager.getEnumByName(requestedPage);
-            string pageCode = isSecureConnection ?
-                HtmlPageManager.htmlPagesSecure[pageName] :
-                HtmlPageManager.htmlPages[pageName];
-
-            return pageCode;
+            return HtmlPageManager.htmlPages[pageName];
         }
     }
 }

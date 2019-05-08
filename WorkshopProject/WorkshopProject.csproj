@@ -104,6 +104,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Client\HtmlPages\index.html" />
+    <Content Include="Client\HtmlPages\SignIn.html" />
     <Content Include="Client\HtmlPages\WSClientExample.html" />
     <Content Include="Client\HtmlPages\WSSclientExample.html" />
   </ItemGroup>

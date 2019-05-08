@@ -5,19 +5,44 @@ var startPageHandler;
 //todo back button stack
 
 function start() {
-    const urlAddress = "ws://localhost:8080/wot"
+    console.log("start");
+    const urlAddress = "wss://localhost:8080/wot";
     console.log("connecting to server " + urlAddress + "\n");
-    webSocketClient = new WebSocket(urlAddress);
+    var isOldConnection= false;
+
+    if (typeof(Storage) === "undefined") {
+        alert("this web browser is supported");
+    }
+    if (sessionStorage.connectionId){
+        isOldConnection = true;
+        webSocketClient = new WebSocket(urlAddress,"old");
+    }else{
+        isOldConnection = false;
+        webSocketClient = new WebSocket(urlAddress,"new");
+    }
+
+
     //when connection opens
     webSocketClient.onopen = function (event) {
+        if (isOldConnection) {
+            var connectionId = Number(sessionStorage.connectionId);
+            console.log("establosh old connection: " + connectionId);
+            webSocketClient.send("old id is:"+connectionId);
+        }
         console.log("connected \n");
     }
+
     webSocketClient.onclose = function (event) {
         console.log("disconnected \n");
     }
+
     webSocketClient.onmessage = function (event) {
         var msg = JSON.parse(event.data);
         switch (msg.type) {
+            case "setId":
+                sessionStorage.connectionId = msg.id;
+                console.log("got new id "+msg.id);
+                break;
             case "notification":
                 alert(msg.data);
                 break;
@@ -25,7 +50,8 @@ function start() {
                 msgHandler(msg);
         }
     }
-    webSocketClient.onsend = function (event) { }
+    webSocketClient.onsend = function (event) {
+    }
 }
 start();
 
