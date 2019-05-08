@@ -15,16 +15,52 @@ using WorkshopProject.System_Service;
 
 namespace WorkshopProject
 {
-
-    class Program
+    public class Program
     {
-
-
         static void Main(string[] args)
         {
             //Console.ReadLine();
-            CommunicationManager manager = new CommunicationManager();
+
+            Setup();
             
+
+            CommunicationManager manager = new CommunicationManager();
+        }
+
+
+        static void Setup()
+        {
+            string username = "username";
+            string password = "password";
+            string storename = "store";
+
+            //UserInterface service = new SystemServiceImpl();
+
+            LoginProxy service = new LoginProxy();
+            try
+            {
+                service.Register(username, password);
+                Console.WriteLine("Registering: " + username + ":" + password);
+
+                Member member = service.login(username, password);
+                int storeId = service.AddStore(storename);
+                Console.WriteLine("Opening store: " + storename +":" + storeId);
+
+                int product1Id = service.AddProductToStore(storeId, "product1", "testProduct", 10.0, "test");
+                service.AddProductToStock(storeId, product1Id, 10);
+                Console.WriteLine("Adding product: " + "product1" + ":" + product1Id);
+
+                int product2Id = service.AddProductToStore(storeId, "product2", "testProduct", 5.0, "test");
+                service.AddProductToStock(storeId, product1Id, 5);
+                Console.WriteLine("Adding product: " + "product2" + ":" + product2Id);
+
+                service.logout();
+                Console.WriteLine("Setup Done");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }
