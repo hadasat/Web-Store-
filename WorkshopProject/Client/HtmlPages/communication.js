@@ -6,7 +6,7 @@ var startPageHandler;
 
 function start() {
     console.log("start");
-    const urlAddress = "wss://localhost:8080/wot";
+    const urlAddress = "ws://localhost:8080/wot";
     console.log("connecting to server " + urlAddress + "\n");
     var isOldConnection= false;
 
