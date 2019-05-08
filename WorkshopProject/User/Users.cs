@@ -334,7 +334,7 @@ namespace Users
             Roles storeOwner = new Roles(true, true, true, true, true, true, true, true);
             StoreManager storeOwnerManager = new StoreManager(store, storeOwner);
             storeManaging.AddFirst(storeOwnerManager);
-            Logger.Log("file", logLevel.INFO, "user: " + this.username + "created succesfully new store: " + store.Id);
+            Logger.Log("file", logLevel.INFO, "user: " + this.username + "created succesfully new store: " + store.id);
         }
 
         public void addStoreToMe(StoreManager storeManager)
@@ -368,7 +368,7 @@ namespace Users
                     break;
                 }
             }
-            Logger.Log("file", logLevel.INFO, "user: " + this.username + "closed succesfully store: " + store.Id);
+            Logger.Log("file", logLevel.INFO, "user: " + this.username + "closed succesfully store: " + store.id);
         }
 
         public bool isStoresManagers()
@@ -385,7 +385,7 @@ namespace Users
             {
                 foreach(StoreManager sm in storeManaging)
                 {
-                    if (sm.GetStore().Id == store.Id)
+                    if (sm.GetStore().id == store.id)
                     {
                         return sm.GetRoles();
                     }
@@ -401,7 +401,7 @@ namespace Users
             {
                 foreach (StoreManager sm in storeManaging)
                 {
-                    if (sm.GetStore().Id == store.Id)
+                    if (sm.GetStore().id == store.id)
                     {
                         return sm;
                     }
@@ -417,7 +417,7 @@ namespace Users
             {
                 foreach (StoreManager sm in storeManaging)
                 {
-                    if (sm.GetStore().Id == StoreID)
+                    if (sm.GetStore().id == StoreID)
                     {
                         return sm.GetStore();
                     }
@@ -528,7 +528,7 @@ namespace Users
                     if (st.GetFather() == null)///change to super father
                     {
                         Store store = st.GetStore();
-                        WorkShop.closeStore(store.Id, member);
+                        WorkShop.closeStore(store.id, member);
                     }
                     else
                     {

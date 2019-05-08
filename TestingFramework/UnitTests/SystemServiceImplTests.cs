@@ -41,7 +41,7 @@ namespace TestingFramework.UnitTests
         {
             string result = service.GetStore(storeId);
             Store store = JsonHandler.DeserializeObject<Store>(result);
-            Assert.AreEqual(store.Id, storeId);
+            Assert.AreEqual(store.id, storeId);
         }
 
         [TestMethod]

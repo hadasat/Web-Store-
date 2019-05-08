@@ -76,7 +76,7 @@ namespace Managment.Tests
                 storeManagerFirstOwner.CreateNewManager(storeOwner2, ownerRoles);
 
                 Assert.IsTrue(storeOwner2.getStoreManagerRoles(store).isStoreOwner());
-                Assert.IsTrue(storeOwner2.getStoreManagerOb(store).GetFather().GetStore().Id == storeId);
+                Assert.IsTrue(storeOwner2.getStoreManagerOb(store).GetFather().GetStore().id == storeId);
             }
             finally
             {

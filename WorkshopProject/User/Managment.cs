@@ -111,12 +111,12 @@ namespace Managment
                 newSubStoreManager.setFather(this);
                 subManagers.AddFirst(newSubStoreManager);
                 member.addStoreToMe(newSubStoreManager);
-                Logger.Log("file", logLevel.INFO, "store:" + store.Id + " succesfully add new manager: "+ member.username);
+                Logger.Log("file", logLevel.INFO, "store:" + store.id + " succesfully add new manager: "+ member.username);
                 return true;
             }
             else
             {
-                Logger.Log("file", logLevel.INFO, "store:" + store.Id + " failed add new manager: " + member.username);
+                Logger.Log("file", logLevel.INFO, "store:" + store.id + " failed add new manager: " + member.username);
                 throw new Exception("this manager try to give more roles than he can");
             }
         }
@@ -125,7 +125,7 @@ namespace Managment
         {
             foreach (StoreManager sm in member.storeManaging)
             {
-                if (sm.GetStore().Id == this.store.Id)
+                if (sm.GetStore().id == this.store.id)
                 {
                     return false;
                 }
