@@ -11,7 +11,6 @@ namespace WorkshopProject
 {
     public class Store
     {
-        private int id;
         public string name;
         public int rank;
         public Boolean isActive;
@@ -19,8 +18,7 @@ namespace WorkshopProject
         public Dictionary<int, Product> Stock;
         public PurchasePolicy purchase_policy;
         public List<DiscountPolicy> discountPolicy;
-
-        public int Id { get => id; }
+        public int id;
 
         public Store(int id, string name, int rank, Boolean isActive)
         {

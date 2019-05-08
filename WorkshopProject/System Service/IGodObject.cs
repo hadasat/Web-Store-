@@ -94,7 +94,7 @@ namespace WorkshopProject.System_Service
             LinkedList<StoreManager> storeManagers = storeOwner.storeManaging;
             foreach (StoreManager sm in storeManagers)
             {
-                if (sm.GetStore().Id == storeId)
+                if (sm.GetStore().id == storeId)
                 {
                     sm.SubManagers.AddFirst(newStoreManager);
                     return true;
@@ -109,7 +109,7 @@ namespace WorkshopProject.System_Service
             LinkedList<StoreManager> storeManagers = member.storeManaging;
             foreach (StoreManager sm in storeManagers)
             {
-                if (sm.GetStore().Id == storeId)
+                if (sm.GetStore().id == storeId)
                 {
                     if (sm.GetFather() == null)
                     {

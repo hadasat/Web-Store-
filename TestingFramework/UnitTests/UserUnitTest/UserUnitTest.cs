@@ -176,7 +176,7 @@ namespace Users.Tests
                 Store s = new Store(1, "store", 1, true);
                 member1.addStore(s);
                 Assert.IsTrue(member1.isStoresManagers());
-                Assert.IsTrue(member1.getStoreManagerOb(s).GetStore().Id == 1);
+                Assert.IsTrue(member1.getStoreManagerOb(s).GetStore().id == 1);
             }
             finally
             {
@@ -228,7 +228,7 @@ namespace Users.Tests
                 member1.addManager("username2", ownerRoles, s);
 
                 Assert.IsTrue(member2.isStoresManagers());
-                Assert.IsTrue(member2.getStoreManagerOb(s).GetStore().Id == 1);
+                Assert.IsTrue(member2.getStoreManagerOb(s).GetStore().id == 1);
             }
             finally
             {
@@ -251,7 +251,7 @@ namespace Users.Tests
                 member1.addManager("username2", ownerRoles, 1);
 
                 Assert.IsTrue(member2.isStoresManagers());
-                Assert.IsTrue(member2.getStoreManagerOb(s).GetStore().Id == 1);
+                Assert.IsTrue(member2.getStoreManagerOb(s).GetStore().id == 1);
             }
             finally
             {

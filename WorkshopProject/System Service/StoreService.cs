@@ -171,7 +171,7 @@ namespace WorkshopProject.System_Service
                 List<StoreManager> managers = UserService.GetRoles(member);
                 foreach(StoreManager manager in managers)
                 {
-                    if(manager.GetStore().Id == storeId)
+                    if(manager.GetStore().id == storeId)
                     {
                         ret.Add(member);
                     }
@@ -190,7 +190,7 @@ namespace WorkshopProject.System_Service
                 List<StoreManager> managers = UserService.GetRoles(member);
                 foreach (StoreManager manager in managers)
                 {
-                    if (manager.GetStore().Id == storeId && manager.GetRoles().isStoreOwner())
+                    if (manager.GetStore().id == storeId && manager.GetRoles().isStoreOwner())
                     {
                         ret.Add(member);
                     }
