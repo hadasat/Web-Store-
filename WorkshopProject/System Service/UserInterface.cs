@@ -121,9 +121,9 @@ namespace WorkshopProject.System_Service
 
         String GetAllStores();
 
-        String getAllManagers(int storeId);
+        String GetAllManagers(int storeId);
 
-        String getAllOwners(int storeId);
+        String GetAllOwners(int storeId);
 
         String GetRoles();
 

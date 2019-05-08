@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Managment;
+using Newtonsoft.Json;
 using Shopping;
 using System;
 using System.Collections.Generic;
@@ -398,17 +399,130 @@ namespace WorkshopProject.System_Service
             }
         }
 
+        public string GetStore(int storeId)
+        {
+            Store ret;
+            try
+            {
+                ret = StoreService.GetStore(storeId);
+                return objDynamicJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
+        }
+
+        public string GetAllStores()
+        {
+            List<Store> ret;
+            try
+            {
+                ret = StoreService.GetAllStores();
+                return objDynamicJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
+        }
+
+        public string GetAllManagers(int storeId)
+        {
+            List<Member> ret;
+            try
+            {
+                ret = StoreService.getAllManagers(storeId);
+                return objDynamicJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
+        }
+
+        public string GetAllOwners(int storeId)
+        {
+            List<Member> ret;
+            try
+            {
+                ret = StoreService.getAllManagers(storeId);
+                return objDynamicJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
+        }
+
+        public string GetRoles()
+        {
+            List<StoreManager> ret;
+            try
+            {
+                ret = UserService.GetRoles(user);
+                return objDynamicJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
+        }
+
+        public string GetAllMembers()
+        {
+            List<Member> ret;
+            try
+            {
+                ret = UserService.GetAllMembers();
+                return objDynamicJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
+        }
+
+        public string SendMessage(int memberId, string message)
+        {
+            try
+            {
+                UserService.SendMessage(memberId, message);
+                return resultJson(true);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
+        }
+
+        public string GetMessages(int memberId)
+        {
+            List<string> ret;
+            try
+            {
+                ret = UserService.GetMessages(memberId);
+                return objDynamicJson(ret);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
+        }
+
+
+        //***********HELPER METHODS**************
 
         private string notLoggedInError()
         {
             Message msg = new Message("User not logged in");
-            return JsonConvert.SerializeObject(msg);
+            return JsonHandler.SerializeObjectDynamic(msg);
         }
 
         private string notActiveStoreError()
         {
             Message msg = new Message("Store not Active");
-            return JsonConvert.SerializeObject(msg);
+            return JsonHandler.SerializeObjectDynamic(msg);
         }
 
         private string resultJson(bool ret)
@@ -420,17 +534,17 @@ namespace WorkshopProject.System_Service
         private string intJson(int ret)
         {
             IdMessage idMsg = new IdMessage(ret);
-            return JsonConvert.SerializeObject(idMsg);
+            return JsonHandler.SerializeObjectDynamic(idMsg);
         }
 
         private string successJson()
         {
-            return JsonConvert.SerializeObject(new Message("Success"));
+            return JsonHandler.SerializeObjectDynamic(new Message("Success"));
         }
 
         private string failJson()
         {
-            return JsonConvert.SerializeObject(new Message("Fail"));
+            return JsonHandler.SerializeObjectDynamic(new Message("Fail"));
         }
 
         private string objDynamicJson(Object obj)
@@ -440,58 +554,10 @@ namespace WorkshopProject.System_Service
 
         private string generateMessageFormatJason(string message)
         {
-            return JsonConvert.SerializeObject(new Message(message));
+            return JsonHandler.SerializeObjectDynamic(new Message(message));
         }
 
-        public string GetStore(int storeId)
-        {
-            //TODO
-            throw new NotImplementedException();
-        }
-
-        public string GetAllStores()
-        {
-            //TODO
-            throw new NotImplementedException();
-        }
-
-        public string getAllManagers(int storeId)
-        {
-            //TODO
-            throw new NotImplementedException();
-        }
-
-        public string getAllOwners(int storeId)
-        {
-            //TODO
-            throw new NotImplementedException();
-        }
-
-        public string GetRoles()
-        {
-            //TODO
-            throw new NotImplementedException();
-        }
-
-        public string GetAllMembers()
-        {
-            //TODO
-            throw new NotImplementedException();
-        }
-
-        public string SendMessage(int memberId, string message)
-        {
-            //TODO
-            throw new NotImplementedException();
-        }
-
-        public string GetMessages(int memberId)
-        {
-            //TODO
-            throw new NotImplementedException();
-        }
-
-
+ 
         //jonathan - no idea how SystemAdmin object can be added
         //private string addAdmin()
         //{
