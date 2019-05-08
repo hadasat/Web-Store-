@@ -297,6 +297,8 @@ namespace Users
         private int age;
         public List<string> notifications;
         
+        public Member() {/*added for json*/ }
+
         public Member(string username, int ID) : base()//Register
         {
             this.ID = ID;
