@@ -49,7 +49,8 @@ namespace IntegrationTests
         public void Init()
         {
             userShoppingBasket = user.user.shoppingBasket;
-            menager.Register("hadas", "atiya",new DateTime(1994,27,2), "Israel");
+            DateTime birthday = new DateTime(1994, 2, 27);
+            menager.Register("hadas", "atiya", birthday, "Israel");
             menager.login("hadas", "atiya");
             
             for(int i=0; i < store.Length; i++)
