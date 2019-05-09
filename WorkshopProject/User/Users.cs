@@ -8,6 +8,7 @@ using Managment;
 using WorkshopProject;
 using Shopping;
 using WorkshopProject.Log;
+using System.Collections.Concurrent;
 
 namespace Users
 {
@@ -295,7 +296,7 @@ namespace Users
         public LinkedList<StoreManager> storeManaging;
         private string country;
         private int age;
-        public List<string> notifications;
+        public ConcurrentQueue<string> notifications;
         
         public Member() {/*added for json*/ }
 
@@ -303,7 +304,7 @@ namespace Users
         {
             this.ID = ID;
             this.username = username;
-            this.notifications = new List<string>();
+            this.notifications = new ConcurrentQueue<string>();
             this.storeManaging = new LinkedList<StoreManager>();
             this.country = "none";
             this.age = -1;
@@ -321,6 +322,24 @@ namespace Users
 
 
         /*** SERVICE LAYER FUNCTIONS***/
+
+        //todo amsel test
+        public List<string> getMessages()
+        {
+            if (notifications.IsEmpty)
+            {
+                return null;
+            }
+            List<string> res = notifications.ToList();
+            notifications = new ConcurrentQueue<string>();
+            return res;
+        }
+
+        public void addMessage (string message)
+        {
+            notifications.Enqueue(message);
+        }
+
         public void logOut()
         {
             Logger.Log("file", logLevel.INFO, "user: " + this.username + "log out and succses");

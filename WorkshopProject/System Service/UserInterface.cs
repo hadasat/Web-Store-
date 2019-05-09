@@ -129,9 +129,9 @@ namespace WorkshopProject.System_Service
 
         String GetAllMembers();
 
-        String SendMessage(int memberId, string message);
+        //String SendMessage(int memberId, string message);
 
-        String GetMessages(int memberId);
+        //String GetMessages(int memberId);
 
     }
 }

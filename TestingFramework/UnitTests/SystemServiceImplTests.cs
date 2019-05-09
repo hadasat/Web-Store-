@@ -73,14 +73,14 @@ namespace TestingFramework.UnitTests
             List<Member> managers = JsonHandler.DeserializeObject<List<Member>>(result);
         }
 
-        [TestMethod]
-        public void SendMessage()
-        {
-            string result = service.SendMessage(storeOwner1Id, "msg");
-            string result2 = service.GetMessages(storeOwner1Id);
-            List<string> msgs = JsonHandler.DeserializeObject<List<string>>(result2);
-            Assert.AreEqual(msgs.Count, 1);
-            Assert.AreEqual(msgs[0], "msg");
-        }
+        //[TestMethod]
+        //public void SendMessage()
+        //{
+        //    string result = service.SendMessage(storeOwner1Id, "msg");
+        //    string result2 = service.GetMessages(storeOwner1Id);
+        //    List<string> msgs = JsonHandler.DeserializeObject<List<string>>(result2);
+        //    Assert.AreEqual(msgs.Count, 1);
+        //    Assert.AreEqual(msgs[0], "msg");
+        //}
     }
 }

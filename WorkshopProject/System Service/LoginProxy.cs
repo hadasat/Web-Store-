@@ -250,9 +250,10 @@ namespace WorkshopProject.System_Service
             return true;
         }
 
-        public List<string> GetMessages(int memberId)
+        public List<string> GetMessage()
         {
-            return UserService.GetMessages(memberId);
+            if (!loggedIn) return null;
+            return UserService.GetMessages((Member)user);
         }
 
 
