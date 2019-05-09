@@ -47,9 +47,11 @@ namespace Shopping
             }
             else if (amount > 0)
             {
-                if (!carts.ContainsKey(store))
+                if (carts.ContainsKey(store))
+                    return carts[store].setProductAmount(product, amount);
+                /*if (!carts.ContainsKey(store))
                     carts.Add(store, new ShoppingCart());
-                return carts[store].setProductAmount(product, amount);
+                return carts[store].setProductAmount(product, amount);*/
             }
             return false;
 

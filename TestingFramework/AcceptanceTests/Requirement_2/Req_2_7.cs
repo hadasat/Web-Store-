@@ -116,7 +116,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
                 //GetShoppingCart();
                 Init();
                 bool result = bridge.SetProductAmountInBasket(storeId,productId, 5);
-                Assert.IsTrue(result);
+                Assert.IsFalse(result);
 
                 result = bridge.AddProductToBasket(storeId, productId, 2);
                 Assert.IsTrue(result);
@@ -125,7 +125,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
                 int tmp_amount;
                 Dictionary<int, int> products = bridge.GetProductsInShoppingCart(storeId);
                 Assert.IsTrue(products.TryGetValue(productId, out tmp_amount));
-                Assert.AreEqual(tmp_amount, 7);
+                Assert.AreEqual(2,tmp_amount);
             }
             finally
             {
