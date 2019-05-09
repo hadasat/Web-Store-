@@ -66,9 +66,9 @@ namespace WorkshopProject.System_Service
             return true;
         }
 
-        public static Member login(string username, string password)
+        public static Member login(string username, string password,User user)
         {
-            Member member = (new User()).loginMember(username, password);
+            Member member = user.loginMember(username, password);
             //user = member;
             return member;
         }
@@ -120,8 +120,27 @@ namespace WorkshopProject.System_Service
             {
                 throw new Exception("only members have roles");
             }
+
             List<StoreManager> roles = ((Member)user).storeManaging.ToList();
+
             return roles;
+        }
+
+        //todo amsel add test
+        /// <summary>
+        /// gets the roles of the user for store with requested id
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="storeId"></param>
+        /// <returns></returns>
+        public static Roles getRoleForStore (User user, int storeId)
+        {
+            if (!(user is Member))
+            {
+                return null;
+            }
+
+            return ((Member)user).getStoreManagerRoles(storeId);
         }
 
         //TODO: add unit test

@@ -264,7 +264,7 @@ namespace Users
             {
                 //don't log password!
                 Logger.Log("file", logLevel.INFO, "user: " + username + "tried to log in and failed");
-                throw new Exception("username or password does not correct");
+                throw new Exception("incorrect username or password");
             }
             Logger.Log("file", logLevel.INFO, "user: " + username + "log in and succses");
             return ConnectionStubTemp.getMember(ID);
@@ -318,6 +318,7 @@ namespace Users
             this.country = country;
             this.age = age;
         }
+
 
         /*** SERVICE LAYER FUNCTIONS***/
         public void logOut()
@@ -381,17 +382,22 @@ namespace Users
                  note = for store owner there is a function isStoreOwner to use */
         public Roles getStoreManagerRoles(Store store)
         {
+            return getStoreManagerRoles(store.id);
+        }
+
+        public Roles getStoreManagerRoles(int storeId)
+        {
             if (isStoresManagers())
             {
-                foreach(StoreManager sm in storeManaging)
+                foreach (StoreManager sm in storeManaging)
                 {
-                    if (sm.GetStore().id == store.id)
+                    if (sm.GetStore().id == storeId)
                     {
                         return sm.GetRoles();
                     }
                 }
             }
-            
+
             return null;
         }
 

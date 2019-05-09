@@ -37,6 +37,7 @@ function start() {
     }
 
     webSocketClient.onmessage = function (event) {
+        console.log("received message: "+event.data);
         var msg = JSON.parse(event.data);
         switch (msg.type) {
             case "setId":
@@ -51,6 +52,7 @@ function start() {
         }
     }
     webSocketClient.onsend = function (event) {
+        console.log("sent message "+event.data)
     }
 }
 start();
