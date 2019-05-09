@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace WorkshopProject.Policies
 {
@@ -18,5 +19,11 @@ namespace WorkshopProject.Policies
             this.amount = amount;
             this.price = price;
         }
+
+        public ProductAmountPrice(){ }
+        //public static Product FromJson(string json)
+        //{
+        //    return JsonConvert.DeserializeObject<Product>(json);
+        //}
     }
 }

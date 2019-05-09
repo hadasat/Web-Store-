@@ -260,6 +260,8 @@ namespace Users
         public int ID; //why do we need id?
         public string username;
         public LinkedList<StoreManager> storeManaging;
+        public DateTime birthdate;
+        public string country;
         
         
         public Member(string username, int ID) : base()//Register
@@ -267,6 +269,15 @@ namespace Users
             this.ID = ID;
             this.username = username;
             this.storeManaging = new LinkedList<StoreManager>();
+        }
+
+        public Member(string username, int ID,DateTime birthdate, string country) : base()//Register
+        {
+            this.ID = ID;
+            this.username = username;
+            this.storeManaging = new LinkedList<StoreManager>();
+            this.birthdate = birthdate;
+            this.country = country;
         }
 
         /*** SERVICE LAYER FUNCTIONS***/

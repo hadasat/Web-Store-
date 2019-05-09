@@ -1,10 +1,11 @@
-﻿using Shopping;
+﻿using Newtonsoft.Json.Linq;
+using Shopping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Users;
 
 namespace WorkshopProject.Policies
 {
@@ -14,11 +15,39 @@ namespace WorkshopProject.Policies
     /// </summary>
     public abstract class IBooleanExpression
     {
-        protected ItemFilter filter;
+        public ItemFilter filter;
+        public IBooleanExpression firstChild;
+        public IBooleanExpression secondChild;
+        public int id;
 
-        public abstract bool evaluate(ShoppingCart cart,  List<ProductAmountPrice> products);
+        public static int Idcounter = 1;
 
-        public abstract void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild);
+        public abstract bool evaluate(ShoppingCart cart,  List<ProductAmountPrice> products,User user);
+
+        public virtual void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
+        {
+            this.firstChild = firstChild;
+            this.secondChild = secondChild;
+        }
+
+        public static int checkExpression(IBooleanExpression exp)
+        {
+            //may check if the expression is valid
+            return Idcounter++; 
+        }
+
+        public abstract IBooleanExpression removePolicy(int policyId);
+
+        //public static IBooleanExpression FromJson(string json)
+        //{
+        //    JObject boolExp = JObject.Parse(json);
+        //    Type type = Type.GetType((string)boolExp["name"]);
+        //    //JObject firstChild = boolExp["firstChild"];
+
+
+
+        //    return null;
+        //}
     }
 
 }
