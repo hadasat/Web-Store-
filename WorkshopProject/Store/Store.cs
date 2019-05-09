@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.Log;
 
 namespace WorkshopProject
 {
     public class Store
     {
-        private int id;
         public string name;
         public int rank;
         public Boolean isActive;
@@ -18,8 +18,7 @@ namespace WorkshopProject
         public Dictionary<int, Product> Stock;
         public PurchasePolicy purchase_policy;
         public List<DiscountPolicy> discountPolicy;
-
-        public int Id { get => id; }
+        public int id;
 
         public Store(int id, string name, int rank, Boolean isActive)
         {
@@ -42,8 +41,28 @@ namespace WorkshopProject
 
         public int addProduct(User user, string name, string desc, double price, string category)
         {
+           
             Product pro = new Product(name, price, desc, category, 0, 0, id);
             return addProduct(user, pro);
+        }
+
+        public List<Product> searchProducts(string name, string category,
+             double startPrice,  double endPrice, int productRanking, int storeRanking)
+        {
+            
+            List<Product> matched_products = new List<Product>();
+            Dictionary<int, Product> products = GetStock();
+            foreach (Product item in products.Values)
+            {
+                if ((name == "" || name == item.name) && (category == "" || category == item.category)
+                    && (endPrice == -1 || endPrice >= item.getPrice()) && (startPrice == -1 || startPrice <= item.getPrice())
+                    && (storeRanking == -1 || storeRanking <= rank) && (productRanking == -1 || productRanking <= item.rank))
+                {
+                    //All the non-empty search filters has been matched
+                    matched_products.Add(item);
+                }
+            }
+            return matched_products;
         }
 
         /// <summary>
@@ -53,6 +72,7 @@ namespace WorkshopProject
         /// <returns>product. if fail returns null</returns>
         public Product getProduct(int productId)
         {
+
             if (!Stock.ContainsKey(productId))
                 return null;
             return Stock[productId];
@@ -74,6 +94,7 @@ namespace WorkshopProject
                 return -1;
 
             Stock.Add(p.getId(), p);
+            Logger.Log("file", logLevel.INFO, "product " + p.getId() + " added");
             return p.getId();
         }
 
@@ -81,15 +102,22 @@ namespace WorkshopProject
 
         public bool removeProductFromStore(User user, Product product)
         {
-            if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
+            if (!isActive)
                 return false;
 
+            if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
+                return false;
+            
             Stock.Remove(product.getId());
+            Logger.Log("file", logLevel.INFO, "product " + product.getId() + " removed");
             return true;
         }
 
         public Boolean addDiscount(User user, DiscountPolicy discount)
         {
+            if (!isActive)
+                return false;
+
             if (!user.hasAddRemoveDiscountPermission(this))   //Verify Premission
                 return false;
             return true;
@@ -169,6 +197,7 @@ namespace WorkshopProject
                 throw new Exception("Product not exist");
 
             product.amount += amountToAdd;
+            Logger.Log("file", logLevel.INFO, amountToAdd +" of product " + product.getId() + " was added");
             return true;
         }
         
@@ -192,6 +221,7 @@ namespace WorkshopProject
             product.setPrice(price);
             product.category = category;
             product.amount = amount;
+            Logger.Log("file", logLevel.INFO,   "product " + product.getId() + " info has changed");
             return true;
         }
 

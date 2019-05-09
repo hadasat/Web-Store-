@@ -1,4 +1,5 @@
 ﻿using Managment;
+using Password;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace WorkshopProject.System_Service
         bool removeProductFromStore(int storeId, int productID);
 
         bool removeProductFromStock(int storeId, int ProductId, int amountToRemove);
+        void cleanUpAllData();
 
     }
 
@@ -48,7 +50,7 @@ namespace WorkshopProject.System_Service
 
         public int addMember(string username, string password)
         {
-            ConnectionStubTemp.registerNewUser(username, password);
+            ConnectionStubTemp.registerNewUser(username, password, "", -1);
             return ConnectionStubTemp.memberIDGenerator - 1;
 
         }
@@ -92,7 +94,7 @@ namespace WorkshopProject.System_Service
             LinkedList<StoreManager> storeManagers = storeOwner.storeManaging;
             foreach (StoreManager sm in storeManagers)
             {
-                if (sm.GetStore().Id == storeId)
+                if (sm.GetStore().id == storeId)
                 {
                     sm.SubManagers.AddFirst(newStoreManager);
                     return true;
@@ -107,7 +109,7 @@ namespace WorkshopProject.System_Service
             LinkedList<StoreManager> storeManagers = member.storeManaging;
             foreach (StoreManager sm in storeManagers)
             {
-                if (sm.GetStore().Id == storeId)
+                if (sm.GetStore().id == storeId)
                 {
                     if (sm.GetFather() == null)
                     {
@@ -160,6 +162,17 @@ namespace WorkshopProject.System_Service
             WorkShop.closeStore(storeId, owner);
             WorkShop.stores.Remove(storeId);
             return true;
+        }
+
+        public void cleanUpAllData()
+        {
+            WorkShop.stores = new Dictionary<int, Store>();
+            WorkShop.id = 0;
+            ConnectionStubTemp.pHandler = new PasswordHandler();
+            ConnectionStubTemp.members = new Dictionary<int, Member>();
+            ConnectionStubTemp.mapIDUsermane = new Dictionary<string, int>();
+            ConnectionStubTemp.memberIDGenerator = 0;
+            ConnectionStubTemp.init();
         }
     }
 }

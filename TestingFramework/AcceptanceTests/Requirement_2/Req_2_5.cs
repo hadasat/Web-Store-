@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TestingFramework.AcceptanceTests.Requirement_2
 {
-
+    
     [TestClass]
     public class Req_2_5 : AcceptanceTest
     {
@@ -27,24 +27,11 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             removeTestProductFromSystem();
             //removeTestStoreFromSystem();
+            godObject.cleanUpAllData();
         }
 
 
-        [TestMethod]
-        [TestCategory("Req_2")]
-        public void SearchForExistingProductByName()
-        {
-            try
-            {
-                Init();
-                List<int> products = bridge.SearchProducts(productName, "", "", -1, -1, -1, -1);
-                Assert.IsTrue(products.Count == 1);
-            }
-            finally
-            {
-                Cleanup();
-            }
-        }
+        
 
         [TestMethod]
         [TestCategory("Req_2")]
@@ -60,6 +47,22 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
                 Assert.IsTrue(result);
                 Assert.IsNotNull(tmp_name);
                 Assert.AreNotEqual(tmp_name, "");
+            }
+            finally
+            {
+                Cleanup();
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Req_2")]
+        public void SearchForExistingProductByName()
+        {
+            try
+            {
+                Init();
+                List<int> products = bridge.SearchProducts(productName, "", "", -1, -1, -1, -1);
+                Assert.IsTrue(products.Count == 1);
             }
             finally
             {

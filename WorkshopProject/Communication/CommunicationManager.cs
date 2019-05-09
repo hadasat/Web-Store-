@@ -16,14 +16,16 @@ namespace WorkshopProject.Communication
     class CommunicationManager : INewConnectionHandler, IWebScoketHandler
     {
         private IServer server;
-        private ConcurrentDictionary<uint, UserConnectionInfo> connections;
+        private ConcurrentDictionary<uint, UserConnectionInfo> activeConnections;
+        private ConcurrentDictionary<uint, UserConnectionInfo> oldConnections;
 
         public CommunicationManager()
         {
             List<string> prefixes = new List<string>();
             prefixes.Add("http://localhost:8080/wot/");
             prefixes.Add("https://localhost:8443/wot/");
-            connections = new ConcurrentDictionary<uint, UserConnectionInfo>();
+            activeConnections = new ConcurrentDictionary<uint, UserConnectionInfo>();
+            oldConnections = new ConcurrentDictionary<uint, UserConnectionInfo>();
             using (server = new Server.Server())
             {
                 new Task(() => { server.start(prefixes, this); }).Start();
@@ -41,47 +43,57 @@ namespace WorkshopProject.Communication
         }
 
         #region interfaces implementation
-        public async Task<string> httpNewConnectionHandler(HttpListenerContext context)
+        public string httpNewConnectionHandler(HttpListenerContext context)
         {
             HttpListenerRequest request = context.Request;
             bool isSecureConnection = request.IsSecureConnection; //get if connection is secured or not
             //get relevant html pgae code
             string requestedPage = request.RawUrl;
 
-            return HtmlPageManager.findPageByName(isSecureConnection, requestedPage);
+            return HtmlPageManager.findPageByName(requestedPage);
         }
 
-        public async Task<IWebScoketHandler> webSocketNewConnectionHandler(WebSocketContext context, uint id)
+        public IWebScoketHandler webSocketNewConnectionHandler(WebSocketContext context, uint id)
         {
             bool isSecureConnection = context.IsSecureConnection;
-            UserConnectionInfo userConnection = new UserConnectionInfo(isSecureConnection, id, this);
-            bool addAns = connections.TryAdd(id, userConnection);
+            UserConnectionInfo userConnection;
+            oldConnections.TryRemove(id, out userConnection);             //try to get old connection
+            if (userConnection == null) // if no old connection found create new object
+            {
+                userConnection = new UserConnectionInfo(isSecureConnection, id, this);
+            }
+            bool addAns = activeConnections.TryAdd(id, userConnection);
             if (!addAns)
             {
                 //Console.WriteLine("error in adding to dictionary in Communication manager");
                 Logger.Log("file", logLevel.ERROR, "error in adding new connection to dictionary in Communication manager");
                 return null;
             }
+
             return this;
         }
 
         public void onClose(List<byte[]> bufferCollector, WebSocketReceiveResult receiveResult, uint myId)
         {
-            UserConnectionInfo userConnection;
-            connections.TryRemove(myId, out userConnection);
-            userConnection.onClose();
+            onCloseShared(myId);
         }
 
         public void onCloseError(uint myId)
         {
+            onCloseShared(myId);
+        }
+
+        private void onCloseShared(uint myId)
+        {
             UserConnectionInfo userConnection;
-            connections.TryRemove(myId, out userConnection);
+            activeConnections.TryRemove(myId, out userConnection);
+            oldConnections.TryAdd(myId, userConnection);
             userConnection.onClose();
         }
 
         public void onMessage(List<byte[]> bufferCollector, WebSocketReceiveResult receiveResult, uint myId)
         {
-            UserConnectionInfo userConnection = connections[myId];
+            UserConnectionInfo userConnection = activeConnections[myId];
             userConnection.onMessage(bufferCollector, receiveResult);
         }
 

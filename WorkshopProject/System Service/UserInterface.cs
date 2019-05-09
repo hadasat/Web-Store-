@@ -33,6 +33,9 @@ namespace WorkshopProject.System_Service
         //Return: Message Format
         String Register(string user, string password);
 
+        //Return: Message Format
+        String Register(string user, string password, string country, int age);
+
         //Return: Search Format
         String SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank);
 
@@ -114,7 +117,20 @@ namespace WorkshopProject.System_Service
         //Return: Message Format
         String closeStore(int storeID);
 
+        String GetStore(int storeId);
 
+        String GetAllStores();
 
+        String GetAllManagers(int storeId);
+
+        String GetAllOwners(int storeId);
+
+        String GetRoles();
+
+        String GetAllMembers();
+
+        String SendMessage(int memberId, string message);
+
+        String GetMessages(int memberId);
     }
 }

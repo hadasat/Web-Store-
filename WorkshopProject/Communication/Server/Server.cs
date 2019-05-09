@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.WebSockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using WorkshopProject.Log;
@@ -148,11 +149,12 @@ namespace WorkshopProject.Communication.Server
             if (disposed) return;
 
             HttpListenerContext context;
+            bool isNewCoonection;
             try
             {
                 context = listener.EndGetContext(ar);
             }
-            catch (Exception e)
+            catch (Exception ignore)
             {
                 //Console.WriteLine("test - problem in connecting \n");
                 Logger.Log("file", logLevel.WARN, "listener couldn't get end of context");
@@ -160,35 +162,84 @@ namespace WorkshopProject.Communication.Server
             }
             if (context.Request.IsWebSocketRequest)
             {
-                uint newId = incermentCounter();
                 // get new connection
-                WebSocketContext wsContext = await context.AcceptWebSocketAsync(subProtocol: null);
-                WebSocket ws = wsContext.WebSocket;
-                //add connection to dictionary
-                bool ans = activeConections.TryAdd(newId, ws);
+                HttpListenerWebSocketContext wsContext;
+                WebSocket ws;
+                uint newConnectionId;
+                try
+                {
+                    //get new connection
+                    wsContext = await context.AcceptWebSocketAsync(subProtocol: "new", new TimeSpan(0, 0, 0, 5));
+                    //Console.WriteLine("new connection");
+                    isNewCoonection = true;
+                    newConnectionId = incermentCounter();
+                    ws = wsContext.WebSocket;
+                    //add connection to dictionary
+ 
+                }
+                catch (WebSocketException ignoreWSE)
+                {
+                    //get old connection
+                    wsContext = await context.AcceptWebSocketAsync(subProtocol: "old", new TimeSpan(0, 0, 0, 5));
+                    //Console.WriteLine("old connection");
+                    isNewCoonection = false;
+                    ws = wsContext.WebSocket;
+                    byte[] recvBuffer = new byte[MAX_BUFFER_SIZE];
+                    try
+                    {
+                        WebSocketReceiveResult receiveResult = await ws.ReceiveAsync(new ArraySegment<byte>(recvBuffer), CancellationToken.None);
+                        string oldConnectionInfo = Encoding.UTF8.GetString(recvBuffer, 0, receiveResult.Count);
+                        Regex pattern = new Regex("old id is:%d");
+                        Match match = pattern.Match(oldConnectionInfo);
+                        if (match.Success)
+                        {
+                            newConnectionId = Convert.ToUInt32(match.Value);
+                        }
+                        else
+                        {
+                            Logger.Log("file", logLevel.DEBUG, "error getting old id establishing new");
+                            newConnectionId = incermentCounter();
+                        }
+                    }
+                    catch (Exception ignore)
+                    {
+                        Logger.Log("file", logLevel.DEBUG, "error receiveing connection id for old connections");
+                        return;
+                    }
+                }
+
+
+                //handle new connection
+                bool ans = activeConections.TryAdd(newConnectionId, ws);
                 if (!ans)
                 {
                     //Console.WriteLine("couldn't add new web socket connection to connection dictionary");
                     Logger.Log("file", logLevel.ERROR, "couldn't add new web socket connection to connection dictionary");
                     return;
                 }
-                //handle new connection
 
-                IWebScoketHandler wsh = await newConnectionHandler.webSocketNewConnectionHandler(wsContext, newId);
+                IWebScoketHandler wsh = newConnectionHandler.webSocketNewConnectionHandler(wsContext, newConnectionId);
+
+                if (isNewCoonection) //if we establish a connection to a new user we need to send him is id
+                {
+                    await sendMessageById(newConnectionId, "{\"type\":\"setId\",\"id\":\"3\"}");
+                }
+
+
                 if (wsh != null)
                 {
-                    webSocketConnectionLoop(ws, wsh, newId);
+                    webSocketConnectionLoop(ws, wsh, newConnectionId);
                 }
                 else
                 {
-                    activeConections.TryRemove(newId, out ws);
+                    activeConections.TryRemove(newConnectionId, out ws);
                     //Console.WriteLine("unsuccessful creatio of new web socket handler");
                     Logger.Log("file", logLevel.ERROR, "unsuccessful creation of new web socket handler, recievd null handler");
                 }
             }
             else
             {
-                string htmlPageToSend = await newConnectionHandler.httpNewConnectionHandler(context);
+                string htmlPageToSend = newConnectionHandler.httpNewConnectionHandler(context);
                 //return the html page received
                 using (Stream output = context.Response.OutputStream)
                 {
@@ -215,11 +266,11 @@ namespace WorkshopProject.Communication.Server
                     {
                         receiveResult = await ws.ReceiveAsync(new ArraySegment<byte>(recvBuffer), CancellationToken.None);
                     }
-                    catch (Exception e)
+                    catch (Exception ignore)
                     {
                         //Console.WriteLine("test 1");
                         Logger.Log("file", logLevel.DEBUG, "closed the server while some websockets are open");
-                        wsHandler.onClose(new List<byte[]>(), null, myId);
+                        wsHandler.onCloseError(myId);
                         return;
                     }
                     bufferCollector.Add(recvBuffer);
@@ -227,7 +278,7 @@ namespace WorkshopProject.Communication.Server
 
                 if (receiveResult.MessageType == WebSocketMessageType.Close)
                 {
-                    wsHandler.onCloseError(myId);
+                    wsHandler.onClose(bufferCollector, receiveResult, myId);   
                     closeWebSocketConnection(myId);
                 }
                 else

@@ -47,9 +47,16 @@ namespace TestingFramework.UnitTests.ClientTests
                 Assert.IsTrue(ans == HtmlPageManager.PagesNames.Main, "error finding main enum");
                 ans = HtmlPageManager.getEnumByName("/wot");
                 Assert.IsTrue(ans == HtmlPageManager.PagesNames.Main, "error finding main enum");
+                ans = HtmlPageManager.getEnumByName("/wot/index");
+                Assert.IsTrue(ans == HtmlPageManager.PagesNames.Main, "error finding main enum");
 
                 ans = HtmlPageManager.getEnumByName("fdsfd");
                 Assert.IsTrue(ans == HtmlPageManager.PagesNames.Error, "error finding ERROR enum");
+
+                ans = HtmlPageManager.getEnumByName("/wot/signin");
+                Assert.IsTrue(ans == HtmlPageManager.PagesNames.signIn, "error finding main enum");
+                ans = HtmlPageManager.getEnumByName("/wot/signIn");
+                Assert.IsTrue(ans == HtmlPageManager.PagesNames.signIn, "error finding main enum");
             }
             finally
             {
@@ -64,11 +71,17 @@ namespace TestingFramework.UnitTests.ClientTests
             try
             {
                 InitTestMethod();
-                string ans = HtmlPageManager.findPageByName(false, "/wot");
-                Assert.IsTrue(ans == Properties.Resources.WSClientExample, "error getting unsecured example");
+                string ans = HtmlPageManager.findPageByName( "/wot");
+                Assert.IsTrue(ans == Properties.Resources.index, "error getting unsecured example");
+                ans = HtmlPageManager.findPageByName("/wot/main");
+                Assert.IsTrue(ans == Properties.Resources.index, "error getting unsecured example");
+                ans = HtmlPageManager.findPageByName("/wot/index");
+                Assert.IsTrue(ans == Properties.Resources.index, "error getting unsecured example");
 
-                ans = HtmlPageManager.findPageByName(true, "/wot");
-                Assert.IsTrue(ans == Properties.Resources.WSSclientExample, "error getting unsecured example");
+                ans = HtmlPageManager.findPageByName("/wot/signIn");
+                Assert.IsTrue(ans == Properties.Resources.SignIn, "error getting unsecured example");
+                ans = HtmlPageManager.findPageByName("/wot/signin");
+                Assert.IsTrue(ans == Properties.Resources.SignIn, "error getting unsecured example");
             }
             finally
             {

@@ -300,6 +300,7 @@ namespace WorkshopProject.Policies
             this.id = Idcounter++;
         }
 
+
         public XorExpression()
         {
         }
