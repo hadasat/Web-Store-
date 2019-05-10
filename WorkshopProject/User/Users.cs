@@ -528,7 +528,37 @@ namespace Users
             return age;
         }
 
-#region notificactions
+        //TODO wolf add test I dont know how
+        public bool isStoreOwner (int storeId)
+        {
+            if (storeManaging.Count == 0) { return false; }
+
+            foreach (StoreManager currManger in storeManaging)
+            {
+                if (currManger.GetStore().id == storeId)
+                {
+                    Roles role = currManger.GetRoles();
+                    return role.isStoreOwner();
+                }
+            }
+
+            return false;
+        }
+
+        public static void addMessageToAllOwners(int storeId, string msg)
+        {
+            List<Member> ret = new List<Member>();
+            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            foreach (Member currMember in members)
+            {
+                if (currMember.isStoreOwner(storeId))
+                {
+                    currMember.addMessage(msg);
+                }
+            }
+        }
+
+        #region notificactions
         public void addMessage (string msg)
         {
             lock (notificationLock)

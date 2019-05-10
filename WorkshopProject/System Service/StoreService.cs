@@ -181,23 +181,23 @@ namespace WorkshopProject.System_Service
         }
 
         //TODO: add unit test
-        public static List<Member> getAllOwners(int storeId)
-        {
-            List<Member> ret = new List<Member>();
-            List<Member> members = UserService.GetAllMembers();
-            foreach (Member member in members)
-            {
-                List<StoreManager> managers = UserService.GetRoles(member);
-                foreach (StoreManager manager in managers)
-                {
-                    if (manager.GetStore().id == storeId && manager.GetRoles().isStoreOwner())
-                    {
-                        ret.Add(member);
-                    }
-                }
-            }
-            return ret;
-        }
+        //public static List<Member> getAllOwners(int storeId)
+        //{
+        //    List<Member> ret = new List<Member>();
+        //    List<Member> members = UserService.GetAllMembers();
+        //    foreach (Member member in members)
+        //    {
+        //        List<StoreManager> managers = UserService.GetRoles(member);
+        //        foreach (StoreManager manager in managers)
+        //        {
+        //            if (manager.GetStore().id == storeId && manager.GetRoles().isStoreOwner())
+        //            {
+        //                ret.Add(member);
+        //            }
+        //        }
+        //    }
+        //    return ret;
+        //}
 
         //jonathan
         private static bool checkPrice(double price)
