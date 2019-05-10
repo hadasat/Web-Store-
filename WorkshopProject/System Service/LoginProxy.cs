@@ -249,11 +249,6 @@ namespace WorkshopProject.System_Service
             return ((Member)user).subscribe(observer);
         }
 
-
-        public void testShit()
-        {
-            SendMessage((((Member)user).ID), "test shit");
-        }
         //TODO delete
         //public List<string> GetMessages(int memberId)
         //{
