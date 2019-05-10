@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject.Communication;
-using WorkshopProject.Policies;
 
 namespace WorkshopProject.System_Service
 {
@@ -30,11 +29,6 @@ namespace WorkshopProject.System_Service
             user = member;
         }
 
-        public string addDiscountPolicy(int storeId) //TODO need to know which discount
-        {
-            throw new NotImplementedException();
-        }
-
         public bool AddProductToBasket(int storeId, int productId, int amount)
         {
             return TransactionService.AddProductToBasket(user, storeId, productId, amount);
@@ -52,11 +46,6 @@ namespace WorkshopProject.System_Service
             if (!loggedIn)
                 notLoggedInException();
             return StoreService.AddProductToStore(user, storeId, name, desc, price, category);
-        }
-
-        public bool addPurchasingPolicy(int storeId) //TODO need to know which polciy
-        {
-            throw new NotImplementedException();
         }
 
         public int AddStore(string storeName)
@@ -171,7 +160,7 @@ namespace WorkshopProject.System_Service
             return UserService.Register(username, password, birthdath,country);
         }
 
-        public bool removeDiscountPolicy(int storeId) //TODO need to know which discount
+        public bool removeDiscountPolicy(int storeId)
         {
             //TODO
             throw new NotImplementedException();
@@ -184,7 +173,7 @@ namespace WorkshopProject.System_Service
             return StoreService.RemoveProductFromStore(user, storeId, productId);
         }
 
-        public bool removePurchasingPolicy(int storeId) //TODO missing paramers
+        public bool removePurchasingPolicy(int storeId)
         {
             //TODO
             throw new NotImplementedException();
@@ -260,16 +249,15 @@ namespace WorkshopProject.System_Service
             return ((Member)user).subscribe(observer);
         }
 
-        public void testShit()
-        {
-            SendMessage((((Member)user).ID), "test shit");
-        }
         //TODO delete
         //public List<string> GetMessages(int memberId)
         //{
         //    return null;
         //    //return UserService.GetMessages(memberId);
         //}
+        
+        
+        //TODO: add policies to loginproxy
 
 
         private void notLoggedInException()

@@ -17,9 +17,9 @@ namespace WorkshopProject
         public Boolean isActive;
 
         public Dictionary<int, Product> Stock;
-        public IBooleanExpression purchasePolicy;
-        public IBooleanExpression discountPolicy;
-        public IBooleanExpression storePolicy;
+        public List<IBooleanExpression> purchasePolicy;
+        public List<Discount> discountPolicy;
+        public List<IBooleanExpression> storePolicy;
         public int id;
 
         public Store(int id, string name, int rank, Boolean isActive)
@@ -30,6 +30,11 @@ namespace WorkshopProject
             this.isActive = isActive;
             Stock = new Dictionary<int, Product>();
 
+            //make purchasePolicy and storePolicy
+            this.purchasePolicy = new List<IBooleanExpression>();
+            this.storePolicy = new List<IBooleanExpression>();
+            this.discountPolicy = new List<Discount>();
+
         }
 
         public Store() { }
@@ -39,10 +44,28 @@ namespace WorkshopProject
             return Stock;
         }
 
+        public List<ProductAmountPrice> afterDiscount(List<ProductAmountPrice> products, User user)
+        {
+            foreach (Discount d in discountPolicy)
+                products = d.Apply(products, user);
+
+            return products;
+        }
+
+        public bool checkPolicies(List<ProductAmountPrice> products, User user)
+        {
+            foreach (IBooleanExpression b in purchasePolicy)
+                if (!b.evaluate(products, user))
+                    return false;
+
+            foreach (IBooleanExpression b in storePolicy)
+                if (!b.evaluate(products, user))
+                    return false;
+            return true;
+        }
 
         public int addProduct(User user, string name, string desc, double price, string category)
         {
-
             Product pro = new Product(name, price, desc, category, 0, 0, id);
             return addProduct(user, pro);
         }
@@ -236,21 +259,22 @@ namespace WorkshopProject
         }
 
         //*****************POLICIES**************************8
-        public int AddDiscountPolicy(User user, IBooleanExpression discountPolicy)
+        public int AddDiscountPolicy(User user, Discount discountPolicy)
         {
             if (!isActive)
                 return -1;
             if (!user.hasAddRemoveDiscountPolicies(this))   //Verify Premission
                 return -2;
             //check policy validation
-            int newPolicyId = IBooleanExpression.checkExpression(discountPolicy);
+            int newPolicyId = Discount.checkDiscount(discountPolicy);
             if (newPolicyId < 0)
                 return -3;
-            this.discountPolicy = discountPolicy;
+            discountPolicy.id = newPolicyId;
+            this.discountPolicy.Add(discountPolicy);
             return newPolicyId;
         }
 
-        public int RemoveDiscountPolicy(User user, int policyId)
+        public int RemoveDiscountPolicy(User user, int discountId)
         {
             if (!isActive)
                 return -1;
@@ -258,8 +282,10 @@ namespace WorkshopProject
                 return -2;
             if (discountPolicy == null)
                 return -3;
-            this.discountPolicy = discountPolicy.removePolicy(policyId);
-            return policyId;
+            foreach (Discount d in this.discountPolicy)
+                if (d.id == discountId)
+                    this.discountPolicy.Remove(d);
+            return discountId;
         }
 
         public int AddPurchasPolicy(User user, IBooleanExpression purchasPolicy)
@@ -274,7 +300,8 @@ namespace WorkshopProject
             int newPolicyId = IBooleanExpression.checkExpression(purchasPolicy);
             if (newPolicyId < 0)
                 return -3;
-            this.purchasePolicy = purchasPolicy;
+            purchasPolicy.id = newPolicyId;
+            this.purchasePolicy.Add(purchasPolicy);
             return newPolicyId;
         }
 
@@ -286,7 +313,9 @@ namespace WorkshopProject
                 return -2;
             if (purchasePolicy == null)
                 return -3;
-            this.purchasePolicy = purchasePolicy.removePolicy(policyId);
+            foreach (IBooleanExpression b in this.purchasePolicy)
+                if (b.id == policyId)
+                    this.purchasePolicy.Remove(b);
             return policyId;
         }
 
@@ -302,7 +331,8 @@ namespace WorkshopProject
             int newPolicyId = IBooleanExpression.checkExpression(storePolicy);
             if (newPolicyId < 0)
                 return -3;
-            this.storePolicy = storePolicy;
+            storePolicy.id = newPolicyId;
+            this.storePolicy.Add(storePolicy);
             return newPolicyId;
         }
 
@@ -314,7 +344,9 @@ namespace WorkshopProject
                 return -2;
             if (this.storePolicy == null)
                 return -3;
-            this.storePolicy = this.storePolicy.removePolicy(policyId);
+            foreach (IBooleanExpression b in this.storePolicy)
+                if (b.id == policyId)
+                    this.storePolicy.Remove(b);
             return policyId;
         }
     }

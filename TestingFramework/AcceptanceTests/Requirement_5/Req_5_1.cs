@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using WorkshopProject;
+using WorkshopProject.Policies;
 
 namespace TestingFramework.AcceptanceTests.Requirement_5
 {
@@ -10,20 +12,27 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
     // AddRemoveStoreManger
     // CloseStore
 
-
-    //TODO: AccTest 5.1 - add test for policies and discounts when they are supported
     [TestClass]
     public class Req_5_1 : AcceptanceTest
     {
-        //[TestInitialize]
+        private int policyId;
+
+        string tmp_name;
+        string tmp_desc;
+        double tmp_price;
+        string tmp_category;
+        int  tmp_rank;
+        int tmp_amount;
+
         public override void Init()
         {
+            policyId = -1;
             addTestStoreOwner1ToSystem();
             addTestStoreManager1ToSystem();
             addTestStoreManager2ToSystem();
+            addTestProductToSystem();
         }
 
-        //[TestCleanup]
         public override void Cleanup()
         {
             bridge.Logout();
@@ -69,28 +78,6 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
                 Cleanup();
             }
         }
-
-        //Jonathan - apperently managers can't add other managers
-        //[TestMethod]
-        //[TestCategory("Req_5")]
-        //public void TestAddAnotherManagerSuccess()
-        //{
-        //    try
-        //    {
-        //        Init();
-        //        createManagerWithRoles(false, false, true, false);
-
-        //        bridge.Login(storeManager1, password);
-        //        bool result = bridge.AddStoreManager(storeId, storeManager2, false, false, true, false);
-        //        bridge.Logout();
-
-        //        Assert.IsTrue(result);
-        //    }
-        //    finally
-        //    {
-        //        Cleanup();
-        //    }
-        //}
 
         [TestMethod]
         [TestCategory("Req_5")]
@@ -148,5 +135,169 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
                 Cleanup();
             }
         }
+
+
+        private void addPurchasingPolicyFalse()
+        {
+            bridge.Login(storeOwner1, password);
+            IBooleanExpression policy = new FalseCondition();
+            string json = JsonHandler.SerializeObject(policy);
+            policyId = bridge.addPurchasingPolicy(storeId, json);
+            Assert.IsTrue(policyId >= 0);
+        }
+
+        private void addPurchasingPolicyTrue()
+        {
+            bridge.Login(storeOwner1, password);
+            IBooleanExpression policy = new TrueCondition();
+            string json = JsonHandler.SerializeObject(policy);
+            policyId = bridge.addPurchasingPolicy(storeId, json);
+            Assert.IsTrue(policyId >= 0);
+        }
+
+        private void addDiscountPolicy()
+        {
+            bridge.Login(storeOwner1, password);
+            ItemFilter filter1 = new AllProductsFilter();
+            IBooleanExpression leaf1 = new MinAmount(5, filter1);
+            ItemFilter filter2 = new AllProductsFilter();
+            IBooleanExpression leaf2 = new MinAmount(10, filter2);
+            IBooleanExpression complex = new XorExpression();
+            complex.addChildren(leaf1, leaf2);
+            IOutcome outcome = new FreeProduct(productId, 1);
+            Discount discount = new Discount(complex, outcome);
+            string json = JsonHandler.SerializeObject(discount);
+            policyId = bridge.addDiscountPolicy(storeId, json);
+            Assert.IsTrue(policyId >= 0);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Req_5")]
+        public void TestAddPurchasingPolicyFalseSuccess()
+        {
+            try
+            {
+                Init();
+                addPurchasingPolicyFalse();
+
+                bridge.AddProductToBasket(storeId, productId, 1);
+                bool result = bridge.BuyShoppingBasket();
+                Assert.IsFalse(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
+        }
+
+
+        [TestMethod]
+        [TestCategory("Req_5")]
+        public void TestAddPurchasingPolicyTrueSuccess()
+        {
+            try
+            {
+                Init();
+                addPurchasingPolicyTrue();
+
+                bridge.AddProductToBasket(storeId, productId, 1);
+                bool result = bridge.BuyShoppingBasket();
+                Assert.IsTrue(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Req_5")]
+        public void TestRemovePurchasingPolicySuccess()
+        {
+            try
+            {
+                Init();
+                addPurchasingPolicyFalse();
+                bridge.removePurchasingPolicy(storeId, policyId);
+
+                bridge.AddProductToBasket(storeId, productId, 1);
+                bool result = bridge.BuyShoppingBasket();
+                Assert.IsTrue(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Req_5")]
+        public void TestAddDiscountSuccess()
+        {
+            try
+            {
+                Init();
+                addDiscountPolicy();
+
+                bridge.AddProductToBasket(storeId, productId, 1);
+                bool result = bridge.BuyShoppingBasket();
+                Assert.IsTrue(result);
+                result = bridge.GetProductInfo(productId, out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank, out tmp_amount);
+                Assert.AreEqual(19, tmp_amount);
+
+                bridge.AddProductToBasket(storeId, productId, 12);
+                result = bridge.BuyShoppingBasket();
+                Assert.IsTrue(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Req_5")]
+        public void TestRemoveDiscountSuccess()
+        {
+            try
+            {
+                Init();
+                addDiscountPolicy();
+                bridge.removeDiscountPolicy(storeId, policyId);
+
+                bridge.AddProductToBasket(storeId, productId, 1);
+                bool result = bridge.BuyShoppingBasket();
+                Assert.IsTrue(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
+        }
+
+
+        //Jonathan - apperently managers can't add other managers
+        //[TestMethod]
+        //[TestCategory("Req_5")]
+        //public void TestAddAnotherManagerSuccess()
+        //{
+        //    try
+        //    {
+        //        Init();
+        //        createManagerWithRoles(false, false, true, false);
+
+        //        bridge.Login(storeManager1, password);
+        //        bool result = bridge.AddStoreManager(storeId, storeManager2, false, false, true, false);
+        //        bridge.Logout();
+
+        //        Assert.IsTrue(result);
+        //    }
+        //    finally
+        //    {
+        //        Cleanup();
+        //    }
+        //}
+
     }
 }

@@ -67,6 +67,10 @@ namespace TestingFramework.AcceptanceTests
 
         //Req 5_1
         bool CloseStore(int storeID);
+        int addDiscountPolicy(int storeId, string policy);
+        bool removeDiscountPolicy(int storeId, int policyId);
+        int addPurchasingPolicy(int storeId, string policy);
+        bool removePurchasingPolicy(int storeId, int policyId);
 
         //Req 6_2
         bool RemoveUser(string user);

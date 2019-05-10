@@ -496,19 +496,19 @@ namespace WorkshopProject.System_Service
             }
         }
 
-        public string GetMessages(int memberId)
-        {
-            List<string> ret;
-            try
-            {
-                ret = UserService.GetMessages(memberId);
-                return objDynamicJson(ret);
-            }
-            catch (Exception e)
-            {
-                return generateMessageFormatJason(e.Message);
-            }
-        }
+        //public string GetMessages(int memberId)
+        //{
+        //    List<string> ret;
+        //    try
+        //    {
+        //        ret = UserService.GetMessages(memberId);
+        //        return objDynamicJson(ret);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return generateMessageFormatJason(e.Message);
+        //    }
+        //}
         //**********POLICIES*********************
 
         //policies
