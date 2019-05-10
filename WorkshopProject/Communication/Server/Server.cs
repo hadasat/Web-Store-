@@ -27,7 +27,7 @@ namespace WorkshopProject.Communication.Server
     {
 
         #region fields
-        private static int mAX_BUFFER_SIZE = 1028;
+        private static int mAX_BUFFER_SIZE = 1024;
         public static int MAX_BUFFER_SIZE { get => mAX_BUFFER_SIZE; set => mAX_BUFFER_SIZE = value; }
 
         private ConcurrentDictionary<uint, WebSocket> activeConections;

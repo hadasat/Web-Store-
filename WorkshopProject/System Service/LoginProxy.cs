@@ -14,6 +14,9 @@ namespace WorkshopProject.System_Service
         bool loggedIn;
         public User user { get; set; }
 
+        public static readonly string successMsg  = "success";
+        public static readonly string failureMsg = "failure";
+
         public LoginProxy()
         {
             user = new User();
@@ -111,10 +114,28 @@ namespace WorkshopProject.System_Service
             return TransactionService.GetShoppingBasket(user);
         }
 
-        public Member login(string username, string password)
+        public string login(string username, string password)
         {
             Member ret;
-            ret = UserService.login(username, password);
+            try { ret = UserService.login(username, password,user); }
+            catch (Exception e) { return e.Message; }
+            if (ret != null)
+            {
+                updateMember(ret);
+                if (user is Member)
+                {
+                    loggedIn = true;
+                }
+                else
+                    loggedIn = false;
+            }
+            return loggedIn ? successMsg : failureMsg;
+        }
+
+        public Member loginEx(string username, string password)
+        {
+            Member ret;
+            ret = UserService.login(username, password,user);
             if (ret != null)
             {
                 updateMember(ret);
@@ -238,6 +259,18 @@ namespace WorkshopProject.System_Service
         private void notLoggedInException()
         {
             throw new Exception("User not logged in");
+        }
+
+
+
+        //todo amsel tests?
+        public Roles getRolesForStore(int storeId)
+        {
+            if (!loggedIn)
+            {
+                return null;
+            }
+            return UserService.getRoleForStore(user,storeId);
         }
 
     }
