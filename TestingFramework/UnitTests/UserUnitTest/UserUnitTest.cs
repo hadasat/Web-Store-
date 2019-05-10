@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Managment;
+using WorkshopProject.Managment;
 
-namespace Users.Tests
+namespace WorkshopProject.UsesrsN
+.Tests
 {
     [TestClass()]
     public class TestUser

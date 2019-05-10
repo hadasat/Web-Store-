@@ -5,8 +5,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Password
+namespace WorkshopProject.Password
 {
+   
     public class PasswordHandler
     {
         // Dictionary<ID, Tuple <salt, pepper>

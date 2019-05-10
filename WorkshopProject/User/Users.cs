@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Password;
-using Managment;
+using WorkshopProject.Password;
+using WorkshopProject.Managment;
 using WorkshopProject;
 using Shopping;
 using WorkshopProject.Log;
 using System.Collections.Concurrent;
 
-namespace Users
+using WorkshopProject.System_Service;
+using WorkshopProject.Communication;
+using WorkshopProject.UsersN;
+
+namespace WorkshopProject.UsesrsN
+
 {
 
     public static class ConnectionStubTemp
@@ -289,29 +294,34 @@ namespace Users
 
 
 
-    public class Member : User
+    public class Member : User ,IObserverSubject
     {
         public int ID; //why do we need id?
         public string username;
         public LinkedList<StoreManager> storeManaging;
         private string country;
         private int age;
-        public ConcurrentQueue<string> notifications;
+        private List<string> notifications;
+        private List<IObserver> observers;
+        private Object notificationLock;
         
-        public Member() {/*added for json*/ }
+        public Member() :base ()  {/*added for json*/
+            this.storeManaging = new LinkedList<StoreManager>();
+            this.notifications = new List<string>();
+            observers = new List<IObserver>();
+            notificationLock = new Object();
+        }
 
-        public Member(string username, int ID) : base()//Register
+        public Member(string username, int ID) : this()//Register
         {
             this.ID = ID;
             this.username = username;
-            this.notifications = new ConcurrentQueue<string>();
-            this.storeManaging = new LinkedList<StoreManager>();
             this.country = "none";
             this.age = -1;
             
         }
 
-        public Member(string username, int ID, string country, int age) : base()//Register
+        public Member(string username, int ID, string country, int age) :this()//Register
         {
             this.ID = ID;
             this.username = username;
@@ -322,23 +332,6 @@ namespace Users
 
 
         /*** SERVICE LAYER FUNCTIONS***/
-
-        //todo amsel test
-        public List<string> getMessages()
-        {
-            if (notifications.IsEmpty)
-            {
-                return null;
-            }
-            List<string> res = notifications.ToList();
-            notifications = new ConcurrentQueue<string>();
-            return res;
-        }
-
-        public void addMessage (string message)
-        {
-            notifications.Enqueue(message);
-        }
 
         public void logOut()
         {
@@ -522,7 +515,82 @@ namespace Users
         {
             return this.age;
         }
-        
+
+
+        #region notifications
+
+        //todo amsel test
+        public List<string> getMessages()
+        {
+            lock (notificationLock)
+            {
+                return getMessagesNoLock();
+            }
+        }
+
+        private List<string> getMessagesNoLock()
+        {
+            if (notifications.Count == 0) { return null; }
+            List<string> ans = notifications;
+            notifications = new List<string>();
+            return ans;
+        }
+
+        //todo amsel test
+        public void addMessage(string message)
+        {
+            lock (notificationLock)
+            {
+                notifications.Add(message);
+            }
+            notifyAllObservers();
+        }
+
+
+        // todo amsel test
+        public void notifyAllObservers()
+        {
+            lock (notificationLock)
+            {
+                List<string> messages = getMessagesNoLock();
+                foreach (IObserver curr in observers)
+                {
+                    curr.update(messages);
+                }
+            }
+        }
+
+        //todo amsel test
+        public bool subscribe(IObserver observer)
+        {
+            if (observer != null)
+            {
+                lock (notificationLock)
+                {
+                    observers.Add(observer);
+                    if (notifications.Count != 0)
+                    {
+                        notifyAllObservers();
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+        //todo amsel test
+        public bool unsbscribe(IObserver observer)
+        {
+            if (observer != null)
+            {
+                lock (notificationLock)
+                {
+                   return observers.Remove(observer);
+                }
+            }
+            return false;
+        }
+
+        #endregion
     }
 
 

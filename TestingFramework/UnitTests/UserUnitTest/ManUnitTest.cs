@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Users;
+using WorkshopProject.UsesrsN
+;
 using WorkshopProject.System_Service;
 
-namespace Managment.Tests
+namespace WorkshopProject.Managment.Tests
 {
     [TestClass()]
     public class TestStoreManager

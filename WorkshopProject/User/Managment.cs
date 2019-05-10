@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Users;
+using WorkshopProject.UsesrsN;
 using WorkshopProject;
 using WorkshopProject.Log;
 
-namespace Managment
+namespace WorkshopProject.Managment
 {
 
 

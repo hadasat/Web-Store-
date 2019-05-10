@@ -1,11 +1,12 @@
-﻿using Managment;
+﻿using WorkshopProject.Managment;
 using Shopping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Users;
+using WorkshopProject.UsesrsN;
+using WorkshopProject.Communication;
 
 namespace WorkshopProject.System_Service
 {
@@ -272,6 +273,12 @@ namespace WorkshopProject.System_Service
                 return null;
             }
             return UserService.getRoleForStore(user,storeId);
+        }
+
+        public bool subscribetObserver(IObserver observer)
+        {
+            if (!loggedIn) { return false; }
+            return ((Member)user).subscribe(observer);
         }
 
     }

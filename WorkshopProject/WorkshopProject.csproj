@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Client\HtmlPageManager.cs" />
     <Compile Include="Communication\CommunicationManager.cs" />
+    <Compile Include="Communication\IObserver.cs" />
     <Compile Include="Communication\Server\INewConnectionHandler.cs" />
     <Compile Include="Communication\Server\IServer.cs" />
     <Compile Include="Communication\Server\IWebScoketHandler.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="System Service\TransactionService.cs" />
     <Compile Include="System Service\UserInterface.cs" />
     <Compile Include="System Service\UserService.cs" />
+    <Compile Include="User\IObserverSubject.cs" />
     <Compile Include="User\Password.cs" />
     <Compile Include="Store\Product.cs" />
     <Compile Include="Store\PurchasePolicy.cs" />

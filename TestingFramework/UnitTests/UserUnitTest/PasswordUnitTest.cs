@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Password.Tests
+namespace WorkshopProject.Password.Tests
 {
 
     //TODO: this test class crashes the regression

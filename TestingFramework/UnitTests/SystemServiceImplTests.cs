@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using WorkshopProject.System_Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WorkshopProject;
-using Users;
-using Managment;
+using WorkshopProject.UsesrsN
+;
+using WorkshopProject.Managment;
 
 namespace TestingFramework.UnitTests
 {
