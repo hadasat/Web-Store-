@@ -17,6 +17,13 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
     {
         private int policyId;
 
+        string tmp_name;
+        string tmp_desc;
+        double tmp_price;
+        string tmp_category;
+        int  tmp_rank;
+        int tmp_amount;
+
         public override void Init()
         {
             policyId = -1;
@@ -152,12 +159,14 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
         {
             bridge.Login(storeOwner1, password);
             ItemFilter filter1 = new AllProductsFilter();
-            IBooleanExpression leaf1 = new MinAmount(10, filter1);
+            IBooleanExpression leaf1 = new MinAmount(5, filter1);
             ItemFilter filter2 = new AllProductsFilter();
-            IBooleanExpression leaf2 = new MinAmount(15, filter2);
+            IBooleanExpression leaf2 = new MinAmount(10, filter2);
             IBooleanExpression complex = new XorExpression();
             complex.addChildren(leaf1, leaf2);
-            string json = JsonHandler.SerializeObject(complex);
+            IOutcome outcome = new FreeProduct(productId, 1);
+            Discount discount = new Discount(complex, outcome);
+            string json = JsonHandler.SerializeObject(discount);
             policyId = bridge.addDiscountPolicy(storeId, json);
             Assert.IsTrue(policyId >= 0);
         }
@@ -233,7 +242,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
 
                 bridge.AddProductToBasket(storeId, productId, 1);
                 bool result = bridge.BuyShoppingBasket();
-                Assert.IsFalse(result);
+                Assert.IsTrue(result);
+                result = bridge.GetProductInfo(productId, out tmp_name, out tmp_desc, out tmp_price, out tmp_category, out tmp_rank, out tmp_amount);
+                Assert.AreEqual(19, tmp_amount);
 
                 bridge.AddProductToBasket(storeId, productId, 12);
                 result = bridge.BuyShoppingBasket();

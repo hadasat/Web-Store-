@@ -44,16 +44,24 @@ namespace WorkshopProject
             return Stock;
         }
 
-        public double calcProductsPrice(List<ProductAmountPrice> products, User user)
+        public List<ProductAmountPrice> afterDiscount(List<ProductAmountPrice> products, User user)
         {
-            double sum = 0;
-            //calc discount
             foreach (Discount d in discountPolicy)
                 products = d.Apply(products, user);
-            //sum
-            foreach (ProductAmountPrice p in products)
-                sum += p.price;
-            return sum;
+
+            return products;
+        }
+
+        public bool checkPolicies(List<ProductAmountPrice> products, User user)
+        {
+            foreach (IBooleanExpression b in purchasePolicy)
+                if (!b.evaluate(products, user))
+                    return false;
+
+            foreach (IBooleanExpression b in storePolicy)
+                if (!b.evaluate(products, user))
+                    return false;
+            return true;
         }
 
         public int addProduct(User user, string name, string desc, double price, string category)
@@ -260,7 +268,8 @@ namespace WorkshopProject
             //check policy validation
             int newPolicyId = Discount.checkDiscount(discountPolicy);
             if (newPolicyId < 0)
-                return -3;  
+                return -3;
+            discountPolicy.id = newPolicyId;
             this.discountPolicy.Add(discountPolicy);
             return newPolicyId;
         }
@@ -291,6 +300,7 @@ namespace WorkshopProject
             int newPolicyId = IBooleanExpression.checkExpression(purchasPolicy);
             if (newPolicyId < 0)
                 return -3;
+            purchasPolicy.id = newPolicyId;
             this.purchasePolicy.Add(purchasPolicy);
             return newPolicyId;
         }
@@ -321,6 +331,7 @@ namespace WorkshopProject
             int newPolicyId = IBooleanExpression.checkExpression(storePolicy);
             if (newPolicyId < 0)
                 return -3;
+            storePolicy.id = newPolicyId;
             this.storePolicy.Add(storePolicy);
             return newPolicyId;
         }

@@ -9,9 +9,9 @@ namespace WorkshopProject.Policies
 {
     public class Discount
     {
-        protected Discount successor;
-        protected IOutcome outcome;
-        protected IBooleanExpression condition;
+        public Discount successor;
+        public IOutcome outcome;
+        public IBooleanExpression condition;
         public int id;
 
         public static int DiscountCounter = 1;
@@ -35,7 +35,7 @@ namespace WorkshopProject.Policies
                     return modifiedList;
                 }
             }
-            return new List<ProductAmountPrice>();
+            return products;
         }
 
         public void AddSuccessor(Discount successor)

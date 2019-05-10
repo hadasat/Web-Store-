@@ -27,8 +27,10 @@ namespace Tansactions
 
         public static int purchase(User user)
         {
-            int fail = 0;
+            int transactionFail = 0;
+            int numSucessTransaction = 0;
             double totalPrice = 0;
+
             ShoppingBasket basket = user.shoppingBasket;
             //check the basket is empty
             if (basket.isEmpty())
@@ -45,54 +47,58 @@ namespace Tansactions
                 //check consistency
                 if (!checkConsistency(user, currStore, currShoppingCart))
                     break;
-                //check if the item in the stock and the policies consistency
+                List<ProductAmountPrice> currStoreProducts = ProductAmountPrice.translateCart(currShoppingCart);
+                //check store policies  
+                if (!currStore.checkPolicies(currStoreProducts, user))
+                    break;
 
-                Dictionary<Product, int> itemsPerStore = currShoppingCart.getProducts();
-                //make <product,amount,price>list
-                foreach (KeyValuePair<Product, int> item in itemsPerStore)
+                double totalCart = 0;
+                currStoreProducts = currStore.afterDiscount(currStoreProducts, user);
+                foreach (ProductAmountPrice p in currStoreProducts)
                 {
-                    Product currProduct = item.Key;
-                    int currAmount = item.Value;
-
-                    //buy from store
-                    Store.callback currCallBack = currStore.buyProduct(currProduct, currAmount);
-                    //store disconfirm the purchase
-                    if (currCallBack == null)
-                        break;
-                    callbacks.Add(currCallBack);
-                    //list of product to remove from basket
-                    purchasedProducts.Add(new ProductAmountPrice(currProduct, currAmount, currProduct.price));
+                    Store.callback currCallBack = currStore.buyProduct(p.product, p.amount);
+                    if (currCallBack != null)
+                    {
+                        callbacks.Add(currCallBack);
+                        purchasedProducts.Add(p);
+                        totalCart += calcPrice(p.product, p.amount);
+                    }
                 }
-                double totalCart = currStore.calcProductsPrice(purchasedProducts, user);
 
-                //buy
+                //return products to store if transaction fails
                 if (!PaymentStub.Pay(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate))
                 {
                     foreach (Store.callback call in callbacks)
                         call();
-                    fail = -2;
+                    transactionFail = -2;
                 }
                 else if (!SupplyStub.supply(sourceAddress, targetAddress))
                 {
                     foreach (Store.callback call in callbacks)
                         call();
-                    fail = -3;
+                    transactionFail = -3;
                 }
-
+                else
+                {
+                    purchasedProducts.Concat(currStoreProducts);
+                    numSucessTransaction++;
+                    totalPrice += totalCart;
+                }
             }
             //parches 
             //send products
 
-            if (fail < 0)
-
-                return fail;
+            if (transactionFail < 0)
+                return transactionFail;
             foreach (ProductAmountPrice p in purchasedProducts)
             {
                 Store store;
                 if((store = WorkShop.getStore(p.product.storeId)) != null)
                     basket.setProductAmount(store, p.product, 0);
             }
-            return ++transactionCounter;
+            if(numSucessTransaction >0)
+                return ++transactionCounter;
+            return -5;
 
         }
 
@@ -108,5 +114,7 @@ namespace Tansactions
             List<IBooleanExpression> storePolicy = store.storePolicy;
             return ConsistencyStub.checkConsistency(user,discount, purchase, storePolicy, cart);
         }
+        
+
     }
 }

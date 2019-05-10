@@ -61,8 +61,8 @@ namespace TestingFramework.UnitTests.PoliciesJsonTests
         }
 
 
-        //[TestMethod]
-        //[TestCategory("JSON")]
+        [TestMethod]
+        [TestCategory("JSON")]
         public void DiscountSerializeTest()
         {
             ItemFilter filter1 = new CategoryFilter("cat");

@@ -26,7 +26,8 @@ namespace WorkshopProject.Policies
         public override bool evaluate(List<ProductAmountPrice> products,User user)
         {
             List<ProductAmountPrice> relevantProducts = filter.getFilteredItems(products);
-            return relevantProducts.Count <= amount;
+            int sumProduct = ProductAmountPrice.sumProduct(relevantProducts);
+            return sumProduct <= amount;
         }
 
         public override void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
@@ -60,7 +61,8 @@ namespace WorkshopProject.Policies
         public override bool evaluate(List<ProductAmountPrice> products,User user)
         {
             List<ProductAmountPrice> relevantProducts = filter.getFilteredItems(products);
-            return relevantProducts.Count >= amount;
+            int sumProduct = ProductAmountPrice.sumProduct(relevantProducts);
+            return sumProduct >= amount;
         }
 
         public override void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
@@ -307,7 +309,9 @@ namespace WorkshopProject.Policies
 
         public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
-            return firstChild.evaluate(products,user) ^ secondChild.evaluate(products,user);
+            bool firstExp = firstChild.evaluate(products, user);
+            bool secondExp = secondChild.evaluate(products, user);
+            return firstExp ^ secondExp;
         }
 
         public override IBooleanExpression removePolicy(int policyId)

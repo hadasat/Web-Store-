@@ -38,5 +38,13 @@ namespace WorkshopProject.Policies
             }
             return output;
         }
+
+        public static int sumProduct(List<ProductAmountPrice> products)
+        {
+            int sum = 0;
+            foreach (ProductAmountPrice p in products)
+                sum += p.amount;
+            return sum;
+        }
     }
 }
