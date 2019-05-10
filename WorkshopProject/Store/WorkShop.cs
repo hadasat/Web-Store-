@@ -81,7 +81,7 @@ namespace WorkshopProject
                 return false;
             }
             Logger.Log("file", logLevel.INFO, "store " + storeId + " has closed");
-            Member.addMessageToAllOwners(storeId, "the store " + storeId + " was closed");
+            Member.sendMessageToAllOwners(storeId, "the store " + storeId + " was closed");
             return true;
         }
 

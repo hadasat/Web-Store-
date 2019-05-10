@@ -545,19 +545,6 @@ namespace Users
             return false;
         }
 
-        public static void addMessageToAllOwners(int storeId, string msg)
-        {
-            List<Member> ret = new List<Member>();
-            List<Member> members = ConnectionStubTemp.members.Values.ToList();
-            foreach (Member currMember in members)
-            {
-                if (currMember.isStoreOwner(storeId))
-                {
-                    currMember.addMessage(msg);
-                }
-            }
-        }
-
         #region notificactions
         public void addMessage (string msg)
         {
@@ -590,7 +577,10 @@ namespace Users
             {
                 ans = observers.Add(observer);
             }
-            notifyAllObservers();
+            if (ans)
+            {
+                notifyAllObservers();
+            }
             return ans;
         }
 
@@ -614,6 +604,19 @@ namespace Users
                     {
                         curr.update(notificationsToSend);
                     }
+                }
+            }
+        }
+        //todod amsel test add to class diagram
+        public static void sendMessageToAllOwners(int storeId, string msg)
+        {
+            List<Member> ret = new List<Member>();
+            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            foreach (Member currMember in members)
+            {
+                if (currMember.isStoreOwner(storeId))
+                {
+                    currMember.addMessage(msg);
                 }
             }
         }
