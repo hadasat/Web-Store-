@@ -13,7 +13,7 @@ using WorkshopProject.Log;
 
 namespace WorkshopProject.Communication
 {
-    class CommunicationManager : INewConnectionHandler, IWebScoketHandler
+    class CommunicationManager : INewConnectionHandler, IWebScoketHandler, IWebSocketMessageSender
     {
         private IServer server;
         private ConcurrentDictionary<uint, UserConnectionInfo> activeConnections;
@@ -95,6 +95,11 @@ namespace WorkshopProject.Communication
         {
             UserConnectionInfo userConnection = activeConnections[myId];
             userConnection.onMessage(bufferCollector, receiveResult);
+        }
+
+        public async Task sendMessageToUser(string msg, uint id)
+        {
+            await server.sendMessageById(id, msg);
         }
 
         #endregion

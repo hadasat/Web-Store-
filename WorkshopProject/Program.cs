@@ -21,7 +21,7 @@ namespace WorkshopProject
         {
             //Console.ReadLine();
 
-            Setup();
+           Setup();
             
 
             CommunicationManager manager = new CommunicationManager();
@@ -34,7 +34,6 @@ namespace WorkshopProject
             string password = "password";
             string storename = "store";
 
-            //UserInterface service = new SystemServiceImpl();
 
             LoginProxy service = new LoginProxy();
             try
@@ -42,9 +41,9 @@ namespace WorkshopProject
                 service.Register(username, password);
                 Console.WriteLine("Registering: " + username + ":" + password);
 
-                Member member = service.login(username, password);
+                Member member = service.loginEx(username, password);
                 int storeId = service.AddStore(storename);
-                Console.WriteLine("Opening store: " + storename +":" + storeId);
+                Console.WriteLine("Opening store: " + storename + ":" + storeId);
 
                 int product1Id = service.AddProductToStore(storeId, "product1", "testProduct", 10.0, "test");
                 service.AddProductToStock(storeId, product1Id, 10);

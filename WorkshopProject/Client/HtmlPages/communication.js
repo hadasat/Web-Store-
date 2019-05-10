@@ -37,6 +37,7 @@ function start() {
     }
 
     webSocketClient.onmessage = function (event) {
+        console.log("received message: "+event.data);
         var msg = JSON.parse(event.data);
         switch (msg.type) {
             case "setId":
@@ -51,17 +52,18 @@ function start() {
         }
     }
     webSocketClient.onsend = function (event) {
+        console.log("sent message "+event.data)
     }
 }
 start();
 
-function setUserId(){
-    var localId = localStorage.getItem("userId");
-    localId? 
-        sendRequest("updateId","set" ,localId) :
-        sendRequest("updateId","get",null);
-}
-setUserId();
+//function setUserId(){
+//    var localId = localStorage.getItem("userId");
+//    localId? 
+//        sendRequest("updateId","set" ,localId) :
+//        sendRequest("updateId","get",null);
+//}
+//setUserId();
 
 //ofir - functions I use in the body scripts 
 function updateHandler (newHandler){
