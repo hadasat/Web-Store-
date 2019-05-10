@@ -27,7 +27,7 @@
                     <h5 class="card-title text-center">Sign In</h5>
                     <form class="form-signin">
                     <div class="form-label-group">
-                        <input type="username" id="inputUserame" class="form-control" placeholder="User Name" required autofocus>
+                        <input type="text" id="inputUserame" class="form-control" placeholder="User Name" required autofocus>
                         <label for="inputUserame">User Name</label>
                     </div>
         
@@ -40,21 +40,24 @@
                     <hr class="my-4">
                     <h2 class="card-title">New To WorkShop?</h2>
                     <button id="register_btn" class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"> Create Account</button>
-                    </form>
+                       
+                </form>
                 </div>
                 </div>
             </div>
             </div>
-    </div>
+    </div>
+
         <script>
-           
-            $('#signin_btn').on('click', ()=>{
+
+            $('.form-signin').submit(()=>{
                 var pass = $("#inputPassword").val();
                 var name = $("#inputUserame").val();
-                pass && name ?
+                (pass && name) ?
                  sendRequest("action","signin",{name: $("#inputUserame").val(), password: $("#inputPassword").val()})
                  :
                  alert("Please fill all the required fields");
+                 return false;
             });
             var handleMessage = (msg) => {
                 if(msg.info=="success"){
@@ -64,7 +67,7 @@
                     window.location.href = "/wot/main";
                 }else{    
                     //msg is an error message
-                    alert(msg.data.msg);
+                    alert(msg.data);
                 }   
             };
             updateHandler(handleMessage);
