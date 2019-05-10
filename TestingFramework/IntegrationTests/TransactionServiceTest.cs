@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Tansactions;
 using Users;
 using WorkshopProject;
+using WorkshopProject.External_Services;
 using WorkshopProject.System_Service;
 
 
@@ -108,15 +109,22 @@ namespace IntegrationTests
         [TestCategory("TransactionServiceTest")]
         public void BuyShoppingBasketTest()
         {
+            PaymentStub.setRet(true);
+            SupplyStub.setRet(true);
+            ConsistencyStub.setRet(true);
+
             //init
             addingProductToBasket(amountToBuy, 0);
             addingProductToBasket(amountToBuy, 0);
             addingProductToBasket(amountToBuy, 1);
+            PaymentStub.setRet(true);
+            SupplyStub.setRet(true);
+            ConsistencyStub.setRet(true);
             
             int transId = Transaction.purchase(user.user);
-            Assert.IsTrue(transId > 0);
+            Assert.IsTrue(transId > 0,"1");
             //chack the basket is empty
-            Assert.IsTrue(userShoppingBasket.isEmpty());
+            Assert.IsTrue(userShoppingBasket.isEmpty(),"2");
             //check the product amount has reduced
             Assert.AreEqual(productAmount - (2 * amountToBuy), product[0].amount);
             Assert.AreEqual(productAmount - amountToBuy, product[1].amount);

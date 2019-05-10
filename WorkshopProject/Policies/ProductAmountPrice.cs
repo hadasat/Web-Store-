@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Shopping;
 
 namespace WorkshopProject.Policies
 {
@@ -25,5 +26,17 @@ namespace WorkshopProject.Policies
         //{
         //    return JsonConvert.DeserializeObject<Product>(json);
         //}
+
+        public static List<ProductAmountPrice> translateCart(ShoppingCart cart)
+        {
+            List<ProductAmountPrice> output = new List<ProductAmountPrice>();
+            Dictionary<Product, int> products = cart.products;
+            foreach(KeyValuePair<Product,int> p in products)
+            {
+                ProductAmountPrice newProduct = new ProductAmountPrice(p.Key, p.Value, p.Key.price);
+                output.Add(newProduct);
+            }
+            return output;
+        }
     }
 }

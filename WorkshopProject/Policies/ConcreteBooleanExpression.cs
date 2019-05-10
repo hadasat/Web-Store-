@@ -23,7 +23,7 @@ namespace WorkshopProject.Policies
             this.id = Idcounter++;
         }
 
-        public override bool evaluate(ShoppingCart cart, List<ProductAmountPrice> products,User user)
+        public override bool evaluate(List<ProductAmountPrice> products,User user)
         {
             List<ProductAmountPrice> relevantProducts = filter.getFilteredItems(products);
             return relevantProducts.Count <= amount;
@@ -57,7 +57,7 @@ namespace WorkshopProject.Policies
             this.id = Idcounter++;
         }
 
-        public override bool evaluate(ShoppingCart cart, List<ProductAmountPrice> products,User user)
+        public override bool evaluate(List<ProductAmountPrice> products,User user)
         {
             List<ProductAmountPrice> relevantProducts = filter.getFilteredItems(products);
             return relevantProducts.Count >= amount;
@@ -91,7 +91,7 @@ namespace WorkshopProject.Policies
             this.id = Idcounter++;
         }
 
-        public override bool evaluate(ShoppingCart cart, List<ProductAmountPrice> products, User user)
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
             if(user is Member) {
                 List<ProductAmountPrice> filterProdact = filter.getFilteredItems(products);
@@ -133,7 +133,7 @@ namespace WorkshopProject.Policies
             this.id = Idcounter++;
         }
 
-        public override bool evaluate(ShoppingCart cart, List<ProductAmountPrice> products, User user)
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
             if (user is Member)
             {
@@ -174,7 +174,7 @@ namespace WorkshopProject.Policies
             this.id = Idcounter++;
         }
 
-        public override bool evaluate(ShoppingCart cart, List<ProductAmountPrice> products, User user)
+        public override bool evaluate( List<ProductAmountPrice> products, User user)
         {
             return true;
         }
@@ -206,7 +206,7 @@ namespace WorkshopProject.Policies
             this.id = Idcounter++;
         }
 
-        public override bool evaluate(ShoppingCart cart, List<ProductAmountPrice> products, User user)
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
             return false;
         }
@@ -233,9 +233,9 @@ namespace WorkshopProject.Policies
         {
         }
 
-        public override bool evaluate(ShoppingCart cart, List<ProductAmountPrice> products,User user)
+        public override bool evaluate(List<ProductAmountPrice> products,User user)
         {
-            return (firstChild.evaluate(cart, products,user) && secondChild.evaluate(cart, products, user));
+            return (firstChild.evaluate(products,user) && secondChild.evaluate(products, user));
         }
 
         public override IBooleanExpression removePolicy(int policyId)
@@ -268,9 +268,9 @@ namespace WorkshopProject.Policies
             this.id = Idcounter++;
         }
 
-        public override bool evaluate(ShoppingCart cart, List<ProductAmountPrice> products, User user)
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
-            return (firstChild.evaluate(cart, products, user) || secondChild.evaluate(cart, products, user));
+            return (firstChild.evaluate( products, user) || secondChild.evaluate( products, user));
         }
 
         public override IBooleanExpression removePolicy(int policyId)
@@ -305,9 +305,9 @@ namespace WorkshopProject.Policies
         {
         }
 
-        public override bool evaluate(ShoppingCart cart, List<ProductAmountPrice> products, User user)
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
-            return firstChild.evaluate(cart, products,user) ^ secondChild.evaluate(cart, products,user);
+            return firstChild.evaluate(products,user) ^ secondChild.evaluate(products,user);
         }
 
         public override IBooleanExpression removePolicy(int policyId)
