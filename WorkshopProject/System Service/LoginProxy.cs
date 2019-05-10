@@ -235,7 +235,6 @@ namespace WorkshopProject.System_Service
             return UserService.GetAllMembers();
         }
 
-        //todo amsel test
         public bool SendMessage(int memberId, string message)
         {
             UserService.SendMessage(memberId, message);
@@ -249,14 +248,7 @@ namespace WorkshopProject.System_Service
             return ((Member)user).subscribe(observer);
         }
 
-        //TODO delete
-        //public List<string> GetMessages(int memberId)
-        //{
-        //    return null;
-        //    //return UserService.GetMessages(memberId);
-        //}
-        
-        
+
         //TODO: add policies to loginproxy
 
 
@@ -266,8 +258,6 @@ namespace WorkshopProject.System_Service
         }
 
 
-
-        //todo amsel tests?
         public Roles getRolesForStore(int storeId)
         {
             if (!loggedIn)

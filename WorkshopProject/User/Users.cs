@@ -529,7 +529,6 @@ namespace Users
         }
 
 #region notificactions
-        //todo amsel tests
         public void addMessage (string msg)
         {
             lock (notificationLock)
@@ -539,7 +538,7 @@ namespace Users
             notifyAllObservers();
         }
 
-        public List<string> getAllMessages()
+        private List<string> getAllMessages()
         {
             lock (notificationLock)
             {
@@ -556,10 +555,13 @@ namespace Users
         public bool subscribe(IObserver observer)
         {
             if (observer == null) { return false; }
+            bool ans;
             lock (notificationLock)
             {
-                return observers.Add(observer);
+                ans = observers.Add(observer);
             }
+            notifyAllObservers();
+            return ans;
         }
 
         public bool unsbscribe(IObserver observer)
