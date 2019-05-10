@@ -92,7 +92,7 @@
     <Compile Include="UnitTests\Examples\ClassForTestExampleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\PoliciesJsonTests\PoliciesJsonTests.cs" />
-    <Compile Include="UnitTests\PoliciesTest\ConcreteBooleanExpression.cs" />
+    <Compile Include="UnitTests\PoliciesTest\ConcreteBooleanExpressionTest.cs" />
     <Compile Include="UnitTests\PoliciesTest\ConcreteOutcomeTest.cs" />
     <Compile Include="UnitTests\PoliciesTest\DiscountTest.cs" />
     <Compile Include="UnitTests\PoliciesTest\IBooleanExpressionTest.cs" />

@@ -35,13 +35,7 @@ namespace WorkshopProject.Policies
             //this exception is intended!
             throw new NotImplementedException();
         }
-
-        public override IBooleanExpression removePolicy(int policyId)
-        {
-            if (id == policyId)
-                return null;
-            return this;
-        }
+        
     }
 
     public class MinAmount : IBooleanExpression
@@ -70,13 +64,7 @@ namespace WorkshopProject.Policies
             //this exception is intended!
             throw new NotImplementedException();
         }
-
-        public override IBooleanExpression removePolicy(int policyId)
-        {
-            if (id == policyId)
-                return null;
-            return this;
-        }
+        
     }
 
     public class UserAge : IBooleanExpression
@@ -112,13 +100,7 @@ namespace WorkshopProject.Policies
             //this exception is intended!
             throw new NotImplementedException();
         }
-
-        public override IBooleanExpression removePolicy(int policyId)
-        {
-            if (id == policyId)
-                return null;
-            return this;
-        }
+        
     }
 
     public class UserCountry : IBooleanExpression
@@ -155,12 +137,7 @@ namespace WorkshopProject.Policies
             throw new NotImplementedException();
         }
 
-        public override IBooleanExpression removePolicy(int policyId)
-        {
-            if (id == policyId)
-                return null;
-            return this;
-        }
+        
     }
 
     public class TrueCondition : IBooleanExpression
@@ -186,13 +163,7 @@ namespace WorkshopProject.Policies
             //this exception is intended!
             throw new NotImplementedException();
         }
-
-        public override IBooleanExpression removePolicy(int policyId)
-        {
-            if (id == policyId)
-                return null;
-            return this;
-        }
+        
     }
 
     public class FalseCondition : IBooleanExpression
@@ -219,12 +190,7 @@ namespace WorkshopProject.Policies
             throw new NotImplementedException();
         }
 
-        public override IBooleanExpression removePolicy(int policyId)
-        {
-            if (id == policyId)
-                return null;
-            return this;
-        }
+        
     }
 
     public class AndExpression : IBooleanExpression
@@ -240,22 +206,6 @@ namespace WorkshopProject.Policies
             return (firstChild.evaluate(products,user) && secondChild.evaluate(products, user));
         }
 
-        public override IBooleanExpression removePolicy(int policyId)
-        {
-            if (this.id == policyId)
-                return null;
-            else
-            {
-                firstChild = firstChild.removePolicy(policyId);
-                secondChild = secondChild.removePolicy(policyId);
-                if (firstChild == null)
-                    return secondChild;
-                else if (secondChild == null)
-                    return firstChild;
-                return this;
-            } 
-
-        }
 
     }
 
@@ -275,23 +225,7 @@ namespace WorkshopProject.Policies
             return (firstChild.evaluate( products, user) || secondChild.evaluate( products, user));
         }
 
-        public override IBooleanExpression removePolicy(int policyId)
-        {
-            if (this.id == policyId)
-                return null;
-            else
-            {
-                firstChild = firstChild.removePolicy(policyId);
-                secondChild = secondChild.removePolicy(policyId);
-                if (firstChild == null)
-                    return secondChild;
-                else if (secondChild == null)
-                    return firstChild;
-                return this;
-            }
-
-        }
-
+        
     }
 
     public class XorExpression : IBooleanExpression
@@ -313,22 +247,5 @@ namespace WorkshopProject.Policies
             bool secondExp = secondChild.evaluate(products, user);
             return firstExp ^ secondExp;
         }
-
-        public override IBooleanExpression removePolicy(int policyId)
-        {
-            if (this.id == policyId)
-                return null;
-            else
-            {
-                firstChild = firstChild.removePolicy(policyId);
-                secondChild = secondChild.removePolicy(policyId);
-                if (firstChild == null)
-                    return secondChild;
-                else if (secondChild == null)
-                    return firstChild;
-                return this;
-            }
-        }
-
     }
 }

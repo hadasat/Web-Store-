@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using Shopping;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,20 @@ namespace WorkshopProject.Policies
     /// Implements the Composite design pattern.
     /// This is essentially the "Purchasing Policy"
     /// </summary>
+    /// 
+
+    [TestClass]
     public class IBooleanExpressionTest
     {
-        public void addChildrenTest() { }
+        [TestMethod]
+        [TestCategory("POLICIES")]
 
-        public void checkExpression() { }
+        public void checkExpressionTest() {
+            int currId = IBooleanExpression.Idcounter;
+            IBooleanExpression.checkExpression(new TrueCondition());
+            int newId = IBooleanExpression.Idcounter;
+            Assert.IsTrue(currId < newId);
+        }
 
     }
 }
