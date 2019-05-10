@@ -161,7 +161,7 @@ namespace WorkshopProject.System_Service
             return WorkShop.stores.Values.ToList();
         }
 
-        //TODO: add unit test
+        //TODO: add unit test / delete
         public static List<Member> getAllManagers(int storeId)
         {
             List<Member> ret = new List<Member>();
