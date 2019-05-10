@@ -61,18 +61,45 @@ namespace WorkshopProject.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to var webSocketClient;
+        ///var msgHandler;
+        ///var startPageHandler;
+        ///
+        /////todo back button stack
+        ///
+        ///function start() {
+        ///    console.log(&quot;start&quot;);
+        ///    const urlAddress = &quot;ws://localhost:8080/wot&quot;;
+        ///    console.log(&quot;connecting to server &quot; + urlAddress + &quot;\n&quot;);
+        ///    var isOldConnection= false;
+        ///
+        ///    if (typeof(Storage) === &quot;undefined&quot;) {
+        ///        alert(&quot;this web browser is supported&quot;);
+        ///    }
+        ///    if (sessionStorage.connectionId){
+        ///        isOldConnection = true;
+        ///        webSocketClient = new WebSocket(urlAddress,&quot; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string communication {
+            get {
+                return ResourceManager.GetString("communication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
         ///&lt;html lang=&quot;en&quot;&gt;
         ///&lt;head&gt;
         ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
         ///    &lt;title&gt;WorkShop&lt;/title&gt;
-        ///    &lt;script type=&quot;text/javascript&quot; src=&quot;communication.js&quot;&gt;&lt;/script&gt;
+        ///    &lt;script type=&quot;text/javascript&quot; src=&quot;/wot/communication.js&quot;&gt;&lt;/script&gt;
+        ///
         ///
         ///    &lt;!-- BOOTSTRAP FILES --&gt;
-        ///    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt; 
+        ///    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;
         ///    &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js&quot;&gt;&lt;/script&gt;
         ///    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js&quot;&gt;&lt;/script&gt;
-        ///    &lt;sc [rest of string was truncated]&quot;;.
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string index {
             get {
@@ -81,21 +108,76 @@ namespace WorkshopProject.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to //Nav Bar Init Html
+        ///
+        ///document.getElementById(&quot;navbar_header&quot;).innerHTML = `
+        ///&lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        ///        &lt;a class=&quot;navbar-brand&quot; href=&quot;/wot/main&quot;&gt;WorkShop&lt;/a&gt;
+        ///        &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarSupportedContent&quot; aria-controls=&quot;navbarSupportedContent&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        ///            &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+        ///        &lt;/button&gt;
+        ///
+        ///        &lt;div class=&quot;colla [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string navbar {
+            get {
+                return ResourceManager.GetString("navbar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
         ///&lt;html&gt;
-        ///    &lt;head&gt;
-        ///            &lt;meta charset=&quot;UTF-8&quot;&gt;
-        ///            &lt;title&gt;WorkShop&lt;/title&gt;
-        ///            &lt;script type=&quot;text/javascript&quot; src=&quot;communication.js&quot;&gt;&lt;/script&gt;
-        ///        
-        ///            &lt;!-- BOOTSTRAP FILES --&gt;
-        ///            &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt; 
-        ///            &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js&quot;&gt;&lt;/script&gt;
-        ///            &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/l [rest of string was truncated]&quot;;.
+        ///&lt;head&gt;
+        ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
+        ///    &lt;title&gt;WorkShop&lt;/title&gt;
+        ///    &lt;script type=&quot;text/javascript&quot; src=&quot;/wot/communication.js&quot;&gt;&lt;/script&gt;
+        ///
+        ///    &lt;!-- BOOTSTRAP FILES --&gt;
+        ///    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;
+        ///    &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js&quot;&gt;&lt;/script&gt;
+        ///    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+        ///    &lt;script s [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SignIn {
             get {
                 return ResourceManager.GetString("SignIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to :root {
+        ///    --input-padding-x: 1.5rem;
+        ///    --input-padding-y: .75rem;
+        ///  }
+        ///  
+        ///  body {
+        ///    background: #007bff;
+        ///    background: linear-gradient(to right, #0062E6, #33AEFF);
+        ///  }
+        ///  
+        ///  .card-signin {
+        ///    border: 0;
+        ///    border-radius: 1rem;
+        ///    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+        ///  }
+        ///  
+        ///  .card-signin .card-title {
+        ///    margin-bottom: 2rem;
+        ///    font-weight: 300;
+        ///    font-size: 1.5rem;
+        ///  }
+        ///  
+        ///  .card-signin .card-body {
+        ///    padding: 2rem;
+        ///  }
+        ///  
+        ///  .form-signin {
+        ///    width: 10 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SignIn1 {
+            get {
+                return ResourceManager.GetString("SignIn1", resourceCulture);
             }
         }
         

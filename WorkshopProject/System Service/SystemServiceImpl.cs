@@ -244,7 +244,7 @@ namespace WorkshopProject.System_Service
             Member ret;
             try
             {
-                ret = UserService.login(username, password);
+                ret = UserService.login(username, password,user);
             }
             catch (Exception e)
             {
@@ -496,19 +496,19 @@ namespace WorkshopProject.System_Service
             }
         }
 
-        public string GetMessages(int memberId)
-        {
-            List<string> ret;
-            try
-            {
-                ret = UserService.GetMessages(memberId);
-                return objDynamicJson(ret);
-            }
-            catch (Exception e)
-            {
-                return generateMessageFormatJason(e.Message);
-            }
-        }
+        //public string GetMessages(int memberId)
+        //{
+        //    List<string> ret;
+        //    try
+        //    {
+        //        ret = UserService.GetMessages(memberId);
+        //        return objDynamicJson(ret);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return generateMessageFormatJason(e.Message);
+        //    }
+        //}
         //**********POLICIES*********************
 
         //policies
@@ -651,7 +651,7 @@ namespace WorkshopProject.System_Service
             return JsonHandler.SerializeObjectDynamic(new Message(message));
         }
 
- 
+
         //jonathan - no idea how SystemAdmin object can be added
         //private string addAdmin()
         //{

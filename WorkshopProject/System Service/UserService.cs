@@ -66,9 +66,9 @@ namespace WorkshopProject.System_Service
             return true;
         }
 
-        public static Member login(string username, string password)
+        public static Member login(string username, string password,User user)
         {
-            Member member = (new User()).loginMember(username, password);
+            Member member = user.loginMember(username, password);
             //user = member;
             return member;
         }
@@ -113,35 +113,52 @@ namespace WorkshopProject.System_Service
         }
 
 
-        //TODO: add unit test
         public static List<StoreManager> GetRoles(User user)
         {
             if (!(user is Member))
             {
                 throw new Exception("only members have roles");
             }
+
             List<StoreManager> roles = ((Member)user).storeManaging.ToList();
+
             return roles;
         }
 
-        //TODO: add unit test
+        //todo amsel add test
+        /// <summary>
+        /// gets the roles of the user for store with requested id
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="storeId"></param>
+        /// <returns></returns>
+        public static Roles getRoleForStore (User user, int storeId)
+        {
+            if (!(user is Member))
+            {
+                return null;
+            }
+
+            return ((Member)user).getStoreManagerRoles(storeId);
+        }
+
+
         public static List<Member> GetAllMembers()
         {
             return ConnectionStubTemp.members.Values.ToList();
         }
 
-        //TODO: add unit test
         public static void SendMessage(int memberId, string message)
         {
             Member member = ConnectionStubTemp.getMember(memberId);
-            member.notifications.Add(message);
+            member.addMessage(message);
         }
 
-        //TODO: add unit test
         public static List<string> GetMessages(int memberId)
         {
-            Member member = ConnectionStubTemp.getMember(memberId);
-            return member.notifications;
+            //Member member = ConnectionStubTemp.getMember(memberId);
+            //return member.notifications;
+            return null;
         }
     }
 }
