@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using WorkshopProject.UsesrsN
 ;
 using WorkshopProject;
+using WorkshopProject.Policies;
 
 namespace Tansactions
 {
@@ -34,6 +35,10 @@ namespace Tansactions
                 Store currStore = c.Key;
                 ShoppingCart currShoppingCart = c.Value;
 
+                //check consistency
+                if (!checkConsistency(user, currStore,currShoppingCart))
+                    return -2;
+
                 //check if the item in the stock and the policies consistency
 
                 Dictionary<Product, int> itemsPerStore = currShoppingCart.getProducts();
@@ -41,10 +46,7 @@ namespace Tansactions
                 {
                     Product currProduct = item.Key;
                     int currAmount = item.Value;
-                    //check consistency
-                    if (!checkConsistency(user, currStore, currProduct))
-                        return -2;
-                     
+                    
                     //buy from store
                     Store.callback currCallBack = currStore.buyProduct(currProduct, currAmount);
                     //store disconfirm the purchase
@@ -81,13 +83,12 @@ namespace Tansactions
             return amount * (p.getPrice());
         }
 
-        public static bool checkConsistency(User user,Store store, Product product)
+        public static bool checkConsistency(User user,Store store,ShoppingCart cart)
         {
-            List<DiscountPolicy> discount = store.discountPolicy;
-            discount.Add(product.discount);
-            List<PurchasePolicy> purchase = new List<PurchasePolicy>();
-            purchase.Add(store.purchase_policy);
-            return ConsistencyStub.checkConsistency(purchase, discount);
+            IBooleanExpression discount = store.discountPolicy;
+            IBooleanExpression purchase = store.purchasePolicy;
+            IBooleanExpression storePolicy = store.storePolicy;
+            return ConsistencyStub.checkConsistency(user,discount, purchase, storePolicy, cart);
         }
     }
 }

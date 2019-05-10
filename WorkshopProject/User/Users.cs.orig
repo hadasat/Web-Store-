@@ -310,11 +310,17 @@ namespace WorkshopProject.UsesrsN
         public int ID; //why do we need id?
         public string username;
         public LinkedList<StoreManager> storeManaging;
+<<<<<<< HEAD
+        private string country;
+        private int age;
         private List<string> notifications;
         private List<IObserver> observers;
         private Object notificationLock;
+=======
+        public List<string> notifications;
         public DateTime birthdate;
         public string country;
+>>>>>>> master
         
         public Member() :base ()  {/*added for json*/
             this.storeManaging = new LinkedList<StoreManager>();
@@ -331,7 +337,11 @@ namespace WorkshopProject.UsesrsN
             
         }
 
-        public Member(string username, int ID,DateTime birthdate, string country) : this()//Register
+<<<<<<< HEAD
+        public Member(string username, int ID, string country, int age) :this()//Register
+=======
+        public Member(string username, int ID,DateTime birthdate, string country) : base()//Register
+>>>>>>> master
         {
             this.ID = ID;
             this.username = username;

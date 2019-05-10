@@ -13,6 +13,7 @@ namespace WorkshopProject.Policies
         protected Discount successor;
         protected IOutcome outcome;
         protected IBooleanExpression condition;
+        protected int id;
 
         public Discount(IBooleanExpression condition, IOutcome outcome)
         {

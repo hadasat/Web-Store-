@@ -20,6 +20,7 @@ namespace WorkshopProject.Policies
             this.price = price;
         }
 
+        public ProductAmountPrice(){ }
         //public static Product FromJson(string json)
         //{
         //    return JsonConvert.DeserializeObject<Product>(json);
