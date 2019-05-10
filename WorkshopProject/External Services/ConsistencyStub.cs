@@ -25,7 +25,8 @@ namespace WorkshopProject.External_Services
             ret = newRet;
         }
 
-        public static bool checkConsistency(User user,IBooleanExpression discount, IBooleanExpression purchase, IBooleanExpression storePolicy,ShoppingCart basket)
+        public static bool checkConsistency(User user,List<Discount> discount, List<IBooleanExpression> purchase,
+            List<IBooleanExpression> storePolicy,ShoppingCart basket)
         {
             return ret;
         }

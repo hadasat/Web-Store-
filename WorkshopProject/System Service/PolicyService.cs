@@ -37,7 +37,7 @@ namespace WorkshopProject.System_Service
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            IBooleanExpression dicountPolicy = JsonHandler.DeserializeObject<IBooleanExpression>(policies);
+            Discount dicountPolicy = JsonHandler.DeserializeObject<Discount>(policies);
             int policyId = store.AddDiscountPolicy(user, dicountPolicy);
             return policyId;
 

@@ -54,7 +54,6 @@ namespace WorkshopProject.Policies
 
     }
 
-
     public class Percentage : IOutcome
     {
         public int productId;
@@ -63,15 +62,28 @@ namespace WorkshopProject.Policies
 
         public Percentage(int productId, int amount, double percentage)
         {
-            this.productId = productId;
             this.amount = amount;
             this.percentage = percentage;
         }
-    
+
         public List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
         {
+            List<ProductAmountPrice> outcome = new List<ProductAmountPrice>();
+            if (this.productId < 0)
             {
-                List<ProductAmountPrice> outcome = new List<ProductAmountPrice>();
+                int currAmount = amount;
+                foreach (ProductAmountPrice p in products)
+                {
+                    if (amount > 0)
+                    {
+                        p.price = calcPrice(p.price);
+                        amount--;
+                    }
+                    outcome.Add(p);
+                }
+            }
+            else
+            {
                 foreach (ProductAmountPrice pair in products)
                 {
                     if (productId == pair.product.id)
@@ -100,13 +112,26 @@ namespace WorkshopProject.Policies
                     else
                         outcome.Add(pair);
                 }
-                return outcome;
             }
+            return outcome;
         }
+
 
         private double calcPrice(double oldPrice)
         {
-            return ((percentage/100) * oldPrice);
+            return (((100 - percentage) / 100) * oldPrice);
         }
+    }
+
+    public class StubOutcome : IOutcome
+    {
+
+        public StubOutcome() { }
+
+        public List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
+        {
+            return products;
+        }
+
     }
 }

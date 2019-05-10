@@ -1,14 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Users;
+using Newtonsoft.Json;
+using Shopping;
 
 namespace WorkshopProject.Policies
 {
-    public interface IOutcome
+    public class ProductAmountPriceTest
     {
-        List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user);
+        public void translateCartTest() { }
     }
 }

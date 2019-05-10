@@ -22,7 +22,7 @@ namespace WorkshopProject.Policies
 
         public static int Idcounter = 1;
 
-        public abstract bool evaluate(ShoppingCart cart,  List<ProductAmountPrice> products,User user);
+        public abstract bool evaluate(List<ProductAmountPrice> products,User user);
 
         public virtual void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
         {
