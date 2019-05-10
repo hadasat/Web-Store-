@@ -235,7 +235,7 @@ namespace Users
             return false;
         }
 
-        public bool hasAddRemoveDiscountPolicies(Store store)
+        public virtual bool hasAddRemoveDiscountPolicies(Store store)
         {
             return false;
         }
@@ -496,6 +496,12 @@ namespace Users
         {
             Roles roles = getStoreManagerRoles(store);
             return roles != null && roles.AddRemoveStoreManger;
+        }
+
+        public override bool hasAddRemoveDiscountPolicies(Store store)
+        {
+            Roles roles = getStoreManagerRoles(store);
+            return roles != null && roles.AddRemoveDiscountPolicy;
         }
 
         public string getCountry ()

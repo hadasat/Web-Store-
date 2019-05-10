@@ -25,11 +25,6 @@ namespace WorkshopProject.System_Service
             user = member;
         }
 
-        public string addDiscountPolicy(int storeId)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool AddProductToBasket(int storeId, int productId, int amount)
         {
             return TransactionService.AddProductToBasket(user, storeId, productId, amount);
@@ -47,11 +42,6 @@ namespace WorkshopProject.System_Service
             if (!loggedIn)
                 notLoggedInException();
             return StoreService.AddProductToStore(user, storeId, name, desc, price, category);
-        }
-
-        public bool addPurchasingPolicy(int storeId)
-        {
-            throw new NotImplementedException();
         }
 
         public int AddStore(string storeName)
@@ -233,6 +223,8 @@ namespace WorkshopProject.System_Service
         {
             return UserService.GetMessages(memberId);
         }
+
+        //TODO: add policies to loginproxy
 
 
         private void notLoggedInException()

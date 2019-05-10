@@ -48,7 +48,7 @@ namespace WorkshopProject.System_Service
         String GetShoppingBasket();
 
         //Return: Message Format
-        String SetProductAmountInBasket(int storeId,int productId, int amount);
+        String SetProductAmountInBasket(int storeId, int productId, int amount);
 
         //Return: Message Format
         String AddProductToBasket(int storeId, int productId, int amount);
@@ -132,5 +132,13 @@ namespace WorkshopProject.System_Service
         String SendMessage(int memberId, string message);
 
         String GetMessages(int memberId);
+
+        String addDiscountPolicy(int storeId, string policy);
+
+        String removeDiscountPolicy(int storeId, int policyId);
+
+        String addPurchasingPolicy(int storeId, string policy);
+
+        String removePurchasingPolicy(int storeId, int policyId);
     }
 }

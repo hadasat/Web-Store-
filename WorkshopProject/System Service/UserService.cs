@@ -113,7 +113,6 @@ namespace WorkshopProject.System_Service
         }
 
 
-        //TODO: add unit test
         public static List<StoreManager> GetRoles(User user)
         {
             if (!(user is Member))
@@ -124,20 +123,17 @@ namespace WorkshopProject.System_Service
             return roles;
         }
 
-        //TODO: add unit test
         public static List<Member> GetAllMembers()
         {
             return ConnectionStubTemp.members.Values.ToList();
         }
 
-        //TODO: add unit test
         public static void SendMessage(int memberId, string message)
         {
             Member member = ConnectionStubTemp.getMember(memberId);
             member.notifications.Add(message);
         }
 
-        //TODO: add unit test
         public static List<string> GetMessages(int memberId)
         {
             Member member = ConnectionStubTemp.getMember(memberId);

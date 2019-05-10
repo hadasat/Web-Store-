@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestingFramework.AcceptanceTests
 {
-    public class ServiceProxyBridge : IServiceBridge
+    public class ServiceProxyBridge //: IServiceBridge   /*not used anymore, no need to maintain*/
     {
         public bool AddProductToBasket(int storId,int productId, int amount)
         {
