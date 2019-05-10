@@ -72,7 +72,7 @@ namespace WorkshopProject.Communication
         /// on close event activated when the connection is closed
         /// </summary>
         public void onClose() {
-            bool ans = user.unSubscribeAsObserver(this)
+            bool ans = user.unSubscribeAsObserver(this);
             if (!ans)
             {
                 Logger.Log("file", logLevel.ERROR, "couldn't unsubscribe observer");
