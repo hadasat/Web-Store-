@@ -8,6 +8,7 @@ using Managment;
 using WorkshopProject;
 using Shopping;
 using WorkshopProject.Log;
+using WorkshopProject.Communication;
 
 namespace Users
 {
@@ -299,32 +300,36 @@ namespace Users
 
 
 
-    public class Member : User
+    public class Member : User, IObserverSubject
     {
         public int ID; //why do we need id?
         public string username;
         public LinkedList<StoreManager> storeManaging;
-        public List<string> notifications;
         public DateTime birthdate;
         public string country;
-        
-        public Member() {/*added for json*/ }
+        private List<string> notifications;
+        private HashSet<IObserver> observers;
+        private Object notificationLock;
 
-        public Member(string username, int ID) : base()//Register
-        {
-            this.ID = ID;
-            this.username = username;
-            this.notifications = new List<string>();
+
+        public Member() : base (){/*added for json*/
+            notificationLock = new Object();
+            notifications = new List<string>();
+            observers = new HashSet<IObserver>();
             this.storeManaging = new LinkedList<StoreManager>();
-            this.country = "none";
-            
         }
 
-        public Member(string username, int ID,DateTime birthdate, string country) : base()//Register
+        public Member(string username, int ID) : this()//Register
         {
             this.ID = ID;
             this.username = username;
-            this.storeManaging = new LinkedList<StoreManager>();
+            this.country = "none";
+        }
+
+        public Member(string username, int ID,DateTime birthdate, string country) : this()//Register
+        {
+            this.ID = ID;
+            this.username = username;
             this.birthdate = birthdate;
             this.country = country;
         }
@@ -516,7 +521,66 @@ namespace Users
                 age--;
             return age;
         }
-        
+
+#region notificactions
+        //todo amsel tests
+        public void addMessage (string msg)
+        {
+            lock (notificationLock)
+            {
+                notifications.Add(msg);
+            }
+            notifyAllObservers();
+        }
+
+        public List<string> getAllMessages()
+        {
+            lock (notificationLock)
+            {
+                if (notifications.Count != 0)
+                {
+                    List<string> res = notifications;
+                    notifications = new List<string>();
+                    return res;
+                }
+            }
+            return null;
+        }
+
+        public bool subscribe(IObserver observer)
+        {
+            if (observer == null) { return false; }
+            lock (notificationLock)
+            {
+                return observers.Add(observer);
+            }
+        }
+
+        public bool unsbscribe(IObserver observer)
+        {
+            if (observer == null) { return false; }
+            lock (notificationLock)
+            {
+                return observers.Remove(observer);
+            }
+        }
+
+        public void notifyAllObservers()
+        {
+            lock (notificationLock)
+            {
+                if (notifications.Count != 0 & observers.Count != 0)
+                {
+                    List<string> notificationsToSend = getAllMessages();
+                    foreach (IObserver curr in observers)
+                    {
+                        curr.update(notificationsToSend);
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 
 

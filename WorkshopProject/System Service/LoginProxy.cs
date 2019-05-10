@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.Communication;
 
 namespace WorkshopProject.System_Service
 {
@@ -244,16 +245,30 @@ namespace WorkshopProject.System_Service
             return UserService.GetAllMembers();
         }
 
+        //todo amsel test
         public bool SendMessage(int memberId, string message)
         {
             UserService.SendMessage(memberId, message);
             return true;
         }
 
-        public List<string> GetMessages(int memberId)
+        public bool subscribeAsObserver (IObserver observer)
         {
-            return UserService.GetMessages(memberId);
+            if (!loggedIn) { return false; }
+
+            return ((Member)user).subscribe(observer);
         }
+
+        public void testShit()
+        {
+            SendMessage((((Member)user).ID), "test shit");
+        }
+        //TODO delete
+        //public List<string> GetMessages(int memberId)
+        //{
+        //    return null;
+        //    //return UserService.GetMessages(memberId);
+        //}
 
 
         private void notLoggedInException()

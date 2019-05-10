@@ -153,14 +153,15 @@ namespace WorkshopProject.System_Service
         public static void SendMessage(int memberId, string message)
         {
             Member member = ConnectionStubTemp.getMember(memberId);
-            member.notifications.Add(message);
+            member.addMessage(message);
         }
 
-        //TODO: add unit test
+        //TODO delte
         public static List<string> GetMessages(int memberId)
         {
-            Member member = ConnectionStubTemp.getMember(memberId);
-            return member.notifications;
+            //Member member = ConnectionStubTemp.getMember(memberId);
+            //return member.notifications;
+            return null;
         }
     }
 }

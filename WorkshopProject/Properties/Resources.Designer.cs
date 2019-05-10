@@ -19,7 +19,7 @@ namespace WorkshopProject.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -96,10 +96,10 @@ namespace WorkshopProject.Properties {
         ///
         ///
         ///    &lt;!-- BOOTSTRAP FILES --&gt;
-        ///    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt; 
+        ///    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;
         ///    &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js&quot;&gt;&lt;/script&gt;
         ///    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js&quot;&gt;&lt;/script&gt;
-        /// [rest of string was truncated]&quot;;.
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string index {
             get {
@@ -108,21 +108,16 @@ namespace WorkshopProject.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  // &lt;!-- NavBar  Script --&gt;
-        /// function setUpOptBtn(){
-        ///    if(localStorage.getItem(&quot;loggedIn&quot;) === &quot;true&quot;){
-        ///        $(&quot;#nav_signin&quot;).hide();
-        ///        $(&quot;#nav_signOut&quot;).show();
-        ///        $(&quot;#nav_userName&quot;).append(`&lt;span class=&quot;nav-link&quot;&gt;&lt;strong&gt;Hello ${localStorage.getItem(&quot;username&quot;)}!&lt;/strong&gt;&lt;/span&gt;`);
-        ///        $(&quot;#nav_userName&quot;).show();
-        ///        $(&quot;#nav_opensStore&quot;).show();
-        ///        
-        ///    }else{
+        ///   Looks up a localized string similar to //Nav Bar Init Html
         ///
-        ///        $(&quot;#nav_signin&quot;).show();
-        ///        $(&quot;#nav_signOut&quot;).hide();
-        ///        $(&quot;#nav_userName&quot;).hide();
-        ///   [rest of string was truncated]&quot;;.
+        ///document.getElementById(&quot;navbar_header&quot;).innerHTML = `
+        ///&lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        ///        &lt;a class=&quot;navbar-brand&quot; href=&quot;/wot/main&quot;&gt;WorkShop&lt;/a&gt;
+        ///        &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#navbarSupportedContent&quot; aria-controls=&quot;navbarSupportedContent&quot; aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+        ///            &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+        ///        &lt;/button&gt;
+        ///
+        ///        &lt;div class=&quot;colla [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string navbar {
             get {
@@ -133,15 +128,16 @@ namespace WorkshopProject.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
         ///&lt;html&gt;
-        ///    &lt;head&gt;
-        ///            &lt;meta charset=&quot;UTF-8&quot;&gt;
-        ///            &lt;title&gt;WorkShop&lt;/title&gt;
-        ///            &lt;script type=&quot;text/javascript&quot; src=&quot;/wot/communication.js&quot;&gt;&lt;/script&gt;
-        ///        
-        ///            &lt;!-- BOOTSTRAP FILES --&gt;
-        ///            &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt; 
-        ///            &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js&quot;&gt;&lt;/script&gt;
-        ///            &lt;script src=&quot;https://cdnjs.cloudflare.com/a [rest of string was truncated]&quot;;.
+        ///&lt;head&gt;
+        ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
+        ///    &lt;title&gt;WorkShop&lt;/title&gt;
+        ///    &lt;script type=&quot;text/javascript&quot; src=&quot;/wot/communication.js&quot;&gt;&lt;/script&gt;
+        ///
+        ///    &lt;!-- BOOTSTRAP FILES --&gt;
+        ///    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;
+        ///    &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js&quot;&gt;&lt;/script&gt;
+        ///    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+        ///    &lt;script s [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SignIn {
             get {

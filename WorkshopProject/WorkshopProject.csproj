@@ -80,6 +80,8 @@
     <Compile Include="External Services\ConsistencyStub.cs" />
     <Compile Include="External Services\PaymentStub.cs" />
     <Compile Include="External Services\SupplyStub.cs" />
+    <Compile Include="Communication\IObserver.cs" />
+    <Compile Include="Communication\IObserverSubject.cs" />
     <Compile Include="JsonHandler.cs" />
     <Compile Include="Logger\Log.cs" />
     <Compile Include="Policies\ConcreteBooleanExpression.cs" />

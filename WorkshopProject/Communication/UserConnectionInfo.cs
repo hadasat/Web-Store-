@@ -12,7 +12,7 @@ using WorkshopProject.System_Service;
 namespace WorkshopProject.Communication
 {
 
-    class UserConnectionInfo
+    class UserConnectionInfo : IObserver
     {
         internal class JsonResponse
         {
@@ -74,8 +74,22 @@ namespace WorkshopProject.Communication
         public void onClose() { }
 
 
+
+        public void update(List<string> messages)
+        {
+            if (messages != null)
+            {
+                foreach(string curr in messages)
+                {
+                    var notificationObj = new { type = "notification", data = curr };
+                    string msgToSend = JsonHandler.SerializeObject(notificationObj);
+                    msgSender.sendMessageToUser(msgToSend,id);
+                }
+            }
+        }
+
         // ***************** handlers ****************
-        
+
 
         private void signInHandler(JObject msgObj, string message)
         {
@@ -87,16 +101,15 @@ namespace WorkshopProject.Communication
             if (ans == LoginProxy.successMsg)
             {
                 responseObj.info = "success";
+                user.subscribeAsObserver(this);
             }
             else
             {
                 responseObj.info = "failure";
                 responseObj.data = ans;
             }
-
             msgSender.sendMessageToUser(JsonHandler.SerializeObject(responseObj), id);
         }
-
 
     }
 }
