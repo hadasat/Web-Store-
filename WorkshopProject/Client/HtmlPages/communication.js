@@ -57,13 +57,13 @@ function start() {
 }
 start();
 
-function setUserId(){
-    var localId = localStorage.getItem("userId");
-    localId? 
-        sendRequest("updateId","set" ,localId) :
-        sendRequest("updateId","get",null);
-}
-setUserId();
+//function setUserId(){
+//    var localId = localStorage.getItem("userId");
+//    localId? 
+//        sendRequest("updateId","set" ,localId) :
+//        sendRequest("updateId","get",null);
+//}
+//setUserId();
 
 //ofir - functions I use in the body scripts 
 function updateHandler (newHandler){

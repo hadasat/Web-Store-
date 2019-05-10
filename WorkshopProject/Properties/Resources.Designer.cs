@@ -19,7 +19,7 @@ namespace WorkshopProject.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,22 +61,72 @@ namespace WorkshopProject.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to var webSocketClient;
+        ///var msgHandler;
+        ///var startPageHandler;
+        ///
+        /////todo back button stack
+        ///
+        ///function start() {
+        ///    console.log(&quot;start&quot;);
+        ///    const urlAddress = &quot;ws://localhost:8080/wot&quot;;
+        ///    console.log(&quot;connecting to server &quot; + urlAddress + &quot;\n&quot;);
+        ///    var isOldConnection= false;
+        ///
+        ///    if (typeof(Storage) === &quot;undefined&quot;) {
+        ///        alert(&quot;this web browser is supported&quot;);
+        ///    }
+        ///    if (sessionStorage.connectionId){
+        ///        isOldConnection = true;
+        ///        webSocketClient = new WebSocket(urlAddress,&quot; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string communication {
+            get {
+                return ResourceManager.GetString("communication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
         ///&lt;html lang=&quot;en&quot;&gt;
         ///&lt;head&gt;
         ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
         ///    &lt;title&gt;WorkShop&lt;/title&gt;
-        ///    &lt;script type=&quot;text/javascript&quot; src=&quot;communication.js&quot;&gt;&lt;/script&gt;
+        ///    &lt;script type=&quot;text/javascript&quot; src=&quot;/wot/communication.js&quot;&gt;&lt;/script&gt;
+        ///
         ///
         ///    &lt;!-- BOOTSTRAP FILES --&gt;
         ///    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt; 
         ///    &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js&quot;&gt;&lt;/script&gt;
         ///    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js&quot;&gt;&lt;/script&gt;
-        ///    &lt;sc [rest of string was truncated]&quot;;.
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string index {
             get {
                 return ResourceManager.GetString("index", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  // &lt;!-- NavBar  Script --&gt;
+        /// function setUpOptBtn(){
+        ///    if(localStorage.getItem(&quot;loggedIn&quot;) === &quot;true&quot;){
+        ///        $(&quot;#nav_signin&quot;).hide();
+        ///        $(&quot;#nav_signOut&quot;).show();
+        ///        $(&quot;#nav_userName&quot;).append(`&lt;span class=&quot;nav-link&quot;&gt;&lt;strong&gt;Hello ${localStorage.getItem(&quot;username&quot;)}!&lt;/strong&gt;&lt;/span&gt;`);
+        ///        $(&quot;#nav_userName&quot;).show();
+        ///        $(&quot;#nav_opensStore&quot;).show();
+        ///        
+        ///    }else{
+        ///
+        ///        $(&quot;#nav_signin&quot;).show();
+        ///        $(&quot;#nav_signOut&quot;).hide();
+        ///        $(&quot;#nav_userName&quot;).hide();
+        ///   [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string navbar {
+            get {
+                return ResourceManager.GetString("navbar", resourceCulture);
             }
         }
         
@@ -86,16 +136,52 @@ namespace WorkshopProject.Properties {
         ///    &lt;head&gt;
         ///            &lt;meta charset=&quot;UTF-8&quot;&gt;
         ///            &lt;title&gt;WorkShop&lt;/title&gt;
-        ///            &lt;script type=&quot;text/javascript&quot; src=&quot;communication.js&quot;&gt;&lt;/script&gt;
+        ///            &lt;script type=&quot;text/javascript&quot; src=&quot;/wot/communication.js&quot;&gt;&lt;/script&gt;
         ///        
         ///            &lt;!-- BOOTSTRAP FILES --&gt;
         ///            &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt; 
         ///            &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js&quot;&gt;&lt;/script&gt;
-        ///            &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/l [rest of string was truncated]&quot;;.
+        ///            &lt;script src=&quot;https://cdnjs.cloudflare.com/a [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SignIn {
             get {
                 return ResourceManager.GetString("SignIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to :root {
+        ///    --input-padding-x: 1.5rem;
+        ///    --input-padding-y: .75rem;
+        ///  }
+        ///  
+        ///  body {
+        ///    background: #007bff;
+        ///    background: linear-gradient(to right, #0062E6, #33AEFF);
+        ///  }
+        ///  
+        ///  .card-signin {
+        ///    border: 0;
+        ///    border-radius: 1rem;
+        ///    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+        ///  }
+        ///  
+        ///  .card-signin .card-title {
+        ///    margin-bottom: 2rem;
+        ///    font-weight: 300;
+        ///    font-size: 1.5rem;
+        ///  }
+        ///  
+        ///  .card-signin .card-body {
+        ///    padding: 2rem;
+        ///  }
+        ///  
+        ///  .form-signin {
+        ///    width: 10 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SignIn1 {
+            get {
+                return ResourceManager.GetString("SignIn1", resourceCulture);
             }
         }
         
