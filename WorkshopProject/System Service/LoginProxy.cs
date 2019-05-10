@@ -213,11 +213,13 @@ namespace WorkshopProject.System_Service
             return StoreService.GetAllStores();
         }
 
+        //todo wolf delete?
         public List<Member> GetAllManagers(int storeId)
         {
             return StoreService.getAllManagers(storeId);
         }
-
+        
+        //todo wolf delete?
         public List<Member> GetAllOwners(int storeId)
         {
             return StoreService.getAllManagers(storeId);
@@ -235,7 +237,6 @@ namespace WorkshopProject.System_Service
             return UserService.GetAllMembers();
         }
 
-        //todo amsel test
         public bool SendMessage(int memberId, string message)
         {
             UserService.SendMessage(memberId, message);
@@ -249,14 +250,15 @@ namespace WorkshopProject.System_Service
             return ((Member)user).subscribe(observer);
         }
 
-        //TODO delete
-        //public List<string> GetMessages(int memberId)
-        //{
-        //    return null;
-        //    //return UserService.GetMessages(memberId);
-        //}
-        
-        
+        //todo amsel add to whitclass
+        public bool unSubscribeAsObserver (IObserver observer)
+        {
+            if (!loggedIn) { return false; }
+
+            return ((Member)user).unsbscribe(observer);
+        }
+
+
         //TODO: add policies to loginproxy
 
 
@@ -266,8 +268,6 @@ namespace WorkshopProject.System_Service
         }
 
 
-
-        //todo amsel tests?
         public Roles getRolesForStore(int storeId)
         {
             if (!loggedIn)

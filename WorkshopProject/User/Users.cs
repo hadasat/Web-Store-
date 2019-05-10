@@ -528,8 +528,24 @@ namespace Users
             return age;
         }
 
-#region notificactions
-        //todo amsel tests
+        //TODO wolf add test I dont know how
+        public bool isStoreOwner (int storeId)
+        {
+            if (storeManaging.Count == 0) { return false; }
+
+            foreach (StoreManager currManger in storeManaging)
+            {
+                if (currManger.GetStore().id == storeId)
+                {
+                    Roles role = currManger.GetRoles();
+                    return role.isStoreOwner();
+                }
+            }
+
+            return false;
+        }
+
+        #region notificactions
         public void addMessage (string msg)
         {
             lock (notificationLock)
@@ -539,7 +555,7 @@ namespace Users
             notifyAllObservers();
         }
 
-        public List<string> getAllMessages()
+        private List<string> getAllMessages()
         {
             lock (notificationLock)
             {
@@ -556,10 +572,16 @@ namespace Users
         public bool subscribe(IObserver observer)
         {
             if (observer == null) { return false; }
+            bool ans;
             lock (notificationLock)
             {
-                return observers.Add(observer);
+                ans = observers.Add(observer);
             }
+            if (ans)
+            {
+                notifyAllObservers();
+            }
+            return ans;
         }
 
         public bool unsbscribe(IObserver observer)
@@ -582,6 +604,19 @@ namespace Users
                     {
                         curr.update(notificationsToSend);
                     }
+                }
+            }
+        }
+        //todod amsel test add to class diagram
+        public static void sendMessageToAllOwners(int storeId, string msg)
+        {
+            List<Member> ret = new List<Member>();
+            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            foreach (Member currMember in members)
+            {
+                if (currMember.isStoreOwner(storeId))
+                {
+                    currMember.addMessage(msg);
                 }
             }
         }
