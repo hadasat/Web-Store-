@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject.Communication;
+using WorkshopProject.Policies;
 
 namespace WorkshopProject.System_Service
 {
@@ -29,7 +30,7 @@ namespace WorkshopProject.System_Service
             user = member;
         }
 
-        public string addDiscountPolicy(int storeId)
+        public string addDiscountPolicy(int storeId) //TODO need to know which discount
         {
             throw new NotImplementedException();
         }
@@ -53,7 +54,7 @@ namespace WorkshopProject.System_Service
             return StoreService.AddProductToStore(user, storeId, name, desc, price, category);
         }
 
-        public bool addPurchasingPolicy(int storeId)
+        public bool addPurchasingPolicy(int storeId) //TODO need to know which polciy
         {
             throw new NotImplementedException();
         }
@@ -170,7 +171,7 @@ namespace WorkshopProject.System_Service
             return UserService.Register(username, password, birthdath,country);
         }
 
-        public bool removeDiscountPolicy(int storeId)
+        public bool removeDiscountPolicy(int storeId) //TODO need to know which discount
         {
             //TODO
             throw new NotImplementedException();
@@ -183,7 +184,7 @@ namespace WorkshopProject.System_Service
             return StoreService.RemoveProductFromStore(user, storeId, productId);
         }
 
-        public bool removePurchasingPolicy(int storeId)
+        public bool removePurchasingPolicy(int storeId) //TODO missing paramers
         {
             //TODO
             throw new NotImplementedException();
