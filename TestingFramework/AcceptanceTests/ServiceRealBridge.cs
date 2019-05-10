@@ -261,6 +261,34 @@ namespace TestingFramework.AcceptanceTests
             JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
         }
+
+        public int addDiscountPolicy(int storeId, string policy)
+        {
+            string msg = service.addDiscountPolicy(storeId, policy);
+            JObject json = JObject.Parse(msg);
+            return getId(json);
+        }
+
+        public bool removeDiscountPolicy(int storeId, int policyId)
+        {
+            string msg = service.removeDiscountPolicy(storeId, policyId);
+            JObject json = JObject.Parse(msg);
+            return wasSuccessful(json);
+        }
+
+        public int addPurchasingPolicy(int storeId, string policy)
+        {
+            string msg = service.addPurchasingPolicy(storeId, policy);
+            JObject json = JObject.Parse(msg);
+            return getId(json);
+        }
+
+        public bool removePurchasingPolicy(int storeId, int policyId)
+        {
+            string msg = service.removePurchasingPolicy(storeId, policyId);
+            JObject json = JObject.Parse(msg);
+            return wasSuccessful(json);
+        }
     }
 
     class ManagerRolesContainer
