@@ -25,7 +25,7 @@ namespace Users
 
         public static void init()
         {
-            registerNewUser("Admin", "Admin", "all", 120);
+            registerNewUser("Admin", "Admin",DateTime.Today.AddYears(-120), "all");
             
         }
 
@@ -98,7 +98,7 @@ namespace Users
             return -1;
         }
         //sign up
-        public static void registerNewUser(string username, string password, string country, int age)
+        public static void registerNewUser(string username, string password, DateTime birthdate, string country)
         {
             //Member m = null;
             //int ID = getID();
@@ -126,13 +126,13 @@ namespace Users
             id = getID();
             pHandler.hashPassword(password, id);
             Member newMember;
-            if (age < 0 )
+            if (DateTime.Today < birthdate )
                 newMember = new Member(username, id);
             else
-                newMember = new Member(username, id, country, age);
+                newMember = new Member(username, id, birthdate, country);
             if (username == "Admin" && password == "Admin")
             {
-                newMember = new SystemAdmin(username, id, country, age);
+                newMember = new SystemAdmin(username, id, birthdate, country);
                 Logger.Log("file", logLevel.INFO, "Admin has logged in");
             }
             members[id] = newMember;
@@ -235,21 +235,32 @@ namespace Users
             return false;
         }
 
+        public bool hasAddRemoveDiscountPolicies(Store store)
+        {
+            return false;
+        }
+
         public virtual bool hasAddRemoveProductsPermission(Store store)
         {
             return false;
         }
 
-        public virtual bool hasAddRemovePurchasingPermission(Store store)
+        
+        public virtual bool hasAddRemovePurchasingPolicies(Store store)
         {
             return false;
         }
+
+        public bool hasAddRemoveStorePolicies(Store sore)
+        {
+            return false;
+        }
+
 
         public virtual bool hasAddRemoveStoreManagerPermission(Store store)
         {
             return false;
         }
-
 
 
         /*** SERVICE LAYER FUNCTIONS***/
@@ -273,12 +284,12 @@ namespace Users
 
         public void registerNewUser(string username, string password)
         {
-            ConnectionStubTemp.registerNewUser(username, password, "", -1);
+            ConnectionStubTemp.registerNewUser(username, password,DateTime.Today.AddYears(1), "all");
         }
 
-        public void registerNewUser(string username, string password, string country, int age)
+        public void registerNewUser(string username, string password, DateTime birthdate, string country)
         {
-            ConnectionStubTemp.registerNewUser(username, password, country, age);
+            ConnectionStubTemp.registerNewUser(username, password, birthdate, country);
         }
 
         /****************************************************************/
@@ -293,9 +304,9 @@ namespace Users
         public int ID; //why do we need id?
         public string username;
         public LinkedList<StoreManager> storeManaging;
-        private string country;
-        private int age;
         public List<string> notifications;
+        public DateTime birthdate;
+        public string country;
         
         public Member() {/*added for json*/ }
 
@@ -306,17 +317,16 @@ namespace Users
             this.notifications = new List<string>();
             this.storeManaging = new LinkedList<StoreManager>();
             this.country = "none";
-            this.age = -1;
             
         }
 
-        public Member(string username, int ID, string country, int age) : base()//Register
+        public Member(string username, int ID,DateTime birthdate, string country) : base()//Register
         {
             this.ID = ID;
             this.username = username;
             this.storeManaging = new LinkedList<StoreManager>();
+            this.birthdate = birthdate;
             this.country = country;
-            this.age = age;
         }
 
         /*** SERVICE LAYER FUNCTIONS***/
@@ -476,7 +486,7 @@ namespace Users
             return roles != null && roles.AddRemoveDiscountPolicy;
         }
 
-        public override bool hasAddRemovePurchasingPermission(Store store)
+        public override bool hasAddRemovePurchasingPolicies(Store store)
         {
             Roles roles = getStoreManagerRoles(store);
             return roles != null && roles.AddRemovePurchasing;
@@ -495,7 +505,10 @@ namespace Users
 
         public int getAge()
         {
-            return this.age;
+            int age = DateTime.Today.Year - birthdate.Year;
+            if ((DateTime.Today.Month < birthdate.Month) || (DateTime.Today.Month > birthdate.Month && DateTime.Today.Day < birthdate.Day))
+                age--;
+            return age;
         }
         
     }
@@ -507,7 +520,7 @@ namespace Users
     {
         public SystemAdmin(string username, int ID) : base(username, ID) { }
 
-        public SystemAdmin(string username, int ID, string country, int age) : base(username, ID, country, age) { }
+        public SystemAdmin(string username, int ID, DateTime birthdate,string country) : base(username, ID, birthdate,country) { }
 
         public bool RemoveUser(string userName)
         {
@@ -553,12 +566,14 @@ namespace Users
 
     interface Permissions
     {
-        bool hasAddRemoveProductsPermission(Store store);
+        bool hasAddRemovePurchasingPolicies(Store store);
 
-        bool hasAddRemoveDiscountPermission(Store store);
+        bool hasAddRemoveStorePolicies(Store sore);
 
-        bool hasAddRemovePurchasingPermission(Store store);
+        bool hasAddRemoveDiscountPolicies(Store store);
 
         bool hasAddRemoveStoreManagerPermission(Store store);
+
+        bool hasAddRemoveProductsPermission(Store store);
     }
 }

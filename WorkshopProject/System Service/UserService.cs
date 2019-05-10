@@ -88,9 +88,9 @@ namespace WorkshopProject.System_Service
             return true;
         }
 
-        public static bool Register(string username, string password, string country, int age)
+        public static bool Register(string username, string password, DateTime birthdate, string country)
         {
-            (new User()).registerNewUser(username, password, country, age);
+            (new User()).registerNewUser(username, password, birthdate, country);
             return true;
         }
 

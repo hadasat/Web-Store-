@@ -169,7 +169,7 @@ namespace WorkshopProject.Communication.Server
                 try
                 {
                     //get new connection
-                    wsContext = await context.AcceptWebSocketAsync(subProtocol: "new", new TimeSpan(0, 0, 0, 5));
+                    wsContext = await context.AcceptWebSocketAsync(subProtocol: "new");
                     //Console.WriteLine("new connection");
                     isNewCoonection = true;
                     newConnectionId = incermentCounter();
@@ -180,7 +180,7 @@ namespace WorkshopProject.Communication.Server
                 catch (WebSocketException ignoreWSE)
                 {
                     //get old connection
-                    wsContext = await context.AcceptWebSocketAsync(subProtocol: "old", new TimeSpan(0, 0, 0, 5));
+                    wsContext = await context.AcceptWebSocketAsync(subProtocol: "old");
                     //Console.WriteLine("old connection");
                     isNewCoonection = false;
                     ws = wsContext.WebSocket;

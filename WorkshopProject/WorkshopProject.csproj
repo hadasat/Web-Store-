@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -83,6 +83,7 @@
     <Compile Include="Store\DiscountPolicy.cs" />
     <Compile Include="System Service\IGodObject.cs" />
     <Compile Include="System Service\LoginProxy.cs" />
+    <Compile Include="System Service\PolicyService.cs" />
     <Compile Include="System Service\StoreService.cs" />
     <Compile Include="System Service\SystemServiceImpl.cs" />
     <Compile Include="System Service\TransactionService.cs" />

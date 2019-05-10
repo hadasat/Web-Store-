@@ -143,9 +143,9 @@ namespace WorkshopProject.System_Service
         {
             return UserService.Register(username, password);
         }
-        public bool Register(string username, string password, string country, int age)
+        public bool Register(string username, string password,DateTime birthdath, string country)
         {
-            return UserService.Register(username, password, country, age);
+            return UserService.Register(username, password, birthdath,country);
         }
 
         public bool removeDiscountPolicy(int storeId)
