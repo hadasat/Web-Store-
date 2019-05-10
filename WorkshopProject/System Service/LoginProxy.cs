@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.Communication;
 
 namespace WorkshopProject.System_Service
 {
@@ -13,6 +14,9 @@ namespace WorkshopProject.System_Service
     {
         bool loggedIn;
         public User user { get; set; }
+
+        public static readonly string successMsg  = "success";
+        public static readonly string failureMsg = "failure";
 
         public LoginProxy()
         {
@@ -101,10 +105,28 @@ namespace WorkshopProject.System_Service
             return TransactionService.GetShoppingBasket(user);
         }
 
-        public Member login(string username, string password)
+        public string login(string username, string password)
         {
             Member ret;
-            ret = UserService.login(username, password);
+            try { ret = UserService.login(username, password,user); }
+            catch (Exception e) { return e.Message; }
+            if (ret != null)
+            {
+                updateMember(ret);
+                if (user is Member)
+                {
+                    loggedIn = true;
+                }
+                else
+                    loggedIn = false;
+            }
+            return loggedIn ? successMsg : failureMsg;
+        }
+
+        public Member loginEx(string username, string password)
+        {
+            Member ret;
+            ret = UserService.login(username, password,user);
             if (ret != null)
             {
                 updateMember(ret);
@@ -213,23 +235,51 @@ namespace WorkshopProject.System_Service
             return UserService.GetAllMembers();
         }
 
+        //todo amsel test
         public bool SendMessage(int memberId, string message)
         {
             UserService.SendMessage(memberId, message);
             return true;
         }
 
-        public List<string> GetMessages(int memberId)
+        public bool subscribeAsObserver (IObserver observer)
         {
-            return UserService.GetMessages(memberId);
+            if (!loggedIn) { return false; }
+
+            return ((Member)user).subscribe(observer);
         }
 
+
+        public void testShit()
+        {
+            SendMessage((((Member)user).ID), "test shit");
+        }
+        //TODO delete
+        //public List<string> GetMessages(int memberId)
+        //{
+        //    return null;
+        //    //return UserService.GetMessages(memberId);
+        //}
+        
+        
         //TODO: add policies to loginproxy
 
 
         private void notLoggedInException()
         {
             throw new Exception("User not logged in");
+        }
+
+
+
+        //todo amsel tests?
+        public Roles getRolesForStore(int storeId)
+        {
+            if (!loggedIn)
+            {
+                return null;
+            }
+            return UserService.getRoleForStore(user,storeId);
         }
 
     }

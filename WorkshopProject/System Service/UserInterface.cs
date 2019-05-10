@@ -131,7 +131,7 @@ namespace WorkshopProject.System_Service
 
         String SendMessage(int memberId, string message);
 
-        String GetMessages(int memberId);
+        //String GetMessages(int memberId);
 
         String addDiscountPolicy(int storeId, string policy);
 

@@ -13,7 +13,10 @@ namespace WorkshopProject.Client
         {
             Main,
             Error,
-            signIn
+            signIn,
+            communication,
+            navbar,
+            signin_style
         };
 
         private static readonly Dictionary<string, PagesNames> enumStringMapping = new Dictionary<string, PagesNames>()
@@ -23,14 +26,20 @@ namespace WorkshopProject.Client
             {"/wot",PagesNames.Main },
             {"/wot/index",PagesNames.Main },
             {"/wot/signin",PagesNames.signIn },
-            {"/wot/signIn",PagesNames.signIn }
+            {"/wot/signIn",PagesNames.signIn },
+            {"/wot/communication.js",PagesNames.communication },
+            {"/wot/navbar.js",PagesNames.navbar },
+            {"/wot/signin.css",PagesNames.signin_style }
         };
 
         public static readonly Dictionary<PagesNames, string> htmlPages = new Dictionary<PagesNames, string>()
         {
             {PagesNames.Main , Properties.Resources.index },
             {PagesNames.signIn,Properties.Resources.SignIn },
-            {PagesNames.Error,"<html><body>error path not found>" },
+            {PagesNames.communication,Properties.Resources.communication },
+            {PagesNames.navbar,Properties.Resources.navbar },
+            {PagesNames.signin_style,Properties.Resources.SignIn1 },
+            {PagesNames.Error,"<html><body>error path not found</body></html>" }
         };
 
         public static PagesNames getEnumByName(string name)
