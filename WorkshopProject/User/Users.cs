@@ -607,7 +607,7 @@ namespace Users
                 }
             }
         }
-        //todod amsel test add to class diagram
+        //todo amsel test
         public static void sendMessageToAllOwners(int storeId, string msg)
         {
             List<Member> ret = new List<Member>();

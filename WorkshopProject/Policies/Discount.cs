@@ -25,7 +25,8 @@ namespace WorkshopProject.Policies
         public List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
         {
             if (condition.evaluate(products, user)){
-                List<ProductAmountPrice> modifiedList = outcome.Apply(products, user);
+                List<ProductAmountPrice> filterdList = condition.filter.getFilteredItems(products);
+                List<ProductAmountPrice> modifiedList = outcome.Apply(filterdList, user);
                 if (successor != null)
                 {
                     return successor.Apply(modifiedList, user);

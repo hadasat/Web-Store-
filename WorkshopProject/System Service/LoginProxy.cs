@@ -250,7 +250,6 @@ namespace WorkshopProject.System_Service
             return ((Member)user).subscribe(observer);
         }
 
-        //todo amsel add to whitclass
         public bool unSubscribeAsObserver (IObserver observer)
         {
             if (!loggedIn) { return false; }
