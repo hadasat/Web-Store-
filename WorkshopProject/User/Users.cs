@@ -373,7 +373,12 @@ namespace Users
             {
                 throw new Exception("you cant close this store, it closed already");
             }
+            //notify before delete info
+            string closeMessage = String.Format("the store {0} was closed", store.name);
+            Member.sendMessageToAllOwners(store.id, closeMessage);
+
             StoreManager thisStoreManager;
+
             foreach (StoreManager sm in storeManaging)
             {
                 if (sm.GetStore() == store)

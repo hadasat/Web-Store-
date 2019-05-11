@@ -11,7 +11,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
 {
     public class testObserverAcceptence : IObserver
     {
-        public List<string> msg { get; }
+        public List<string> msg;
 
         public testObserverAcceptence()
         {
@@ -20,7 +20,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
 
         public void update(List<string> messages)
         {
-            throw new NotImplementedException();
+            this.msg = messages;
         }
     }
 
@@ -40,7 +40,6 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
         private void myInit()
         {
             obs1 = new testObserverAcceptence();
-            addTestMemberToSystem();
             addTestStoreOwner1ToSystem();
             userA = new LoginProxy();
             string loginAns = userA.login(storeOwner1, password);
@@ -60,7 +59,6 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
             Assert.IsTrue(subscribe, "can't subscribe");
             //make sure no messages received on conncet
             bool noMessages = obs1.msg.Count == 0;
-           
             Assert.IsTrue(noMessages, "have messages on recieve");
 
             myCleanUp();
@@ -77,7 +75,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
             bool subscribe = userA.subscribeAsObserver(obs1);
             Assert.IsTrue(subscribe, "can't subscribe");
             bool subscribe2 = userA.subscribeAsObserver(obs1);
-            Assert.IsTrue(subscribe, "got true on second subscribe");
+            Assert.IsFalse(subscribe2, "got true on second subscribe");
 
             myCleanUp();
         }
