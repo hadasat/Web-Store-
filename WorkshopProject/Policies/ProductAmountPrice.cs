@@ -46,5 +46,17 @@ namespace WorkshopProject.Policies
                 sum += p.amount;
             return sum;
         }
+
+        public override bool Equals(object obj)
+        {
+            ProductAmountPrice p;
+            if (obj is ProductAmountPrice)
+            {
+                p = (ProductAmountPrice)obj;
+                if (p.product.id == product.id)
+                    return true;
+            }
+            return false;
+        }
     }
 }

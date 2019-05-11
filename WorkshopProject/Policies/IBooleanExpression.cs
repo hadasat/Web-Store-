@@ -35,9 +35,7 @@ namespace WorkshopProject.Policies
             //may check if the expression is valid
             return Idcounter++; 
         }
-
-        public abstract IBooleanExpression removePolicy(int policyId);
-
+        
         //public static IBooleanExpression FromJson(string json)
         //{
         //    JObject boolExp = JObject.Parse(json);
