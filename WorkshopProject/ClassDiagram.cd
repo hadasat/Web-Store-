@@ -472,7 +472,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Users.Member">
-    <Position X="45.5" Y="34.5" Width="3.5" />
+    <Position X="45.5" Y="35.75" Width="3.5" />
     <TypeIdentifier>
       <HashCode>IEApAGABAAQggAgQDABAAQMhAIAIQAECAgQAQIIAAAA=</HashCode>
       <FileName>User\Users.cs</FileName>
@@ -506,7 +506,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="WorkshopProject.Communication.IObserverSubject">
-    <Position X="32.75" Y="4.5" Width="2" />
+    <Position X="45" Y="33.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAQAAAAAAAAAAAIAAAAAAAAAAAQAAAAAAAA=</HashCode>
       <FileName>Communication\IObserverSubject.cs</FileName>
