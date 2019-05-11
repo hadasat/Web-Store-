@@ -29,11 +29,27 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.Communication.CommunicationManager" BaseTypeListCollapsed="true">
-    <Position X="14.75" Y="6.75" Width="4.5" />
+    <Position X="14.75" Y="7.5" Width="4.5" />
+    <AssociationLine Name="oldConnections" Type="WorkshopProject.Communication.UserConnectionInfo" ManuallyRouted="true">
+      <Path>
+        <Point X="19.25" Y="8.203" />
+        <Point X="19.5" Y="8.203" />
+        <Point X="19.5" Y="6.227" />
+        <Point X="24.031" Y="6.227" />
+        <Point X="24.031" Y="6.75" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AACAAAAAAAAAAACAAAAAAAAQBAAAAQAEAAAAAEACgAI=</HashCode>
       <FileName>Communication\CommunicationManager.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="server" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="activeConnections" />
+      <Field Name="oldConnections" />
+    </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="WorkshopProject.Communication.UserConnectionInfo" BaseTypeListCollapsed="true">
@@ -57,6 +73,9 @@
       <HashCode>AgIAAAABACAgAAAigAAAAAAAAoAIAAAACIABGAECAAA=</HashCode>
       <FileName>Communication\Server\Server.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="newConnectionHandler" />
+    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="WorkshopProject.JsonHandler">
@@ -311,7 +330,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="WorkshopProject.Properties.Resources">
-    <Position X="19.75" Y="6.75" Width="2.75" />
+    <Position X="19.75" Y="7.75" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAQACAAAAAAAAAAAABEAAAAQgAAAAAAgQAAAQBAIA=</HashCode>
     </TypeIdentifier>
@@ -459,6 +478,12 @@
       <HashCode>IAAEAAAAEAAAAACKAAAAABABAAAyQQYAAAAAAAAgAAA=</HashCode>
       <FileName>User\Users.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="pHandler" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="members" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Users.User">
     <Position X="45.75" Y="31" Width="3" />
