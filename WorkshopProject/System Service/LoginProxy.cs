@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.Communication;
 
 namespace WorkshopProject.System_Service
 {
@@ -28,11 +29,6 @@ namespace WorkshopProject.System_Service
             user = member;
         }
 
-        public string addDiscountPolicy(int storeId)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool AddProductToBasket(int storeId, int productId, int amount)
         {
             return TransactionService.AddProductToBasket(user, storeId, productId, amount);
@@ -50,11 +46,6 @@ namespace WorkshopProject.System_Service
             if (!loggedIn)
                 notLoggedInException();
             return StoreService.AddProductToStore(user, storeId, name, desc, price, category);
-        }
-
-        public bool addPurchasingPolicy(int storeId)
-        {
-            throw new NotImplementedException();
         }
 
         public int AddStore(string storeName)
@@ -164,9 +155,9 @@ namespace WorkshopProject.System_Service
         {
             return UserService.Register(username, password);
         }
-        public bool Register(string username, string password, string country, int age)
+        public bool Register(string username, string password,DateTime birthdath, string country)
         {
-            return UserService.Register(username, password, country, age);
+            return UserService.Register(username, password, birthdath,country);
         }
 
         public bool removeDiscountPolicy(int storeId)
@@ -222,11 +213,13 @@ namespace WorkshopProject.System_Service
             return StoreService.GetAllStores();
         }
 
+        //TODO wolf delete?
         public List<Member> GetAllManagers(int storeId)
         {
             return StoreService.getAllManagers(storeId);
         }
-
+        
+        //TODO wolf delete?
         public List<Member> GetAllOwners(int storeId)
         {
             return StoreService.getAllManagers(storeId);
@@ -250,10 +243,22 @@ namespace WorkshopProject.System_Service
             return true;
         }
 
-        public List<string> GetMessages(int memberId)
+        public bool subscribeAsObserver (IObserver observer)
         {
-            return UserService.GetMessages(memberId);
+            if (!loggedIn) { return false; }
+
+            return ((Member)user).subscribe(observer);
         }
+
+        public bool unSubscribeAsObserver (IObserver observer)
+        {
+            if (!loggedIn) { return false; }
+
+            return ((Member)user).unsbscribe(observer);
+        }
+
+
+        //TODO: add policies to loginproxy
 
 
         private void notLoggedInException()
@@ -262,8 +267,6 @@ namespace WorkshopProject.System_Service
         }
 
 
-
-        //todo amsel tests?
         public Roles getRolesForStore(int storeId)
         {
             if (!loggedIn)

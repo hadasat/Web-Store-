@@ -21,7 +21,7 @@ namespace WorkshopProject.External_Services
             ret = newRet;
         }
 
-        public static bool Pay(int amount,int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
+        public static bool Pay(double price,int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
         {
             return ret;
         }

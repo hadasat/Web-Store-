@@ -72,16 +72,16 @@ namespace TestingFramework.UnitTests.ClientTests
             {
                 InitTestMethod();
                 string ans = HtmlPageManager.findPageByName( "/wot");
-                Assert.IsTrue(ans == Properties.Resources.index, "error getting unsecured example");
+                Assert.IsTrue(ans == Properties.Resources.index, "cant get /wot");
                 ans = HtmlPageManager.findPageByName("/wot/main");
-                Assert.IsTrue(ans == Properties.Resources.index, "error getting unsecured example");
+                Assert.IsTrue(ans == Properties.Resources.index, "cant get /wot/main");
                 ans = HtmlPageManager.findPageByName("/wot/index");
-                Assert.IsTrue(ans == Properties.Resources.index, "error getting unsecured example");
+                Assert.IsTrue(ans == Properties.Resources.index, "cant get /wot/index");
 
                 ans = HtmlPageManager.findPageByName("/wot/signIn");
-                Assert.IsTrue(ans == Properties.Resources.SignIn, "error getting unsecured example");
+                Assert.IsTrue(ans == Properties.Resources.SignIn, "cant get /wot/singIn");
                 ans = HtmlPageManager.findPageByName("/wot/signin");
-                Assert.IsTrue(ans == Properties.Resources.SignIn, "error getting unsecured example");
+                Assert.IsTrue(ans == Properties.Resources.SignIn, "cant get /wot/signin");
             }
             finally
             {

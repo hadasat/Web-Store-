@@ -34,7 +34,7 @@ namespace WorkshopProject.System_Service
         String Register(string user, string password);
 
         //Return: Message Format
-        String Register(string user, string password, string country, int age);
+        String Register(string user, string password, DateTime birthdate, string country);
 
         //Return: Search Format
         String SearchProducts(string name, string category, string keyword, double startPrice, double endPrice, int productRank, int storeRank);
@@ -48,7 +48,7 @@ namespace WorkshopProject.System_Service
         String GetShoppingBasket();
 
         //Return: Message Format
-        String SetProductAmountInBasket(int storeId,int productId, int amount);
+        String SetProductAmountInBasket(int storeId, int productId, int amount);
 
         //Return: Message Format
         String AddProductToBasket(int storeId, int productId, int amount);
@@ -131,7 +131,14 @@ namespace WorkshopProject.System_Service
 
         String SendMessage(int memberId, string message);
 
-        String GetMessages(int memberId);
+        //String GetMessages(int memberId);
 
+        String addDiscountPolicy(int storeId, string policy);
+
+        String removeDiscountPolicy(int storeId, int policyId);
+
+        String addPurchasingPolicy(int storeId, string policy);
+
+        String removePurchasingPolicy(int storeId, int policyId);
     }
 }

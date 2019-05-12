@@ -2,7 +2,9 @@ var webSocketClient;
 var msgHandler;
 var startPageHandler;
 
-//todo back button stack
+//
+
+back button stack
 
 function start() {
     console.log("start");

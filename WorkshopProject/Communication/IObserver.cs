@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkshopProject
+namespace WorkshopProject.Communication
 {
-    public class PurchasePolicy
+    public interface IObserver
     {
+        void update(List<string> messages);
     }
 }

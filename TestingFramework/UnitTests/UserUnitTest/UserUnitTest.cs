@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Managment;
+using WorkshopProject.Communication;
 
 namespace Users.Tests
 {
@@ -101,6 +102,20 @@ namespace Users.Tests
         }
     }
 
+
+    public class testObserver : IObserver
+    {
+        public List<string> msg { get; set;}
+
+        public testObserver()
+        {
+            msg = new List<string>();
+        }
+        public void update(List<string> messages)
+        {
+            msg = messages;
+        }
+    }
 
 
     [TestClass()]
@@ -282,9 +297,90 @@ namespace Users.Tests
 
         }
 
+        [TestMethod()]
+        [TestCategory("TestMember")]
+        public void subscribeAndUnsubscribeTest()
+        {
+            try
+            {
+                Init();
+                IObserver observer1 = new testObserver();
+                IObserver observer2 = new testObserver();
+                bool subscribeAns = member1.subscribe(observer1);
+                Assert.IsTrue(subscribeAns, "can't subscribe");
+
+                subscribeAns = member1.subscribe(observer1);
+                Assert.IsFalse(subscribeAns, "subscribed secondTime");
+
+                subscribeAns = member1.subscribe(observer2);
+                Assert.IsTrue(subscribeAns, "can't subscribe 2");
+
+                bool unsubscribeAns = member1.unsbscribe(observer1);
+                Assert.IsTrue(unsubscribeAns, "can't unsubscribe 1");
+
+                unsubscribeAns = member1.unsbscribe(observer1);
+                Assert.IsFalse(unsubscribeAns, "unsubscribe 1 second time");
+
+                unsubscribeAns = member1.unsbscribe(observer2);
+                Assert.IsTrue(unsubscribeAns, "can't unsubscribe 2");
+
+                subscribeAns = member1.subscribe(null);
+                Assert.IsFalse(subscribeAns, "subscribed null");
+
+                unsubscribeAns = member1.unsbscribe(null);
+                Assert.IsFalse(unsubscribeAns, "unsubscribe null");
+            }
+            finally
+            {
+                Cealup();
+            }
+
+        }
+
+        [TestMethod()]
+        [TestCategory("TestMember")]
+        public void NotificationTests()
+        {
+            try
+            {
+                Init();
+                testObserver obs1 = new testObserver();
+                testObserver obs2 = new testObserver();
+
+                //test one observe subscrived
+                member1.subscribe(obs1);
+                member1.addMessage("test1");
+                Assert.IsTrue (obs1.msg.Count == 1, "bad message count 1");
+                Assert.IsTrue(obs1.msg[0] =="test1", "bad message");
+
+                //test 2 subscribed observers
+                member1.subscribe(obs2);
+                member1.addMessage("test1");
+                Assert.IsTrue(obs1.msg.Count == 1, "bad message count 2");
+                Assert.IsTrue(obs1.msg[0] == "test1", "bad message 2");
+                Assert.IsTrue(obs2.msg.Count == 1, "bad message count 1 for obs 2");
+                Assert.IsTrue(obs2.msg[0] == "test1", "bad message for obs 2");
+
+                member1.unsbscribe(obs1);
+                member1.unsbscribe(obs2);
+
+                //test unsubscribed observer
+                member1.addMessage("test1");
+                member1.addMessage("test2");
+
+                member1.subscribe(obs1);
+                Assert.IsTrue(obs1.msg.Count == 2, "bad message count 3");
+                Assert.IsTrue(obs1.msg[0] == "test1", "bad message 3");
+                Assert.IsTrue(obs1.msg[1] == "test2", "bad message 4");
+
+            }
+            finally{
+                Cealup();
+            }
+        }
 
 
-        
+
 
     }
 

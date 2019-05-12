@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject.Log;
+using WorkshopProject.Policies;
 
 namespace WorkshopProject
 {
@@ -16,8 +17,9 @@ namespace WorkshopProject
         public Boolean isActive;
 
         public Dictionary<int, Product> Stock;
-        public PurchasePolicy purchase_policy;
-        public List<DiscountPolicy> discountPolicy;
+        public List<IBooleanExpression> purchasePolicy;
+        public List<Discount> discountPolicy;
+        public List<IBooleanExpression> storePolicy;
         public int id;
 
         public Store(int id, string name, int rank, Boolean isActive)
@@ -27,7 +29,11 @@ namespace WorkshopProject
             this.rank = rank;
             this.isActive = isActive;
             Stock = new Dictionary<int, Product>();
-            discountPolicy = new List<DiscountPolicy>();
+
+            //make purchasePolicy and storePolicy
+            this.purchasePolicy = new List<IBooleanExpression>();
+            this.storePolicy = new List<IBooleanExpression>();
+            this.discountPolicy = new List<Discount>();
 
         }
 
@@ -38,18 +44,36 @@ namespace WorkshopProject
             return Stock;
         }
 
+        public List<ProductAmountPrice> afterDiscount(List<ProductAmountPrice> products, User user)
+        {
+            foreach (Discount d in discountPolicy)
+                products = d.Apply(products, user);
+
+            return products;
+        }
+
+        public bool checkPolicies(List<ProductAmountPrice> products, User user)
+        {
+            foreach (IBooleanExpression b in purchasePolicy)
+                if (!b.evaluate(products, user))
+                    return false;
+
+            foreach (IBooleanExpression b in storePolicy)
+                if (!b.evaluate(products, user))
+                    return false;
+            return true;
+        }
 
         public int addProduct(User user, string name, string desc, double price, string category)
         {
-           
             Product pro = new Product(name, price, desc, category, 0, 0, id);
             return addProduct(user, pro);
         }
 
         public List<Product> searchProducts(string name, string category,
-             double startPrice,  double endPrice, int productRanking, int storeRanking)
+             double startPrice, double endPrice, int productRanking, int storeRanking)
         {
-            
+
             List<Product> matched_products = new List<Product>();
             Dictionary<int, Product> products = GetStock();
             foreach (Product item in products.Values)
@@ -98,7 +122,7 @@ namespace WorkshopProject
             return p.getId();
         }
 
-       
+
 
         public bool removeProductFromStore(User user, Product product)
         {
@@ -107,13 +131,13 @@ namespace WorkshopProject
 
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
-            
+
             Stock.Remove(product.getId());
             Logger.Log("file", logLevel.INFO, "product " + product.getId() + " removed");
             return true;
         }
-
-        public Boolean addDiscount(User user, DiscountPolicy discount)
+        /*
+        public Boolean addDiscount(User user, Discount discount)
         {
             if (!isActive)
                 return false;
@@ -135,7 +159,7 @@ namespace WorkshopProject
             if (!user.hasAddRemovePurchasingPermission(this))   //Verify Premission
                 return false;
 
-            purchase_policy = pPolicy;
+            purchasePolicy = pPolicy;
             return true;
 
         }
@@ -147,6 +171,7 @@ namespace WorkshopProject
 
             return true;
         }
+        */
         public delegate void callback();
         /// <summary>
         /// succseed - callback that return the products to the stock. if fail - returns null
@@ -157,16 +182,19 @@ namespace WorkshopProject
         /// <returns> succseed - callback that return the products to the stock., fail - returns null</returns>
         public callback buyProduct(Product p, int amountToBuy)
         {
-            callback callback = delegate () {
+            callback callback = delegate ()
+            {
                 if (Stock.ContainsKey(p.getId()))
                     Stock[p.getId()].amount += amountToBuy;
             };
 
-            if (!Stock.ContainsKey(p.getId()) || removeFromStock(Stock[p.getId()],amountToBuy) == -1)
+            if (!Stock.ContainsKey(p.getId()) || removeFromStock(Stock[p.getId()], amountToBuy) == -1)
                 return null;
 
+            string buyMessage = String.Format("the product {0}, was bought from the store {1}", p.name, name);
+            Member.sendMessageToAllOwners(id, buyMessage);
             return callback;
-                       
+
         }
 
         /// <summary>
@@ -178,14 +206,14 @@ namespace WorkshopProject
         {
             if (p.amount < amountToBuy)
                 return -1;
-            
+
             p.amount -= amountToBuy;
-            return p.amount;                    
+            return p.amount;
         }
 
-        public bool addProductTostock(User user,Product product, int amountToAdd)
+        public bool addProductTostock(User user, Product product, int amountToAdd)
         {
-            if(amountToAdd <= 0)
+            if (amountToAdd <= 0)
             {
                 return false;
             }
@@ -197,11 +225,11 @@ namespace WorkshopProject
                 throw new Exception("Product not exist");
 
             product.amount += amountToAdd;
-            Logger.Log("file", logLevel.INFO, amountToAdd +" of product " + product.getId() + " was added");
+            Logger.Log("file", logLevel.INFO, amountToAdd + " of product " + product.getId() + " was added");
             return true;
         }
-        
-        
+
+
         public bool checkAvailability(Product product, int amount)
         {
             if (Stock.ContainsKey(product.getId()))
@@ -221,7 +249,7 @@ namespace WorkshopProject
             product.setPrice(price);
             product.category = category;
             product.amount = amount;
-            Logger.Log("file", logLevel.INFO,   "product " + product.getId() + " info has changed");
+            Logger.Log("file", logLevel.INFO, "product " + product.getId() + " info has changed");
             return true;
         }
 
@@ -232,7 +260,98 @@ namespace WorkshopProject
             return output;
         }
 
-    }
+        //*****************POLICIES**************************8
+        public int AddDiscountPolicy(User user, Discount discountPolicy)
+        {
+            if (!isActive)
+                return -1;
+            if (!user.hasAddRemoveDiscountPolicies(this))   //Verify Premission
+                return -2;
+            //check policy validation
+            int newPolicyId = Discount.checkDiscount(discountPolicy);
+            if (newPolicyId < 0)
+                return -3;
+            discountPolicy.id = newPolicyId;
+            this.discountPolicy.Add(discountPolicy);
+            return newPolicyId;
+        }
 
+        public int RemoveDiscountPolicy(User user, int discountId)
+        {
+            if (!isActive)
+                return -1;
+            if (!user.hasAddRemoveDiscountPolicies(this))   //Verify Premission
+                return -2;
+            if (discountPolicy == null)
+                return -3;
+            foreach (Discount d in this.discountPolicy)
+                if (d.id == discountId)
+                    this.discountPolicy.Remove(d);
+            return discountId;
+        }
+
+        public int AddPurchasPolicy(User user, IBooleanExpression purchasPolicy)
+        {
+            if (!isActive)
+                return -1;
+            if (!user.hasAddRemovePurchasingPolicies(this))     //Verify Premission
+                return -2;
+            if (purchasePolicy == null)
+                return -3;
+            //check policy validation
+            int newPolicyId = IBooleanExpression.checkExpression(purchasPolicy);
+            if (newPolicyId < 0)
+                return -3;
+            purchasPolicy.id = newPolicyId;
+            this.purchasePolicy.Add(purchasPolicy);
+            return newPolicyId;
+        }
+
+        public int RemovePurchasPolicy(User user, int policyId)
+        {
+            if (!isActive)
+                return -1;
+            if (!user.hasAddRemovePurchasingPolicies(this))     //Verify Premission
+                return -2;
+            if (purchasePolicy == null)
+                return -3;
+            foreach (IBooleanExpression b in this.purchasePolicy)
+                if (b.id == policyId)
+                    this.purchasePolicy.Remove(b);
+            return policyId;
+        }
+
+        public int AddStorePolicy(User user, IBooleanExpression storePolicy)
+        {
+            if (!isActive)
+                return -1;
+            if (!user.hasAddRemoveStorePolicies(this))     //Verify Premission
+                return -2;
+            if (this.storePolicy == null)
+                return -3;
+            //check policy validation
+            int newPolicyId = IBooleanExpression.checkExpression(storePolicy);
+            if (newPolicyId < 0)
+                return -3;
+            storePolicy.id = newPolicyId;
+            this.storePolicy.Add(storePolicy);
+            return newPolicyId;
+        }
+
+        public int RemoveStorePolicy(User user, int policyId)
+        {
+            if (!isActive)
+                return -1;
+            if (!user.hasAddRemoveStorePolicies(this))     //Verify Premission
+                return -2;
+            if (this.storePolicy == null)
+                return -3;
+            foreach (IBooleanExpression b in this.storePolicy)
+                if (b.id == policyId)
+                    this.storePolicy.Remove(b);
+            return policyId;
+        }
+
+    }
 
 }

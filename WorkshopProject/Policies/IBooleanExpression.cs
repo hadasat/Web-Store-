@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Users;
 
 namespace WorkshopProject.Policies
 {
@@ -18,8 +18,11 @@ namespace WorkshopProject.Policies
         public ItemFilter filter;
         public IBooleanExpression firstChild;
         public IBooleanExpression secondChild;
+        public int id;
 
-        public abstract bool evaluate(ShoppingCart cart,  List<ProductAmountPrice> products);
+        public static int Idcounter = 1;
+
+        public abstract bool evaluate(List<ProductAmountPrice> products,User user);
 
         public virtual void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
         {
@@ -27,6 +30,12 @@ namespace WorkshopProject.Policies
             this.secondChild = secondChild;
         }
 
+        public static int checkExpression(IBooleanExpression exp)
+        {
+            //may check if the expression is valid
+            return Idcounter++; 
+        }
+        
         //public static IBooleanExpression FromJson(string json)
         //{
         //    JObject boolExp = JObject.Parse(json);

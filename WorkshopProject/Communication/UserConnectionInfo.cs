@@ -12,13 +12,44 @@ using WorkshopProject.System_Service;
 namespace WorkshopProject.Communication
 {
 
-    class UserConnectionInfo
+    class UserConnectionInfo : IObserver
     {
         internal class JsonResponse
         {
+            public static readonly string successResponse = "success";
+            public static readonly string errorResponse = "error";
+
             public string type { get; set; } = "";
             public string info { get; set; } = "";
             public string data { get; set; } = "";
+
+            public static JsonResponse generateActionSucces(string data = null)
+            {
+                JsonResponse responseObj = new JsonResponse();
+                responseObj.type = "action";
+                responseObj.info = JsonResponse.successResponse;
+                if (data != null)
+                {
+                    responseObj.data = data;
+                }
+                return responseObj;
+            }
+
+            public static JsonResponse generateActionError(string data)
+            {
+                JsonResponse responseObj = new JsonResponse();
+                responseObj.info = JsonResponse.errorResponse;
+                if (data == null)
+                {
+                    responseObj.data = "unknown error occured please contact support";
+                }
+                else
+                {
+                    responseObj.data = data;
+                }
+
+                return responseObj;
+            }
         }
 
         private bool isSecureConnection;
@@ -36,7 +67,9 @@ namespace WorkshopProject.Communication
             this.msgSender = msgSender;
             messageHandlers = new Dictionary<string, Action<JObject, string>>()
             {
-                { "signin",signInHandler}
+                {"signin",signInHandler},
+                {"signout",signOutHandler},
+                {"register",registerHandler }
             };
         }
 
@@ -71,32 +104,117 @@ namespace WorkshopProject.Communication
         /// <summary>
         /// on close event activated when the connection is closed
         /// </summary>
-        public void onClose() { }
+        public void onClose() {
+            bool ans = user.unSubscribeAsObserver(this);
+            if (!ans)
+            {
+                Logger.Log("file", logLevel.ERROR, "couldn't unsubscribe observer");
+            }
+        }
 
+
+
+        public void update(List<string> messages)
+        {
+            if (messages != null)
+            {
+                foreach(string curr in messages)
+                {
+                    var notificationObj = new { type = "notification", data = curr };
+                    string msgToSend = JsonHandler.SerializeObject(notificationObj);
+                    msgSender.sendMessageToUser(msgToSend,id);
+                }
+            }
+        }
+
+        private void sendMyselfAMessage(string msg)
+        {
+            msgSender.sendMessageToUser(msg, id);
+        }
 
         // ***************** handlers ****************
-        
 
+        #region requests handlers
+        
         private void signInHandler(JObject msgObj, string message)
         {
-            JsonResponse responseObj = new JsonResponse();
-            responseObj.type = "action";
+            JsonResponse responseObj;
             string userName = (string)msgObj["data"]["name"];
             string password = (string)msgObj["data"]["password"];
             string ans = user.login(userName, password);
             if (ans == LoginProxy.successMsg)
             {
-                responseObj.info = "success";
+                responseObj = JsonResponse.generateActionSucces();
+                user.subscribeAsObserver(this);
             }
             else
             {
-                responseObj.info = "failure";
-                responseObj.data = ans;
+                responseObj = JsonResponse.generateActionError(ans);
             }
-
-            msgSender.sendMessageToUser(JsonHandler.SerializeObject(responseObj), id);
+            sendMyselfAMessage(JsonHandler.SerializeObject(responseObj));
         }
 
+        private void  signOutHandler(JObject msgObj, string message)
+        {
+            //remove observer
+            user.unSubscribeAsObserver(this);
+            //logout
+            JsonResponse response;
+            try {
+                bool logoutAns = user.logout();
+                if (!logoutAns)
+                {
+                    response = JsonResponse.generateActionError( "can't logout, due to unknow error. please contact support");
+                }
+                response = JsonResponse.generateActionSucces();
+            }
+            catch(Exception e)
+            {
+                response = JsonResponse.generateActionError(e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void registerHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            string userName = (string)msgObj["data"]["name"];
+            string password = (string)msgObj["data"]["password"];
+            string birthDateString = (string)msgObj["data"]["birthdate"];
+            string country = (string)msgObj["data"]["country"];
+            DateTime birthDate = DateTime.MaxValue ;
+            if (birthDateString != null)
+            {
+                birthDate = DateTime.ParseExact(birthDateString, "dd-mm-yyyy", null);
+            }
+            try
+            {
+                bool registrAns;
+                if (birthDate != DateTime.MaxValue)
+                {
+                    //has birth date
+                    registrAns = user.Register(userName, password, birthDate, country);
+                }
+                else
+                {
+                    registrAns = user.Register(userName, password);
+                }
+                if (registrAns)
+                {
+                    response = JsonResponse.generateActionSucces();
+                }
+                else
+                {
+                    response = JsonResponse.generateActionError("can't register due to an unknown reason");
+                }
+            }catch(Exception e)
+            {
+                response = JsonResponse.generateActionError(e.Message);
+            }
+
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+        #endregion
 
     }
 }

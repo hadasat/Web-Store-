@@ -8,6 +8,7 @@ using Managment;
 using WorkshopProject;
 using Shopping;
 using WorkshopProject.Log;
+using WorkshopProject.Communication;
 
 namespace Users
 {
@@ -25,7 +26,7 @@ namespace Users
 
         public static void init()
         {
-            registerNewUser("Admin", "Admin", "all", 120);
+            registerNewUser("Admin", "Admin",DateTime.Today.AddYears(-120), "all");
             
         }
 
@@ -98,7 +99,7 @@ namespace Users
             return -1;
         }
         //sign up
-        public static void registerNewUser(string username, string password, string country, int age)
+        public static void registerNewUser(string username, string password, DateTime birthdate, string country)
         {
             //Member m = null;
             //int ID = getID();
@@ -126,13 +127,13 @@ namespace Users
             id = getID();
             pHandler.hashPassword(password, id);
             Member newMember;
-            if (age < 0 )
+            if (DateTime.Today < birthdate )
                 newMember = new Member(username, id);
             else
-                newMember = new Member(username, id, country, age);
+                newMember = new Member(username, id, birthdate, country);
             if (username == "Admin" && password == "Admin")
             {
-                newMember = new SystemAdmin(username, id, country, age);
+                newMember = new SystemAdmin(username, id, birthdate, country);
                 Logger.Log("file", logLevel.INFO, "Admin has logged in");
             }
             members[id] = newMember;
@@ -235,21 +236,32 @@ namespace Users
             return false;
         }
 
+        public virtual bool hasAddRemoveDiscountPolicies(Store store)
+        {
+            return false;
+        }
+
         public virtual bool hasAddRemoveProductsPermission(Store store)
         {
             return false;
         }
 
-        public virtual bool hasAddRemovePurchasingPermission(Store store)
+        
+        public virtual bool hasAddRemovePurchasingPolicies(Store store)
         {
             return false;
         }
+
+        public bool hasAddRemoveStorePolicies(Store sore)
+        {
+            return false;
+        }
+
 
         public virtual bool hasAddRemoveStoreManagerPermission(Store store)
         {
             return false;
         }
-
 
 
         /*** SERVICE LAYER FUNCTIONS***/
@@ -273,12 +285,12 @@ namespace Users
 
         public void registerNewUser(string username, string password)
         {
-            ConnectionStubTemp.registerNewUser(username, password, "", -1);
+            ConnectionStubTemp.registerNewUser(username, password,DateTime.Today.AddYears(1), "all");
         }
 
-        public void registerNewUser(string username, string password, string country, int age)
+        public void registerNewUser(string username, string password, DateTime birthdate, string country)
         {
-            ConnectionStubTemp.registerNewUser(username, password, country, age);
+            ConnectionStubTemp.registerNewUser(username, password, birthdate, country);
         }
 
         /****************************************************************/
@@ -288,35 +300,38 @@ namespace Users
 
 
 
-    public class Member : User
+    public class Member : User, IObserverSubject
     {
         public int ID; //why do we need id?
         public string username;
         public LinkedList<StoreManager> storeManaging;
-        private string country;
-        private int age;
-        public List<string> notifications;
-        
-        public Member() {/*added for json*/ }
+        public DateTime birthdate;
+        public string country;
+        private List<string> notifications;
+        private HashSet<IObserver> observers;
+        private Object notificationLock;
 
-        public Member(string username, int ID) : base()//Register
-        {
-            this.ID = ID;
-            this.username = username;
-            this.notifications = new List<string>();
+
+        public Member() : base (){/*added for json*/
+            notificationLock = new Object();
+            notifications = new List<string>();
+            observers = new HashSet<IObserver>();
             this.storeManaging = new LinkedList<StoreManager>();
-            this.country = "none";
-            this.age = -1;
-            
         }
 
-        public Member(string username, int ID, string country, int age) : base()//Register
+        public Member(string username, int ID) : this()//Register
         {
             this.ID = ID;
             this.username = username;
-            this.storeManaging = new LinkedList<StoreManager>();
+            this.country = "none";
+        }
+
+        public Member(string username, int ID,DateTime birthdate, string country) : this()//Register
+        {
+            this.ID = ID;
+            this.username = username;
+            this.birthdate = birthdate;
             this.country = country;
-            this.age = age;
         }
 
 
@@ -358,6 +373,10 @@ namespace Users
             {
                 throw new Exception("you cant close this store, it closed already");
             }
+            //notify before delete info
+            string closeMessage = String.Format("the store {0} was closed", store.name);
+            Member.sendMessageToAllMangersAndAdmin(store.id, closeMessage);
+
             StoreManager thisStoreManager;
             foreach (StoreManager sm in storeManaging)
             {
@@ -482,7 +501,7 @@ namespace Users
             return roles != null && roles.AddRemoveDiscountPolicy;
         }
 
-        public override bool hasAddRemovePurchasingPermission(Store store)
+        public override bool hasAddRemovePurchasingPolicies(Store store)
         {
             Roles roles = getStoreManagerRoles(store);
             return roles != null && roles.AddRemovePurchasing;
@@ -494,6 +513,12 @@ namespace Users
             return roles != null && roles.AddRemoveStoreManger;
         }
 
+        public override bool hasAddRemoveDiscountPolicies(Store store)
+        {
+            Roles roles = getStoreManagerRoles(store);
+            return roles != null && roles.AddRemoveDiscountPolicy;
+        }
+
         public string getCountry ()
         {
             return this.country;
@@ -501,9 +526,140 @@ namespace Users
 
         public int getAge()
         {
-            return this.age;
+            int age = DateTime.Today.Year - birthdate.Year;
+            if ((DateTime.Today.Month < birthdate.Month) || (DateTime.Today.Month > birthdate.Month && DateTime.Today.Day < birthdate.Day))
+                age--;
+            return age;
         }
-        
+
+        public bool isStoreOwner (int storeId)
+        {
+            if (storeManaging.Count == 0) { return false; }
+
+            foreach (StoreManager currManger in storeManaging)
+            {
+                if (currManger.GetStore().id == storeId)
+                {
+                    Roles role = currManger.GetRoles();
+                    return role.isStoreOwner();
+                }
+            }
+
+            return false;
+        }
+
+        #region notificactions
+        public void addMessage (string msg)
+        {
+            lock (notificationLock)
+            {
+                notifications.Add(msg);
+            }
+            notifyAllObservers();
+        }
+
+        private List<string> getAllMessages()
+        {
+            lock (notificationLock)
+            {
+                if (notifications.Count != 0)
+                {
+                    List<string> res = notifications;
+                    notifications = new List<string>();
+                    return res;
+                }
+            }
+            return null;
+        }
+
+        public bool subscribe(IObserver observer)
+        {
+            if (observer == null) { return false; }
+            bool ans;
+            lock (notificationLock)
+            {
+                ans = observers.Add(observer);
+            }
+            if (ans)
+            {
+                notifyAllObservers();
+            }
+            return ans;
+        }
+
+        public bool unsbscribe(IObserver observer)
+        {
+            if (observer == null) { return false; }
+            lock (notificationLock)
+            {
+                return observers.Remove(observer);
+            }
+        }
+
+        public void notifyAllObservers()
+        {
+            lock (notificationLock)
+            {
+                if (notifications.Count != 0 & observers.Count != 0)
+                {
+                    List<string> notificationsToSend = getAllMessages();
+                    foreach (IObserver curr in observers)
+                    {
+                        curr.update(notificationsToSend);
+                    }
+                }
+            }
+        }
+
+        public static void sendMessageToAllOwners(int storeId, string msg)
+        {
+            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            foreach (Member currMember in members)
+            {
+                if (currMember.isStoreOwner(storeId))
+                {
+                    currMember.addMessage(msg);
+                }
+            }
+        }
+
+        public static void sendMessageToAllManagers(int storeId, string msg)
+        {
+            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            foreach (Member member in members)
+            {
+                LinkedList<StoreManager> managers = member.storeManaging;
+                foreach (StoreManager manager in managers)
+                {
+                    if (manager.GetStore().id == storeId)
+                    {
+                        member.addMessage(msg);
+                    }
+                }
+            }
+        }
+
+        public static void sendMessageToAdmin (string msg)
+        {
+            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            foreach (Member member in members)
+            {
+                if (member is SystemAdmin)
+                {
+                    member.addMessage(msg);
+                }
+            }
+        }
+
+        public static void sendMessageToAllMangersAndAdmin (int storeId,string msg)
+        {
+            sendMessageToAllManagers(storeId, msg);
+            sendMessageToAdmin(msg);
+        }
+
+
+
+        #endregion
     }
 
 
@@ -513,7 +669,7 @@ namespace Users
     {
         public SystemAdmin(string username, int ID) : base(username, ID) { }
 
-        public SystemAdmin(string username, int ID, string country, int age) : base(username, ID, country, age) { }
+        public SystemAdmin(string username, int ID, DateTime birthdate,string country) : base(username, ID, birthdate,country) { }
 
         public bool RemoveUser(string userName)
         {
@@ -559,12 +715,14 @@ namespace Users
 
     interface Permissions
     {
-        bool hasAddRemoveProductsPermission(Store store);
+        bool hasAddRemovePurchasingPolicies(Store store);
 
-        bool hasAddRemoveDiscountPermission(Store store);
+        bool hasAddRemoveStorePolicies(Store sore);
 
-        bool hasAddRemovePurchasingPermission(Store store);
+        bool hasAddRemoveDiscountPolicies(Store store);
 
         bool hasAddRemoveStoreManagerPermission(Store store);
+
+        bool hasAddRemoveProductsPermission(Store store);
     }
 }

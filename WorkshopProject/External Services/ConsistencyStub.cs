@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Shopping;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
+using WorkshopProject.Policies;
 
 namespace WorkshopProject.External_Services
 {
@@ -23,7 +25,8 @@ namespace WorkshopProject.External_Services
             ret = newRet;
         }
 
-        public static bool checkConsistency(List<PurchasePolicy> policies, List<DiscountPolicy> discounts)
+        public static bool checkConsistency(User user,List<Discount> discount, List<IBooleanExpression> purchase,
+            List<IBooleanExpression> storePolicy,ShoppingCart basket)
         {
             return ret;
         }

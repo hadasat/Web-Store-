@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="AcceptanceTests\Driver.cs" />
     <Compile Include="AcceptanceTests\IServiceBridge.cs" />
+    <Compile Include="AcceptanceTests\Requirement_10\req_10.cs" />
     <Compile Include="AcceptanceTests\Requirement_1\Req_1_1.cs" />
     <Compile Include="AcceptanceTests\AcceptanceTest.cs" />
     <Compile Include="AcceptanceTests\Requirement_2\Req_2_8.cs" />
@@ -92,6 +93,12 @@
     <Compile Include="UnitTests\Examples\ClassForTestExampleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\PoliciesJsonTests\PoliciesJsonTests.cs" />
+    <Compile Include="UnitTests\PoliciesTest\ConcreteBooleanExpressionTest.cs" />
+    <Compile Include="UnitTests\PoliciesTest\ConcreteOutcomeTest.cs" />
+    <Compile Include="UnitTests\PoliciesTest\DiscountTest.cs" />
+    <Compile Include="UnitTests\PoliciesTest\IBooleanExpressionTest.cs" />
+    <Compile Include="UnitTests\PoliciesTest\ItemFilterTest.cs" />
+    <Compile Include="UnitTests\PoliciesTest\ProductAmountPriceTest.cs" />
     <Compile Include="UnitTests\Purchasing UnitTest\ShoppingBasketTest.cs" />
     <Compile Include="UnitTests\JsonTests\JsonTests.cs" />
     <Compile Include="UnitTests\Store UnitTests\StoreUnitTest.cs" />

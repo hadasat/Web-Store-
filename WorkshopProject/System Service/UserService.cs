@@ -88,9 +88,9 @@ namespace WorkshopProject.System_Service
             return true;
         }
 
-        public static bool Register(string username, string password, string country, int age)
+        public static bool Register(string username, string password, DateTime birthdate, string country)
         {
-            (new User()).registerNewUser(username, password, country, age);
+            (new User()).registerNewUser(username, password, birthdate, country);
             return true;
         }
 
@@ -113,7 +113,6 @@ namespace WorkshopProject.System_Service
         }
 
 
-        //TODO: add unit test
         public static List<StoreManager> GetRoles(User user)
         {
             if (!(user is Member))
@@ -126,7 +125,6 @@ namespace WorkshopProject.System_Service
             return roles;
         }
 
-        //todo amsel add test
         /// <summary>
         /// gets the roles of the user for store with requested id
         /// </summary>
@@ -143,24 +141,23 @@ namespace WorkshopProject.System_Service
             return ((Member)user).getStoreManagerRoles(storeId);
         }
 
-        //TODO: add unit test
+
         public static List<Member> GetAllMembers()
         {
             return ConnectionStubTemp.members.Values.ToList();
         }
 
-        //TODO: add unit test
         public static void SendMessage(int memberId, string message)
         {
             Member member = ConnectionStubTemp.getMember(memberId);
-            member.notifications.Add(message);
+            member.addMessage(message);
         }
 
-        //TODO: add unit test
         public static List<string> GetMessages(int memberId)
         {
-            Member member = ConnectionStubTemp.getMember(memberId);
-            return member.notifications;
+            //Member member = ConnectionStubTemp.getMember(memberId);
+            //return member.notifications;
+            return null;
         }
     }
 }

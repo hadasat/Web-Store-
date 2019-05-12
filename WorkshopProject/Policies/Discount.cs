@@ -9,9 +9,12 @@ namespace WorkshopProject.Policies
 {
     public class Discount
     {
-        protected Discount successor;
-        protected IOutcome outcome;
-        protected IBooleanExpression condition;
+        public Discount successor;
+        public IOutcome outcome;
+        public IBooleanExpression condition;
+        public int id;
+
+        public static int DiscountCounter = 1;
 
         public Discount(IBooleanExpression condition, IOutcome outcome)
         {
@@ -21,20 +24,39 @@ namespace WorkshopProject.Policies
 
         public List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
         {
-            List<ProductAmountPrice> modifiedList = outcome.Apply(products, user);
-            if (successor != null)
-            {
-                return successor.Apply(modifiedList, user);
+            if (condition.evaluate(products, user)){
+                List<ProductAmountPrice> filterdList = condition.filter.getFilteredItems(products);
+                List<ProductAmountPrice> modifiedList = outcome.Apply(filterdList, user);
+                if (successor != null)
+                {
+                    return successor.Apply(modifiedList, user);
+                }
+                else
+                {
+                    return modifiedList;
+                }
             }
-            else
-            {
-                return modifiedList;
-            }
+            return products;
         }
 
         public void AddSuccessor(Discount successor)
         {
             this.successor = successor;
+        }
+
+        public static int checkDiscount(Discount dis)
+        {
+            dis.id = DiscountCounter++;
+            return dis.id;
+        }
+
+        public Discount removeDiscount(int discountId)
+        {
+            if (this.id == discountId)
+                return null;
+            if (successor != null)
+                successor.removeDiscount(discountId);
+            return this;
         }
     }
 }

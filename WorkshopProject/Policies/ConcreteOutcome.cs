@@ -9,30 +9,46 @@ namespace WorkshopProject.Policies
 {
     public class FreeProduct : IOutcome
     {
-        public FreeProduct()
+        int productId;
+        int amount;
+
+        public FreeProduct(int productId, int amount)
         {
-            //TODO FreeProduct
+            this.productId = productId;
+            this.amount = amount;
         }
 
         public List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
         {
-            //TODO FreeProduct
-            throw new NotImplementedException();
+            Product product = WorkShop.findProduct(productId).Values.First();
+            ProductAmountPrice freeProduct = new ProductAmountPrice(product, amount, 0);
+            products.Add(freeProduct);
+            return products;
         }
-    }
 
+    }
 
     public class Percentage : IOutcome
     {
-        public Percentage()
+        public double percentage;
+
+        public Percentage(double percentage)
         {
-            //TODO Percentage
+            this.percentage = percentage;
         }
 
         public List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
         {
-            //TODO Percentage
-            throw new NotImplementedException();
+            foreach (ProductAmountPrice p in products)
+                p.price = calcPrice(p.price);
+            return products;
+        }
+
+        private double calcPrice(double oldPrice)
+        {
+            return (((100 - percentage) / 100) * oldPrice);
         }
     }
+
+   
 }

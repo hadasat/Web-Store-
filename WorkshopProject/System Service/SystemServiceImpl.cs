@@ -295,12 +295,12 @@ namespace WorkshopProject.System_Service
                 return generateMessageFormatJason(e.Message);
             }
         }
-        public string Register(string username, string password, string country, int age)
+        public string Register(string username, string password, DateTime birthdate,string country)
         {
             bool ret;
             try
             {
-                ret = UserService.Register(username, password, country, age);
+                ret = UserService.Register(username, password,birthdate ,country);
                 return resultJson(ret);
             }
             catch (Exception e)
@@ -496,13 +496,107 @@ namespace WorkshopProject.System_Service
             }
         }
 
-        public string GetMessages(int memberId)
+        //public string GetMessages(int memberId)
+        //{
+        //    List<string> ret;
+        //    try
+        //    {
+        //        ret = UserService.GetMessages(memberId);
+        //        return objDynamicJson(ret);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return generateMessageFormatJason(e.Message);
+        //    }
+        //}
+        //**********POLICIES*********************
+
+        //policies
+        public string addDiscountPolicy(int storeId, string policy)
         {
-            List<string> ret;
+            if (!loggedIn)
+                return notLoggedInError();
             try
             {
-                ret = UserService.GetMessages(memberId);
-                return objDynamicJson(ret);
+                int policyId = PolicyService.addDiscountPolicy(user, storeId, policy);
+                return intJson(policyId);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
+
+        }
+
+        public string removeDiscountPolicy(int storeId, int policyId)
+        {
+            if (!loggedIn)
+                return notLoggedInError();
+            try
+            {
+                bool res = PolicyService.removeDiscountPolicy(user, storeId, policyId);
+                return resultJson(res);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
+        }
+
+        public string addPurchasingPolicy(int storeId, string policy)
+        {
+            if (!loggedIn)
+                return notLoggedInError();
+
+            try
+            {
+                int policyId = PolicyService.addPurchasingPolicy(user, storeId, policy);
+                return intJson(policyId);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
+        }
+
+        public string removePurchasingPolicy(int storeId, int policyId)
+        {
+            if (!loggedIn)
+                return notLoggedInError();
+            try
+            {
+                bool res = PolicyService.removePurchasingPolicy(user, storeId, policyId);
+                return resultJson(res);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
+        }
+
+        public string addStorePolicy(int storeId, string policy)
+        {
+            if (!loggedIn)
+                return notLoggedInError();
+            try
+            {
+                int policyId = PolicyService.addStorePolicy(user, storeId, policy);
+                return intJson(policyId);
+            }
+            catch (Exception e)
+            {
+                return generateMessageFormatJason(e.Message);
+            }
+        }
+
+        public string removeStorePolicy(int storeId, int policyId)
+        {
+            if (!loggedIn)
+                return notLoggedInError();
+            try
+            {
+                bool res = PolicyService.removeStorePolicy(user, storeId, policyId);
+                return resultJson(res);
             }
             catch (Exception e)
             {

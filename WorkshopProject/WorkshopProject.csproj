@@ -37,7 +37,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -80,6 +80,8 @@
     <Compile Include="External Services\ConsistencyStub.cs" />
     <Compile Include="External Services\PaymentStub.cs" />
     <Compile Include="External Services\SupplyStub.cs" />
+    <Compile Include="Communication\IObserver.cs" />
+    <Compile Include="Communication\IObserverSubject.cs" />
     <Compile Include="JsonHandler.cs" />
     <Compile Include="Logger\Log.cs" />
     <Compile Include="Policies\ConcreteBooleanExpression.cs" />
@@ -95,10 +97,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Store\Category.cs" />
-    <Compile Include="Store\ConditionalDiscount.cs" />
     <Compile Include="Store\DiscountPolicy.cs" />
     <Compile Include="System Service\IGodObject.cs" />
     <Compile Include="System Service\LoginProxy.cs" />
+    <Compile Include="System Service\PolicyService.cs" />
     <Compile Include="System Service\StoreService.cs" />
     <Compile Include="System Service\SystemServiceImpl.cs" />
     <Compile Include="System Service\TransactionService.cs" />
@@ -106,7 +108,6 @@
     <Compile Include="System Service\UserService.cs" />
     <Compile Include="User\Password.cs" />
     <Compile Include="Store\Product.cs" />
-    <Compile Include="Store\PurchasePolicy.cs" />
     <Compile Include="Store\RegularDiscount.cs" />
     <Compile Include="Purchasing\ShoppingCart.cs" />
     <Compile Include="Purchasing\ShoppingBasket.cs" />
@@ -120,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
