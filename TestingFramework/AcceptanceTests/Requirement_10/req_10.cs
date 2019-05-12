@@ -253,10 +253,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
                 admin.closeStore(storeId); //TODO fix fails because admin can't close sotres
 
                 bool hasMessages1 = ownerObserver.msg.Count == 1;
-                Assert.IsTrue(hasMessages1, "didn't recieve message on close");
+                Assert.IsTrue(hasMessages1, "owner didn't recieve message on close");
 
                 bool hasMessages2 = managerObserver.msg.Count == 1;
-                Assert.IsTrue(hasMessages2, "didn't recieve message on close");
+                Assert.IsTrue(hasMessages2, "admin didn't recieve message on close");
             }
             finally
             {
