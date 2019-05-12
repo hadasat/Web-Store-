@@ -191,6 +191,8 @@ namespace WorkshopProject
             if (!Stock.ContainsKey(p.getId()) || removeFromStock(Stock[p.getId()], amountToBuy) == -1)
                 return null;
 
+            string buyMessage = String.Format("the product {0}, was bought from the store {1}", p.name, name);
+            Member.sendMessageToAllOwners(id, buyMessage);
             return callback;
 
         }

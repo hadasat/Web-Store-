@@ -373,6 +373,10 @@ namespace Users
             {
                 throw new Exception("you cant close this store, it closed already");
             }
+            //notify before delete info
+            string closeMessage = String.Format("the store {0} was closed", store.name);
+            Member.sendMessageToAllMangersAndAdmin(store.id, closeMessage);
+
             StoreManager thisStoreManager;
             foreach (StoreManager sm in storeManaging)
             {
@@ -528,7 +532,6 @@ namespace Users
             return age;
         }
 
-        //TODO wolf add test I dont know how
         public bool isStoreOwner (int storeId)
         {
             if (storeManaging.Count == 0) { return false; }
@@ -607,10 +610,9 @@ namespace Users
                 }
             }
         }
-        //todod amsel test add to class diagram
+
         public static void sendMessageToAllOwners(int storeId, string msg)
         {
-            List<Member> ret = new List<Member>();
             List<Member> members = ConnectionStubTemp.members.Values.ToList();
             foreach (Member currMember in members)
             {
@@ -620,6 +622,42 @@ namespace Users
                 }
             }
         }
+
+        public static void sendMessageToAllManagers(int storeId, string msg)
+        {
+            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            foreach (Member member in members)
+            {
+                LinkedList<StoreManager> managers = member.storeManaging;
+                foreach (StoreManager manager in managers)
+                {
+                    if (manager.GetStore().id == storeId)
+                    {
+                        member.addMessage(msg);
+                    }
+                }
+            }
+        }
+
+        public static void sendMessageToAdmin (string msg)
+        {
+            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            foreach (Member member in members)
+            {
+                if (member is SystemAdmin)
+                {
+                    member.addMessage(msg);
+                }
+            }
+        }
+
+        public static void sendMessageToAllMangersAndAdmin (int storeId,string msg)
+        {
+            sendMessageToAllManagers(storeId, msg);
+            sendMessageToAdmin(msg);
+        }
+
+
 
         #endregion
     }

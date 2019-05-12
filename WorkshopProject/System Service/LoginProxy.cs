@@ -213,13 +213,13 @@ namespace WorkshopProject.System_Service
             return StoreService.GetAllStores();
         }
 
-        //todo wolf delete?
+        //TODO wolf delete?
         public List<Member> GetAllManagers(int storeId)
         {
             return StoreService.getAllManagers(storeId);
         }
         
-        //todo wolf delete?
+        //TODO wolf delete?
         public List<Member> GetAllOwners(int storeId)
         {
             return StoreService.getAllManagers(storeId);
@@ -250,7 +250,6 @@ namespace WorkshopProject.System_Service
             return ((Member)user).subscribe(observer);
         }
 
-        //todo amsel add to whitclass
         public bool unSubscribeAsObserver (IObserver observer)
         {
             if (!loggedIn) { return false; }
