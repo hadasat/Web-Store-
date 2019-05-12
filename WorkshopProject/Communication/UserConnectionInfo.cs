@@ -197,6 +197,7 @@ namespace WorkshopProject.Communication
                 }
                 else
                 {
+                    //register without birthdate
                     registrAns = user.Register(userName, password);
                 }
                 if (registrAns)
