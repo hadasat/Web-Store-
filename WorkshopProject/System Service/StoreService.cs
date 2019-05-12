@@ -98,7 +98,7 @@ namespace WorkshopProject.System_Service
 
         public static bool CloseStore(User user, int storeID)
         {
-            if (!WorkShop.closeStore(storeID, (Member)user) && !(user is SystemAdmin))
+            if (!WorkShop.closeStore(storeID, (Member)user))
                 throw new Exception("Error: User does not have permission");
 
             return true; //All Valid
