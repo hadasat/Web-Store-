@@ -28,23 +28,33 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
 
     public class req_10 : AcceptanceTest
     {
-        testObserverAcceptence obs1;
-        LoginProxy userA;
+        testObserverAcceptence ownerObserver;
+        testObserverAcceptence adminObserver;
+        LoginProxy storeOwnerUser;
+        LoginProxy adminUserL;
 
         private void myCleanUp()
         {
-            userA.unSubscribeAsObserver(obs1);
+            storeOwnerUser.unSubscribeAsObserver(ownerObserver);
+            adminUserL.unSubscribeAsObserver(adminObserver);
             Cleanup();
         }
 
         private void myInit()
         {
-            obs1 = new testObserverAcceptence();
             addTestStoreOwner1ToSystem();
-            userA = new LoginProxy();
-            string loginAns = userA.login(storeOwner1, password);
-            bool error = loginAns == LoginProxy.successMsg;
-            Assert.IsTrue(error, "can't log in");
+            //set store and owner
+            ownerObserver = new testObserverAcceptence();
+            storeOwnerUser = new LoginProxy();
+            string loginAns = storeOwnerUser.login(storeOwner1, password);
+            bool loginError = loginAns == LoginProxy.successMsg;
+            Assert.IsTrue(loginError, "can't log in");
+            //set admin
+            adminObserver = new testObserverAcceptence();
+            adminUserL = new LoginProxy();
+            string loginAnsAdmin = adminUserL.login(adminUser, adminPass);
+            bool loginAdmin = loginAnsAdmin == LoginProxy.successMsg;
+            Assert.IsTrue(loginAdmin, "can't log in Admin");
         }
 
         [TestMethod]
@@ -55,10 +65,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
             //close store
 
 
-            bool subscribe = userA.subscribeAsObserver(obs1);
+            bool subscribe = storeOwnerUser.subscribeAsObserver(ownerObserver);
             Assert.IsTrue(subscribe, "can't subscribe");
             //make sure no messages received on conncet
-            bool noMessages = obs1.msg.Count == 0;
+            bool noMessages = ownerObserver.msg.Count == 0;
             Assert.IsTrue(noMessages, "have messages on recieve");
 
             myCleanUp();
@@ -72,9 +82,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
         {
             myInit();
 
-            bool subscribe = userA.subscribeAsObserver(obs1);
+            bool subscribe = storeOwnerUser.subscribeAsObserver(ownerObserver);
             Assert.IsTrue(subscribe, "can't subscribe");
-            bool subscribe2 = userA.subscribeAsObserver(obs1);
+            bool subscribe2 = storeOwnerUser.subscribeAsObserver(ownerObserver);
             Assert.IsFalse(subscribe2, "got true on second subscribe");
 
             myCleanUp();
@@ -86,10 +96,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
         {
             myInit();
 
-            bool subscribe = userA.subscribeAsObserver(obs1);
+            bool subscribe = storeOwnerUser.subscribeAsObserver(ownerObserver);
             Assert.IsTrue(subscribe, "can't subscribe");
 
-            bool unSubscribe = userA.unSubscribeAsObserver(obs1);
+            bool unSubscribe = storeOwnerUser.unSubscribeAsObserver(ownerObserver);
             Assert.IsTrue(unSubscribe, "can't unsubscribe");
 
             myCleanUp();
@@ -101,13 +111,13 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
         {
             myInit();
 
-            bool subscribe = userA.subscribeAsObserver(obs1);
+            bool subscribe = storeOwnerUser.subscribeAsObserver(ownerObserver);
             Assert.IsTrue(subscribe, "can't subscribe");
 
-            bool unSubscribe = userA.unSubscribeAsObserver(obs1);
+            bool unSubscribe = storeOwnerUser.unSubscribeAsObserver(ownerObserver);
             Assert.IsTrue(unSubscribe, "can't unsubscribe");
 
-            bool unSubscribe2 = userA.unSubscribeAsObserver(obs1);
+            bool unSubscribe2 = storeOwnerUser.unSubscribeAsObserver(ownerObserver);
             Assert.IsFalse(unSubscribe2, "eror in scecond unsubscribe");
 
             myCleanUp();
@@ -130,12 +140,17 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
 
                 bool closeAns = godObject.removeStore(storeId, storeOwner1Id);
                 Assert.IsTrue(closeAns, "can't close store");
-
-                bool subscribe = userA.subscribeAsObserver(obs1);
+                //store owner test
+                bool subscribe = storeOwnerUser.subscribeAsObserver(ownerObserver);
                 Assert.IsTrue(subscribe, "can't subscribe");
                 //make sure no messages received on conncet
-                bool noMessages = obs1.msg.Count != 0;
+                bool noMessages = ownerObserver.msg.Count != 0;
                 Assert.IsTrue(noMessages, "don't have messages on recieve");
+                //admin test
+                bool adminSubscribe = adminUserL.subscribeAsObserver(adminObserver);
+                Assert.IsTrue(adminSubscribe, "can't subscribe admin");
+                bool adminMsg = adminObserver.msg.Count != 0;
+                Assert.IsTrue(adminMsg, "admin didn't reveive any messages");
             }
             finally
             {
@@ -156,9 +171,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
                 bool purchase = bridge.BuyShoppingBasket();
                 Assert.IsTrue(purchase, "couldn't purchase");
                 //subscribe and chec observer
-                bool subscribe = userA.subscribeAsObserver(obs1);
+                bool subscribe = storeOwnerUser.subscribeAsObserver(ownerObserver);
                 Assert.IsTrue(subscribe, "can't subscribe");
-                bool noMessages = obs1.msg.Count == 1;
+                bool noMessages = ownerObserver.msg.Count == 1;
                 Assert.IsTrue(noMessages, "have messages on recieve");
             }
             finally
@@ -182,17 +197,29 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
             {
                 myInit();
 
-                bool subscribe = userA.subscribeAsObserver(obs1);
+                //store owener initialize
+                bool subscribe = storeOwnerUser.subscribeAsObserver(ownerObserver);
                 Assert.IsTrue(subscribe, "can't subscribe");
                 //make sure no messages received on conncet
-                bool noMessages = obs1.msg.Count == 0;
+                bool noMessages = ownerObserver.msg.Count == 0;
                 Assert.IsTrue(noMessages, "have messages on recieve");
+
+                //admin initilize 
+                //admin test
+                bool adminSubscribe = adminUserL.subscribeAsObserver(adminObserver);
+                Assert.IsTrue(adminSubscribe, "can't subscribe admin");
+                bool noMessagesAdmin = ownerObserver.msg.Count == 0;
+                Assert.IsTrue(noMessagesAdmin, "have messages on subscribe for admin");
+
                 //close store
-                bool closeAns = userA.closeStore(storeId);
+                bool closeAns = storeOwnerUser.closeStore(storeId);
                 Assert.IsTrue(closeAns, "can't close store");
-                //check observer
-                bool hasMessages = obs1.msg.Count == 1;
+
+                //check observers
+                bool hasMessages = ownerObserver.msg.Count == 1;
                 Assert.IsTrue(hasMessages, "didn't recieve message on close");
+                bool adminMsg = adminObserver.msg.Count != 0;
+                Assert.IsTrue(adminMsg, "admin didn't reveive any messages");
             }
             finally
             {
@@ -208,7 +235,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
             {
                 myInit();
 
-                bool subscribe1 = userA.subscribeAsObserver(obs1);
+                bool subscribe1 = storeOwnerUser.subscribeAsObserver(ownerObserver);
                 Assert.IsTrue(subscribe1, "can't subscribe");
                 //add manager
                 addTestStoreManager1ToSystem();
@@ -217,7 +244,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
                 bool login = manager.login(storeManager1, password) == LoginProxy.successMsg;
                 Assert.IsTrue(login, "can't login manager");
                 managerObserver = new testObserverAcceptence();
-                bool subscribe2 = userA.subscribeAsObserver(managerObserver);
+                bool subscribe2 = storeOwnerUser.subscribeAsObserver(managerObserver);
                 Assert.IsTrue(subscribe2, "can't subscribe manger as observer");
                 //close store as admin
                 LoginProxy admin = new LoginProxy();
@@ -225,7 +252,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
                 Assert.IsTrue(adminLogin, "can't login Admin");
                 admin.closeStore(storeId); //TODO fix fails because admin can't close sotres
 
-                bool hasMessages1 = obs1.msg.Count == 1;
+                bool hasMessages1 = ownerObserver.msg.Count == 1;
                 Assert.IsTrue(hasMessages1, "didn't recieve message on close");
 
                 bool hasMessages2 = managerObserver.msg.Count == 1;
@@ -248,10 +275,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
             {
                 myInit();
 
-                bool subscribe = userA.subscribeAsObserver(obs1);
+                bool subscribe = storeOwnerUser.subscribeAsObserver(ownerObserver);
                 Assert.IsTrue(subscribe, "can't subscribe");
                 //make sure no messages received on conncet
-                bool noMessages = obs1.msg.Count == 0;
+                bool noMessages = ownerObserver.msg.Count == 0;
                 Assert.IsTrue(noMessages, "have messages on recieve");
                 //purchase
                 addTestProductToSystem();
@@ -259,7 +286,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
                 bool purchase = bridge.BuyShoppingBasket();
                 Assert.IsTrue(purchase, "couldn't purchase");
                 //check observer
-                bool hasMessages = obs1.msg.Count == 1;
+                bool hasMessages = ownerObserver.msg.Count == 1;
                 Assert.IsTrue(hasMessages, "didn't recieve message on close");
             }
             finally

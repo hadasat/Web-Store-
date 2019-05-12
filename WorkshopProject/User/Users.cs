@@ -363,7 +363,7 @@ namespace Users
             storeManaging.Remove(storeManager);
         }
 
-        public virtual void closeStore(Store store,bool sentFromAdmin = false)
+        public void closeStore(Store store)
         {
             Roles myRoles = getStoreManagerRoles(store);
             if (!myRoles.isStoreOwner())
@@ -375,17 +375,9 @@ namespace Users
             }
             //notify before delete info
             string closeMessage = String.Format("the store {0} was closed", store.name);
-            if (!sentFromAdmin)
-            {
-                Member.sendMessageToAllOwners(store.id, closeMessage);
-            }
-            else
-            {
-                Member.sendMessageToAllManagers(store.id, closeMessage);
-            }
+            Member.sendMessageToAllMangersAndAdmin(store.id, closeMessage);
 
             StoreManager thisStoreManager;
-
             foreach (StoreManager sm in storeManaging)
             {
                 if (sm.GetStore() == store)
@@ -634,7 +626,6 @@ namespace Users
 
         public static void sendMessageToAllManagers(int storeId, string msg)
         {
-            List<Member> ret = new List<Member>();
             List<Member> members = ConnectionStubTemp.members.Values.ToList();
             foreach (Member member in members)
             {
@@ -647,6 +638,24 @@ namespace Users
                     }
                 }
             }
+        }
+
+        public static void sendMessageToAdmin (string msg)
+        {
+            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            foreach (Member member in members)
+            {
+                if (member is SystemAdmin)
+                {
+                    member.addMessage(msg);
+                }
+            }
+        }
+
+        public static void sendMessageToAllMangersAndAdmin (int storeId,string msg)
+        {
+            sendMessageToAllManagers(storeId, msg);
+            sendMessageToAdmin(msg);
         }
 
 
@@ -701,11 +710,6 @@ namespace Users
                 return ConnectionStubTemp.removeUser(userName, this);
             }
             
-        }
-
-        public override void closeStore(Store store,bool garbage = false)
-        {
-            base.closeStore(store,true);
         }
     }
 
