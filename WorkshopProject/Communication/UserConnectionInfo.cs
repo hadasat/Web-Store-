@@ -16,9 +16,53 @@ namespace WorkshopProject.Communication
     {
         internal class JsonResponse
         {
+            public static readonly string successResponse = "success";
+            public static readonly string errorResponse = "error";
+
             public string type { get; set; } = "";
             public string info { get; set; } = "";
             public string data { get; set; } = "";
+
+            private JsonResponse (string type,string info,string data)
+            {
+                this.type = type;
+                this.info = info;
+                if (data != null)
+                {
+                    this.data = data;
+                }
+                else
+                {
+                    this.data = "";
+                }
+            }
+
+            public static JsonResponse generateActionSucces(string data = null)
+            {
+                return new JsonResponse("action", successResponse, data);
+            }
+
+            public static JsonResponse generateActionError(string data)
+            {
+                if (data == null || data == "")
+                {
+                    return new JsonResponse("action", errorResponse, "unknown action error occured, please contact suuport");
+                }
+                return new JsonResponse("action", errorResponse, data);
+            }
+
+            public static JsonResponse generateDataSuccess (string data)
+            {
+                return new JsonResponse("data", successResponse, data);
+            }
+            public static JsonResponse generateDataFailure(string data)
+            {
+                if (data == null || data == "")
+                {
+                    return new JsonResponse("data", errorResponse, "unknown data error occured, please contact suuport");
+                }
+                return new JsonResponse("data", errorResponse, data);
+            }
         }
 
         private bool isSecureConnection;
@@ -36,7 +80,14 @@ namespace WorkshopProject.Communication
             this.msgSender = msgSender;
             messageHandlers = new Dictionary<string, Action<JObject, string>>()
             {
-                { "signin",signInHandler}
+                {"signin",signInHandler},
+                {"signout",signOutHandler},
+                {"register",registerHandler},
+                {"addstore",addStoreHandler},
+                {"getstore",getStoreHandler},
+                {"getproduct",getProductHandler},
+                {"addproducttostore",addProductToStore},
+                { "addproducttostock",addProductToStock}
             };
         }
 
@@ -94,28 +145,187 @@ namespace WorkshopProject.Communication
             }
         }
 
+        private void sendMyselfAMessage(string msg)
+        {
+            msgSender.sendMessageToUser(msg, id);
+        }
+
         // ***************** handlers ****************
 
-
+        #region requests handlers
+        
         private void signInHandler(JObject msgObj, string message)
         {
-            JsonResponse responseObj = new JsonResponse();
-            responseObj.type = "action";
+            JsonResponse responseObj;
             string userName = (string)msgObj["data"]["name"];
             string password = (string)msgObj["data"]["password"];
             string ans = user.login(userName, password);
             if (ans == LoginProxy.successMsg)
             {
-                responseObj.info = "success";
+                responseObj = JsonResponse.generateActionSucces();
                 user.subscribeAsObserver(this);
             }
             else
             {
-                responseObj.info = "failure";
-                responseObj.data = ans;
+                responseObj = JsonResponse.generateActionError(ans);
             }
-            msgSender.sendMessageToUser(JsonHandler.SerializeObject(responseObj), id);
+            sendMyselfAMessage(JsonHandler.SerializeObject(responseObj));
         }
+
+        private void  signOutHandler(JObject msgObj, string message)
+        {
+            //remove observer
+            user.unSubscribeAsObserver(this);
+            //logout
+            JsonResponse response;
+            try {
+                bool logoutAns = user.logout();
+                if (!logoutAns)
+                {
+                    response = JsonResponse.generateActionError( "can't logout, due to unknow error. please contact support");
+                }
+                response = JsonResponse.generateActionSucces();
+            }
+            catch(Exception e)
+            {
+                response = JsonResponse.generateActionError(e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void registerHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            string userName = (string)msgObj["data"]["name"];
+            string password = (string)msgObj["data"]["password"];
+            string birthDateString = (string)msgObj["data"]["birthdate"];
+            string country = (string)msgObj["data"]["country"];
+            DateTime birthDate = DateTime.MaxValue ;
+            if (birthDateString != null)
+            {
+                birthDate = DateTime.ParseExact(birthDateString, "dd-mm-yyyy", null);
+            }
+            try
+            {
+                bool registrAns;
+                if (birthDate != DateTime.MaxValue)
+                {
+                    //has birth date
+                    registrAns = user.Register(userName, password, birthDate, country);
+                }
+                else
+                {
+                    //register without birthdate
+                    registrAns = user.Register(userName, password);
+                }
+                if (registrAns)
+                {
+                    response = JsonResponse.generateActionSucces();
+                }
+                else
+                {
+                    response = JsonResponse.generateActionError("can't register due to an unknown reason");
+                }
+            }catch(Exception e)
+            {
+                response = JsonResponse.generateActionError(e.Message);
+            }
+
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void addStoreHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            string storeName = (string)msgObj["data"]["name"];
+            try
+            {
+                int ans = user.AddStore(storeName);
+                response = JsonResponse.generateActionSucces(ans.ToString());
+            }catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void getStoreHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int storeId = (int)msgObj["data"]["storeId"];
+            try
+            {
+                string jsonStore = user.GetStore(storeId);
+                response = JsonResponse.generateDataSuccess(jsonStore);
+            } catch (Exception e)
+            {
+                response = JsonResponse.generateDataFailure(e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void getProductHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int productId = (int)msgObj["data"]["productId"];
+            try
+            {
+                string jsonProduct = user.GetProductInfo(productId);
+                response = JsonResponse.generateDataSuccess(jsonProduct);
+            }
+            catch(Exception e)
+            {
+                response = JsonResponse.generateDataFailure(e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void addProductToStore(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int storeId = (int)msgObj["data"]["storeId"];
+            string productName = (string)msgObj["data"]["name"];
+            string description = (string)msgObj["data"]["description"];
+            double price = (double)msgObj["data"]["price"];
+            string category = (string)msgObj["data"]["category"];
+            try
+            {
+                int ans = user.AddProductToStore(storeId, productName, description, price, category);
+                response = JsonResponse.generateActionSucces(ans.ToString());
+            }catch(Exception e)
+            {
+                response = JsonResponse.generateActionError(e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+        private void addProductToStock(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int storeId = (int)msgObj["data"]["storeId"];
+            int productId = (int)msgObj["data"]["productId"];
+            int amount = (int)msgObj["data"]["amount"];
+
+            try
+            {
+                bool ans = user.AddProductToStock(storeId, productId, amount);
+                if (ans)
+                {
+                    response = JsonResponse.generateActionSucces();
+                }
+                else
+                {
+                    response = JsonResponse.generateActionError("can't add product to stock");
+                }
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+
+        #endregion
 
     }
 }
