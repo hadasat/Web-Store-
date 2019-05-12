@@ -23,32 +23,45 @@ namespace WorkshopProject.Communication
             public string info { get; set; } = "";
             public string data { get; set; } = "";
 
-            public static JsonResponse generateActionSucces(string data = null)
+            private JsonResponse (string type,string info,string data)
             {
-                JsonResponse responseObj = new JsonResponse();
-                responseObj.type = "action";
-                responseObj.info = JsonResponse.successResponse;
+                this.type = type;
+                this.info = info;
                 if (data != null)
                 {
-                    responseObj.data = data;
+                    this.data = data;
                 }
-                return responseObj;
+                else
+                {
+                    this.data = "";
+                }
+            }
+
+            public static JsonResponse generateActionSucces(string data = null)
+            {
+                return new JsonResponse("action", successResponse, data);
             }
 
             public static JsonResponse generateActionError(string data)
             {
-                JsonResponse responseObj = new JsonResponse();
-                responseObj.info = JsonResponse.errorResponse;
-                if (data == null)
+                if (data == null || data == "")
                 {
-                    responseObj.data = "unknown error occured please contact support";
+                    return new JsonResponse("action", errorResponse, "unknown action error occured, please contact suuport");
                 }
-                else
-                {
-                    responseObj.data = data;
-                }
+                return new JsonResponse("action", errorResponse, data);
+            }
 
-                return responseObj;
+            public static JsonResponse generateDataSuccess (string data)
+            {
+                return new JsonResponse("data", successResponse, data);
+            }
+            public static JsonResponse generateDataFailure(string data)
+            {
+                if (data == null || data == "")
+                {
+                    return new JsonResponse("data", errorResponse, "unknown data error occured, please contact suuport");
+                }
+                return new JsonResponse("data", errorResponse, data);
             }
         }
 
@@ -69,7 +82,12 @@ namespace WorkshopProject.Communication
             {
                 {"signin",signInHandler},
                 {"signout",signOutHandler},
-                {"register",registerHandler }
+                {"register",registerHandler},
+                {"addstore",addStoreHandler},
+                {"getstore",getStoreHandler},
+                {"getproduct",getProductHandler},
+                {"addproducttostore",addProductToStore},
+                { "addproducttostock",addProductToStock}
             };
         }
 
@@ -215,6 +233,98 @@ namespace WorkshopProject.Communication
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
+
+        private void addStoreHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            string storeName = (string)msgObj["data"]["name"];
+            try
+            {
+                int ans = user.AddStore(storeName);
+                response = JsonResponse.generateActionSucces(ans.ToString());
+            }catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void getStoreHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int storeId = (int)msgObj["data"]["storeId"];
+            try
+            {
+                string jsonStore = user.GetStore(storeId);
+                response = JsonResponse.generateDataSuccess(jsonStore);
+            } catch (Exception e)
+            {
+                response = JsonResponse.generateDataFailure(e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void getProductHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int productId = (int)msgObj["data"]["productId"];
+            try
+            {
+                string jsonProduct = user.GetProductInfo(productId);
+                response = JsonResponse.generateDataSuccess(jsonProduct);
+            }
+            catch(Exception e)
+            {
+                response = JsonResponse.generateDataFailure(e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void addProductToStore(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int storeId = (int)msgObj["data"]["storeId"];
+            string productName = (string)msgObj["data"]["name"];
+            string description = (string)msgObj["data"]["description"];
+            double price = (double)msgObj["data"]["price"];
+            string category = (string)msgObj["data"]["category"];
+            try
+            {
+                int ans = user.AddProductToStore(storeId, productName, description, price, category);
+                response = JsonResponse.generateActionSucces(ans.ToString());
+            }catch(Exception e)
+            {
+                response = JsonResponse.generateActionError(e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+        private void addProductToStock(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int storeId = (int)msgObj["data"]["storeId"];
+            int productId = (int)msgObj["data"]["productId"];
+            int amount = (int)msgObj["data"]["amount"];
+
+            try
+            {
+                bool ans = user.AddProductToStock(storeId, productId, amount);
+                if (ans)
+                {
+                    response = JsonResponse.generateActionSucces();
+                }
+                else
+                {
+                    response = JsonResponse.generateActionError("can't add product to stock");
+                }
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+
         #endregion
 
     }

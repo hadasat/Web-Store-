@@ -90,9 +90,9 @@ namespace WorkshopProject.System_Service
             return StoreService.CloseStore(user, storeID);
         }
 
-        public Product GetProductInfo(int productId)
+        public string GetProductInfo(int productId)
         {
-            return StoreService.GetProductInfo(productId);
+            return JsonHandler.SerializeObject(StoreService.GetProductInfo(productId));
         }
 
         public JsonShoppingCart GetShoppingCart(int storeId)
@@ -203,9 +203,17 @@ namespace WorkshopProject.System_Service
             return TransactionService.SetProductAmountInBasket(user, storeId, productId, amount);
         }
 
-        public Store GetStore(int storeId)
+        public string GetStore(int storeId)
         {
-            return StoreService.GetStore(storeId);
+            Store storeAnse  = StoreService.GetStore(storeId);
+            if (storeAnse == null)
+            {
+                throw new Exception ("store not found");
+            }
+            else
+            {
+                return JsonHandler.SerializeObject(storeAnse);
+            }
         }
 
         public List<Store> GetAllStores()
