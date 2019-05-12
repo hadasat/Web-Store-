@@ -363,7 +363,7 @@ namespace Users
             storeManaging.Remove(storeManager);
         }
 
-        public void closeStore(Store store)
+        public virtual void closeStore(Store store,bool sentFromAdmin = false)
         {
             Roles myRoles = getStoreManagerRoles(store);
             if (!myRoles.isStoreOwner())
@@ -375,7 +375,14 @@ namespace Users
             }
             //notify before delete info
             string closeMessage = String.Format("the store {0} was closed", store.name);
-            Member.sendMessageToAllOwners(store.id, closeMessage);
+            if (!sentFromAdmin)
+            {
+                Member.sendMessageToAllOwners(store.id, closeMessage);
+            }
+            else
+            {
+                Member.sendMessageToAllManagers(store.id, closeMessage);
+            }
 
             StoreManager thisStoreManager;
 
@@ -612,10 +619,9 @@ namespace Users
                 }
             }
         }
-        //todo amsel test
+
         public static void sendMessageToAllOwners(int storeId, string msg)
         {
-            List<Member> ret = new List<Member>();
             List<Member> members = ConnectionStubTemp.members.Values.ToList();
             foreach (Member currMember in members)
             {
@@ -625,6 +631,25 @@ namespace Users
                 }
             }
         }
+
+        public static void sendMessageToAllManagers(int storeId, string msg)
+        {
+            List<Member> ret = new List<Member>();
+            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            foreach (Member member in members)
+            {
+                LinkedList<StoreManager> managers = member.storeManaging;
+                foreach (StoreManager manager in managers)
+                {
+                    if (manager.GetStore().id == storeId)
+                    {
+                        member.addMessage(msg);
+                    }
+                }
+            }
+        }
+
+
 
         #endregion
     }
@@ -676,6 +701,11 @@ namespace Users
                 return ConnectionStubTemp.removeUser(userName, this);
             }
             
+        }
+
+        public override void closeStore(Store store,bool garbage = false)
+        {
+            base.closeStore(store,true);
         }
     }
 
