@@ -532,7 +532,6 @@ namespace Users
             return age;
         }
 
-        //TODO wolf add test I dont know how
         public bool isStoreOwner (int storeId)
         {
             if (storeManaging.Count == 0) { return false; }
