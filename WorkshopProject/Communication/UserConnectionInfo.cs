@@ -90,7 +90,8 @@ namespace WorkshopProject.Communication
                 {"addproducttostore",addProductToStore},
                 {"addproducttostock",addProductToStock},
                 {"getallstores",getAllStoresHandler},
-                {"addproducttobasket",addProductToBaksetHandler }
+                {"addproducttobasket",addProductToBaksetHandler },
+                {"getshoppingbasket",getShoppingBasket}
             };
         }
 
@@ -178,6 +179,22 @@ namespace WorkshopProject.Communication
             sendMyselfAMessage(JsonHandler.SerializeObject(responseObj));
         }
 
+        private void getShoppingBasket(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            try
+            {
+                string jsonShoppingBasket = user.GetShoppingBasket();
+                response = JsonResponse.generateDataSuccess(requestId, jsonShoppingBasket);
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateDataFailure(requestId, e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
         private void signOutHandler(JObject msgObj, string message)
         {
             //remove observer
@@ -247,7 +264,7 @@ namespace WorkshopProject.Communication
         {
             JsonResponse response;
             int requestId = (int)msgObj["id"];
-            string storeName = (string)msgObj["data"];
+            string storeName = (string)msgObj["data"]["name"];
             try
             {
                 int ans = user.AddStore(storeName);
