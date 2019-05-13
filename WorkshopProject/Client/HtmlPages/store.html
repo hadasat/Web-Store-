@@ -32,6 +32,33 @@
           </button>
         </div>
         <div class="modal-body">
+            <h5>Add products</h5>
+            <form id="newProduct">
+                    <div class="row" style="margin-bottom: 8px;">
+                        <div class="col">
+                            <input id= "pName" type="text" class="form-control" placeholder="Name" >
+                        </div>
+                        <div class="col">
+                            <input id= "pPrice"type="numbr" id="productPrice" class="form-control" placeholder="Price" required>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 8px;">
+                            <div class="col">
+                            <input  id= "pDesc" type="text" class="form-control" placeholder="Description">
+                            </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 8px;">
+                            <div class="col">
+                            <input  id= "pCat" type="text" class="form-control" placeholder="Category">
+                            </div>
+                    </div>
+                    <p>
+                        <button id="addNewProduct" type="button" class="btn btn-primary">Add</button>
+                    </p>
+                        
+            </form>
+            
+            <hr>
             <h5>Remove managers</h5>
             <p> <label for="sel1">Select list (select one):</label>
                 <select class="form-control" id="sel1">
@@ -157,6 +184,33 @@
         var array = url.split('/');
         return array[array.length-1];
     }
+
+    $('#addNewProduct').click(function(e){
+                e.preventDefault();
+                var name = $("#pName").val();
+                var price = $("#pPrice").val();
+                var desc = $("#pDesc").val();
+                var cat = $("#pCat").val();
+                (name && price && desc && cat) ?
+                    addNewProduct(name,price,desc,cat)
+                 :
+                 alert("add new product error: Please fill all the required fields");
+            });
+
+        function addNewProduct (name,price,desc,cat){
+            sendRequest('action','addProductToStore',{storeId: storeId, name: name, 
+                description: desc, price: price , category: cat}).then(function (res){
+                    alert("product added successfully");
+                    clearNewProductForm();
+                })
+        }
+
+        function clearNewProductForm(){
+            $("#pName").val('');
+            $("#pPrice").val('');
+            $("#pDesc").val('');
+            $("#pCat").val('');
+        };
 </script>
    
 </body>

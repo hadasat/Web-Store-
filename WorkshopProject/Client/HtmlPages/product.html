@@ -11,6 +11,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+
 
     <!-- NAVBAR -->
     <div id="navbar_header"></div>
@@ -36,13 +39,18 @@
             `<hr class="my-4">
             <p class="lead">Price: <strong> ${product.price}$</strong> </p>
             <p class="lead">
-                Amount: (only ${product.amount} available) <input type="number" value="1" min="0" max="${product.amount}" step="1"/>
+                Amount: (only ${product.amount} available) <input type="number" id="amountToBuy" value="1" min="0" max="${product.amount}" step="1"/>
             </p>
             <p class="lead">
-              <a class="btn btn-success btn-lg" href="#" role="button">Add To Cart</a>
+              <button id="addToBasket" class="btn btn-success btn-lg" >Add To Basket</button>
+              <i id="thumbs-up" class="far fa-thumbs-up" style="
+                        font-size: 33px;
+                        color: green;
+                        display: none;
+                    "></i>
             </p>
             <p class="lead">
-              <a class="btn btn-secondary btn-lg" href="/wot/${storeId}" role="button">Back To Store</a>
+              <a class="btn btn-secondary btn-lg" href="/wot/store/${storeId}" role="button">Back To Store</a>
             </p>`);
     }
 
@@ -55,6 +63,18 @@
         }
         return ret;
     }
+
+    $('#thumbs-up').hide();
+
+    $('#mainBox').on('click','#addToBasket',function(){
+        var amount = $('#amountToBuy').val();
+        sendRequest('action','addProductToBasket',{storeId: storeId, productId: productId , amount: amount})
+        .then(function(res){
+            $('#addToBasket').hide();
+            $('#thumbs-up').show();
+        })
+    });
+
 
     function getProductIdFromUrl(){
         var url = document.location.href;
