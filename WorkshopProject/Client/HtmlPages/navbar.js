@@ -46,10 +46,13 @@ document.getElementById("navbar_header").innerHTML = `
 
 // <!-- NavBar  Script -->
  function setUpOptBtn(){
-    if(localStorage.getItem("loggedIn") === "true"){
+     const userStatus = localStorage.getItem("user_status");
+     const loggedIn = userStatus? JSON.parse(userStatus).loggedIn : false;
+     const username = userStatus? JSON.parse(userStatus).username : '';
+    if(loggedIn){
         $("#nav_signin").hide();
         $("#nav_signOut").show();
-        $("#nav_userName").append(`<span class="nav-link"><strong>Hello ${localStorage.getItem("username")}!</strong></span>`);
+        $("#nav_userName").append(`<span class="nav-link"><strong>Hello ${username}!</strong></span>`);
         $("#nav_userName").show();
         $("#nav_opensStore").show();
         
@@ -63,14 +66,25 @@ document.getElementById("navbar_header").innerHTML = `
 }
 
 $('#nav_signOut').on('click', ()=>{
-    // sendMessage({type: "action", info: "signout" , data: localStorage.getItem("userId")});
     signOut();
 })
 
 function signOut(){
-    localStorage.setItem("loggedIn","false");
-    localStorage.setItem("username","");
-    setUpOptBtn();
+    sendRequest("action","signOut",{}).then(function(msg){
+        localStorage.setItem("user_status",JSON.stringify({loggedIn : false, username: ''}));
+        setUpOptBtn();
+    })
 }
 
+//--PARAMS: msg is an answer to the signout request
+// function handleSignout(msg){
+//     if(msg.info==='success'){
+//         localStorage.setItem("user_status",JSON.stringify({loggedIn : false, username: ''}));
+//         setUpOptBtn();
+//     }else
+//         alert(msg.data);
+
+// }
+
+//updateSignoutHandler(handleSignout);
 setUpOptBtn();

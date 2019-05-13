@@ -22,12 +22,14 @@ namespace WorkshopProject.Communication
             public string type { get; set; } = "";
             public string info { get; set; } = "";
             public string data { get; set; } = "";
+            public string requestId { get; set; } = "";
 
-            public static JsonResponse generateActionSucces(string data = null)
+            public static JsonResponse generateActionSucces(string requestId, string data = null)
             {
                 JsonResponse responseObj = new JsonResponse();
                 responseObj.type = "action";
                 responseObj.info = JsonResponse.successResponse;
+                responseObj.requestId = requestId;
                 if (data != null)
                 {
                     responseObj.data = data;
@@ -144,7 +146,7 @@ namespace WorkshopProject.Communication
             string ans = user.login(userName, password);
             if (ans == LoginProxy.successMsg)
             {
-                responseObj = JsonResponse.generateActionSucces();
+                responseObj = JsonResponse.generateActionSucces((string)msgObj["id"]);
                 user.subscribeAsObserver(this);
             }
             else
@@ -166,7 +168,7 @@ namespace WorkshopProject.Communication
                 {
                     response = JsonResponse.generateActionError( "can't logout, due to unknow error. please contact support");
                 }
-                response = JsonResponse.generateActionSucces();
+                response = JsonResponse.generateActionSucces((string)msgObj["id"]);
             }
             catch(Exception e)
             {
@@ -201,7 +203,7 @@ namespace WorkshopProject.Communication
                 }
                 if (registrAns)
                 {
-                    response = JsonResponse.generateActionSucces();
+                    response = JsonResponse.generateActionSucces((string)msgObj["id"]);
                 }
                 else
                 {

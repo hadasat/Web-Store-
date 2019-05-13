@@ -172,7 +172,7 @@
 
     sendRequest("data","getStore",storeId);
     var handleMessage = (msg)=>{
-        msg.info=="success"?
+        msg.requestInfo=="getStore" && msg.info=="success"?
         displayStore(msg.data) :
         alert(msg.data);     
     };

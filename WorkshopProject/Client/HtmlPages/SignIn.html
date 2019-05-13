@@ -15,10 +15,10 @@
     <div id="navbar_header"></div>
     
 
-    <script type="text/javascript" src="/wot/navbar.js"></script>
+    <script type="text/javascript"  src="/wot/navbar.js"></script>
 </head>   
     <body>
-        <link rel="stylesheet" href="/wot/signin.css">
+        <link rel="stylesheet"  href="/wot/signin.css">
       <div class="container">
             <div class="row">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
@@ -40,7 +40,9 @@
                     <hr class="my-4">
                     <h2 class="card-title">New To WorkShop?</h2>
                     <button id="register_btn" class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"> Create Account</button>
-                       
+                    <input type="checkbox" class="form-check-input" id="autoLogIn" checked>
+                    <label class="form-check-label" for="exampleCheck1" >Auto Log In</label>
+                    
                 </form>
                 </div>
                 </div>
@@ -50,27 +52,63 @@
 
         <script>
 
-            $('.form-signin').submit(()=>{
+            // $('.form-signin').submit((e)=>{
+            //     var pass = $("#inputPassword").val();
+            //     var name = $("#inputUserame").val();
+            //     (pass && name) ?
+            //      sendRequest("action","signin",{name: $("#inputUserame").val(), password: $("#inputPassword").val()})
+            //      :
+            //      alert("Please fill all the required fields");
+            //      return false;
+            // });
+
+            $('#signin_btn').click(function(e){
+                e.preventDefault();
                 var pass = $("#inputPassword").val();
                 var name = $("#inputUserame").val();
                 (pass && name) ?
-                 sendRequest("action","signin",{name: $("#inputUserame").val(), password: $("#inputPassword").val()})
+                    signin()
                  :
-                 alert("Please fill all the required fields");
-                 return false;
+                 alert("Signin error: Please fill all the required fields");
             });
-            var handleMessage = (msg) => {
-                if(msg.info=="success"){
-                    //msg is and idMessage object
-                    localStorage.setItem("loggedIn","true");
-                    localStorage.setItem("username",$("#inputUserame").val());
+
+            $('#register_btn').click(function(e){
+                e.preventDefault();
+                var pass = $("#inputPassword").val();
+                var name = $("#inputUserame").val();
+                (pass && name) ?
+                 sendRequest("action","register",{name: $("#inputUserame").val(),
+                  password: $("#inputPassword").val()}).then(function(msg){
+                   if($('#autoLogIn').prop('checked'))
+                        signin();
+                    else
+                        window.location.href = "/wot/main";
+                  })
+                 :
+                 alert("Registration error: Please fill all the required fields");
+
+            });
+
+            function signin(){
+                sendRequest("action","signin",{name: $("#inputUserame").val(),
+                  password: $("#inputPassword").val()}).then(function(msg){
+                    localStorage.setItem("user_status",JSON.stringify({loggedIn : true,
+                         username: $("#inputUserame").val()}));
                     window.location.href = "/wot/main";
-                }else{    
-                    //msg is an error message
-                    alert(msg.data);
-                }   
-            };
-            updateHandler(handleMessage);
+                  })
+            }
+            // var handleMessage11 = (msg) => {
+            //     if((msg.requestInfo=="signin" || msg.requestInfo=="register" )  && msg.info=="success"){
+            //         //msg is and idMessage object
+            //         localStorage.setItem("user_status",JSON.stringify({loggedIn : true,
+            //              username: $("#inputUserame").val()}));
+            //         window.location.href = "/wot/main";
+            //     }else{    
+            //         //msg is an error message
+            //         alert(msg.data);
+            //     }   
+            // };
+            // updateHandler(handleMessage11);
         </script>
     </body>
 </html>
