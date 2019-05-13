@@ -130,6 +130,7 @@
     <Content Include="Client\HtmlPages\navbar.js" />
     <None Include="Client\HtmlPages\product.html" />
     <None Include="Client\HtmlPages\newStore.html" />
+    <None Include="Client\HtmlPages\shoppingBasket.html" />
     <Content Include="Client\HtmlPages\SignIn.css" />
     <Content Include="Client\HtmlPages\SignIn.html" />
     <Content Include="Client\HtmlPages\store.html" />

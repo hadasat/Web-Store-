@@ -264,7 +264,7 @@ namespace WorkshopProject.Communication
         {
             JsonResponse response;
             int requestId = (int)msgObj["id"];
-            string storeName = (string)msgObj["data"]["name"];
+            string storeName = (string)msgObj["data"];
             try
             {
                 int ans = user.AddStore(storeName);

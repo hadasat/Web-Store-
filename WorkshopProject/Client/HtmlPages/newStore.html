@@ -17,8 +17,42 @@
     <script type="text/javascript" src="/wot/navbar.js"></script>
 </head>
 <body>
-test
+        <link rel="stylesheet"  href="/wot/signin.css">
+        <div class="container">
+              <div class="row">
+              <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                  <div class="card card-signin my-5">
+                  <div class="card-body">
+                      <h5 class="card-title text-center">New Store</h5>
+                      <form class="form-signin">
+
+                      <div class="form-label-group">
+                          <input type="text" id="inputStorename" class="form-control" placeholder="Store Name" required autofocus>
+                          <label for="inputStorename">Store Name</label>
+                      </div>
+          
+                      <button id="doneaddstore_btn" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Done</button>
+                      
+                  </form>
+                  </div>
+                  </div>
+              </div>
+              </div>
 <script>
+        $('#doneaddstore_btn').click(function(e){
+            e.preventDefault();
+            var name = $("#inputStorename").val();
+            (name!=="") ?
+                addStore(name)
+                :
+                alert("Please enter new Store name");
+        });
+        function addStore(name){
+            sendRequest("action","addStore",name).then(function(res){
+                alert("Store "+name+" added successfully!");
+                window.location.href = "/wot/main";
+            })
+        }
 </script>
 </body>
 </html>

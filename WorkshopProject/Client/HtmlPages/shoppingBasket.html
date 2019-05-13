@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WorkShop</title>
+    <script type="text/javascript" src="/wot/communication.js"></script>
+
+
+    <!-- BOOTSTRAP FILES -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- NAVBAR -->
+    <div id="navbar_header"></div>
+    <script type="text/javascript" src="/wot/navbar.js"></script>
+</head>
+<body>
+
+
+        <div class="container">
+
+            <div class="grid">
+                <div class="pb-2 mt-4 mb-2 border-bottom">
+                    <h1>Store1</h1>
+                </div>
+        
+                <div class="col-sm-3">
+                        <div class="card" style="margin-bottom: 10%;" >
+                            <div class="card-body" >
+                                <h5 class="card-title">PRODUCT NAME</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">3 $</h6>
+                                <p>Amount : 4</p>
+                                <a href="/wot/store/${store.id}" class="btn btn-primary">Edit</a>
+                            </div>
+                        </div>
+                </div>
+
+
+                <div class="pb-2 mt-4 mb-2 border-bottom">
+                        <h1>Store2</h1>
+                    </div>
+            
+                    <div class="col-sm-3">
+                            <div class="card" style="margin-bottom: 10%;" >
+                                <div class="card-body" >
+                                    <h5 class="card-title">PRODUCT NAME</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">3 $</h6>
+                                    <p>Amount : 4</p>
+                                    <a href="/wot/store/${store.id}" class="btn btn-primary">Edit</a>
+                                </div>
+                            </div>
+                    </div>
+
+                
+            </div>
+        </div>
+
+
+
+<script>
+    sendRequest("data","getShoppingBasket",null).then(function (res){
+        var shoppingBasket = res;
+        displayStores(shoppingBasket.$values);
+    });
+    function displayStores(shoppingBasket){
+        var carts = shoppingBasket.carts;
+        for (var property in carts) {
+            if (!isNaN(property)) {
+                $(".grid").append(createStoreContainer(carts[property]));
+            }
+        }
+    };
+    function createStoreContainer(shoppingCart){
+        return '<<div class="container">'+
+                + displayProducts(shoppingCart); +
+                '</div>';
+    }
+    function displayProducts(shoppingCart){
+        var products = shoppingBasket.products;
+        for (var property in products) {
+            if (!isNaN(property)) {
+                $(".grid").append(createStoreContainer(property, products[property]));
+            }
+        }
+    };
+    function createProductCardHtml(amount, product){
+        // Card Html Component String
+        return  `<div class="col-sm-3">`+
+                    `<div class="card" style="margin-bottom: 10%;" >`+
+                        `<div class="card-body" >`+
+                            `<h5 class="card-title">${product.name.toUpperCase()}</h5>`+
+                            `<h6 class="card-subtitle mb-2 text-muted">${product.price*amount} $</h6>`+
+                           ` <a href="/wot/store/${storeId}/${product.id}" class="btn btn-primary">Edit</a>`+
+                        ` </div>`+
+                    `</div>`+
+                `</div>`;
+       
+    }
+</script>
+</body>
+</html>

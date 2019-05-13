@@ -19,13 +19,13 @@ document.getElementById("navbar_header").innerHTML = `
                     <a class="nav-link" href="#">Sign Out</a>
                 </li>
                 <li id="nav_opensStore" class="nav-item">
-                    <a class="nav-link" href="#">New Store </a>
+                    <a class="nav-link" href="/wot/newstore">New Store </a>
                 </li>
 
                 <!-- end  -->
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Shopping Cart</a>
+                    <a class="nav-link" href="/wot/shoppingbasket">Shopping Basket</a>
                 </li>
 
             </ul>
