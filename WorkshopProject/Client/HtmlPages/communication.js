@@ -1,7 +1,9 @@
 var webSocketClient;
 var msgHandler;
 var startPageHandler;
+var signoutHandler;
 
+//back button stack
 
 function start() {
     console.log("start");
@@ -35,6 +37,11 @@ function start() {
         console.log("disconnected \n");
     }
 
+   
+    webSocketClient.onsend = function (event) {
+        console.log("sent message "+event.data)
+    }
+
     webSocketClient.onmessage = function (event) {
         console.log("received message: "+event.data);
         var msg = JSON.parse(event.data);
@@ -47,35 +54,41 @@ function start() {
                 alert(msg.data);
                 break;
             default:
-                msgHandler(msg);
+                handleMessage(msg);
         }
-    }
-    webSocketClient.onsend = function (event) {
-        console.log("sent message "+event.data)
     }
 }
 start();
 
-//function setUserId(){
-//    var localId = localStorage.getItem("userId");
-//    localId? 
-//        sendRequest("updateId","set" ,localId) :
-//        sendRequest("updateId","get",null);
-//}
-//setUserId();
-
-//ofir - functions I use in the body scripts 
-function updateHandler (newHandler){
-    msgHandler = newHandler;
+function handleMessage(msg){
+    var handle = responseHandlers[msg.requestId];
+    msg.info==='success' ? handle.resolve(msg) :
+    alert(msg.data); 
 }
 
+//ofir - functions that I use in the body scripts 
+// function updateHandler (newHandler){
+//     msgHandler = newHandler;
+// }
+
+// function updateSignoutHandler(handler){
+//     signoutHandler=handler;
+// }
+
+var messageId=0;
+var responseHandlers={};
 function sendRequest (type,info,data){
+    return new Promise(function(resolve, reject) {
     var newMsg = {
+        id  : messageId,
         type : type,
         info : info,
         data : data
     };
     webSocketClient.send(JSON.stringify(newMsg));
+    responseHandlers[messageId] = {resolve: resolve , reject: reject};
+    messageId++;  
+});
 }
 
 

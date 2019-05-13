@@ -22,46 +22,35 @@ namespace WorkshopProject.Communication
             public string type { get; set; } = "";
             public string info { get; set; } = "";
             public string data { get; set; } = "";
+            public string requestId { get; set; } = "";
 
-            private JsonResponse (string type,string info,string data)
+            public static JsonResponse generateActionSucces(string requestId, string data = null)
             {
-                this.type = type;
-                this.info = info;
+                JsonResponse responseObj = new JsonResponse();
+                responseObj.type = "action";
+                responseObj.info = JsonResponse.successResponse;
+                responseObj.requestId = requestId;
                 if (data != null)
                 {
-                    this.data = data;
+                    responseObj.data = data;
                 }
-                else
-                {
-                    this.data = "";
-                }
-            }
-
-            public static JsonResponse generateActionSucces(string data = null)
-            {
-                return new JsonResponse("action", successResponse, data);
+                return responseObj;
             }
 
             public static JsonResponse generateActionError(string data)
             {
-                if (data == null || data == "")
+                JsonResponse responseObj = new JsonResponse();
+                responseObj.info = JsonResponse.errorResponse;
+                if (data == null)
                 {
-                    return new JsonResponse("action", errorResponse, "unknown action error occured, please contact suuport");
+                    responseObj.data = "unknown error occured please contact support";
                 }
-                return new JsonResponse("action", errorResponse, data);
-            }
+                else
+                {
+                    responseObj.data = data;
+                }
 
-            public static JsonResponse generateDataSuccess (string data)
-            {
-                return new JsonResponse("data", successResponse, data);
-            }
-            public static JsonResponse generateDataFailure(string data)
-            {
-                if (data == null || data == "")
-                {
-                    return new JsonResponse("data", errorResponse, "unknown data error occured, please contact suuport");
-                }
-                return new JsonResponse("data", errorResponse, data);
+                return responseObj;
             }
         }
 
@@ -82,12 +71,7 @@ namespace WorkshopProject.Communication
             {
                 {"signin",signInHandler},
                 {"signout",signOutHandler},
-                {"register",registerHandler},
-                {"addstore",addStoreHandler},
-                {"getstore",getStoreHandler},
-                {"getproduct",getProductHandler},
-                {"addproducttostore",addProductToStore},
-                { "addproducttostock",addProductToStock}
+                {"register",registerHandler }
             };
         }
 
@@ -162,7 +146,7 @@ namespace WorkshopProject.Communication
             string ans = user.login(userName, password);
             if (ans == LoginProxy.successMsg)
             {
-                responseObj = JsonResponse.generateActionSucces();
+                responseObj = JsonResponse.generateActionSucces((string)msgObj["id"]);
                 user.subscribeAsObserver(this);
             }
             else
@@ -184,7 +168,7 @@ namespace WorkshopProject.Communication
                 {
                     response = JsonResponse.generateActionError( "can't logout, due to unknow error. please contact support");
                 }
-                response = JsonResponse.generateActionSucces();
+                response = JsonResponse.generateActionSucces((string)msgObj["id"]);
             }
             catch(Exception e)
             {
@@ -215,12 +199,11 @@ namespace WorkshopProject.Communication
                 }
                 else
                 {
-                    //register without birthdate
                     registrAns = user.Register(userName, password);
                 }
                 if (registrAns)
                 {
-                    response = JsonResponse.generateActionSucces();
+                    response = JsonResponse.generateActionSucces((string)msgObj["id"]);
                 }
                 else
                 {
@@ -233,98 +216,6 @@ namespace WorkshopProject.Communication
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
-
-        private void addStoreHandler(JObject msgObj, string message)
-        {
-            JsonResponse response;
-            string storeName = (string)msgObj["data"]["name"];
-            try
-            {
-                int ans = user.AddStore(storeName);
-                response = JsonResponse.generateActionSucces(ans.ToString());
-            }catch (Exception e)
-            {
-                response = JsonResponse.generateActionError(e.Message);
-            }
-            sendMyselfAMessage(JsonHandler.SerializeObject(response));
-        }
-
-        private void getStoreHandler(JObject msgObj, string message)
-        {
-            JsonResponse response;
-            int storeId = (int)msgObj["data"]["storeId"];
-            try
-            {
-                string jsonStore = user.GetStore(storeId);
-                response = JsonResponse.generateDataSuccess(jsonStore);
-            } catch (Exception e)
-            {
-                response = JsonResponse.generateDataFailure(e.Message);
-            }
-            sendMyselfAMessage(JsonHandler.SerializeObject(response));
-        }
-
-        private void getProductHandler(JObject msgObj, string message)
-        {
-            JsonResponse response;
-            int productId = (int)msgObj["data"]["productId"];
-            try
-            {
-                string jsonProduct = user.GetProductInfo(productId);
-                response = JsonResponse.generateDataSuccess(jsonProduct);
-            }
-            catch(Exception e)
-            {
-                response = JsonResponse.generateDataFailure(e.Message);
-            }
-            sendMyselfAMessage(JsonHandler.SerializeObject(response));
-        }
-
-        private void addProductToStore(JObject msgObj, string message)
-        {
-            JsonResponse response;
-            int storeId = (int)msgObj["data"]["storeId"];
-            string productName = (string)msgObj["data"]["name"];
-            string description = (string)msgObj["data"]["description"];
-            double price = (double)msgObj["data"]["price"];
-            string category = (string)msgObj["data"]["category"];
-            try
-            {
-                int ans = user.AddProductToStore(storeId, productName, description, price, category);
-                response = JsonResponse.generateActionSucces(ans.ToString());
-            }catch(Exception e)
-            {
-                response = JsonResponse.generateActionError(e.Message);
-            }
-            sendMyselfAMessage(JsonHandler.SerializeObject(response));
-        }
-        private void addProductToStock(JObject msgObj, string message)
-        {
-            JsonResponse response;
-            int storeId = (int)msgObj["data"]["storeId"];
-            int productId = (int)msgObj["data"]["productId"];
-            int amount = (int)msgObj["data"]["amount"];
-
-            try
-            {
-                bool ans = user.AddProductToStock(storeId, productId, amount);
-                if (ans)
-                {
-                    response = JsonResponse.generateActionSucces();
-                }
-                else
-                {
-                    response = JsonResponse.generateActionError("can't add product to stock");
-                }
-            }
-            catch (Exception e)
-            {
-                response = JsonResponse.generateActionError(e.Message);
-            }
-            sendMyselfAMessage(JsonHandler.SerializeObject(response));
-        }
-
-
         #endregion
 
     }

@@ -78,13 +78,15 @@
 </div>
 
 <script>
-    sendRequest("data","getAllStores",null);
-    var handleMessage = (msg)=>{
-        msg.info=="success"?
-        displayStores(JSON.parse(msg.data)) :
-        alert(msg.data.msg);     
-    };
-    updateHandler(handleMessage);
+    sendRequest("data","getAllStores",null).then(function (msg){
+        displayStores(msg.data);
+    });
+    // var handleMessage = (msg)=>{
+    //     msg.requestInfo=="getAllStores" && msg.info=="success"?
+    //     displayStores(msg.data) :
+    //     alert(msg.data);     
+    // };
+    // updateHandler(handleMessage);
 
     function displayStores(stores){
         stores.map(store => $(".grid").append(createStoreCardHtml(store)));
