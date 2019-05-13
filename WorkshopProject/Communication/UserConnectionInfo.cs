@@ -83,7 +83,12 @@ namespace WorkshopProject.Communication
             {
                 {"signin",signInHandler},
                 {"signout",signOutHandler},
-                {"register",registerHandler }
+                {"register",registerHandler},
+                {"addstore",addStoreHandler},
+                {"getstore",getStoreHandler},
+                {"getproduct",getProductHandler},
+                {"addproducttostore",addProductToStore},
+                { "addproducttostock",addProductToStock}
             };
         }
 
@@ -134,7 +139,7 @@ namespace WorkshopProject.Communication
             {
                 foreach(string curr in messages)
                 {
-                    var notificationObj = new { type = "notification", data = curr };
+                    var notificationObj = new { type = "notification", data = curr ,id = -1};
                     string msgToSend = JsonHandler.SerializeObject(notificationObj);
                     msgSender.sendMessageToUser(msgToSend,id);
                 }
@@ -231,6 +236,107 @@ namespace WorkshopProject.Communication
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
+
+        private void addStoreHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            string storeName = (string)msgObj["data"]["name"];
+            try
+            {
+                int ans = user.AddStore(storeName);
+                response = JsonResponse.generateActionSucces(requestId,ans.ToString());
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId,e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void getStoreHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            try
+            {
+                string jsonStore = user.GetStore(storeId);
+                response = JsonResponse.generateDataSuccess(requestId,jsonStore);
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateDataFailure(requestId,e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void getProductHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int productId = (int)msgObj["data"]["productId"];
+            try
+            {
+                string jsonProduct = user.GetProductInfo(productId);
+                response = JsonResponse.generateDataSuccess(requestId,jsonProduct);
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateDataFailure(requestId,e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void addProductToStore(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            string productName = (string)msgObj["data"]["name"];
+            string description = (string)msgObj["data"]["description"];
+            double price = (double)msgObj["data"]["price"];
+            string category = (string)msgObj["data"]["category"];
+            try
+            {
+                int ans = user.AddProductToStore(storeId, productName, description, price, category);
+                response = JsonResponse.generateActionSucces(requestId,ans.ToString());
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId,e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+        private void addProductToStock(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            int productId = (int)msgObj["data"]["productId"];
+            int amount = (int)msgObj["data"]["amount"];
+
+            try
+            {
+                bool ans = user.AddProductToStock(storeId, productId, amount);
+                if (ans)
+                {
+                    response = JsonResponse.generateActionSucces(requestId);
+                }
+                else
+                {
+                    response = JsonResponse.generateActionError(requestId,"can't add product to stock");
+                }
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId,e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+
+
         #endregion
 
     }
