@@ -88,7 +88,8 @@ namespace WorkshopProject.Communication
                 {"getstore",getStoreHandler},
                 {"getproduct",getProductHandler},
                 {"addproducttostore",addProductToStore},
-                { "addproducttostock",addProductToStock}
+                {"addproducttostock",addProductToStock},
+                {"getallstores",getAllStoresHandler }
             };
         }
 
@@ -335,9 +336,27 @@ namespace WorkshopProject.Communication
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
 
+        private void getAllStoresHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            try
+            {
+                string allStoreJson = user.GetAllStores();
+                response = JsonResponse.generateDataSuccess(requestId, allStoreJson);
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateDataFailure(requestId, e.Message);
+            }
 
 
-        #endregion
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
 
-    }
+
+
+            #endregion
+
+        }
 }

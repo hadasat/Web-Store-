@@ -216,9 +216,9 @@ namespace WorkshopProject.System_Service
             }
         }
 
-        public List<Store> GetAllStores()
+        public string GetAllStores()
         {
-            return StoreService.GetAllStores();
+            return JsonHandler.SerializeObject(StoreService.GetAllStores());
         }
 
         //TODO wolf delete?
