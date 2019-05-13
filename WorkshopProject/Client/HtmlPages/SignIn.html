@@ -52,15 +52,6 @@
 
         <script>
 
-            // $('.form-signin').submit((e)=>{
-            //     var pass = $("#inputPassword").val();
-            //     var name = $("#inputUserame").val();
-            //     (pass && name) ?
-            //      sendRequest("action","signin",{name: $("#inputUserame").val(), password: $("#inputPassword").val()})
-            //      :
-            //      alert("Please fill all the required fields");
-            //      return false;
-            // });
 
             $('#signin_btn').click(function(e){
                 e.preventDefault();
@@ -78,7 +69,7 @@
                 var name = $("#inputUserame").val();
                 (pass && name) ?
                  sendRequest("action","register",{name: $("#inputUserame").val(),
-                  password: $("#inputPassword").val()}).then(function(msg){
+                  password: $("#inputPassword").val()}).then(function(res){
                    if($('#autoLogIn').prop('checked'))
                         signin();
                     else
@@ -91,24 +82,13 @@
 
             function signin(){
                 sendRequest("action","signin",{name: $("#inputUserame").val(),
-                  password: $("#inputPassword").val()}).then(function(msg){
+                  password: $("#inputPassword").val()}).then(function(res){
                     localStorage.setItem("user_status",JSON.stringify({loggedIn : true,
                          username: $("#inputUserame").val()}));
                     window.location.href = "/wot/main";
                   })
             }
-            // var handleMessage11 = (msg) => {
-            //     if((msg.requestInfo=="signin" || msg.requestInfo=="register" )  && msg.info=="success"){
-            //         //msg is and idMessage object
-            //         localStorage.setItem("user_status",JSON.stringify({loggedIn : true,
-            //              username: $("#inputUserame").val()}));
-            //         window.location.href = "/wot/main";
-            //     }else{    
-            //         //msg is an error message
-            //         alert(msg.data);
-            //     }   
-            // };
-            // updateHandler(handleMessage11);
+          
         </script>
     </body>
 </html>

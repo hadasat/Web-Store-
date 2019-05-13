@@ -3,68 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>WorkShop</title>
-    <script type="text/javascript" src="communication.js"></script>
+    <script type="text/javascript" src="/wot/communication.js"></script>
+
 
     <!-- BOOTSTRAP FILES -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-
-
 
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">WorkShop</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li id="nav_signin" class="nav-item">
-                    <a class="nav-link" href="#">Sign In</a>
-                </li>
-                <!-- visible only when the user is logged in -->
-                <li id="nav_userName" class="nav-item"></li>
-                <li id="nav_signOut" class="nav-item">
-                    <a class="nav-link" href="#">Sign Out</a>
-                </li>                      
-                <li id="nav_opensStore" class="nav-item">
-                    <a class="nav-link" href="#">New Store </a>
-                </li>
-                <!-- end  -->
-                <li class="nav-item">
-                <a class="nav-link" href="#">Shopping Cart</a>
-                </li>      
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                        <a class="nav-link" href="#">Advance Search</a>
-                </li>
-            </ul>
-
-            <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-        </nav>
-
-<script type="text/javascript" src="navbar.js"></script>
+    <div id="navbar_header"></div>
+    <script type="text/javascript" src="/wot/navbar.js"></script>
 </head>
-
 
 <body>   
 <div class="container">
-        <div id="page-header" class="pb-2 mt-4 mb-2 border-bottom">
-                <h1>Stores</h1>
-                <h5  style="color: rgb(0, 212, 0)">active</h5>
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
-                    edit <i class="far fa-edit"></i>
-                  </button>
-            </div>
+        <div id="page-header" class="pb-2 mt-4 mb-2 border-bottom"></div>
 
             <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -154,36 +109,30 @@
                 </div>
             </div>                   
         </div>
-            <!-- <div class="row">
-                    <div class="col-sm-3">
-                            <div class="card"  style="margin-bottom: 10%;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Store name</h5>
-                                    <a href="#" class="btn btn-primary">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-            </div> -->
+            
         
 </div>
 
 <script>
     var storeId = getStoreIdFromUrl();
 
-    sendRequest("data","getStore",storeId);
-    var handleMessage = (msg)=>{
-        msg.requestInfo=="getStore" && msg.info=="success"?
-        displayStore(msg.data) :
-        alert(msg.data);     
-    };
-    updateHandler(handleMessage);
+    sendRequest("data","getStore",storeId).then(function(res){
+        displayStore(res);
+    });
 
     function displayStore(store){
         //set header
         $("#page-header").html(`<h1>${store.name}</h1>
-        <h5  style="color: rgb(0, 212, 0)">active</h5>`);
-        var products = store.stock.products;
-        //products.map(p => $(".grid").append(createProductCardHtml(p)));
+        <h5  style="color: rgb(0, 212, 0)">active</h5><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
+                    edit <i class="far fa-edit"></i>
+                  </button>`);
+        var products = store.Stock;
+       // Object.keys(products).forEach((key,index)=> $(".grid").append(createProductCardHtml(products[index])));
+        for (var property in products) {
+            if (!isNaN(property)) {
+                $(".grid").append(createProductCardHtml(products[property]));
+            }
+        }
     };
 
     function createProductCardHtml(product){
@@ -195,9 +144,9 @@
                             `<h5 class="card-title">${product.name.toUpperCase()}</h5>`+
                             `<h6 class="card-subtitle mb-2 text-muted">${product.price} $</h6>`+
                             `<p>${product.description}</p>`+
-                           ` <a href="/wot/store/${store.id}" class="btn btn-primary">Shop Now</a>`+
+                           ` <a href="/wot/product/${product.id}" class="btn btn-primary">See More</a>`+
                         ` </div>`+
-                       ` <div class="card-footer text-muted">>${product.amount} available </div>`+
+                       ` <div class="card-footer text-muted">${product.amount} available </div>`+
                     `</div>`+
                 `</div>`;
        

@@ -76,15 +76,4 @@ function signOut(){
     })
 }
 
-//--PARAMS: msg is an answer to the signout request
-// function handleSignout(msg){
-//     if(msg.info==='success'){
-//         localStorage.setItem("user_status",JSON.stringify({loggedIn : false, username: ''}));
-//         setUpOptBtn();
-//     }else
-//         alert(msg.data);
-
-// }
-
-//updateSignoutHandler(handleSignout);
 setUpOptBtn();

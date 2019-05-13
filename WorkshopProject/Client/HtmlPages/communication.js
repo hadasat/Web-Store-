@@ -47,8 +47,8 @@ function start() {
         var msg = JSON.parse(event.data);
         switch (msg.type) {
             case "setId":
-                sessionStorage.connectionId = msg.id;
-                console.log("got new id "+msg.id);
+                sessionStorage.connectionId = msg.data;
+                console.log("got new id "+msg.data);
                 break;
             case "notification":
                 alert(msg.data);
@@ -60,20 +60,12 @@ function start() {
 }
 start();
 
-function handleMessage(msg){
-    var handle = responseHandlers[msg.requestId];
-    msg.info==='success' ? handle.resolve(msg) :
+function handleMessage(res){
+    var handle = responseHandlers[res.requestId];
+    res.info==='success' ? handle.resolve(JSON.parse(res.data)) :
     alert(msg.data); 
 }
 
-//ofir - functions that I use in the body scripts 
-// function updateHandler (newHandler){
-//     msgHandler = newHandler;
-// }
-
-// function updateSignoutHandler(handler){
-//     signoutHandler=handler;
-// }
 
 var messageId=0;
 var responseHandlers={};

@@ -19,7 +19,7 @@ namespace WorkshopProject.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -64,10 +64,9 @@ namespace WorkshopProject.Properties {
         ///   Looks up a localized string similar to var webSocketClient;
         ///var msgHandler;
         ///var startPageHandler;
+        ///var signoutHandler;
         ///
-        /////
-        ///
-        ///back button stack
+        /////back button stack
         ///
         ///function start() {
         ///    console.log(&quot;start&quot;);
@@ -80,7 +79,7 @@ namespace WorkshopProject.Properties {
         ///    }
         ///    if (sessionStorage.connectionId){
         ///        isOldConnection = true;
-        ///        webSocketClient = new WebSocket(urlAddress,&quot;o [rest of string was truncated]&quot;;.
+        ///        webSocketClient = new WebSoc [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string communication {
             get {
@@ -157,6 +156,8 @@ namespace WorkshopProject.Properties {
         ///    background: #007bff;
         ///    background: linear-gradient(to right, #0062E6, #33AEFF);
         ///  }
+        ///
+        ///  /* background: linear-gradient(to right, #c8f0ff40, #2ba3f1); */
         ///  
         ///  .card-signin {
         ///    border: 0;
@@ -170,16 +171,31 @@ namespace WorkshopProject.Properties {
         ///    font-size: 1.5rem;
         ///  }
         ///  
-        ///  .card-signin .card-body {
-        ///    padding: 2rem;
-        ///  }
-        ///  
-        ///  .form-signin {
-        ///    width: 10 [rest of string was truncated]&quot;;.
+        ///  .card-signin .car [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SignIn1 {
             get {
                 return ResourceManager.GetString("SignIn1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
+        ///&lt;html lang=&quot;en&quot;&gt;
+        ///&lt;head&gt;
+        ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
+        ///    &lt;title&gt;WorkShop&lt;/title&gt;
+        ///    &lt;script type=&quot;text/javascript&quot; src=&quot;communication.js&quot;&gt;&lt;/script&gt;
+        ///
+        ///    &lt;!-- BOOTSTRAP FILES --&gt;
+        ///    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt; 
+        ///    &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js&quot;&gt;&lt;/script&gt;
+        ///    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+        ///    &lt;sc [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string store {
+            get {
+                return ResourceManager.GetString("store", resourceCulture);
             }
         }
         

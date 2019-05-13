@@ -64,30 +64,16 @@
                         </div>
                        
             </div>
-            <!-- <div class="row">
-                    <div class="col-sm-3">
-                            <div class="card"  style="margin-bottom: 10%;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Store name</h5>
-                                    <a href="#" class="btn btn-primary">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-            </div> -->
+           
         
 </div>
 
 <script>
-    sendRequest("data","getAllStores",null).then(function (msg){
-        displayStores(msg.data);
+    sendRequest("data","getAllStores",null).then(function (res){
+        var storesCollections = res;
+        displayStores(storesCollections.$values);
     });
-    // var handleMessage = (msg)=>{
-    //     msg.requestInfo=="getAllStores" && msg.info=="success"?
-    //     displayStores(msg.data) :
-    //     alert(msg.data);     
-    // };
-    // updateHandler(handleMessage);
-
+   
     function displayStores(stores){
         stores.map(store => $(".grid").append(createStoreCardHtml(store)));
     };
