@@ -62,8 +62,10 @@ start();
 
 function handleMessage(res){
     var handle = responseHandlers[res.requestId];
+    if(res.data==='')
+        res.data={};
     res.info==='success' ? handle.resolve(JSON.parse(res.data)) :
-    alert(msg.data); 
+    alert(res.data); 
 }
 
 

@@ -128,6 +128,8 @@
     <Content Include="Client\HtmlPages\communication.js" />
     <Content Include="Client\HtmlPages\index.html" />
     <Content Include="Client\HtmlPages\navbar.js" />
+    <None Include="Client\HtmlPages\product.html" />
+    <None Include="Client\HtmlPages\newStore.html" />
     <Content Include="Client\HtmlPages\SignIn.css" />
     <Content Include="Client\HtmlPages\SignIn.html" />
     <Content Include="Client\HtmlPages\store.html" />
