@@ -19,7 +19,7 @@ namespace WorkshopProject.Communication
             public static readonly string successResponse = "success";
             public static readonly string errorResponse = "error";
 
-            public string type { get; set; } 
+            public string type { get; set; }
             public string info { get; set; }
             public string data { get; set; }
             public int requestId { get; set; }
@@ -71,7 +71,7 @@ namespace WorkshopProject.Communication
         private uint id;
         private IWebSocketMessageSender msgSender;
 
-        private Dictionary<string, Action<JObject,string>> messageHandlers;
+        private Dictionary<string, Action<JObject, string>> messageHandlers;
 
         public UserConnectionInfo(bool isSecureConnection, uint id, IWebSocketMessageSender msgSender)
         {
@@ -89,7 +89,8 @@ namespace WorkshopProject.Communication
                 {"getproduct",getProductHandler},
                 {"addproducttostore",addProductToStore},
                 {"addproducttostock",addProductToStock},
-                {"getallstores",getAllStoresHandler }
+                {"getallstores",getAllStoresHandler},
+                {"addproducttobasket",addProductToBaksetHandler }
             };
         }
 
@@ -98,7 +99,8 @@ namespace WorkshopProject.Communication
         /// </summary>
         /// <param name="bufferCollector"></param>
         /// <param name="receiveResult"></param>
-        public void onMessage(List<byte[]> bufferCollector, WebSocketReceiveResult receiveResult) {
+        public void onMessage(List<byte[]> bufferCollector, WebSocketReceiveResult receiveResult)
+        {
             string message = "";
             //convert to string
             for (int i = 0; i < bufferCollector.Count - 1; i++)
@@ -109,7 +111,7 @@ namespace WorkshopProject.Communication
 
             JObject messageObj = JObject.Parse(message);
 
-            string messageType =((string)messageObj["info"]).ToLower();
+            string messageType = ((string)messageObj["info"]).ToLower();
             if (messageHandlers.ContainsKey(messageType))
             {
                 messageHandlers[messageType](messageObj, message);
@@ -118,13 +120,14 @@ namespace WorkshopProject.Communication
             {
                 Logger.Log("file", logLevel.WARN, "received an unknown type of message from client");
             }
-            
+
 
         }
         /// <summary>
         /// on close event activated when the connection is closed
         /// </summary>
-        public void onClose() {
+        public void onClose()
+        {
             bool ans = user.unSubscribeAsObserver(this);
             if (!ans)
             {
@@ -138,11 +141,11 @@ namespace WorkshopProject.Communication
         {
             if (messages != null)
             {
-                foreach(string curr in messages)
+                foreach (string curr in messages)
                 {
-                    var notificationObj = new { type = "notification", data = curr ,id = -1};
+                    var notificationObj = new { type = "notification", data = curr, requestId = -1 };
                     string msgToSend = JsonHandler.SerializeObject(notificationObj);
-                    msgSender.sendMessageToUser(msgToSend,id);
+                    msgSender.sendMessageToUser(msgToSend, id);
                 }
             }
         }
@@ -155,7 +158,7 @@ namespace WorkshopProject.Communication
         // ***************** handlers ****************
 
         #region requests handlers
-        
+
         private void signInHandler(JObject msgObj, string message)
         {
             JsonResponse responseObj;
@@ -175,14 +178,15 @@ namespace WorkshopProject.Communication
             sendMyselfAMessage(JsonHandler.SerializeObject(responseObj));
         }
 
-        private void  signOutHandler(JObject msgObj, string message)
+        private void signOutHandler(JObject msgObj, string message)
         {
             //remove observer
             user.unSubscribeAsObserver(this);
             //logout
             JsonResponse response;
             int requestId = (int)msgObj["id"];
-            try {
+            try
+            {
                 bool logoutAns = user.logout();
                 if (!logoutAns)
                 {
@@ -190,9 +194,9 @@ namespace WorkshopProject.Communication
                 }
                 response = JsonResponse.generateActionSucces(requestId);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                response = JsonResponse.generateActionError(requestId,e.Message);
+                response = JsonResponse.generateActionError(requestId, e.Message);
             }
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
@@ -205,7 +209,7 @@ namespace WorkshopProject.Communication
             string password = (string)msgObj["data"]["password"];
             string birthDateString = (string)msgObj["data"]["birthdate"];
             string country = (string)msgObj["data"]["country"];
-            DateTime birthDate = DateTime.MaxValue ;
+            DateTime birthDate = DateTime.MaxValue;
             if (birthDateString != null)
             {
                 birthDate = DateTime.ParseExact(birthDateString, "dd-mm-yyyy", null);
@@ -228,11 +232,12 @@ namespace WorkshopProject.Communication
                 }
                 else
                 {
-                    response = JsonResponse.generateActionError(requestId,"can't register due to an unknown reason");
+                    response = JsonResponse.generateActionError(requestId, "can't register due to an unknown reason");
                 }
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
-                response = JsonResponse.generateActionError(requestId,e.Message);
+                response = JsonResponse.generateActionError(requestId, e.Message);
             }
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
@@ -246,11 +251,11 @@ namespace WorkshopProject.Communication
             try
             {
                 int ans = user.AddStore(storeName);
-                response = JsonResponse.generateActionSucces(requestId,ans.ToString());
+                response = JsonResponse.generateActionSucces(requestId, ans.ToString());
             }
             catch (Exception e)
             {
-                response = JsonResponse.generateActionError(requestId,e.Message);
+                response = JsonResponse.generateActionError(requestId, e.Message);
             }
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
@@ -263,11 +268,11 @@ namespace WorkshopProject.Communication
             try
             {
                 string jsonStore = user.GetStore(storeId);
-                response = JsonResponse.generateDataSuccess(requestId,jsonStore);
+                response = JsonResponse.generateDataSuccess(requestId, jsonStore);
             }
             catch (Exception e)
             {
-                response = JsonResponse.generateDataFailure(requestId,e.Message);
+                response = JsonResponse.generateDataFailure(requestId, e.Message);
             }
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
@@ -280,11 +285,11 @@ namespace WorkshopProject.Communication
             try
             {
                 string jsonProduct = user.GetProductInfo(productId);
-                response = JsonResponse.generateDataSuccess(requestId,jsonProduct);
+                response = JsonResponse.generateDataSuccess(requestId, jsonProduct);
             }
             catch (Exception e)
             {
-                response = JsonResponse.generateDataFailure(requestId,e.Message);
+                response = JsonResponse.generateDataFailure(requestId, e.Message);
             }
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
@@ -301,11 +306,11 @@ namespace WorkshopProject.Communication
             try
             {
                 int ans = user.AddProductToStore(storeId, productName, description, price, category);
-                response = JsonResponse.generateActionSucces(requestId,ans.ToString());
+                response = JsonResponse.generateActionSucces(requestId, ans.ToString());
             }
             catch (Exception e)
             {
-                response = JsonResponse.generateActionError(requestId,e.Message);
+                response = JsonResponse.generateActionError(requestId, e.Message);
             }
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
@@ -326,12 +331,12 @@ namespace WorkshopProject.Communication
                 }
                 else
                 {
-                    response = JsonResponse.generateActionError(requestId,"can't add product to stock");
+                    response = JsonResponse.generateActionError(requestId, "can't add product to stock");
                 }
             }
             catch (Exception e)
             {
-                response = JsonResponse.generateActionError(requestId,e.Message);
+                response = JsonResponse.generateActionError(requestId, e.Message);
             }
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
@@ -354,9 +359,49 @@ namespace WorkshopProject.Communication
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
 
+        private void addProductToBaksetHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            int productId = (int)msgObj["data"]["productId"];
+            int amount = (int)msgObj["data"]["amount"];
+            try
+            {
+                bool addAns = user.AddProductToBasket(storeId, productId, amount);
+                if (addAns)
+                {
+                    response = JsonResponse.generateActionSucces(requestId);
+                }
+                else
+                {
+                    response = JsonResponse.generateActionError(requestId, "unknow error occured while adding product to basket");
+                }
+
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
 
 
-            #endregion
-
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
+
+        /*
+                private void --(JObject msgObj, string message)
+                {
+                    JsonResponse response;
+                    int requestId = (int)msgObj["id"];
+
+                    sendMyselfAMessage(JsonHandler.SerializeObject(response));
+
+                }
+            */
+
+
+
+        #endregion
+
+    }
 }

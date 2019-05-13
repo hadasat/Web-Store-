@@ -222,7 +222,7 @@ namespace WorkshopProject.Communication.Server
 
                 if (isNewCoonection) //if we establish a connection to a new user we need to send him is id
                 {
-                    var infoToSend = new { type = "setId", id = newConnectionId };
+                    var infoToSend = new { type = "setId", data = newConnectionId ,requestId = -2};
                     await sendMessageById(newConnectionId, JsonHandler.SerializeObject(infoToSend));
                 }
 
