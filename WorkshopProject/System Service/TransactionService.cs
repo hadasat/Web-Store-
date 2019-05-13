@@ -63,10 +63,12 @@ public static class TransactionService
             return jsc;
         }
 
-        public static JsonShoppingBasket GetShoppingBasket(User user)
+        public static ShoppingBasket GetShoppingBasket(User user)
         {
-            JsonShoppingBasket jsb = new JsonShoppingBasket(user.shoppingBasket);
-            return jsb;
+            //JsonShoppingBasket jsb = new JsonShoppingBasket(user.shoppingBasket);
+            //return jsb;
+
+            return user.shoppingBasket;
         }
 
         public static bool SetProductAmountInBasket(User user, int storeId,int productId, int amount)

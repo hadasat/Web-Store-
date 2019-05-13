@@ -91,7 +91,7 @@ namespace WorkshopProject.Communication
                 {"addproducttostock",addProductToStock},
                 {"getallstores",getAllStoresHandler},
                 {"addproducttobasket",addProductToBaksetHandler },
-                {"getShoppingBasket",getShoppingBasket}
+                {"getshoppingbasket",getShoppingBasket}
             };
         }
 
