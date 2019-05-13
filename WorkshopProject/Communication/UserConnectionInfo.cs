@@ -19,38 +19,50 @@ namespace WorkshopProject.Communication
             public static readonly string successResponse = "success";
             public static readonly string errorResponse = "error";
 
-            public string type { get; set; } = "";
-            public string info { get; set; } = "";
-            public string data { get; set; } = "";
-            public string requestId { get; set; } = "";
+            public string type { get; set; } 
+            public string info { get; set; }
+            public string data { get; set; }
+            public int requestId { get; set; }
 
-            public static JsonResponse generateActionSucces(string requestId, string data = null)
+            private JsonResponse(string type, string info, string data, int requestId)
             {
-                JsonResponse responseObj = new JsonResponse();
-                responseObj.type = "action";
-                responseObj.info = JsonResponse.successResponse;
-                responseObj.requestId = requestId;
+                this.type = type;
+                this.info = info;
+                this.requestId = requestId;
                 if (data != null)
                 {
-                    responseObj.data = data;
-                }
-                return responseObj;
-            }
-
-            public static JsonResponse generateActionError(string data)
-            {
-                JsonResponse responseObj = new JsonResponse();
-                responseObj.info = JsonResponse.errorResponse;
-                if (data == null)
-                {
-                    responseObj.data = "unknown error occured please contact support";
+                    this.data = data;
                 }
                 else
                 {
-                    responseObj.data = data;
+                    this.data = "";
                 }
+            }
+            public static JsonResponse generateActionSucces(int requestId, string data = null)
+            {
+                return new JsonResponse("action", successResponse, data, requestId);
+            }
 
-                return responseObj;
+            public static JsonResponse generateActionError(int requestId, string data)
+            {
+                if (data == null || data == "")
+                {
+                    return new JsonResponse("action", errorResponse, "unknown action error occured, please contact suuport", requestId);
+                }
+                return new JsonResponse("action", errorResponse, data, requestId);
+            }
+
+            public static JsonResponse generateDataSuccess(int requestId, string data)
+            {
+                return new JsonResponse("data", successResponse, data, requestId);
+            }
+            public static JsonResponse generateDataFailure(int requestId, string data)
+            {
+                if (data == null || data == "")
+                {
+                    return new JsonResponse("data", errorResponse, "unknown data error occured, please contact suuport", requestId);
+                }
+                return new JsonResponse("data", errorResponse, data, requestId);
             }
         }
 
@@ -143,15 +155,16 @@ namespace WorkshopProject.Communication
             JsonResponse responseObj;
             string userName = (string)msgObj["data"]["name"];
             string password = (string)msgObj["data"]["password"];
+            int requestId = (int)msgObj["id"];
             string ans = user.login(userName, password);
             if (ans == LoginProxy.successMsg)
             {
-                responseObj = JsonResponse.generateActionSucces((string)msgObj["id"]);
+                responseObj = JsonResponse.generateActionSucces(requestId);
                 user.subscribeAsObserver(this);
             }
             else
             {
-                responseObj = JsonResponse.generateActionError(ans);
+                responseObj = JsonResponse.generateActionError(requestId, ans);
             }
             sendMyselfAMessage(JsonHandler.SerializeObject(responseObj));
         }
@@ -162,17 +175,18 @@ namespace WorkshopProject.Communication
             user.unSubscribeAsObserver(this);
             //logout
             JsonResponse response;
+            int requestId = (int)msgObj["id"];
             try {
                 bool logoutAns = user.logout();
                 if (!logoutAns)
                 {
-                    response = JsonResponse.generateActionError( "can't logout, due to unknow error. please contact support");
+                    response = JsonResponse.generateActionError(requestId, "can't logout, due to unknow error. please contact support");
                 }
-                response = JsonResponse.generateActionSucces((string)msgObj["id"]);
+                response = JsonResponse.generateActionSucces(requestId);
             }
             catch(Exception e)
             {
-                response = JsonResponse.generateActionError(e.Message);
+                response = JsonResponse.generateActionError(requestId,e.Message);
             }
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
@@ -180,6 +194,7 @@ namespace WorkshopProject.Communication
         private void registerHandler(JObject msgObj, string message)
         {
             JsonResponse response;
+            int requestId = (int)msgObj["id"];
             string userName = (string)msgObj["data"]["name"];
             string password = (string)msgObj["data"]["password"];
             string birthDateString = (string)msgObj["data"]["birthdate"];
@@ -203,15 +218,15 @@ namespace WorkshopProject.Communication
                 }
                 if (registrAns)
                 {
-                    response = JsonResponse.generateActionSucces((string)msgObj["id"]);
+                    response = JsonResponse.generateActionSucces(requestId);
                 }
                 else
                 {
-                    response = JsonResponse.generateActionError("can't register due to an unknown reason");
+                    response = JsonResponse.generateActionError(requestId,"can't register due to an unknown reason");
                 }
             }catch(Exception e)
             {
-                response = JsonResponse.generateActionError(e.Message);
+                response = JsonResponse.generateActionError(requestId,e.Message);
             }
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
