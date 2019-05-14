@@ -33,12 +33,11 @@ namespace WorkshopProject.System_Service
         }
 
         //discount
-        public static int addDiscountPolicy(User user, int storeId, String policies)
+        public static int addDiscountPolicy(User user, int storeId, Discount policies)
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            Discount dicountPolicy = JsonHandler.DeserializeObject<Discount>(policies);
-            int policyId = store.AddDiscountPolicy(user, dicountPolicy);
+            int policyId = store.AddDiscountPolicy(user, policies);
             return policyId;
 
         }
@@ -55,12 +54,11 @@ namespace WorkshopProject.System_Service
         }
 
         //purchasing
-        public static int addPurchasingPolicy(User user, int storeId, String policies)
+        public static int addPurchasingPolicy(User user, int storeId, IBooleanExpression policies)
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            IBooleanExpression purchasingPolicy = JsonHandler.DeserializeObject<IBooleanExpression>(policies);
-            int policyId = store.AddPurchasPolicy(user, purchasingPolicy);
+            int policyId = store.AddPurchasPolicy(user, policies);
             return policyId;
         }
 
@@ -75,12 +73,11 @@ namespace WorkshopProject.System_Service
         }
 
         //store
-        public static int addStorePolicy(User user, int storeId, String policies)
+        public static int addStorePolicy(User user, int storeId, IBooleanExpression policies)
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            IBooleanExpression purchasingPolicy = JsonHandler.DeserializeObject<IBooleanExpression>(policies);
-            int policyId = store.AddStorePolicy(user, purchasingPolicy);
+            int policyId = store.AddStorePolicy(user, policies);
             return policyId;
         }
         
