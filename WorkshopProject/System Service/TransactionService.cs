@@ -67,6 +67,10 @@ public static class TransactionService
         {
             JsonShoppingBasket jsb = new JsonShoppingBasket(user.shoppingBasket);
             return jsb;
+
+            
+
+
         }
 
         public static bool SetProductAmountInBasket(User user, int storeId,int productId, int amount)

@@ -166,6 +166,7 @@ namespace WorkshopProject.Communication.Server
                 HttpListenerWebSocketContext wsContext;
                 WebSocket ws;
                 uint newConnectionId;
+
                 try
                 {
                     //get new connection
@@ -189,7 +190,7 @@ namespace WorkshopProject.Communication.Server
                     {
                         WebSocketReceiveResult receiveResult = await ws.ReceiveAsync(new ArraySegment<byte>(recvBuffer), CancellationToken.None);
                         string oldConnectionInfo = Encoding.UTF8.GetString(recvBuffer, 0, receiveResult.Count);
-                        Regex pattern = new Regex("old id is:%d");
+                        Regex pattern = new Regex(@"\d+");
                         Match match = pattern.Match(oldConnectionInfo);
                         if (match.Success)
                         {
@@ -222,7 +223,8 @@ namespace WorkshopProject.Communication.Server
 
                 if (isNewCoonection) //if we establish a connection to a new user we need to send him is id
                 {
-                    await sendMessageById(newConnectionId, "{\"type\":\"setId\",\"id\":\"3\"}");
+                    var infoToSend = new { type = "setId", data = newConnectionId ,requestId = -2};
+                    await sendMessageById(newConnectionId, JsonHandler.SerializeObject(infoToSend));
                 }
 
 

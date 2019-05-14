@@ -20,72 +20,25 @@
 
     
 <div class="container">
-
         <div class="pb-2 mt-4 mb-2 border-bottom">
-                <h1>Stores</h1>
-            </div>
-
-        <div class="grid row">
-                <div class="col-sm-3">
-                    <div class="card" style="margin-bottom: 10%;" >
-                        <div class="card-body" >
-                            <h5 class="card-title">Store name</h5>
-                            <p>Rank: 5 stars</p>
-                            <a href="#" class="btn btn-primary">Shop Now</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="card"  style="margin-bottom: 10%;" >
-                        <div class="card-body">
-                            <h5 class="card-title">Store name</h5>
-                            <p>Rank: 5 stars</p>
-                            <a href="#" class="btn btn-primary">Shop Now</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                        <div class="card"  style="margin-bottom: 10%;" >
-                            <div class="card-body">
-                                <h5 class="card-title">Store name</h5>
-                                <p>Rank: 5 stars</p>
-                                <a href="#" class="btn btn-primary">Shop Now</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                            <div class="card"  style="margin-bottom: 10%;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Store name</h5>
-                                    <p>Rank: 5 stars</p>
-                                    <a href="#" class="btn btn-primary">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-                       
-            </div>
-            <!-- <div class="row">
-                    <div class="col-sm-3">
-                            <div class="card"  style="margin-bottom: 10%;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Store name</h5>
-                                    <a href="#" class="btn btn-primary">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-            </div> -->
-        
+             <h1>Stores</h1>
+        </div>
+        <div class="grid row"> </div>      
 </div>
 
 <script>
-    sendRequest("data","getAllStores",null);
-    var handleMessage = (msg)=>{
-        msg.info=="success"?
-        displayStores(JSON.parse(msg.data)) :
-        alert(msg.data.msg);     
-    };
-    updateHandler(handleMessage);
+    //while(!connected){};
+    onStart(init);
+    function init(){
+    sendRequest("data","getAllStores",null).then(function (res){
+        var storesCollections = res;
+        displayStores(storesCollections.$values);
+    });
+}
 
+
+
+   
     function displayStores(stores){
         stores.map(store => $(".grid").append(createStoreCardHtml(store)));
     };

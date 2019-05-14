@@ -16,7 +16,11 @@ namespace WorkshopProject.Client
             signIn,
             communication,
             navbar,
-            signin_style
+            signin_style,
+            store,
+            product,
+            newStore,
+            shoppingBasket
         };
 
         private static readonly Dictionary<string, PagesNames> enumStringMapping = new Dictionary<string, PagesNames>()
@@ -29,7 +33,11 @@ namespace WorkshopProject.Client
             {"/wot/signIn",PagesNames.signIn },
             {"/wot/communication.js",PagesNames.communication },
             {"/wot/navbar.js",PagesNames.navbar },
-            {"/wot/signin.css",PagesNames.signin_style }
+            {"/wot/signin.css",PagesNames.signin_style },
+            {"/wot/store/[0-9]+",PagesNames.store},
+            {"/wot/store/[0-9]+/[0-9]+",PagesNames.product},
+            {"/wot/newstore",PagesNames.newStore},
+            {"/wot/shoppingbasket",PagesNames.shoppingBasket}
         };
 
         public static readonly Dictionary<PagesNames, string> htmlPages = new Dictionary<PagesNames, string>()
@@ -39,6 +47,10 @@ namespace WorkshopProject.Client
             {PagesNames.communication,Properties.Resources.communication },
             {PagesNames.navbar,Properties.Resources.navbar },
             {PagesNames.signin_style,Properties.Resources.SignIn1 },
+            {PagesNames.store,Properties.Resources.store },
+            {PagesNames.product,Properties.Resources.product },
+            {PagesNames.newStore,Properties.Resources.newStore },
+            {PagesNames.shoppingBasket,Properties.Resources.shoppingBasket },
             {PagesNames.Error,"<html><body>error path not found</body></html>" }
         };
 
@@ -46,10 +58,9 @@ namespace WorkshopProject.Client
         {
             foreach (var curr in enumStringMapping)
             {
-                if (curr.Key == name.ToLower())
-                {
+                var regexp = new System.Text.RegularExpressions.Regex("^"+curr.Key+"$");
+                if (regexp.IsMatch(name))      
                     return enumStringMapping[curr.Key];
-                }
             }
 
             return PagesNames.Error;

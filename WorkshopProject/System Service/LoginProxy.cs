@@ -100,9 +100,9 @@ namespace WorkshopProject.System_Service
             return TransactionService.GetShoppingCart(user, storeId);
         }
 
-        public JsonShoppingBasket GetShoppingBasket()
+        public string GetShoppingBasket()
         {
-            return TransactionService.GetShoppingBasket(user);
+            return JsonHandler.SerializeObject(TransactionService.GetShoppingBasket(user));
         }
 
         public string login(string username, string password)
@@ -216,9 +216,9 @@ namespace WorkshopProject.System_Service
             }
         }
 
-        public List<Store> GetAllStores()
+        public string GetAllStores()
         {
-            return StoreService.GetAllStores();
+            return JsonHandler.SerializeObject(StoreService.GetAllStores());
         }
 
         //TODO wolf delete?

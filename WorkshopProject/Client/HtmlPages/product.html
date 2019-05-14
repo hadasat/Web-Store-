@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WorkShop</title>
+    <script type="text/javascript" src="/wot/communication.js"></script>
+
+
+    <!-- BOOTSTRAP FILES -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+
+
+    <!-- NAVBAR -->
+    <div id="navbar_header"></div>
+    <script type="text/javascript" src="/wot/navbar.js"></script>
+</head>
+<body>
+    <div class="container" style="margin-top: 1%;">
+        <div id="mainBox" class="jumbotron"></div>
+    </div>
+    
+
+<script>
+    var productId = getProductIdFromUrl();
+    var storeId = getStoreIdFromUrl();
+    onStart(function(){
+        sendRequest("data","getProduct",{storeId: storeId, productId: productId})
+        .then(function(res){
+        displayProduct(res);
+    });});
+    
+    
+
+    function displayProduct(product){
+        $('#mainBox').html(`<h1 class="display-4">${product.name}</h1>
+            <p class="lead">${product.description}</p>`+ getStarsHtml(product.rank) + 
+            `<hr class="my-4">
+            <p class="lead">Price: <strong> ${product.price}$</strong> </p>
+            <p class="lead">
+                Amount: (only ${product.amount} available) <input type="number" id="amountToBuy" value="0" min="0" max="${product.amount}" step="1"/>
+            </p>
+            <p class="lead">
+              <button id="addToBasket" class="btn btn-success btn-lg" >Add To Basket</button>
+              <i id="thumbs-up" class="far fa-thumbs-up" style="
+                        font-size: 33px;
+                        color: green;
+                        display: none;
+                    "></i>
+            </p>
+            <p class="lead">
+              <a class="btn btn-secondary btn-lg" href="/wot/store/${storeId}" role="button">Back To Store</a>
+            </p>`);
+    }
+
+    function getStarsHtml(stars){
+        if(stars<=0)
+            return '<span class="fa fa-star "></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span>'
+        var ret='';
+        for(let i=0;i< stars;i++){
+            ret += '<span class="fa fa-star checked"></span>';
+        }
+        return ret;
+    }
+
+    $('#thumbs-up').hide();
+
+    $('#mainBox').on('click','#addToBasket',function(){
+        var amount = $('#amountToBuy').val();
+        sendRequest('action','addProductToBasket',{storeId: storeId, productId: productId , amount: amount})
+        .then(function(res){
+            $('#addToBasket').hide();
+            $('#thumbs-up').show();
+        })
+    });
+
+
+    function getProductIdFromUrl(){
+        var url = document.location.href;
+        var array = url.split('/');
+        return array[array.length-1];
+    }
+
+    function getStoreIdFromUrl(){
+        var url = document.location.href;
+        var array = url.split('/');
+        return array[array.length-2];
+    }
+</script>
+</body>
+</html>
