@@ -82,70 +82,18 @@
     </div>
   </div>
 
-        <div class="grid row">
-            <div class="col-sm-3">
-                <div class="card" style="margin-bottom: 10%;" >
-                    <div class="card-header">food</div>
-                    <div class="card-body" >
-                        <h5 class="card-title">PRODUCT NAME</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">3 $</h6>
-                        <p>this is to test the description block.</p>
-                        <a href="/wot/store/${store.id}" class="btn btn-primary">Buy Now</a>
-                       
-                    </div>
-                    <div class="card-footer text-muted">5 available </div>
-                </div>
-            </div> 
-            <div class="col-sm-3">
-                <div class="card" style="margin-bottom: 10%;" >
-                    <div class="card-header">food </div>
-                    <div class="card-body" >
-                        <h5 class="card-title">PRODUCT NAME</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">3 $</h6>
-                        <p>this is to test the description block.</p>
-                        <a href="/wot/store/${store.id}" class="btn btn-primary">Buy Now</a>
-                       
-                    </div>
-                    <div class="card-footer text-muted">5 available </div>
-                </div>
-            </div> 
-            <div class="col-sm-3">
-                <div class="card" style="margin-bottom: 10%;" >
-                    <div class="card-header">food </div>
-                    <div class="card-body" >
-                        <h5 class="card-title">PRODUCT NAME</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">3 $</h6>
-                        <p>this is to test the description block.</p>
-                        <a href="/wot/store/${store.id}" class="btn btn-primary">Buy Now</a>
-                       
-                    </div>
-                    <div class="card-footer text-muted">5 available </div>
-                </div>
-            </div>       
-            <div class="col-sm-3">
-                <div class="card" style="margin-bottom: 10%;" >
-                    <div class="card-header">food </div>
-                    <div class="card-body" >
-                        <h5 class="card-title">PRODUCT NAME</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">3 $</h6>
-                        <p>this is to test the description block.</p>
-                        <a href="/wot/store/${store.id}" class="btn btn-primary">Buy Now</a>
-                       
-                    </div>
-                    <div class="card-footer text-muted">5 available </div>
-                </div>
-            </div>                   
-        </div>
-            
-        
+        <div class="grid row"></div>      
 </div>
 
 <script>
     var storeId = getStoreIdFromUrl();
 
-    sendRequest("data","getStore",storeId).then(function(res){
-        displayStore(res);
-    });
+    function init(){
+        sendRequest("data","getStore",storeId).then(function(res){
+            displayStore(res);
+        });
+    }
+    init();
 
     function displayStore(store){
         //set header
@@ -202,6 +150,7 @@
                 description: desc, price: price , category: cat}).then(function (res){
                     alert("product added successfully");
                     clearNewProductForm();
+                    init();
                 })
         }
 

@@ -227,7 +227,7 @@ namespace WorkshopProject.System_Service
 
         public string GetShoppingBasket()
         {
-            ShoppingBasket ret;
+            JsonShoppingBasket ret;
             try
             {
                 ret = TransactionService.GetShoppingBasket(user);

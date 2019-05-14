@@ -4,7 +4,7 @@ var startPageHandler;
 var signoutHandler;
 
 //back button stack
-
+var connected=false;
 function start() {
     console.log("start");
     const urlAddress = "ws://localhost:8080/wot";
@@ -25,12 +25,14 @@ function start() {
 
     //when connection opens
     webSocketClient.onopen = function (event) {
+        connected=true;
         if (isOldConnection) {
             var connectionId = Number(sessionStorage.connectionId);
             console.log("establosh old connection: " + connectionId);
             webSocketClient.send("old id is:"+connectionId);
         }
         console.log("connected \n");
+        
     }
 
     webSocketClient.onclose = function (event) {
@@ -71,7 +73,13 @@ function handleMessage(res){
 
 var messageId=0;
 var responseHandlers={};
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
 function sendRequest (type,info,data){
+    
     return new Promise(function(resolve, reject) {
     var newMsg = {
         id  : messageId,
@@ -79,11 +87,17 @@ function sendRequest (type,info,data){
         info : info,
         data : data
     };
+   if(!connected){
+       alert('Connection problem. please refresh the page');
+       return;
+   }
     webSocketClient.send(JSON.stringify(newMsg));
     responseHandlers[messageId] = {resolve: resolve , reject: reject};
-    messageId++;  
+    messageId++;         
 });
 }
+
+
 
 
 

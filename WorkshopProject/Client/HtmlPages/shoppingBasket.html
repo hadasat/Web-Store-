@@ -20,96 +20,41 @@
 <body>
 
     <div class="container">
-
-        <div class="grid">
-            <div class="pb-2 mt-4 mb-2 border-bottom">
-                <h1>Store1</h1>
-            </div>
-            <div class="grid1 row">
-                <div class="col-sm-3">
-                    <div class="card" style="margin-bottom: 10%;">
-                        <div class="card-body">
-                            <h5 class="card-title">PRODUCT NAME</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">3 $</h6>
-                            <p>Amount : 4</p>
-                            <a href="/wot/store/${store.id}" class="btn btn-primary">Edit</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="pb-2 mt-4 mb-2 border-bottom">
-                <h1>Store2</h1>
-            </div>
-            <div class="grid1 row">
-                <div class="col-sm-3">
-                    <div class="card" style="margin-bottom: 10%;">
-                        <div class="card-body">
-                            <h5 class="card-title">PRODUCT NAME</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">3 $</h6>
-                            <p>Amount : 4</p>
-                            <a href="/wot/store/${store.id}" class="btn btn-primary">Edit</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                        <div class="card" style="margin-bottom: 10%;">
-                            <div class="card-body">
-                                <h5 class="card-title">PRODUCT NAME2</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">7 $</h6>
-                                <p>Amount : 4</p>
-                                <a href="/wot/store/${store.id}" class="btn btn-primary">Edit</a>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-
-
-        </div>
+        <div class="grid"></div>
     </div>
+  
 
-    <div class="col-sm-9 col-md-7 col-lg-5" style="margin-bottom: 10%;">
-            <a href="/wot/store/${store.id}" class="btn btn-primary">Purchase Basket</a>    
-        </div>
-
+    
     <script>
         
-        ///TODO change Purchase btn position
-        var gridGenerator = 1;
-
         sendRequest("data", "getShoppingBasket", null).then(function (res) {
-            var shoppingBasket = res;
-            displayStores(shoppingBasket);
+            displayStores(res);
         });
 
         function displayStores(shoppingBasket) {
-            var carts = shoppingBasket.carts;
-            for (var property in carts) {
-                if (property === "WorkshopProject.Store") {
-                    $(".grid").append(createStoreContainer(property,carts[property]));
-                }
-            }
+            var carts = shoppingBasket.shoppingCarts.$values;
+            carts.length===0 ? $(".grid").append(emptyBasketHtml()) : 
+            carts.map(cart =>$(".grid").append(
+                createStoreContainer(cart.store,cart.shoppingCart) + 
+                `<div  class="text-center">
+                     <a href="/wot/store/${store.id}" class="btn btn-success">Purchase Basket</a>    
+                </div>`));
         };
 
-        function createStoreContainer(shop,shoppingCart) {
-            return `<div class="container">` +
-                        `<div class="grid${++gridGenerator}">` +
-                            `<div class="pb-2 mt-4 mb-2 border-bottom">` +
-                                `<h1>Store</h1>` +//change to store name
-                            `</div>`
-                            + displayProducts(shoppingCart); +
-                        `</div>`
-                    `</div>`;
+        function createStoreContainer(store,shoppingCart) {           
+            return `    <div class="pb-2 mt-4 mb-2 border-bottom">
+                            <h1>${store.name}</h1>
+                        </div>
+                        <div class="grid1 row">
+                            ${displayProducts(shoppingCart)}
+                        </div>`; 
+        
+                   
         }
 
         function displayProducts(shoppingCart) {
-            var products = shoppingCart.products;
-            for (var property in products) {
-                if (!isNaN(property)) {
-                    $(".grid").append(createStoreContainer(property, products[property]));
-                }
-            }
+            var products = shoppingCart.products.$values;
+            return products.reduce((acc,curr) =>   acc + (createProductCardHtml(curr.product, curr.amount)),'');
         };
 
         function createProductCardHtml(product, amount) {
@@ -117,13 +62,23 @@
             return `<div class="col-sm-3">` +
                 `<div class="card" style="margin-bottom: 10%;" >` +
                 `<div class="card-body" >` +
-                `<h5 class="card-title">${product.name.toUpperCase()}</h5>` +
-                `<h6 class="card-subtitle mb-2 text-muted">${product.price * amount} $</h6>` +
-                ` <a href="/wot/store/${storeId}/${product.id}" class="btn btn-primary">Edit</a>` +///need to work
+                    `<h5 class="card-title">${product.name.toUpperCase()}</h5>` +
+                    `<h6 class="card-subtitle mb-2 text-muted">${product.price} $ </h6>
+                    <h6 class="card-subtitle mb-2 text-muted"> ${amount} pieces </h6>
+                    <p>Total Cost: <strong>${amount * product.price} </strong> </p>
+                     <a href="/wot/store/${product.storeId}/${product.id}" class="btn btn-primary">Edit</a>` +///need to work
                 ` </div>` +
                 `</div>` +
                 `</div>`;
 
+        }
+
+        function emptyBasketHtml (){
+            return `<div  class="text-center">
+                        <h1 class="display-4">
+                            Basket is empty. please add products to purchase :)
+                        </h4>
+                    </div>`;
         }
     </script>
 </body>
