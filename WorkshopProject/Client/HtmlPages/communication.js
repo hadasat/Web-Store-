@@ -74,9 +74,6 @@ function handleMessage(res){
 var messageId=0;
 var responseHandlers={};
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
 
 function sendRequest (type,info,data){
     
@@ -87,10 +84,7 @@ function sendRequest (type,info,data){
         info : info,
         data : data
     };
-   if(!connected){
-       alert('Connection problem. please refresh the page');
-       return;
-   }
+   
     webSocketClient.send(JSON.stringify(newMsg));
     responseHandlers[messageId] = {resolve: resolve , reject: reject};
     messageId++;         
