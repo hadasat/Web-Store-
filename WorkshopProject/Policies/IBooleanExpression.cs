@@ -33,9 +33,19 @@ namespace WorkshopProject.Policies
         public static int checkExpression(IBooleanExpression exp)
         {
             //may check if the expression is valid
-            return Idcounter++; 
+            return Idcounter++;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is IBooleanExpression)
+                if (id == ((IBooleanExpression)obj).id)
+                    return true;
+            return false;
+        }
+
         
+
         //public static IBooleanExpression FromJson(string json)
         //{
         //    JObject boolExp = JObject.Parse(json);

@@ -42,17 +42,17 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
             godObject.cleanUpAllData();
         }
 
-        private void createManagerWithRoles(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
+        private void createManagerWithRoles(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore,bool addRemoveStorePolicy)
         {
             bridge.Login(storeOwner1, password);
-            bridge.AddStoreManager(storeId, storeManager1, addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore);
+            bridge.AddStoreManager(storeId, storeManager1, addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore, addRemoveStorePolicy);
             bridge.Logout();
         }
 
         private void createOwner()
         {
             bridge.Login(storeOwner1, password);
-            bridge.AddStoreManager(storeId, storeOwner1, true, true, true, true);
+            bridge.AddStoreManager(storeId, storeOwner1, true, true, true, true,true);
 
         }
 
@@ -63,10 +63,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
             try
             {
                 Init();
-                createManagerWithRoles(false, false, false, false);
+                createManagerWithRoles(false, false, false, false,false);
 
                 bridge.Login(storeManager1, password);
-                bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, false, false);
+                bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, false, false,false);
                 Assert.IsFalse(result);
 
                 result = bridge.CloseStore(storeId);
@@ -86,7 +86,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
             try
             {
                 Init();
-                createManagerWithRoles(false, false, true, false);
+                createManagerWithRoles(false, false, true, false,false);
                 bridge.Login(storeManager1, password);
 
                 for (int i = 0; i < 2; i++)
@@ -103,7 +103,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
                                 continue;
                             }
 
-                            bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, true, true);
+                            bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, true, true,false);
                             Assert.IsFalse(result);
                         }
                     }

@@ -60,7 +60,7 @@ namespace TestingFramework.AcceptanceTests
 
         //Req 4_5
         bool AddStoreManager(int storeId, string user);
-        bool AddStoreManager(int storeId, string user, bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore);
+        bool AddStoreManager(int storeId, string user, bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore,bool addRemoveStorePolicy);
 
         //Req 4_6
         bool RemoveStoreManager(int storeId, string user);

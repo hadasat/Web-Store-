@@ -52,14 +52,15 @@ namespace TestingFramework.AcceptanceTests
             return ret;
         }
 
-        private string createRolesJson(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
+        private string createRolesJson(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore,bool addRemoveStorePolicy)
         {
             return JsonHandler.SerializeObject(
                 new ManagerRolesContainer(
                     addRemovePurchasing,
                     addRemoveDiscountPolicy,
                     addRemoveStoreManger,
-                    closeStore)
+                    closeStore,
+                    addRemoveStorePolicy)
                 );
         }
 
@@ -98,12 +99,12 @@ namespace TestingFramework.AcceptanceTests
 
         public bool AddStoreManager(int storeId, string user)
         {
-            return AddStoreManager(storeId, user, false, false, false, false);
+            return AddStoreManager(storeId, user, false, false, false, false,false);
         }
 
-        public bool AddStoreManager(int storeId, string user, bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
+        public bool AddStoreManager(int storeId, string user, bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore,bool addRemoveStorePolicy)
         {
-            string roles = createRolesJson(addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore);
+            string roles = createRolesJson(addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore, addRemoveStorePolicy);
             string msg = service.AddStoreManager(storeId, user, roles);
             JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
@@ -297,13 +298,15 @@ namespace TestingFramework.AcceptanceTests
         public bool addRemoveDiscountPolicy;
         public bool addRemoveStoreManger;
         public bool closeStore;
+        public bool addRemoveStorePolicy;
 
-        public ManagerRolesContainer(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore)
+        public ManagerRolesContainer(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore, bool addRemoveStorePolicy)
         {
             this.addRemovePurchasing = addRemovePurchasing;
             this.addRemoveDiscountPolicy = addRemoveDiscountPolicy;
             this.addRemoveStoreManger = addRemoveStoreManger;
             this.closeStore = closeStore;
+            this.addRemoveStorePolicy = addRemoveStorePolicy;
         }
     }
 }

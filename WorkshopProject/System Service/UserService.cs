@@ -52,12 +52,12 @@ namespace WorkshopProject.System_Service
             bool addRemoveStoreManger = (bool)json["addRemoveStoreManger"];
             bool closeStore = (bool)json["closeStore"];
 
-            return new Roles(true, addRemoveDiscountPolicy, addRemoveDiscountPolicy, true, closeStore, true, true, true);
+            return new Roles(true, addRemoveDiscountPolicy, addRemoveDiscountPolicy, true, closeStore, true, true, true,true);
         }
 
         public static bool AddStoreOwner(User user, int storeId, string username)
         {
-            Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true);
+            Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true,true);
             if(!(user is Member))
                 throw new Exception("user can't do this");
 
