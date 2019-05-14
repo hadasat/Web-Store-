@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.Policies;
 
 namespace WorkshopProject.System_Service
 {
@@ -43,11 +44,6 @@ namespace WorkshopProject.System_Service
             //user = member;
             //userS.user = member;
             this.user = member;
-        }
-
-        public string addDiscountPolicy(int storeId)
-        {
-            throw new NotImplementedException();
         }
 
         public string AddProductToBasket(int storeId,int productId, int amount)
@@ -94,11 +90,6 @@ namespace WorkshopProject.System_Service
             {
                 return generateMessageFormatJason(e.Message);
             }
-        }
-
-        public string addPurchasingPolicy(int storeId)
-        {
-            throw new NotImplementedException();
         }
 
         public string AddStore(string storeName)
@@ -309,13 +300,7 @@ namespace WorkshopProject.System_Service
             }
         }
 
-        public string removeDiscountPolicy(int storeId)
-        {
-            if (!loggedIn)
-                return notLoggedInError();
-            return StoreService.removeDiscountPolicy(storeId);
-        }
-
+     
         public string RemoveProductFromStore(int storeId, int productId)
         {
             if (!loggedIn)
@@ -330,13 +315,6 @@ namespace WorkshopProject.System_Service
             {
                 return generateMessageFormatJason(e.Message);
             }
-        }
-
-        public string removePurchasingPolicy(int storeId)
-        {
-            if (!loggedIn)
-                return notLoggedInError();
-            return StoreService.removePurchasingPolicy(storeId);
         }
 
         public string RemoveStoreManager(int storeId, string managerName)
@@ -518,7 +496,8 @@ namespace WorkshopProject.System_Service
                 return notLoggedInError();
             try
             {
-                int policyId = PolicyService.addDiscountPolicy(user, storeId, policy);
+                Discount dicountPolicy = JsonHandler.DeserializeObject<Discount>(policy);
+                int policyId = PolicyService.addDiscountPolicy(user, storeId, dicountPolicy);
                 return intJson(policyId);
             }
             catch (Exception e)
@@ -550,7 +529,8 @@ namespace WorkshopProject.System_Service
 
             try
             {
-                int policyId = PolicyService.addPurchasingPolicy(user, storeId, policy);
+                IBooleanExpression purchasingPolicy = JsonHandler.DeserializeObject<IBooleanExpression>(policy);
+                int policyId = PolicyService.addPurchasingPolicy(user, storeId, purchasingPolicy);
                 return intJson(policyId);
             }
             catch (Exception e)
@@ -580,7 +560,8 @@ namespace WorkshopProject.System_Service
                 return notLoggedInError();
             try
             {
-                int policyId = PolicyService.addStorePolicy(user, storeId, policy);
+                IBooleanExpression storePolicy = JsonHandler.DeserializeObject<IBooleanExpression>(policy);
+                int policyId = PolicyService.addStorePolicy(user, storeId, storePolicy);
                 return intJson(policyId);
             }
             catch (Exception e)
