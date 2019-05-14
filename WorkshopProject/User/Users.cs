@@ -252,7 +252,7 @@ namespace Users
             return false;
         }
 
-        public bool hasAddRemoveStorePolicies(Store sore)
+        public virtual bool hasAddRemoveStorePolicies(Store sore)
         {
             return false;
         }
@@ -347,7 +347,7 @@ namespace Users
         /*** This function is the function that create Store Owner - STORE USE THIS IN THE CONSTRUCTOR ***/
         public void addStore(Store store)
         {
-            Roles storeOwner = new Roles(true, true, true, true, true, true, true, true);
+            Roles storeOwner = new Roles(true, true, true, true, true, true, true, true,true);
             StoreManager storeOwnerManager = new StoreManager(store, storeOwner);
             storeManaging.AddFirst(storeOwnerManager);
             Logger.Log("file", logLevel.INFO, "user: " + this.username + "created succesfully new store: " + store.id);
@@ -505,6 +505,12 @@ namespace Users
         {
             Roles roles = getStoreManagerRoles(store);
             return roles != null && roles.AddRemovePurchasing;
+        }
+
+        public override bool hasAddRemoveStorePolicies(Store store)
+        {
+            Roles roles = getStoreManagerRoles(store);
+            return roles != null && roles.AddRemoveStorePolicy;
         }
 
         public override bool hasAddRemoveStoreManagerPermission(Store store)

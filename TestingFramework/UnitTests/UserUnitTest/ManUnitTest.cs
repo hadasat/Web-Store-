@@ -38,8 +38,8 @@ namespace Managment.Tests
             storeManager = ConnectionStubTemp.getMember(managerId);
             storeManager2 = ConnectionStubTemp.getMember(managerId2);
 
-            ownerRoles = new Roles(true, true, true, true, true, true, true, true);
-            managerRoles = new Roles(true, true, true, true, true, false, false, false);
+            ownerRoles = new Roles(true, true, true, true, true, true, true, true,true);
+            managerRoles = new Roles(true, true, true, true, true, false, false, false,true);
 
             storeId = WorkShop.createNewStore("best shop", 1, true, storeOwner);
             store = WorkShop.getStore(storeId);
@@ -164,15 +164,15 @@ namespace Managment.Tests
         [TestCategory("Users_managment")]
         public void CompareRoles_test()
         {
-            Roles a = new Roles(true, true, true, true, true, true, true, true);
-            Roles b = new Roles(true, true, true, true, true, true, true, false);
-            Roles c = new Roles(true, true, true, true, true, true, false, false);
-            Roles d = new Roles(true, true, true, true, true, false, true, true);
-            Roles e = new Roles(true, true, true, true, false, false, true, true);
-            Roles f = new Roles(true, true, true, false, false, true, true, true);
-            Roles g = new Roles(true, true, false, false, false, true, true, true);
-            Roles h = new Roles(true, false, false, false, false, true, true, true);
-            Roles i = new Roles(false, false, false, false, false, false, false, false);
+            Roles a = new Roles(true, true, true, true, true, true, true, true,true);
+            Roles b = new Roles(true, true, true, true, true, true, true, false,true);
+            Roles c = new Roles(true, true, true, true, true, true, false, false,true);
+            Roles d = new Roles(true, true, true, true, true, false, true, true,true);
+            Roles e = new Roles(true, true, true, true, false, false, true, true,true);
+            Roles f = new Roles(true, true, true, false, false, true, true, true,true);
+            Roles g = new Roles(true, true, false, false, false, true, true, true,true);
+            Roles h = new Roles(true, false, false, false, false, true, true, true,true);
+            Roles i = new Roles(false, false, false, false, false, false, false, false,false);
 
             Assert.IsFalse(c.CompareRoles(b));
             Assert.IsFalse(d.CompareRoles(c));
@@ -194,9 +194,9 @@ namespace Managment.Tests
         [TestCategory("Users_managment")]
         public void isStoreOwner_test()
         {
-            Roles a = new Roles(true, true, true, true, true, true, true, true);
-            Roles b = new Roles(false, false, false, false, false, false, false, false);
-            Roles c = new Roles(true, true, true, true, true, false, true, true);
+            Roles a = new Roles(true, true, true, true, true, true, true, true,true);
+            Roles b = new Roles(false, false, false, false, false, false, false, false,true);
+            Roles c = new Roles(true, true, true, true, true, false, true, true,true);
 
             Assert.IsTrue(a.isStoreOwner());
             Assert.IsFalse(b.isStoreOwner());

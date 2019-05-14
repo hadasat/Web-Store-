@@ -284,10 +284,11 @@ namespace WorkshopProject
                 return -2;
             if (discountPolicy == null)
                 return -3;
-            foreach (Discount d in this.discountPolicy)
-                if (d.id == discountId)
-                    this.discountPolicy.Remove(d);
-            return discountId;
+            Discount fakeDis = new Discount(null, null);
+            fakeDis.id = discountId;
+            if(this.discountPolicy.Remove(fakeDis))
+                    return discountId;
+            return -1;
         }
 
         public int AddPurchasPolicy(User user, IBooleanExpression purchasPolicy)
@@ -315,10 +316,13 @@ namespace WorkshopProject
                 return -2;
             if (purchasePolicy == null)
                 return -3;
+            IBooleanExpression temp = null;
             foreach (IBooleanExpression b in this.purchasePolicy)
                 if (b.id == policyId)
-                    this.purchasePolicy.Remove(b);
-            return policyId;
+                    temp = b;
+            if(this.purchasePolicy.Remove(temp))
+                return policyId;
+            return -1;
         }
 
         public int AddStorePolicy(User user, IBooleanExpression storePolicy)
@@ -346,10 +350,13 @@ namespace WorkshopProject
                 return -2;
             if (this.storePolicy == null)
                 return -3;
+            IBooleanExpression temp = null;
             foreach (IBooleanExpression b in this.storePolicy)
                 if (b.id == policyId)
-                    this.storePolicy.Remove(b);
-            return policyId;
+                    temp = b;
+            if (this.storePolicy.Remove(temp))
+                return policyId;
+            return -1;
         }
 
     }

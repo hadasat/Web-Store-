@@ -75,7 +75,7 @@ namespace WorkshopProject.System_Service
             Store store = WorkShop.getStore(storeId);
             Member owner = ConnectionStubTemp.getMember(storeOwnerId);
             Member newowner = ConnectionStubTemp.getMember(storeOwnerId);
-            Roles role = new Roles(true, true, true, true, true, true, true, true);
+            Roles role = new Roles(true, true, true, true, true, true, true, true,true);
             owner.addManager(newowner.username, role, store);
             return true;
 
@@ -83,7 +83,7 @@ namespace WorkshopProject.System_Service
 
         public bool makeUserManager(int storeId, int storeOwnerId, int newManagerId, bool[] roles)
         {
-            Roles newRoles = new Roles(roles[0], roles[1], roles[2], roles[3], roles[4], roles[5], roles[6], roles[7]);
+            Roles newRoles = new Roles(roles[0], roles[1], roles[2], roles[3], roles[4], roles[5], roles[6], roles[7], roles[8]);
             Store store = WorkShop.getStore(storeId);
             Member storeOwner = ConnectionStubTemp.members[storeOwnerId];
             Member newManager = ConnectionStubTemp.members[newManagerId];

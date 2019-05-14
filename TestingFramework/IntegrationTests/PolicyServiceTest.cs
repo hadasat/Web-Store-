@@ -51,6 +51,11 @@ namespace IntegrationTests
         [TestMethod]
         public void removeDiscountPolicyTest()
         {
+            IOutcome outcome = new Percentage(20);
+            IBooleanExpression exp = new FalseCondition();
+            discount = new Discount(exp, outcome);
+            idDiscount = PolicyService.addDiscountPolicy(storeOwner, idStore, discount);
+
             int oldNumPolicies = store.discountPolicy.Count;
             bool sucsess = PolicyService.removeDiscountPolicy(storeOwner, idStore, idDiscount);
             Assert.IsTrue(sucsess);
@@ -74,6 +79,9 @@ namespace IntegrationTests
         [TestMethod]
         public void removePurchasingPolicyTest()
         {
+            purchasingExp = new FalseCondition();
+            idpurchasingExp = PolicyService.addPurchasingPolicy(storeOwner, idStore, purchasingExp);
+
             int oldNumPolicies = store.purchasePolicy.Count;
             bool sucsess = PolicyService.removePurchasingPolicy(storeOwner, idStore, idpurchasingExp);
             Assert.IsTrue(sucsess);
@@ -89,7 +97,7 @@ namespace IntegrationTests
             int oldNumPolicies = store.storePolicy.Count;
 
             idstoreExp = PolicyService.addStorePolicy(storeOwner, idStore, storeExp);
-            Assert.IsTrue(idstoreExp > 0);
+            Assert.IsTrue(idstoreExp >= 0,idstoreExp+"");
             int newNumPolicies = store.storePolicy.Count;
             Assert.AreNotEqual(oldNumPolicies, newNumPolicies);
         }
@@ -97,8 +105,11 @@ namespace IntegrationTests
         [TestMethod]
         public void removeStorePolicyTest()
         {
+            storeExp = new FalseCondition();
+            idstoreExp = PolicyService.addStorePolicy(storeOwner, idStore, storeExp);
+
             int oldNumPolicies = store.storePolicy.Count;
-            bool sucsess = PolicyService.removePurchasingPolicy(storeOwner, idStore, idstoreExp);
+            bool sucsess = PolicyService.removeStorePolicy(storeOwner, idStore, idstoreExp);
             Assert.IsTrue(sucsess);
             int newNumPolicies = store.storePolicy.Count;
             Assert.AreNotEqual(oldNumPolicies, newNumPolicies);

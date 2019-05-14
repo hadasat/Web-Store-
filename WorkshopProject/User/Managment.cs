@@ -16,6 +16,7 @@ namespace Managment
         private bool addRemoveProducts;
         private bool addRemovePurchasing;
         private bool addRemoveDiscountPolicy;
+        private bool addRemoveStorePolicy;
         private bool addRemoveStoreManger;
         private bool closeStore;
         private bool customerCommunication;
@@ -29,7 +30,8 @@ namespace Managment
                      bool closeStore, 
                      bool customerCommunication,
                      bool appointOwner,
-                     bool appointManager)
+                     bool appointManager,
+                     bool addRemoveStorePolicy)
         {
             this.AddRemoveProducts = addRemoveProducts;
             this.AddRemovePurchasing = addRemovePurchasing;
@@ -39,6 +41,7 @@ namespace Managment
             this.CustomerCommunication = customerCommunication;
             this.AppointManager = appointManager;
             this.AppointOwner = appointOwner;
+            this.AddRemoveStorePolicy = addRemoveStorePolicy;
         }
 
         public bool CompareRoles(Roles otherRoles)
@@ -48,6 +51,8 @@ namespace Managment
             if (!this.AddRemovePurchasing && otherRoles.AddRemovePurchasing)
                 return false;
             if (!this.AddRemoveDiscountPolicy && otherRoles.AddRemoveDiscountPolicy)
+                return false;
+            if (!this.AddRemoveStorePolicy && otherRoles.AddRemoveStorePolicy)
                 return false;
             if (!this.AddRemoveStoreManger && otherRoles.AddRemoveStoreManger)
                 return false;
@@ -77,6 +82,7 @@ namespace Managment
         public bool AddRemoveProducts { get => addRemoveProducts; set => addRemoveProducts = value; }
         public bool AddRemovePurchasing { get => addRemovePurchasing; set => addRemovePurchasing = value; }
         public bool AddRemoveDiscountPolicy { get => addRemoveDiscountPolicy; set => addRemoveDiscountPolicy = value; }
+        public bool AddRemoveStorePolicy { get => addRemoveStorePolicy; set => addRemoveStorePolicy = value; }
         public bool AddRemoveStoreManger { get => addRemoveStoreManger; set => addRemoveStoreManger = value; }
         public bool CloseStore { get => closeStore; set => closeStore = value; }
         public bool CustomerCommunication { get => customerCommunication; set => customerCommunication = value; }

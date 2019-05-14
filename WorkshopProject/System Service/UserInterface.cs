@@ -102,9 +102,7 @@ namespace WorkshopProject.System_Service
         //Return: Message Format
         String RemoveUser(string user);
 
-        //Return: Message Format
-        String addPurchasingPolicy(int storeId);
-
+        
 
         //Return: Message Format
         String closeStore(int storeID);

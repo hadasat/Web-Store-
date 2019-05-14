@@ -58,5 +58,13 @@ namespace WorkshopProject.Policies
                 successor.removeDiscount(discountId);
             return this;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Discount)
+                if (id == ((Discount)obj).id)
+                    return true;
+            return false;
+        }
     }
 }

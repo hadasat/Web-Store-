@@ -239,7 +239,7 @@ namespace Users.Tests
                 Store s = new Store(1, "store", 1, true);
                 member1.addStore(s);
 
-                Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true);
+                Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true,true);
                 member1.addManager("username2", ownerRoles, s);
 
                 Assert.IsTrue(member2.isStoresManagers());
@@ -262,7 +262,7 @@ namespace Users.Tests
                 Store s = new Store(1, "store", 1, true);
                 member1.addStore(s);
 
-                Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true);
+                Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true,true);
                 member1.addManager("username2", ownerRoles, 1);
 
                 Assert.IsTrue(member2.isStoresManagers());
@@ -285,7 +285,7 @@ namespace Users.Tests
                 Init();
                 Store s = new Store(1, "store", 1, true);
                 member1.addStore(s);
-                Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true);
+                Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true,true);
                 member1.addManager("username2", ownerRoles, s);
                 member1.removeManager("username2", s);
                 Assert.IsFalse(member2.isStoresManagers());
