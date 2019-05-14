@@ -26,19 +26,25 @@
 
     
     <script>
-        
-        sendRequest("data", "getShoppingBasket", null).then(function (res) {
+        onStart(function(){
+            sendRequest("data", "getShoppingBasket", null).then(function (res) {
             displayStores(res);
         });
+        });
+        
 
         function displayStores(shoppingBasket) {
             var carts = shoppingBasket.shoppingCarts.$values;
-            carts.length===0 ? $(".grid").append(emptyBasketHtml()) : 
+            if(carts.length===0)
+             $(".grid").append(emptyBasketHtml());
+             else{
             carts.map(cart =>$(".grid").append(
-                createStoreContainer(cart.store,cart.shoppingCart) + 
-                `<div  class="text-center">
-                     <a href="/wot/store/${store.id}" class="btn btn-success">Purchase Basket</a>    
-                </div>`));
+                createStoreContainer(cart.store,cart.shoppingCart)));
+
+                $(".grid").append( `<div  class="text-center">
+                     <a href="#" class="btn btn-success">Purchase Basket</a>    
+                </div>`);
+            }
         };
 
         function createStoreContainer(store,shoppingCart) {           

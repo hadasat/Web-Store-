@@ -28,10 +28,13 @@
 <script>
     var productId = getProductIdFromUrl();
     var storeId = getStoreIdFromUrl();
-
-    sendRequest("data","getProduct",{storeId: storeId, productId: productId}).then(function(res){
+    onStart(function(){
+        sendRequest("data","getProduct",{storeId: storeId, productId: productId})
+        .then(function(res){
         displayProduct(res);
-    });
+    });});
+    
+    
 
     function displayProduct(product){
         $('#mainBox').html(`<h1 class="display-4">${product.name}</h1>

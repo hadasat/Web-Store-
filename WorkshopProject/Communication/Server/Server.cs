@@ -166,6 +166,7 @@ namespace WorkshopProject.Communication.Server
                 HttpListenerWebSocketContext wsContext;
                 WebSocket ws;
                 uint newConnectionId;
+
                 try
                 {
                     //get new connection

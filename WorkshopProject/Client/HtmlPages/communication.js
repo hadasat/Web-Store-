@@ -2,14 +2,19 @@ var webSocketClient;
 var msgHandler;
 var startPageHandler;
 var signoutHandler;
+var isOldConnection= false;
+const urlAddress = "ws://localhost:8080/wot";
+var init = function(){};
 
 //back button stack
 var connected=false;
-function start() {
+function onStart(initFunc) {
     console.log("start");
-    const urlAddress = "ws://localhost:8080/wot";
+    
     console.log("connecting to server " + urlAddress + "\n");
-    var isOldConnection= false;
+
+
+
 
     if (typeof(Storage) === "undefined") {
         alert("this web browser is supported");
@@ -22,29 +27,30 @@ function start() {
         webSocketClient = new WebSocket(urlAddress,"new");
     }
 
-
     //when connection opens
     webSocketClient.onopen = function (event) { 
         if (isOldConnection) {
             var connectionId = Number(sessionStorage.connectionId);
-            console.log("establosh old connection: " + connectionId);
+            console.log("establish old connection: " + connectionId);
             webSocketClient.send("old id is:"+connectionId);
+            console.log("finish establish");
         }
         console.log("connected \n");
-        connected=true;        
+        initFunc();
     }
+        
 
     webSocketClient.onclose = function (event) {
         console.log("disconnected \n");
     }
 
-   
+
     webSocketClient.onsend = function (event) {
         console.log("sent message "+event.data)
     }
 
     webSocketClient.onmessage = function (event) {
-        console.log("received message: "+event.data);
+        //console.log("received message: "+event.data);
         var msg = JSON.parse(event.data);
         switch (msg.type) {
             case "setId":
@@ -58,8 +64,14 @@ function start() {
                 handleMessage(msg);
         }
     }
+
 }
-start();
+
+
+
+    
+
+
 
 function handleMessage(res){
     var handle = responseHandlers[res.requestId];
@@ -84,7 +96,12 @@ function sendRequest (type,info,data){
         data : data
     };
    
-    while(!connected){};
+
+    // if (!connected){
+    //     var connectionId = Number(sessionStorage.connectionId);
+    //     webSocketClient.send("old id is:"+connectionId);
+    //     connected = true;
+    // } 
     webSocketClient.send(JSON.stringify(newMsg));
     responseHandlers[messageId] = {resolve: resolve , reject: reject};
     messageId++;         

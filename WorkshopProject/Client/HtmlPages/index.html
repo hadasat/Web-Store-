@@ -27,10 +27,17 @@
 </div>
 
 <script>
+    //while(!connected){};
+    onStart(init);
+    function init(){
     sendRequest("data","getAllStores",null).then(function (res){
         var storesCollections = res;
         displayStores(storesCollections.$values);
     });
+}
+
+
+
    
     function displayStores(stores){
         stores.map(store => $(".grid").append(createStoreCardHtml(store)));
