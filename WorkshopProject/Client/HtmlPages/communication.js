@@ -24,15 +24,14 @@ function start() {
 
 
     //when connection opens
-    webSocketClient.onopen = function (event) {
-        connected=true;
+    webSocketClient.onopen = function (event) { 
         if (isOldConnection) {
             var connectionId = Number(sessionStorage.connectionId);
             console.log("establosh old connection: " + connectionId);
             webSocketClient.send("old id is:"+connectionId);
         }
         console.log("connected \n");
-        
+        connected=true;        
     }
 
     webSocketClient.onclose = function (event) {
@@ -85,6 +84,7 @@ function sendRequest (type,info,data){
         data : data
     };
    
+    while(!connected){};
     webSocketClient.send(JSON.stringify(newMsg));
     responseHandlers[messageId] = {resolve: resolve , reject: reject};
     messageId++;         
