@@ -80,6 +80,7 @@
     <Compile Include="AcceptanceTests\Req_special\ExternalSystemsConnection.cs" />
     <Compile Include="AcceptanceTests\ServiceProxyBridge.cs" />
     <Compile Include="AcceptanceTests\ServiceRealBridge.cs" />
+    <Compile Include="IntegrationTests\PolicyServiceTest.cs" />
     <Compile Include="IntegrationTests\StoreServiceTest.cs" />
     <Compile Include="IntegrationTests\TransactionServiceTest.cs" />
     <Compile Include="IntegrationTests\UserServiceTest.cs" />
