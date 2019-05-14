@@ -83,7 +83,7 @@ namespace WorkshopProject.System_Service
             int policyId = store.AddStorePolicy(user, purchasingPolicy);
             return policyId;
         }
-
+        
         public static bool removeStorePolicy(User user, int storeId, int policyId)
         {
             storeValidation(storeId);

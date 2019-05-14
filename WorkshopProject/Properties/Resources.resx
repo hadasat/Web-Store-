@@ -124,9 +124,6 @@
   <data name="WSSclientExample" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Client\HtmlPages\WSSclientExample.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="communication" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Client\HtmlPages\communication.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1255</value>
-  </data>
   <data name="navbar" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Client\HtmlPages\navbar.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1255</value>
   </data>
@@ -138,5 +135,8 @@
   </data>
   <data name="SignIn1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Client\HtmlPages\SignIn.css;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="communication" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Client\HtmlPages\communication.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>

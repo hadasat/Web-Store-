@@ -56,7 +56,7 @@ namespace WorkshopProject.Client
         }
 
 
-        public static string findPageByName( string requestedPage)
+        public static string findPageByName(string requestedPage)
         {
             PagesNames pageName = HtmlPageManager.getEnumByName(requestedPage);
             return HtmlPageManager.htmlPages[pageName];

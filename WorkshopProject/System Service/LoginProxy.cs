@@ -90,9 +90,9 @@ namespace WorkshopProject.System_Service
             return StoreService.CloseStore(user, storeID);
         }
 
-        public Product GetProductInfo(int productId)
+        public string GetProductInfo(int productId)
         {
-            return StoreService.GetProductInfo(productId);
+            return JsonHandler.SerializeObject(StoreService.GetProductInfo(productId));
         }
 
         public JsonShoppingCart GetShoppingCart(int storeId)
@@ -203,9 +203,17 @@ namespace WorkshopProject.System_Service
             return TransactionService.SetProductAmountInBasket(user, storeId, productId, amount);
         }
 
-        public Store GetStore(int storeId)
+        public string GetStore(int storeId)
         {
-            return StoreService.GetStore(storeId);
+            Store storeAnse  = StoreService.GetStore(storeId);
+            if (storeAnse == null)
+            {
+                throw new Exception ("store not found");
+            }
+            else
+            {
+                return JsonHandler.SerializeObject(storeAnse);
+            }
         }
 
         public List<Store> GetAllStores()
@@ -213,11 +221,13 @@ namespace WorkshopProject.System_Service
             return StoreService.GetAllStores();
         }
 
+        //TODO wolf delete?
         public List<Member> GetAllManagers(int storeId)
         {
             return StoreService.getAllManagers(storeId);
         }
-
+        
+        //TODO wolf delete?
         public List<Member> GetAllOwners(int storeId)
         {
             return StoreService.getAllManagers(storeId);
@@ -235,7 +245,6 @@ namespace WorkshopProject.System_Service
             return UserService.GetAllMembers();
         }
 
-        //todo amsel test
         public bool SendMessage(int memberId, string message)
         {
             UserService.SendMessage(memberId, message);
@@ -249,14 +258,14 @@ namespace WorkshopProject.System_Service
             return ((Member)user).subscribe(observer);
         }
 
-        //TODO delete
-        //public List<string> GetMessages(int memberId)
-        //{
-        //    return null;
-        //    //return UserService.GetMessages(memberId);
-        //}
-        
-        
+        public bool unSubscribeAsObserver (IObserver observer)
+        {
+            if (!loggedIn) { return false; }
+
+            return ((Member)user).unsbscribe(observer);
+        }
+
+
         //TODO: add policies to loginproxy
 
 
@@ -266,8 +275,6 @@ namespace WorkshopProject.System_Service
         }
 
 
-
-        //todo amsel tests?
         public Roles getRolesForStore(int storeId)
         {
             if (!loggedIn)

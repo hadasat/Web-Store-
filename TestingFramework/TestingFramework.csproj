@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="AcceptanceTests\Driver.cs" />
     <Compile Include="AcceptanceTests\IServiceBridge.cs" />
+    <Compile Include="AcceptanceTests\Requirement_10\req_10.cs" />
     <Compile Include="AcceptanceTests\Requirement_1\Req_1_1.cs" />
     <Compile Include="AcceptanceTests\AcceptanceTest.cs" />
     <Compile Include="AcceptanceTests\Requirement_2\Req_2_8.cs" />

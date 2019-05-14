@@ -65,7 +65,9 @@ namespace WorkshopProject.Properties {
         ///var msgHandler;
         ///var startPageHandler;
         ///
-        /////todo back button stack
+        /////
+        ///
+        ///back button stack
         ///
         ///function start() {
         ///    console.log(&quot;start&quot;);
@@ -78,7 +80,7 @@ namespace WorkshopProject.Properties {
         ///    }
         ///    if (sessionStorage.connectionId){
         ///        isOldConnection = true;
-        ///        webSocketClient = new WebSocket(urlAddress,&quot; [rest of string was truncated]&quot;;.
+        ///        webSocketClient = new WebSocket(urlAddress,&quot;o [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string communication {
             get {

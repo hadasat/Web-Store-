@@ -50,7 +50,7 @@ namespace WorkshopProject.System_Service
 
         public int addMember(string username, string password)
         {
-            ConnectionStubTemp.registerNewUser(username, password,DateTime.Today.AddYears(1) , "");
+            ConnectionStubTemp.registerNewUser(username, password, DateTime.Today.AddYears(1), "");
             return ConnectionStubTemp.memberIDGenerator - 1;
 
         }
@@ -58,7 +58,7 @@ namespace WorkshopProject.System_Service
         public int addProductToStore(int storeId, string name, double price, string category, string desc, string keyword, int amount, int rank)
         {
             Store store = WorkShop.getStore(storeId);
-            Product p = new Product(name, price,desc, category, rank, amount, storeId);
+            Product p = new Product(name, price, desc, category, rank, amount, storeId);
             store.GetStock().Add(p.getId(), p);
             return p.getId();
         }
@@ -76,14 +76,14 @@ namespace WorkshopProject.System_Service
             Member owner = ConnectionStubTemp.getMember(storeOwnerId);
             Member newowner = ConnectionStubTemp.getMember(storeOwnerId);
             Roles role = new Roles(true, true, true, true, true, true, true, true);
-            owner.addManager(newowner.username,role,store);
+            owner.addManager(newowner.username, role, store);
             return true;
 
         }
 
         public bool makeUserManager(int storeId, int storeOwnerId, int newManagerId, bool[] roles)
         {
-            Roles newRoles = new Roles(roles[0], roles[1], roles[2], roles[3], roles[4],roles[5], roles[6], roles[7]);
+            Roles newRoles = new Roles(roles[0], roles[1], roles[2], roles[3], roles[4], roles[5], roles[6], roles[7]);
             Store store = WorkShop.getStore(storeId);
             Member storeOwner = ConnectionStubTemp.members[storeOwnerId];
             Member newManager = ConnectionStubTemp.members[newManagerId];
@@ -138,7 +138,7 @@ namespace WorkshopProject.System_Service
             int id;
             bool ret = ConnectionStubTemp.mapIDUsermane.TryGetValue(member, out id);
             ConnectionStubTemp.mapIDUsermane.Remove(member);
-            ConnectionStubTemp.members.Remove(id);     
+            ConnectionStubTemp.members.Remove(id);
             return ret;
         }
 
@@ -174,5 +174,11 @@ namespace WorkshopProject.System_Service
             ConnectionStubTemp.memberIDGenerator = 0;
             ConnectionStubTemp.init();
         }
+
+        public void purchaseProduct(int productId)
+        {
+
+        }
+        
     }
 }

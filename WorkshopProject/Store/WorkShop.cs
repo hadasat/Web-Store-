@@ -12,7 +12,7 @@ namespace WorkshopProject
     public  static class  WorkShop
     {
        public  static Dictionary<int,Store> stores = new Dictionary<int, Store>();
-        public static  int id = 0;
+       public static  int id = 0;
        
 
         /// <summary>
@@ -81,6 +81,7 @@ namespace WorkshopProject
                 return false;
             }
             Logger.Log("file", logLevel.INFO, "store " + storeId + " has closed");
+            
             return true;
         }
 

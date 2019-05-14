@@ -125,7 +125,6 @@ namespace WorkshopProject.System_Service
             return roles;
         }
 
-        //todo amsel add test
         /// <summary>
         /// gets the roles of the user for store with requested id
         /// </summary>
