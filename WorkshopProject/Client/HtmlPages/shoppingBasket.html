@@ -19,7 +19,6 @@
 </head>
 <body>
 
-
     <div class="container">
 
         <div class="grid">
@@ -70,10 +69,13 @@
         </div>
     </div>
 
-
+    <div class="col-sm-9 col-md-7 col-lg-5" style="margin-bottom: 10%;">
+            <a href="/wot/store/${store.id}" class="btn btn-primary">Purchase Basket</a>    
+        </div>
 
     <script>
-
+        
+        ///TODO change Purchase btn position
         var gridGenerator = 1;
 
         sendRequest("data", "getShoppingBasket", null).then(function (res) {
@@ -117,7 +119,7 @@
                 `<div class="card-body" >` +
                 `<h5 class="card-title">${product.name.toUpperCase()}</h5>` +
                 `<h6 class="card-subtitle mb-2 text-muted">${product.price * amount} $</h6>` +
-                ` <a href="/wot/store/${storeId}/${product.id}" class="btn btn-primary">Edit</a>` +
+                ` <a href="/wot/store/${storeId}/${product.id}" class="btn btn-primary">Edit</a>` +///need to work
                 ` </div>` +
                 `</div>` +
                 `</div>`;
