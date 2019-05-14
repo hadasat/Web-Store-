@@ -73,6 +73,7 @@ function signOut(){
     sendRequest("action","signOut",{}).then(function(msg){
         localStorage.setItem("user_status",JSON.stringify({loggedIn : false, username: ''}));
         setUpOptBtn();
+        window.location.href = "/wot/main";
     })
 }
 
