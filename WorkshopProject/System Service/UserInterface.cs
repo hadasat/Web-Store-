@@ -105,14 +105,6 @@ namespace WorkshopProject.System_Service
         //Return: Message Format
         String addPurchasingPolicy(int storeId);
 
-        //Return: Message Format
-        String removePurchasingPolicy(int storeId);
-
-        //Return: Message Format
-        String addDiscountPolicy(int storeId);
-
-        //Return: Message Format
-        String removeDiscountPolicy(int storeId);
 
         //Return: Message Format
         String closeStore(int storeID);
@@ -140,5 +132,9 @@ namespace WorkshopProject.System_Service
         String addPurchasingPolicy(int storeId, string policy);
 
         String removePurchasingPolicy(int storeId, int policyId);
+
+        String addStorePolicy(int storeId, string policy);
+
+        String removeStorePolicy(int storeId, int policyId);
     }
 }
