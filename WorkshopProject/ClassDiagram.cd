@@ -3,7 +3,7 @@
   <Class Name="Managment.Roles">
     <Position X="49.5" Y="33" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>hEgAEAQAAAAQAAAAAgIAACIiAAAAIAAAAAAAAKACgAA=</HashCode>
+      <HashCode>hEgAEAQAAAAQAAAAAgIAACIiAEAAIAAAAAAAAKACgAA=</HashCode>
       <FileName>User\Managment.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -62,7 +62,7 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAEAAAAAAAAAAAAAAABAAAABAAAAAAAAAAAAAAmgwA=</HashCode>
+      <HashCode>ABAEIAABAAAAAAAAAAARAEAABAAAEQAAAMAAAAAmowA=</HashCode>
       <FileName>Communication\UserConnectionInfo.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -134,9 +134,9 @@
       <FileName>Store\Store.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
-      <Field Name="discountPolicy" />
-      <Field Name="purchasePolicy" />
       <Field Name="Stock" />
+      <Field Name="purchasePolicy" />
+      <Field Name="discountPolicy" />
       <Field Name="storePolicy" />
     </ShowAsCollectionAssociation>
   </Class>
@@ -274,25 +274,25 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAIAAABQAAAAAAAAAAAAAAAAAAIAiAAEACAAAAgA=</HashCode>
+      <HashCode>AAAAAIAAABQAAAAAgAAAAAAAAAAAAIAiAAEACAAAAgA=</HashCode>
       <FileName>Policies\Discount.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="condition" />
       <Field Name="successor" />
       <Field Name="outcome" />
+      <Field Name="condition" />
     </ShowAsAssociation>
   </Class>
   <Class Name="WorkshopProject.Policies.IBooleanExpression">
     <Position X="15.75" Y="34.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAIAAAAAAAAEAAAAAIAkAAgAAAAAAEAAgA=</HashCode>
+      <HashCode>AAAAAAAAAAAIAAAAgAAAEAAAAAIAkAAgAAAAAAEAAgA=</HashCode>
       <FileName>Policies\IBooleanExpression.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="secondChild" />
-      <Field Name="firstChild" />
       <Field Name="filter" />
+      <Field Name="firstChild" />
+      <Field Name="secondChild" />
     </ShowAsAssociation>
   </Class>
   <Class Name="WorkshopProject.Policies.AllProductsFilter" BaseTypeListCollapsed="true">
@@ -332,7 +332,7 @@
   <Class Name="WorkshopProject.Properties.Resources">
     <Position X="19.75" Y="7.75" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAQACAAAAAAAAAAAABEAAAAQgAAAAAAgQAAAQBAIA=</HashCode>
+      <HashCode>AgAAQACAAgAAAAAAAAABEAgAAQgAAAABAgQAAAQBAIA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Shopping.ShoppingBasket">
@@ -403,7 +403,7 @@
   <Class Name="WorkshopProject.System_Service.GodObject" BaseTypeListCollapsed="true">
     <Position X="28.75" Y="17.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>MBAgAAAAQAQAAAAAAAABAACAAgAAAAAAAAAAQBAAAAA=</HashCode>
+      <HashCode>MBAgAAAAQAQAAgAAAAABAACAAgAAAAAAAAAAQBAAAAA=</HashCode>
       <FileName>System Service\IGodObject.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -499,7 +499,7 @@
   <Class Name="Users.Member">
     <Position X="45.5" Y="35.75" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>IEApAGABAAQggAgQDABAAQMhAIAIQAECAgQAQIIAAAA=</HashCode>
+      <HashCode>IEApAGABAAQggAhQDEBAAQMhAIAIQAMiAgQAQIIAAAA=</HashCode>
       <FileName>User\Users.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -589,7 +589,7 @@
   <Interface Name="WorkshopProject.System_Service.UserInterface">
     <Position X="11.25" Y="13.25" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>KgEAAAAbRAAAAAIAACYAjABgAAgjBEAAAAACAACAOAQ=</HashCode>
+      <HashCode>KgEAAACbRAAAAAJAACYAjABgAAgjBEAAAAACAACAOAQ=</HashCode>
       <FileName>System Service\UserInterface.cs</FileName>
     </TypeIdentifier>
   </Interface>
