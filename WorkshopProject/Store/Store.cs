@@ -113,7 +113,6 @@ namespace WorkshopProject
         private int addProduct(User user, Product p)
         {
             //Verify Premission
-
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return -1;
 
@@ -204,7 +203,7 @@ namespace WorkshopProject
         /// <returns>new amount id succeed ,otherwise -1</returns>
         private int removeFromStock(Product p, int amountToBuy)
         {
-            if (p.amount < amountToBuy)
+            if (!amountIsLegal(p.amount - amountToBuy))
                 return -1;
 
             p.amount -= amountToBuy;
@@ -213,9 +212,10 @@ namespace WorkshopProject
 
         public bool addProductTostock(User user, Product product, int amountToAdd)
         {
-            if (amountToAdd <= 0)
+            if (!amountIsLegal(amountToAdd))
             {
-                return false;
+                throw new Exception("the amount is illegal");
+                
             }
 
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
@@ -229,6 +229,12 @@ namespace WorkshopProject
             return true;
         }
 
+        private bool amountIsLegal(int amountToAdd)
+        {
+            if (amountToAdd < 0)
+                return false;
+            return true;
+        }
 
         public bool checkAvailability(Product product, int amount)
         {
@@ -243,6 +249,8 @@ namespace WorkshopProject
         {
             if (!Stock.ContainsKey(productId) || !user.hasAddRemoveProductsPermission(this))
                 return false;
+            if (!amountIsLegal(amount))
+                throw new Exception("new amount is illegal");
             Product product = Stock[productId];
             product.name = name;
             product.description = desc;
