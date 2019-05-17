@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WorkShop</title>
+    <script type="text/javascript" src="/wot/communication.js"></script>
+
+
+    <!-- BOOTSTRAP FILES -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+
+
+    <!-- NAVBAR -->
+    <div id="navbar_header"></div>
+    <script type="text/javascript" src="/wot/navbar.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="page-header" class="pb-2 mt-4 mb-2 border-bottom text-center">
+            <h1>Search</h1>
+        </div>
+        <form id="search">
+                <div class="row" style="margin-bottom: 8px;">
+                        <div class="col">
+                            <label for="pName">Name</label>
+                            <input id= "pName" type="text" class="form-control" placeholder="Name">
+                        </div>
+                        <div class="col">
+                                <label for="pCat">Category</label>
+                                <input  id= "pCat" type="text" class="form-control" placeholder="Category">
+                        </div>
+                    <div class="col">
+                            <label for="fromPrice">From Price</label> 
+                            <input id= "fromPrice"type="number"  class="form-control" placeholder="From" >  
+                    </div>
+                    <div class="col">
+                            <label for="toPrice">To Price</label> 
+                            <input id= "toPrice"type="number"  class="form-control" placeholder="To" >  
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 8px;">
+                        <div class="col">
+                                <label for="pRank">Product Rank</label> 
+                                <input id= "pRank"type="number"  class="form-control" placeholder="Rank" >
+                        </div>
+                        <div class="col">
+                                <label for="sRank">Store Rank</label> 
+                                <input id= "sRank"type="number"  class="form-control" placeholder="Rank" >
+                        </div>
+                        <div class="col">
+                            <label for="pDesc">Description</label>
+                            <input  id= "pDesc" type="text" class="form-control" placeholder="Description" >
+                        </div>
+                </div>
+                <div class="row" style="margin-bottom: 8px;">  
+                        <div class="col">
+                            <label for="pKeyWord">Key Words</label> 
+                            <input id= "pKeyWord" type="text" class="form-control" placeholder="key words" >   
+                        </div>      
+                </div>
+                <div class="text-center">
+                    <button id="changeProductInfo_btn" type="button" class="btn btn-success">Search</button>
+                </div>
+        </form>
+        <hr>
+        <div class="grid row"> </div>  
+    </div>
+    <script>
+
+        onStart(function(){});
+
+        function search(){
+            var name = $("#pName").val();
+            var fromPrice = $("#fromPrice").val();
+            var toPrice = $("#toPrice").val();
+            var pRank = $("#pRank").val();
+            var sRank = $("#sRank").val();
+            var desc = $("#pDesc").val();
+            var cat = $("#pCat").val();
+            var keyWord = $("#pKeyWord").val();
+
+            sendRequest('data','searchProducts',{nane: name,category: cat,keyword: keyWord,startPrice: fromPrice
+            , endPrice : toPrice, productRank : pRank, storeRank : sRank})
+            .then(function(res){
+                displayResults(res.$values);
+            });
+        }
+
+        function displayResults(products){
+            products.length===0 ? displayNoProductsFound() :
+            displayProducts(products);
+        }
+        function displayProducts(products){
+            products.map(p => $(".grid").append(createProductCardHtml(p)));
+        }
+
+        function createProductCardHtml(product){
+        // Card Html Component String
+        return  `<div class="col-sm-3">`+
+                    `<div class="card" style="margin-bottom: 10%;" >`+
+                        `<div class="card-header">${product.category} </div>`+
+                        `<div class="card-body" >`+
+                            `<h5 class="card-title">${product.name.toUpperCase()}</h5>`+
+                            `<h6 class="card-subtitle mb-2 text-muted">${product.price} $</h6>`+
+                            `<p>${product.description}</p>`+
+                           ` <a href="/wot/store/${product.storeId}/${product.id}" class="btn btn-primary">See More</a>`+
+                        ` </div>`+
+                       ` <div class="card-footer text-muted">${product.amount} available </div>`+
+                    `</div>`+
+                `</div>`;
+       
+    }
+
+    function displayNoProducts(){
+        $(".grid").append(`<div  class="text-center">
+                        <h1 class="display-4">
+                            No products found :(
+                        </h4>
+                    </div>`);
+    }
+
+
+    </script>
+</body>
+</html>
