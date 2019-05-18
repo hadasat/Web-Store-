@@ -84,6 +84,7 @@
     <Compile Include="Communication\UserConnectionInfo.cs" />
     <Compile Include="DataAccessLayer\Context\WorkshopDBContext.cs" />
     <Compile Include="DataAccessLayer\DataAccess.cs" />
+    <Compile Include="DataAccessLayer\DuplicateHandler.cs" />
     <Compile Include="DataAccessLayer\ObjectMapper.cs" />
     <Compile Include="Examples\ClassForTestExample.cs" />
     <Compile Include="Examples\LogExample.cs" />
