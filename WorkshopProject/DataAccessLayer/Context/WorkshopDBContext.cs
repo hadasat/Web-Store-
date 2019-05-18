@@ -25,6 +25,11 @@ namespace WorkshopProject.DataAccessLayer.Context
             //Configure domain classes using modelBuilder here..
         }
 
+        public DbSet<Member> Members { get; set; }
+        public DbSet<Store> Stores { get; set; }
+        public DbSet<Product> Products { get; set; }
+        //jonathan: why is Tranaction static?
+        //public DbSet<Transaction> Transactions { get; set; }
     }
 
     public class WorkshopProductionDBContext : WorkshopDBContext
@@ -33,13 +38,6 @@ namespace WorkshopProject.DataAccessLayer.Context
         {
             Database.SetInitializer<WorkshopProductionDBContext>(new CreateDatabaseIfNotExists<WorkshopProductionDBContext>());
         }
-
-        public DbSet<Member> Members { get; set; }
-        public DbSet<Store> Stores { get; set; }
-        public DbSet<Product> Products { get; set; }
-
-        //jonathan: why is Tranaction static?
-        //public DbSet<Transaction> Transactions { get; set; }
     }
 
     public class WorkshopTestDBContext : WorkshopDBContext
@@ -48,12 +46,5 @@ namespace WorkshopProject.DataAccessLayer.Context
         {
             Database.SetInitializer<WorkshopTestDBContext>(new DropCreateDatabaseAlways<WorkshopTestDBContext>());
         }
-
-        public DbSet<Member> Members { get; set; }
-        public DbSet<Store> Stores { get; set; }
-        public DbSet<Product> Products { get; set; }
-
-        //jonathan: why is Tranaction static?
-        //public DbSet<Transaction> Transactions { get; set; }
     }
 }

@@ -43,17 +43,17 @@ namespace WorkshopProject.DataAccessLayer
         }
 
 
-        public Member TryGetMember(Integer id)
+        public Member TryGetMember(int id)
         {
             return TryGet(id, Members);
         }
 
-        public Store TryGetStore(Integer id)
+        public Store TryGetStore(int id)
         {
             return TryGet(id, Stores);
         }
 
-        public Product TryGetProducts(Integer id)
+        public Product TryGetProducts(int id)
         {
             return TryGet(id, Products);
         }
