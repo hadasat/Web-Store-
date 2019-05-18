@@ -11,10 +11,6 @@ namespace WorkshopProject.DataAccessLayer
     public class DataAccess
     {
         private bool isProduction; 
-        private WorkshopProductionDBContext productionContext;
-        private WorkshopTestDBContext testContext;
-        
-
 
         public DataAccess() : this(false)
         {
@@ -23,8 +19,8 @@ namespace WorkshopProject.DataAccessLayer
         public DataAccess(bool isProduction)
         {
             this.isProduction = isProduction;
-            productionContext = new WorkshopProductionDBContext();
-            testContext = new WorkshopTestDBContext();
+            //productionContext = new WorkshopProductionDBContext();
+            //testContext = new WorkshopTestDBContext();
         }
 
         /// <summary>
@@ -73,11 +69,11 @@ namespace WorkshopProject.DataAccessLayer
         {
             if (isProduction)
             {
-                return productionContext;
+                return new WorkshopProductionDBContext();
             }
             else
             {
-                return testContext;
+                return new WorkshopTestDBContext();
             }
         }
 
