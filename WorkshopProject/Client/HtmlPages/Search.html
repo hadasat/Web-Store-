@@ -64,7 +64,7 @@
                         </div>      
                 </div>
                 <div class="text-center">
-                    <button id="changeProductInfo_btn" type="button" class="btn btn-success">Search</button>
+                    <button id="search_btn" type="button" class="btn btn-success">Search</button>
                 </div>
         </form>
         <hr>
@@ -73,6 +73,7 @@
     <script>
 
         onStart(function(){});
+        $('#search_btn').on('click',search);
 
         function search(){
             var name = $("#pName").val();

@@ -30,6 +30,9 @@ document.getElementById("navbar_header").innerHTML = `
 
             </ul>
             <ul class="navbar-nav ml-auto">
+                <li id="nav_admin" class="nav-item">
+                    <a class="nav-link" href="/wot/adminactions">Admin Actions</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/wot/search">Advance Search</a>
                 </li>
@@ -58,6 +61,12 @@ document.getElementById("navbar_header").innerHTML = `
         $("#nav_userName").hide();
         $("#nav_opensStore").hide();
     }
+
+    if(username.toLowerCase()==='admin')
+        $("#nav_admin").show();
+    else
+        $("#nav_admin").hide();
+
 }
 
 $('#nav_signOut').on('click', ()=>{
