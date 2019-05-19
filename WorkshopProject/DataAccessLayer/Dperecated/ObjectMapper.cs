@@ -43,19 +43,19 @@ namespace WorkshopProject.DataAccessLayer
         }
 
 
-        public Member TryGetMember(int id)
+        public Member GetMember(int id)
         {
-            return TryGet(id, Members);
+            return Get(id, Members);
         }
 
-        public Store TryGetStore(int id)
+        public Store GetStore(int id)
         {
-            return TryGet(id, Stores);
+            return Get(id, Stores);
         }
 
-        public Product TryGetProducts(int id)
+        public Product GetProducts(int id)
         {
-            return TryGet(id, Products);
+            return Get(id, Products);
         }
 
 
@@ -67,10 +67,11 @@ namespace WorkshopProject.DataAccessLayer
         /// <param name="id"></param>
         /// <param name="obj"></param>
         /// <param name="map"></param>
-        /// <returns></returns>
+        /// <returns>True if added to map.
+        /// False if object with key is already in map</returns>
         private bool Add<T>(Integer id, T obj, ConditionalWeakTable<Integer, T> map) where T : class
         {
-            if (TryGet<T>(id, map) != null)
+            if (Get<T>(id, map) != null)
             {
                 return false;
             }
@@ -81,7 +82,14 @@ namespace WorkshopProject.DataAccessLayer
             }
         }
 
-        private T TryGet<T>(Integer id, ConditionalWeakTable<Integer, T> map) where T : class
+        /// <summary>
+        /// Tries to get an object by its id (key).
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id"></param>
+        /// <param name="map"></param>
+        /// <returns>Null if object not in map</returns>
+        private T Get<T>(Integer id, ConditionalWeakTable<Integer, T> map) where T : class
         {
             T ret;
             if (map.TryGetValue(id, out ret))

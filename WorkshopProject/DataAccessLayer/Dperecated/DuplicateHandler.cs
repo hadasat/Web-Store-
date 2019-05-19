@@ -31,16 +31,6 @@ namespace WorkshopProject.DataAccessLayer
         [MethodImpl(MethodImplOptions.Synchronized)]
         private static T Get<T>(int id, DbSet<T> db) where T : class
         {
-            /*
-            T ret;
-            ret = map.TryGetMember(id);
-            if (ret != null)
-            {
-                return ret;
-            }
-            */
-
-
 
             return null;
         }
