@@ -60,23 +60,76 @@
             
             <hr>
             <h5>Remove managers</h5>
-            <p> <label for="sel1">Select list (select one):</label>
-                <select class="form-control" id="sel1">
+            <p> <label for="managers">Select list (select one):</label>
+                <select class="form-control" id="managers">
                   <option>1</option>
                   <option>2</option>
                   <option>3</option>
                   <option>4</option>
                 </select></p>
-                <button type="button" class="btn btn-outline-info btn-sm">Remove</button>
+                <button type="button" id="removeManager_btn" class="btn btn-danger btn-sm">Remove</button>
+            <hr>
+            <h5>Add store owners/managers</h5>
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" value="">Add & Remove products
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" value="">Add & Remove purchasing policy
+                    </label>
+                </div>
+                <div>
+                    <label class="ccheckbox">
+                        <input type="checkbox" value="">Add & Remove discount policy
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" value="">Add & Remove store managers
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" value="">Close store
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" value="">Customer communication
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" value="">Appoint owners
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" value="">Appoint managers
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" value="">Add & Remove store policy
+                    </label>
+                </div>
+                <div>
+                    <p>Do you want to appoint him as a store owner?</p>
+                    <label class="checkbox">
+                        <input type="checkbox" value="">Store owner
+                    </label>
+                    <button id="addManager_btn" class="btn btn-lg btn-facebook btn-block text-uppercase">Add manager</button>
+                </div>
             <hr>
             <h5>Close store</h5>
             <p>turn your store to be inactive store. you can regret later.</p>
-            <button type="button" class="btn btn-danger">Close Now</button>
+            <button type="button"  id="closeStore_btn" class="btn btn-danger">Close Now</button>
             <hr>
         </div>
         <div class="modal-footer">
-          <button type="button" id="closeStore_btn" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <!-- <button type="button"   data-dismiss="modal" class="btn btn-primary">Save changes</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -92,8 +145,24 @@
         sendRequest("data","getStore",storeId).then(function(res){
             displayStore(res);
         });
+
+        sendRequest('data','getAllManagers',storeId).then(function(res){
+            addManagersToSelectList(res.$values);
+        });
     }
     onStart(init);
+
+    function addManagersToSelectList(managers){
+        managers.map(manager => $('#managers').append(`<option>${managers.username}</option>`));
+    }
+
+    $('#removeManager_btn').on('click',function(){
+     var username = $('#managers').val();
+     sendRequest('action','addStoreManager', {storeId: storeId ,managerName: username})
+     .then(function(res){
+        init();
+     })
+ })
 
     $('#closeStore_btn').on('click',function(){
         sendRequest('action','closeStore',storeId)
@@ -168,6 +237,10 @@
             $("#pDesc").val('');
             $("#pCat").val('');
         };
+
+        $('#addManager_btn').on('click',function(){
+            
+        });
 </script>
    
 </body>
