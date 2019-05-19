@@ -83,9 +83,12 @@
     <Compile Include="Communication\Server\Server.cs" />
     <Compile Include="Communication\UserConnectionInfo.cs" />
     <Compile Include="DataAccessLayer\Context\WorkshopDBContext.cs" />
-    <Compile Include="DataAccessLayer\DataAccess.cs" />
-    <Compile Include="DataAccessLayer\DuplicateHandler.cs" />
-    <Compile Include="DataAccessLayer\ObjectMapper.cs" />
+    <Compile Include="DataAccessLayer\DataAccessNonPersistent.cs" />
+    <Compile Include="DataAccessLayer\DataAccessPersistent.cs" />
+    <Compile Include="DataAccessLayer\Deprecated\DuplicateHandler.cs" />
+    <Compile Include="DataAccessLayer\Deprecated\ContextHandler.cs" />
+    <Compile Include="DataAccessLayer\Deprecated\ObjectMapper.cs" />
+    <Compile Include="DataAccessLayer\IDataAccess.cs" />
     <Compile Include="Examples\ClassForTestExample.cs" />
     <Compile Include="Examples\LogExample.cs" />
     <Compile Include="External Services\ConsistencyStub.cs" />
