@@ -30,16 +30,27 @@ document.getElementById("navbar_header").innerHTML = `
 
             </ul>
             <ul class="navbar-nav ml-auto">
+                <li  class="nav-item">
+                    <a class="nav-link"  href="javascript:r();" >Notification <span class="badge badge-info">0</span></a>
+                </li>
                 <li id="nav_admin" class="nav-item">
                     <a class="nav-link" href="/wot/adminactions">Admin Actions</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/wot/search">Advance Search</a>
+                    <a class="nav-link" href="/wot/search">Advance Search </a>
                 </li>
             </ul>
         </div>
     </nav>
 `;
+
+$('#navbar_header').on('click','#nav_notification',function(){
+    console.log("test");
+});
+
+function r(){
+    console.log("ttt");
+}
 
 
 // <!-- NavBar  Script -->
