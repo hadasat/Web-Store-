@@ -67,6 +67,7 @@ namespace Managment
             return true;
         }
 
+
         public bool isStoreOwner()
         {
             return  this.AddRemoveProducts &&
@@ -96,6 +97,7 @@ namespace Managment
         private Roles myRoles;
         private LinkedList<StoreManager> subManagers;
         private StoreManager father;
+        private bool storeOwner;
 
         public LinkedList<StoreManager> SubManagers { get => subManagers; set => subManagers = value; }
 
@@ -105,6 +107,7 @@ namespace Managment
             this.myRoles = storeRoles;
             this.subManagers = new LinkedList<StoreManager>();
             this.father = null; //change to super father
+            this.storeOwner = false;
         }
 
         /*about roles: the client will choose what roles he wants to give the new
@@ -126,6 +129,9 @@ namespace Managment
                 throw new Exception("this manager try to give more roles than he can");
             }
         }
+
+
+
 
         private bool checkNotAManager(Member member)
         {
@@ -149,6 +155,8 @@ namespace Managment
 
         public bool removeManager(StoreManager managerToRemove)
         {
+            if (managerToRemove.storeOwner)
+                throw new Exception("Sorry, you can't remove a partner! this user is a an owner of your store");
             if (subManagers.Contains(managerToRemove))
             {
                 recursiveCleanManager(managerToRemove);
@@ -197,6 +205,17 @@ namespace Managment
         public StoreManager GetFather()
         {
             return father;
+        }
+
+        public void SetStoreOwnerTrue()
+        {
+            this.storeOwner = true;
+        }
+
+
+        public void SetStoreOwnerFalse()
+        {
+            this.storeOwner = false;
         }
     }
 }
