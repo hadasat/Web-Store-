@@ -50,6 +50,12 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -58,6 +64,7 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.2-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -75,6 +82,13 @@
     <Compile Include="Communication\Server\IWebSocketMessageSender.cs" />
     <Compile Include="Communication\Server\Server.cs" />
     <Compile Include="Communication\UserConnectionInfo.cs" />
+    <Compile Include="DataAccessLayer\Context\WorkshopDBContext.cs" />
+    <Compile Include="DataAccessLayer\DataAccessDriver.cs" />
+    <Compile Include="DataAccessLayer\DataAccessConcrete.cs" />
+    <Compile Include="DataAccessLayer\Deprecated\DuplicateHandler.cs" />
+    <Compile Include="DataAccessLayer\Deprecated\ContextHandler.cs" />
+    <Compile Include="DataAccessLayer\Deprecated\ObjectMapper.cs" />
+    <Compile Include="DataAccessLayer\IDataAccess.cs" />
     <Compile Include="Examples\ClassForTestExample.cs" />
     <Compile Include="Examples\LogExample.cs" />
     <Compile Include="External Services\ConsistencyStub.cs" />

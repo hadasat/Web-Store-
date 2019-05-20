@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace WorkshopProject
     public class Product
     {
         public static int idGenerator = 0;
+        [Key]
         public int id { get; set; } 
         public string name;
         public double price;

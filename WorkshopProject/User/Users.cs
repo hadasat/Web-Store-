@@ -9,6 +9,7 @@ using WorkshopProject;
 using Shopping;
 using WorkshopProject.Log;
 using WorkshopProject.Communication;
+using System.ComponentModel.DataAnnotations;
 
 namespace Users
 {
@@ -302,7 +303,8 @@ namespace Users
 
     public class Member : User, IObserverSubject
     {
-        public int ID; //why do we need id?
+        [Key]
+        public int ID { get; set; } //why do we need id?
         public string username;
         public LinkedList<StoreManager> storeManaging;
         public DateTime birthdate;
@@ -673,6 +675,8 @@ namespace Users
 
     public class SystemAdmin : Member
     {
+        public SystemAdmin() { } //jonathan - added for DB
+
         public SystemAdmin(string username, int ID) : base(username, ID) { }
 
         public SystemAdmin(string username, int ID, DateTime birthdate,string country) : base(username, ID, birthdate,country) { }
