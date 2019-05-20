@@ -8,11 +8,13 @@ namespace WorkshopProject.DataAccessLayer
 {
     public static class DataAccessDriver
     {
-        private static bool persistent = true;
+        public static bool Persistent { get; set; } = true;
+        public static string connectionTestDB { get; set; } = "Data Source=.\\SQLEXPRESS;Initial Catalog=WorkshopTestDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        public static string connectionProductionDB { get; set; } = "Data Source=.\\SQLEXPRESS;Initial Catalog=WorkshopProductionDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         public static IDataAccess GetDataAccess()
         {
-            if (persistent)
+            if (Persistent)
             {
                 return new DataAccessPersistent();
             }
@@ -21,7 +23,8 @@ namespace WorkshopProject.DataAccessLayer
                 return new DataAccessNonPersistent();
             }       
         }
-
-        //public static ApplicationParameters.ConnectionStringName connectionString;
+    
+           
+        
     }
 }

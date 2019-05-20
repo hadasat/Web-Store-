@@ -21,6 +21,9 @@ namespace WorkshopProject
         static void Main(string[] args)
         {
             //Console.ReadLine();
+            WorkshopDBContext ctx = new WorkshopProductionDBContext();
+            ctx.Members.Add(new Member());
+
             Setup();
             CommunicationManager manager = new CommunicationManager();
         }

@@ -197,17 +197,25 @@ namespace WorkshopProject.DataAccessLayer
 
     public class DataAccessPersistent : DataAccessNonPersistent
     {
-        protected static WorkshopDBContext productionContext = new WorkshopProductionDBContext();
-        protected static WorkshopDBContext testContext = new WorkshopProductionDBContext();
+        protected static WorkshopProductionDBContext productionContext; //= new WorkshopProductionDBContext();
+        protected static WorkshopTestDBContext testContext; //= new WorkshopProductionDBContext();
 
         protected override WorkshopDBContext getContext()
         {
             if (isProduction)
             {
+                if(productionContext == null)
+                {
+                    productionContext = new WorkshopProductionDBContext();
+                }
                 return productionContext;
             }
             else
             {
+                if (testContext == null)
+                {
+                    testContext = new WorkshopTestDBContext();
+                }
                 return testContext;
             }
         }
