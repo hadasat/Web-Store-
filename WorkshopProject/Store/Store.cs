@@ -1,6 +1,7 @@
 ﻿using Managment;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,8 @@ namespace WorkshopProject
         public List<IBooleanExpression> purchasePolicy;
         public List<Discount> discountPolicy;
         public List<IBooleanExpression> storePolicy;
-        public int id;
+        [Key]
+        public int id { get; set; }
 
         public Store(int id, string name, int rank, Boolean isActive)
         {
