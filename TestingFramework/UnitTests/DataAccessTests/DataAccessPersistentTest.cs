@@ -18,6 +18,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
         public void Init()
         {
             dal = new DataAccessPersistent();
+            dal.SetMode(false);
         }
 
         [TestCleanup]
@@ -30,16 +31,15 @@ namespace TestingFramework.UnitTests.DataAccessTests
         [TestCategory("DAL - persistent")]
         public void GetMemberTest()
         {
-            int id = SaveNewMemberTest();
+            int id = SaveNewMember();
             Member member;
             member = dal.GetMember(id);
             Assert.IsNotNull(member);
             Assert.AreEqual(member.ID, id);
         }
 
-        [TestMethod]
-        [TestCategory("DAL - persistent")]
-        public int SaveNewMemberTest()
+
+        public int SaveNewMember()
         {
             Member member = new Member("user", 0, new DateTime(), "country");
 
@@ -47,6 +47,15 @@ namespace TestingFramework.UnitTests.DataAccessTests
             Assert.IsTrue(result);
             return member.ID;
         }
+
+        [TestMethod]
+        [TestCategory("DAL - persistent")]
+        public void SaveNewMemberTest()
+        {
+            SaveNewMember();
+        }
+
+
 
         [TestMethod]
         [TestCategory("DAL - persistent")]

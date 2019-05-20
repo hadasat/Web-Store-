@@ -44,7 +44,8 @@ namespace WorkshopProject.DataAccessLayer.Context
     {
         public WorkshopTestDBContext() : base("WorkshopTestDB")
         {
-            Database.SetInitializer<WorkshopTestDBContext>(new DropCreateDatabaseAlways<WorkshopTestDBContext>());
+            //Database.SetInitializer<WorkshopTestDBContext>(new DropCreateDatabaseAlways<WorkshopTestDBContext>());
+            Database.SetInitializer<WorkshopTestDBContext>(new CreateDatabaseIfNotExists<WorkshopTestDBContext>());
         }
     }
 }

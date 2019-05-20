@@ -21,5 +21,7 @@ namespace WorkshopProject.DataAccessLayer
                 return new DataAccessNonPersistent();
             }       
         }
+
+        //public static ApplicationParameters.ConnectionStringName connectionString;
     }
 }
