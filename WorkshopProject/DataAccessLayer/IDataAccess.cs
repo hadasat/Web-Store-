@@ -8,6 +8,9 @@ namespace WorkshopProject.DataAccessLayer
         bool GetMode();
         Product GetProduct(int id);
         Store GetStore(int id);
+        bool RemoveMember(int id);
+        bool RemoveProduct(int id);
+        bool RemoveStore(int id);
         bool SaveMember(Member entity);
         bool SaveProduct(Product entity);
         bool SaveStore(Store entity);

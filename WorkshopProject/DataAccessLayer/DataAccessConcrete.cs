@@ -72,6 +72,13 @@ namespace WorkshopProject.DataAccessLayer
             return set.Find(id);
         }
 
+        public bool RemoveMember(int id)
+        {
+            WorkshopDBContext ctx = getContext();
+            DbSet<Member> set = ctx.Members;
+
+            return Remove(id, ctx, set);
+        }
 
 
         /// <summary>
@@ -101,6 +108,14 @@ namespace WorkshopProject.DataAccessLayer
         }
 
 
+        public bool RemoveStore(int id)
+        {
+            WorkshopDBContext ctx = getContext();
+            DbSet<Store> set = ctx.Stores;
+
+            return Remove(id, ctx, set);
+        }
+
         /// <summary>
         /// Saves an object in the database. If it is new - it is added into the DB. If it is not new it will be updated.
         /// </summary>
@@ -127,6 +142,15 @@ namespace WorkshopProject.DataAccessLayer
             return set.Find(id);
         }
 
+        public bool RemoveProduct(int id)
+        {
+            WorkshopDBContext ctx = getContext();
+            DbSet<Product> set = ctx.Products;
+
+            return Remove(id, ctx, set);
+        }
+
+
         protected virtual bool Save<T>(T entity, int id, WorkshopDBContext ctx, DbSet<T> set) where T : class
         {
             bool isNew = (set.Find(id) == null);
@@ -143,6 +167,20 @@ namespace WorkshopProject.DataAccessLayer
             return true;
         }
 
+
+        protected virtual bool Remove<T>(int id, WorkshopDBContext ctx, DbSet<T> set) where T : class
+        {
+            T entity = set.Find(id);
+            if (entity == null)
+            {
+                return true;
+            }
+            else
+            {
+                set.Remove(entity);
+                return true;
+            }
+        }
 
         protected virtual WorkshopDBContext getContext()
         {
