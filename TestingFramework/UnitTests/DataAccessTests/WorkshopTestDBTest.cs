@@ -28,23 +28,46 @@ namespace TestingFramework.UnitTests.DataAccessTests
 
         [TestMethod]
         [TestCategory("DAL - Context")]
-        public void AddObjectTest()
+        public void AddObjectNonPersistentTest()
         {
+            Member Member1 = new Member();
+            Member Member2 = new Member();
+            Member Member3 = new Member();
 
-                ctx.Members.Add(new Member());
-                ctx.Members.Add(new Member());
-                ctx.Members.Add(new Member());
-
-                ctx.SaveChanges();
-            using (var ctx = new WorkshopProductionDBContext())
+            using (var ctx = new WorkshopTestDBContext())
             {
-                ctx.Members.Add(new Member());
-                ctx.Members.Add(new Member());
-                ctx.Members.Add(new Member());
+                ctx.Members.Add(Member1);
+                ctx.Members.Add(Member2);
+                ctx.Members.Add(Member3);
 
                 ctx.SaveChanges();
             }
+            using (var ctx = new WorkshopTestDBContext())
+            {
+                Member M1 = ctx.Members.Find(Member1.ID);
+                Member M2 = ctx.Members.Find(Member2.ID);
+                Member M3 = ctx.Members.Find(Member3.ID);
+                Assert.IsNotNull(M1);
+                Assert.IsNotNull(M2);
+                Assert.IsNotNull(M3);
+
+                Assert.AreNotSame(M1, M2);
+                Assert.AreNotSame(M2, M3);
+                Assert.AreNotSame(M1, M3);
+
+                Assert.AreNotSame(Member1, M1);
+            }
         }
 
+        [TestMethod]
+        [TestCategory("DAL - Context")]
+        public void AddObjectPersistentTest()
+        {
+            Member Member1 = new Member();
+            ctx.Members.Add(Member1);
+            ctx.SaveChanges();
+            Member M1 = ctx.Members.Find(Member1.ID);
+            Assert.AreSame(Member1, M1);
+        }
     }
 }
