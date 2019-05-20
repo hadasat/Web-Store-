@@ -26,9 +26,9 @@ namespace WorkshopProject.External_Services
             return ret;
         }
 
-        public static bool Refund(int amount, int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
+        public static int Refund(int amount, int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
         {
-            return ret;
+            return amount;
         }
 
         public static bool connectionTest()

@@ -188,7 +188,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
         {
             closStoreByOwnerLiveNotification();
             purchaseLiveNotification();
-            closeStoreByAdminLiveNotification();
+            
         }
 
         private void closStoreByOwnerLiveNotification()

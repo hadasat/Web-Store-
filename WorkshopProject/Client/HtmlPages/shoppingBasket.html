@@ -1,0 +1,91 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WorkShop</title>
+    <script type="text/javascript" src="/wot/communication.js"></script>
+
+
+    <!-- BOOTSTRAP FILES -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- NAVBAR -->
+    <div id="navbar_header"></div>
+    <script type="text/javascript" src="/wot/navbar.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="grid"></div>
+    </div>
+  
+
+    
+    <script>
+        onStart(function(){
+            sendRequest("data", "getShoppingBasket", null).then(function (res) {
+            displayStores(res);
+        });
+        });
+        
+
+        function displayStores(shoppingBasket) {
+            var carts = shoppingBasket.shoppingCarts.$values;
+            if(carts.length===0)
+             $(".grid").append(emptyBasketHtml());
+             else{
+            carts.map(cart =>$(".grid").append(
+                createStoreContainer(cart.store,cart.shoppingCart)));
+
+                $(".grid").append( `<div  class="text-center">
+                     <a href="#" class="btn btn-success">Purchase Basket</a>    
+                </div>`);
+            }
+        };
+
+        function createStoreContainer(store,shoppingCart) {           
+            return `    <div class="pb-2 mt-4 mb-2 border-bottom">
+                            <h1>${store.name}</h1>
+                        </div>
+                        <div class="grid1 row">
+                            ${displayProducts(shoppingCart)}
+                        </div>`; 
+        
+                   
+        }
+
+        function displayProducts(shoppingCart) {
+            var products = shoppingCart.products.$values;
+            return products.reduce((acc,curr) =>   acc + (createProductCardHtml(curr.product, curr.amount)),'');
+        };
+
+        function createProductCardHtml(product, amount) {
+            // Card Html Component String
+            return `<div class="col-sm-3">` +
+                `<div class="card" style="margin-bottom: 10%;" >` +
+                `<div class="card-body" >` +
+                    `<h5 class="card-title">${product.name.toUpperCase()}</h5>` +
+                    `<h6 class="card-subtitle mb-2 text-muted">${product.price} $ </h6>
+                    <h6 class="card-subtitle mb-2 text-muted"> ${amount} pieces </h6>
+                    <p>Total Cost: <strong>${amount * product.price} </strong> </p>
+                     <a href="/wot/store/${product.storeId}/${product.id}" class="btn btn-primary">Edit</a>` +///need to work
+                ` </div>` +
+                `</div>` +
+                `</div>`;
+
+        }
+
+        function emptyBasketHtml (){
+            return `<div  class="text-center">
+                        <h1 class="display-4">
+                            Basket is empty. please add products to purchase :)
+                        </h4>
+                    </div>`;
+        }
+    </script>
+</body>
+</html>

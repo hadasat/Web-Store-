@@ -75,11 +75,13 @@ namespace WorkshopProject.Communication
 
         public void onClose(List<byte[]> bufferCollector, WebSocketReceiveResult receiveResult, uint myId)
         {
+            //Console.WriteLine("exit on " + myId);
             onCloseShared(myId);
         }
 
         public void onCloseError(uint myId)
         {
+            //Console.WriteLine("exit on error " + myId);
             onCloseShared(myId);
         }
 

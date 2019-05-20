@@ -19,13 +19,13 @@ document.getElementById("navbar_header").innerHTML = `
                     <a class="nav-link" href="#">Sign Out</a>
                 </li>
                 <li id="nav_opensStore" class="nav-item">
-                    <a class="nav-link" href="#">New Store </a>
+                    <a class="nav-link" href="/wot/newstore">New Store </a>
                 </li>
 
                 <!-- end  -->
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Shopping Cart</a>
+                    <a class="nav-link" href="/wot/shoppingbasket">Shopping Basket</a>
                 </li>
 
             </ul>
@@ -46,10 +46,13 @@ document.getElementById("navbar_header").innerHTML = `
 
 // <!-- NavBar  Script -->
  function setUpOptBtn(){
-    if(localStorage.getItem("loggedIn") === "true"){
+     const userStatus = localStorage.getItem("user_status");
+     const loggedIn = userStatus? JSON.parse(userStatus).loggedIn : false;
+     const username = userStatus? JSON.parse(userStatus).username : '';
+    if(loggedIn){
         $("#nav_signin").hide();
         $("#nav_signOut").show();
-        $("#nav_userName").append(`<span class="nav-link"><strong>Hello ${localStorage.getItem("username")}!</strong></span>`);
+        $("#nav_userName").append(`<span class="nav-link"><strong>Hello ${username}!</strong></span>`);
         $("#nav_userName").show();
         $("#nav_opensStore").show();
         
@@ -63,14 +66,15 @@ document.getElementById("navbar_header").innerHTML = `
 }
 
 $('#nav_signOut').on('click', ()=>{
-    // sendMessage({type: "action", info: "signout" , data: localStorage.getItem("userId")});
     signOut();
 })
 
 function signOut(){
-    localStorage.setItem("loggedIn","false");
-    localStorage.setItem("username","");
-    setUpOptBtn();
+    sendRequest("action","signOut",{}).then(function(msg){
+        localStorage.setItem("user_status",JSON.stringify({loggedIn : false, username: ''}));
+        setUpOptBtn();
+        window.location.href = "/wot/main";
+    })
 }
 
 setUpOptBtn();
