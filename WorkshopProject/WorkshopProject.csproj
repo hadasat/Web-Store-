@@ -84,8 +84,7 @@
     <Compile Include="Communication\UserConnectionInfo.cs" />
     <Compile Include="DataAccessLayer\Context\WorkshopDBContext.cs" />
     <Compile Include="DataAccessLayer\DataAccessDriver.cs" />
-    <Compile Include="DataAccessLayer\DataAccessNonPersistent.cs" />
-    <Compile Include="DataAccessLayer\DataAccessPersistent.cs" />
+    <Compile Include="DataAccessLayer\DataAccessConcrete.cs" />
     <Compile Include="DataAccessLayer\Deprecated\DuplicateHandler.cs" />
     <Compile Include="DataAccessLayer\Deprecated\ContextHandler.cs" />
     <Compile Include="DataAccessLayer\Deprecated\ObjectMapper.cs" />

@@ -127,11 +127,6 @@ namespace WorkshopProject.DataAccessLayer
             return set.Find(id);
         }
 
-        //protected virtual T Get<T>(int id, DbSet<T> set) where T : class
-        //{
-        //    return set.Find(id);
-        //}
-
         protected virtual bool Save<T>(T entity, int id, WorkshopDBContext ctx, DbSet<T> set) where T : class
         {
             bool isNew = (set.Find(id) == null);
@@ -159,11 +154,24 @@ namespace WorkshopProject.DataAccessLayer
             {
                 return new WorkshopTestDBContext();
             }
-
-            //return new WorkshopDBContext("");
         }
-
     }
 
+    public class DataAccessPersistent : DataAccessNonPersistent
+    {
+        protected static WorkshopDBContext productionContext = new WorkshopProductionDBContext();
+        protected static WorkshopDBContext testContext = new WorkshopProductionDBContext();
 
+        protected override WorkshopDBContext getContext()
+        {
+            if (isProduction)
+            {
+                return productionContext;
+            }
+            else
+            {
+                return testContext;
+            }
+        }
+    }
 }
