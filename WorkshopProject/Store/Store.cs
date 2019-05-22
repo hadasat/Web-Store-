@@ -29,7 +29,6 @@ namespace WorkshopProject
         public int storeBankNum;
         public int storeAccountNum;
         public string storeAddress;
-        public int id;
 
         public Store() { }
 

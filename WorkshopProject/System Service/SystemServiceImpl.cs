@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject.Policies;
+using TansactionsNameSpace;
 
 namespace WorkshopProject.System_Service
 {
@@ -144,12 +145,12 @@ namespace WorkshopProject.System_Service
         {
             //if (!loggedIn)
             //    throw new Exception("Not logged in");
-            int ret;
+            Transaction ret;
             try
             {
 
-                //ret = TransactionService.BuyShoppingBasket(user);
-                return intJson(ret);
+                ret = TransactionService.BuyShoppingBasket(user);
+                return JsonConvert.SerializeObject(ret);
             }
             catch (Exception e)
             {
