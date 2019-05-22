@@ -43,6 +43,7 @@ namespace WorkshopProject.DataAccessLayer.Context
         public DbSet<StoreManager> StoreManagers { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<Stock> Stock { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
     }
 
     public class WorkshopProductionDBContext : WorkshopDBContext
