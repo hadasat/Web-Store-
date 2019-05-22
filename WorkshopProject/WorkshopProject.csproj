@@ -98,7 +98,6 @@
     <Compile Include="Communication\IObserverSubject.cs" />
     <Compile Include="JsonHandler.cs" />
     <Compile Include="Logger\Log.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Policies\ConcreteBooleanExpression.cs" />
     <Compile Include="Policies\ConcreteOutcome.cs" />
     <Compile Include="Policies\IBooleanExpression.cs" />
@@ -169,6 +168,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
