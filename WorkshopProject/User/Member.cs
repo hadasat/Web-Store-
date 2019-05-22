@@ -55,6 +55,7 @@ namespace Users
             ConnectionStubTemp.logout(username);
         }
 
+
         /************************/
 
         /*** This function is the function that create Store Owner - STORE USE THIS IN THE CONSTRUCTOR ***/
