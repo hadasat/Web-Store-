@@ -21,18 +21,44 @@ namespace WorkshopProject.Policies
         public int id { get; set; }
         public ItemFilter filter { get; set; }
 
-        public IBooleanExpression firstChild { get; set; }
+        [NotMapped]
+        public IBooleanExpression firstChild { get { return children[0]; } set => children[0] = value; }
 
-        public IBooleanExpression secondChild { get; set; }
+        [NotMapped]
+        public IBooleanExpression secondChild { get { return children[1]; } set => children[1] = value; }
+
+        public List<IBooleanExpression> children { get; set; } 
+
 
         public static int Idcounter = 1;
+
+        public IBooleanExpression()
+        {
+            if(children == null)
+            {
+                children = new List<IBooleanExpression>();
+                children.Add(null);
+                children.Add(null);
+            }
+        }
+
 
         public abstract bool evaluate(List<ProductAmountPrice> products,User user);
 
         public virtual void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
         {
-            this.firstChild = firstChild;
-            this.secondChild = secondChild;
+            children[0] = firstChild;
+            children[1] = (secondChild);
+        }
+
+        public virtual IBooleanExpression getFirstChild()
+        {
+            return children[0];
+        }
+
+        public virtual IBooleanExpression getSecondChild()
+        {
+            return children[1];
         }
 
         public static int checkExpression(IBooleanExpression exp)
