@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Tansactions;
 using Users;
 using WorkshopProject.Communication;
+using WorkshopProject.DataAccessLayer.Context;
 using WorkshopProject.Examples;
 using WorkshopProject.System_Service;
 
@@ -20,10 +21,10 @@ namespace WorkshopProject
         static void Main(string[] args)
         {
             //Console.ReadLine();
+            WorkshopDBContext ctx = new WorkshopProductionDBContext();
+            ctx.Members.Add(new Member());
 
-           Setup();
-            
-
+            Setup();
             CommunicationManager manager = new CommunicationManager();
         }
 
