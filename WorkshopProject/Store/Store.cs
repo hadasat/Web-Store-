@@ -20,6 +20,10 @@ namespace WorkshopProject
         public List<IBooleanExpression> purchasePolicy;
         public List<Discount> discountPolicy;
         public List<IBooleanExpression> storePolicy;
+
+        public int storeBankNum;
+        public int storeAccountNum;
+        public string storeAddress;
         public int id;
 
         public Store(int id, string name, int rank, Boolean isActive)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Users;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tansactions;
+using TansactionsNameSpace;
 
 namespace WorkshopProject.Tests
 {
@@ -57,7 +57,10 @@ namespace WorkshopProject.Tests
             {
                 Init();
                 //chack if the purchase sucesess
-                int transactionId = Transaction.purchase(user);
+                int credit = 0, csv = 0;
+                string expirydate = "", shippingAddress = "";
+                Transaction transaction = new Transaction(user, credit, csv, expirydate, shippingAddress);
+                int transactionId = transaction.id;
                 Assert.IsTrue(transactionId > 0, "fail to purchase legal transaction");
 
                 //check if the product remove from user
@@ -65,7 +68,8 @@ namespace WorkshopProject.Tests
                 Assert.AreEqual( 0, productAmount, "products stay in user basket");
 
                 //check purchase fail becouse basket empty
-                transactionId = Transaction.purchase(user);
+                transaction = new Transaction(user, credit, csv, expirydate, shippingAddress);
+                transactionId = transaction.id;
                 Assert.IsTrue(transactionId == -1, "fail to unpurchase ilegal transaction");
 
 
@@ -73,7 +77,8 @@ namespace WorkshopProject.Tests
                 user.shoppingBasket.addProduct(store1, p5, 10);
                 store1.GetStock().Add(p5.id, p5);
                 //check transction number grow
-                Assert.IsTrue(Transaction.purchase(user) > transactionId, "fail to update transaction id");
+                transaction = new Transaction(user, credit, csv, expirydate, shippingAddress);
+                Assert.IsTrue(transaction.id > transactionId, "fail to update transaction id");
             }
             finally
             {

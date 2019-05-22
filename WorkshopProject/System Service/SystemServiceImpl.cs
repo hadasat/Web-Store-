@@ -147,7 +147,8 @@ namespace WorkshopProject.System_Service
             int ret;
             try
             {
-                ret = TransactionService.BuyShoppingBasket(user);
+
+                //ret = TransactionService.BuyShoppingBasket(user);
                 return intJson(ret);
             }
             catch (Exception e)

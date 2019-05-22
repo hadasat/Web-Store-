@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TansactionsNameSpace;
 using Users;
 using WorkshopProject.Communication;
 
@@ -71,7 +72,7 @@ namespace WorkshopProject.System_Service
             return UserService.AddStoreOwner(user, storeId, userToAdd);
         }
 
-        public int BuyShoppingBasket()
+        public Transaction BuyShoppingBasket()
         {
             return TransactionService.BuyShoppingBasket(user);
         }

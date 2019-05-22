@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tansactions;
+using TansactionsNameSpace;
 using Users;
 using WorkshopProject;
 using WorkshopProject.External_Services;
@@ -22,6 +22,8 @@ namespace IntegrationTests
     [TestClass()]
     public class TransactionServiceTest
     {
+        int credit = 0, csv = 0;
+        string expirydate = "", shippingAddress = "";
         public string successMsg = "success";
         SystemServiceImpl menager = new SystemServiceImpl();
         SystemServiceImpl user = new SystemServiceImpl();
@@ -120,8 +122,11 @@ namespace IntegrationTests
             PaymentStub.setRet(true);
             SupplyStub.setRet(true);
             ConsistencyStub.setRet(true);
-            
-            int transId = Transaction.purchase(user.user);
+
+            int credit = 0, csv = 0;
+            string expirydate = "", shippingAddress = "";
+            Transaction transaction = new Transaction(user.user, credit, csv, expirydate, shippingAddress);
+            int transId = transaction.id;
             Assert.IsTrue(transId > 0,"1");
             //chack the basket is empty
             Assert.IsTrue(userShoppingBasket.isEmpty(),"2");
