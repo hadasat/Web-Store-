@@ -144,8 +144,8 @@ namespace IntegrationTests
             JsonShoppingCart jsonshopping = JsonConvert.DeserializeObject<JsonShoppingCart>(cart);
             ShoppingCart shopping = new ShoppingCart(jsonshopping);
             ShoppingCart actualShopping = userShoppingBasket.carts[store[0]];
-            int recivedNum = shopping.products.Count();
-            int actualNum = actualShopping.products.Count;
+            int recivedNum = shopping.getProducts().Count();
+            int actualNum = actualShopping.getProducts().Count;
             Assert.AreEqual(actualNum, recivedNum);
 
             recivedNum = shopping.getTotalAmount();

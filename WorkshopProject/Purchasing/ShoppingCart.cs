@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,13 +15,19 @@ namespace Shopping
     {
         [Key]
         public int id { get; set; }
-        public Dictionary<Product, int> products;
+        [NotMapped]
+        private Dictionary<Product, int> products; //USE ONLY GETTER
+        public List<JsonShoppingCartValue> productsList { get; set; }
         public static int idCartCounter = 0;
 
         public ShoppingCart()
         {
             id = ++idCartCounter;
-            products = new Dictionary<Product, int>();
+            if(productsList == null)
+            {
+                productsList = new List<JsonShoppingCartValue>();
+            }
+            //products = new Dictionary<Product, int>();
         }
 
 
@@ -41,15 +48,15 @@ namespace Shopping
         {
             if(amount == 0 && products.ContainsKey(product))
             {
-                products.Remove(product);
+                getProducts().Remove(product);
                 return true;
             }
             else if (amount > 0)
             {
-                if (products.ContainsKey(product))
-                    products[product] = amount;
+                if (getProducts().ContainsKey(product))
+                    getProducts()[product] = amount;
                 else
-                    products.Add(product, amount);
+                    getProducts().Add(product, amount);
                 return true;
             }
             return false;
@@ -59,8 +66,8 @@ namespace Shopping
         {
             if (amount >= 0)
             {
-                if (products.ContainsKey(product))
-                    setProductAmount(product, products[product] + amount);
+                if (getProducts().ContainsKey(product))
+                    setProductAmount(product, getProducts()[product] + amount);
                 else
                     setProductAmount(product, amount);
                 return true;
@@ -70,7 +77,7 @@ namespace Shopping
 
         public int getProductAmount(Product product)
         {
-            foreach (KeyValuePair<Product, int> p in products) 
+            foreach (KeyValuePair<Product, int> p in getProducts()) 
                 if (p.Key.Equals(product))
                     return p.Value;
                     
@@ -80,7 +87,7 @@ namespace Shopping
         public int getTotalAmount()
         {
             int total = 0;
-            foreach (KeyValuePair<Product, int> c in products)
+            foreach (KeyValuePair<Product, int> c in getProducts())
             {
                 total += c.Value;
             }
@@ -89,9 +96,22 @@ namespace Shopping
 
         public Dictionary<Product, int> getProducts()
         {
+            if (products == null)
+            {
+                products = productListToDictionary();
+            }
             return products;
         }
 
+        private Dictionary<Product, int> productListToDictionary()
+        {
+            Dictionary<Product, int> ret = new Dictionary<Product, int>();
+            foreach (JsonShoppingCartValue prod in productsList)
+            {
+                ret.Add(prod.product, prod.amount);
+            }
+            return ret;
+        }
     }
 
     public class JsonShoppingCartValue
@@ -130,7 +150,7 @@ namespace Shopping
 
         private void copyCart(ShoppingCart shopping)
         {
-            Dictionary<Product, int> shoppingProducts = shopping.products;
+            Dictionary<Product, int> shoppingProducts = shopping.getProducts();
             foreach (KeyValuePair<Product,int> pair in shoppingProducts)
             {
                 Product p = pair.Key;

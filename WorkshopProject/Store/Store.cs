@@ -27,6 +27,8 @@ namespace WorkshopProject
         public List<IBooleanExpression> storePolicy { get; set; }
 
 
+        public Store() { }
+
         public Store(int id, string name, int rank, Boolean isActive)
         {
             this.id = id;
@@ -43,7 +45,6 @@ namespace WorkshopProject
 
         }
 
-        public Store() { }
 
         public Dictionary<int, Product> GetStock()
         {
