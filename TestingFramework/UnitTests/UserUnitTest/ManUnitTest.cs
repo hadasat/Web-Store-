@@ -102,8 +102,8 @@ namespace Managment.Tests
                 bool res = storeManagerFirstOwner.removeManager(storeManagerSecondOwner);
 
                 Assert.IsTrue(res);
-                Assert.IsTrue(storeManagerSecondOwner.SubManagers.Count == 0);
-                Assert.IsTrue(storeManagerFirstOwner.SubManagers.Count == 0);
+                Assert.IsTrue(storeManagerSecondOwner.subManagers.Count == 0);
+                Assert.IsTrue(storeManagerFirstOwner.subManagers.Count == 0);
 
                 StoreManager notExist = new StoreManager(null, null);
                 try
@@ -142,8 +142,8 @@ namespace Managment.Tests
                 storeManagerFirstOwner.removeAllManagers();
 
 
-                Assert.IsTrue(storeManagerSecondOwner.SubManagers.Count == 0);
-                Assert.IsTrue(storeManagerFirstOwner.SubManagers.Count == 0);
+                Assert.IsTrue(storeManagerSecondOwner.subManagers.Count == 0);
+                Assert.IsTrue(storeManagerFirstOwner.subManagers.Count == 0);
             }
             finally
             {

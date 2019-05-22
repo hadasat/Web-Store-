@@ -8,6 +8,7 @@ using Users;
 using Tansactions;
 using WorkshopProject.Policies;
 using Shopping;
+using Managment;
 
 namespace WorkshopProject.DataAccessLayer.Context
 {
@@ -37,6 +38,10 @@ namespace WorkshopProject.DataAccessLayer.Context
 
         //jonathan: why is Tranaction static?
         //public DbSet<Transaction> Transactions { get; set; }
+
+
+        public DbSet<StoreManager> StoreManagers { get; set; }
+        public DbSet<Roles> Roles { get; set; }
     }
 
     public class WorkshopProductionDBContext : WorkshopDBContext

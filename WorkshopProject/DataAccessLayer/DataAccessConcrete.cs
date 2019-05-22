@@ -63,7 +63,7 @@ namespace WorkshopProject.DataAccessLayer
             WorkshopDBContext ctx = getContext();
             DbSet<Member> set = ctx.Members;
 
-            return Save(entity, entity.ID, ctx, set);
+            return Save(entity, entity.id, ctx, set);
         }
 
         public Member GetMember(int id)

@@ -15,13 +15,13 @@ namespace WorkshopProject
     {
         [Key]
         public int id { get; set; }
-        public string name;
-        public int rank;
-        public Boolean isActive;
-        public Dictionary<int, Product> Stock;
-        public List<IBooleanExpression> purchasePolicy;
-        public List<Discount> discountPolicy;
-        public List<IBooleanExpression> storePolicy;
+        public string name { get; set; }
+        public int rank { get; set; }
+        public Boolean isActive { get; set; }
+        public Dictionary<int, Product> Stock { get; set; }
+        public List<IBooleanExpression> purchasePolicy { get; set; }
+        public List<Discount> discountPolicy { get; set; }
+        public List<IBooleanExpression> storePolicy { get; set; }
 
 
         public Store(int id, string name, int rank, Boolean isActive)

@@ -12,9 +12,9 @@ namespace WorkshopProject.Policies
     {
         [Key]
         public int id { get; set; }
-        public Discount successor;
-        public IOutcome outcome;
-        public IBooleanExpression condition;
+        public Discount successor { get; set; }
+        public IOutcome outcome { get; set; }
+        public IBooleanExpression condition { get; set; }
 
         public static int DiscountCounter = 1;
 
@@ -67,6 +67,12 @@ namespace WorkshopProject.Policies
                 if (id == ((Discount)obj).id)
                     return true;
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            //return base.GetHashCode();
+            return id;
         }
     }
 }

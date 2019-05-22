@@ -35,7 +35,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
             Member member;
             member = dal.GetMember(id);
             Assert.IsNotNull(member);
-            Assert.AreEqual(member.ID, id);
+            Assert.AreEqual(member.id, id);
         }
 
 
@@ -45,7 +45,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
 
             bool result = dal.SaveMember(member);
             Assert.IsTrue(result);
-            return member.ID;
+            return member.id;
         }
 
         [TestMethod]

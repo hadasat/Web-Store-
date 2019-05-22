@@ -8,11 +8,19 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Managment.StoreManager">
-    <Position X="42" Y="36" Width="3" />
+    <Position X="41" Y="36.25" Width="3" />
     <TypeIdentifier>
-      <HashCode>AgAAAAABAAABAAAAABBAgAAAAAAAAAUBAACAABIAAQE=</HashCode>
+      <HashCode>AgAAAAABAAABAAAAABBAgAAAAAAAAAUBAACAABIAAwE=</HashCode>
       <FileName>User\Managment.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="store" />
+      <Property Name="myRoles" />
+      <Property Name="father" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="subManagers" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WorkshopProject.Client.HtmlPageManager">
     <Position X="27.75" Y="6.75" Width="3.75" />
@@ -109,7 +117,7 @@
   <Class Name="WorkshopProject.Product">
     <Position X="34.75" Y="35.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AgABAAEAAQAAAAAAoAAAARAAABAEgAAAAAAIAAAAAgA=</HashCode>
+      <HashCode>AgABAAEAAQAAAAAAoAAAARAAABAEgIAAAAAIAAAAAgA=</HashCode>
       <FileName>Store\Product.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -286,7 +294,7 @@
   <Class Name="WorkshopProject.Policies.IBooleanExpression">
     <Position X="15.75" Y="34.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAIAAAAgAAAEAAAAAIAkAAgAAAAAAEAAgA=</HashCode>
+      <HashCode>AAAAAAAAAAAIAAAAgAAAEAAAAAIAkIAgAAAAAAEAAgA=</HashCode>
       <FileName>Policies\IBooleanExpression.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -499,9 +507,12 @@
   <Class Name="Users.Member">
     <Position X="45.5" Y="35.75" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>IEApAGABAAQggAhQDEBAAQMhAIAIQAMiAgQAQIIAAAA=</HashCode>
+      <HashCode>IEApAGABAAQgAAhQDEBAAQMhAIAIQAMiAgQAQIIAAgA=</HashCode>
       <FileName>User\Users.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="storeManaging" />
+    </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Users.SystemAdmin">

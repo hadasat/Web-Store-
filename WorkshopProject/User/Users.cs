@@ -38,11 +38,11 @@ namespace Users
 
         public static void removeMember(Member m)
         {
-            if (m.ID == 0)
+            if (m.id == 0)
                 throw new Exception("don't remove Admin!");
             try
             {
-                members.Remove(m.ID);
+                members.Remove(m.id);
                 mapIDUsermane.Remove(m.username);
             }
             catch (Exception ignore)
@@ -304,14 +304,14 @@ namespace Users
     public class Member : User, IObserverSubject
     {
         [Key]
-        public int ID { get; set; } //why do we need id?
-        public string username;
-        public LinkedList<StoreManager> storeManaging;
-        public DateTime birthdate;
-        public string country;
-        private List<string> notifications;
-        private HashSet<IObserver> observers;
-        private Object notificationLock;
+        public int id { get; set; }
+        public string username { get; set; }
+        public LinkedList<StoreManager> storeManaging { get; set; }
+        public DateTime birthdate { get; set; }
+        public string country { get; set; }
+        public List<string> notifications { get; set; }
+        public HashSet<IObserver> observers { get; set; }
+        public Object notificationLock { get; set; }
 
 
         public Member() : base (){/*added for json*/
@@ -323,14 +323,14 @@ namespace Users
 
         public Member(string username, int ID) : this()//Register
         {
-            this.ID = ID;
+            this.id = ID;
             this.username = username;
             this.country = "none";
         }
 
         public Member(string username, int ID,DateTime birthdate, string country) : this()//Register
         {
-            this.ID = ID;
+            this.id = ID;
             this.username = username;
             this.birthdate = birthdate;
             this.country = country;
