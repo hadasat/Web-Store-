@@ -10,6 +10,7 @@ using Shopping;
 using WorkshopProject.Log;
 using WorkshopProject.Communication;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Users
 {
@@ -307,10 +308,13 @@ namespace Users
         public int id { get; set; }
         public string username { get; set; }
         public LinkedList<StoreManager> storeManaging { get; set; }
+        [Column(TypeName = "DateTime2")]
         public DateTime birthdate { get; set; }
         public string country { get; set; }
         public List<string> notifications { get; set; }
+        [NotMapped]
         public HashSet<IObserver> observers { get; set; }
+        [NotMapped]
         public Object notificationLock { get; set; }
 
 
