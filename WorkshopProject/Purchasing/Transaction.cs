@@ -36,7 +36,7 @@ namespace Tansactions
             if (basket.isEmpty())
                 return -1;
 
-            Dictionary<Store, ShoppingCart> carts = basket.carts;
+            Dictionary<Store, ShoppingCart> carts = basket.getCarts();
             List<ProductAmountPrice> purchasedProducts = new List<ProductAmountPrice>();
             List<Store.callback> callbacks = new List<Store.callback>();
             //calc toal price

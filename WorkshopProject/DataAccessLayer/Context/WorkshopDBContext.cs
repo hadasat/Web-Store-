@@ -47,6 +47,8 @@ namespace WorkshopProject.DataAccessLayer.Context
 
         public DbSet<IOutcome> PolicyOutcomes { get; set; }
         public DbSet<ItemFilter> PolicyFilters { get; set; }
+        public DbSet<ShoppingCartAndStore> ProductsInCarts { get; set; }
+        public DbSet<JsonShoppingCartValue> CartsInBaskets { get; set; }
     }
 
     public class WorkshopProductionDBContext : WorkshopDBContext

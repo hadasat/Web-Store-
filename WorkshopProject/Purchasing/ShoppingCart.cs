@@ -116,6 +116,8 @@ namespace Shopping
 
     public class JsonShoppingCartValue
     {
+        [Key]
+        public int id { get; set; }
         public Product product { get; }
         public int amount { get; }
 

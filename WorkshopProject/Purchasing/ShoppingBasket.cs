@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using WorkshopProject;
 
 namespace Shopping
@@ -8,13 +9,16 @@ namespace Shopping
     {
         [Key]
         public int id { get; set; }
-        public Dictionary<Store, ShoppingCart> carts;
+        [NotMapped]
+        private Dictionary<Store, ShoppingCart> carts; //ONLY USE GETTER
+        public List<ShoppingCartAndStore> cartsList { get; set; }
         public static int idBasketCounter = 0;
 
         public ShoppingBasket()
         {
             id = idBasketCounter++;
-            carts = new Dictionary<Store, ShoppingCart>();
+            //carts = new Dictionary<Store, ShoppingCart>();
+            cartsList = new List<ShoppingCartAndStore>();
         }
 
         public ShoppingBasket(JsonShoppingBasket basket)
@@ -26,7 +30,7 @@ namespace Shopping
                 foreach (JsonShoppingBasketValue c in basket.shoppingCarts)
                 {
                     ShoppingCart cart = new ShoppingCart(c.shoppingCart);
-                    carts.Add(c.store, cart);
+                    getCarts().Add(c.store, cart);
                 }
             }
         }
@@ -37,20 +41,20 @@ namespace Shopping
             if (amount == 0)
             {
                 //check if the storecart is empty now
-                if (carts.ContainsKey(store))
+                if (getCarts().ContainsKey(store))
                 {
                     //set product amount to zero
-                    carts[store].setProductAmount(product, amount);
-                    int storeAmount = carts[store].getTotalAmount();
+                    getCarts()[store].setProductAmount(product, amount);
+                    int storeAmount = getCarts()[store].getTotalAmount();
                     if (storeAmount == 0)
-                        carts.Remove(store);
+                        getCarts().Remove(store);
                 }
                 return true;
             }
             else if (amount > 0)
             {
-                if (carts.ContainsKey(store))
-                    return carts[store].setProductAmount(product, amount);
+                if (getCarts().ContainsKey(store))
+                    return getCarts()[store].setProductAmount(product, amount);
                 /*if (!carts.ContainsKey(store))
                     carts.Add(store, new ShoppingCart());
                 return carts[store].setProductAmount(product, amount);*/
@@ -61,14 +65,14 @@ namespace Shopping
 
         public bool addProduct(Store store, Product product, int amount)
         {
-            if (!carts.ContainsKey(store))
-                carts.Add(store, new ShoppingCart());
-            return carts[store].addProducts(product, amount);
+            if (!getCarts().ContainsKey(store))
+                getCarts().Add(store, new ShoppingCart());
+            return getCarts()[store].addProducts(product, amount);
         }
 
         public int getProductAmount(Product product)
         {
-            foreach (KeyValuePair<Store, ShoppingCart> c in carts)
+            foreach (KeyValuePair<Store, ShoppingCart> c in getCarts())
             {
                 ShoppingCart shopping = c.Value;
                 int amount = shopping.getProductAmount(product);
@@ -80,23 +84,61 @@ namespace Shopping
 
         public bool isEmpty()
         {
-            return carts.Count == 0;
+            return getCarts().Count == 0;
         }
 
         public bool cleanBasket()
         {
-            carts.Clear();
+            getCarts().Clear();
             return true;
         }
 
-        
+        public Dictionary<Store, ShoppingCart>  getCarts()
+        {
+            if(carts == null)
+            {
+                carts = cartsListAsDictionary();
+            }
+            return carts;
+        }
+
+        private Dictionary<Store, ShoppingCart> cartsListAsDictionary()
+        {
+            Dictionary<Store, ShoppingCart> ret = new Dictionary<Store, ShoppingCart>();
+            foreach (ShoppingCartAndStore cart in cartsList)
+            {
+                ret.Add(cart.store, cart.cart);
+            }
+            return ret;
+        }
 
     }
 
+    public class ShoppingCartAndStore
+    {
+        [Key]
+        public int id { get; set; }
+        public Store store { get; set; }
+        public ShoppingCart cart {get; set;}
+
+        public ShoppingCartAndStore() { }
+
+        public ShoppingCartAndStore(Store store , ShoppingCart cart)
+        {
+            this.store = store;
+            this.cart = cart;
+        }
+}
+
+
+
     public class JsonShoppingBasketValue
     {
+
         public Store store { get; set; }
         public JsonShoppingCart shoppingCart { get; set; }
+
+        public JsonShoppingBasketValue() { }
 
         public JsonShoppingBasketValue(Store store, JsonShoppingCart shoppingCart)
         {
@@ -124,7 +166,7 @@ namespace Shopping
 
         private void copyBasket(ShoppingBasket basket)
         {
-            Dictionary<Store, ShoppingCart> shoppingCartsForCopy = basket.carts;
+            Dictionary<Store, ShoppingCart> shoppingCartsForCopy = basket.getCarts();
             foreach (KeyValuePair<Store, ShoppingCart> pair in shoppingCartsForCopy)
             {
                 Store store = pair.Key;
