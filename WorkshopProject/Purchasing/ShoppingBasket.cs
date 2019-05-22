@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using WorkshopProject;
 
 namespace Shopping
 {
     public class ShoppingBasket
     {
+        [Key]
+        public int id { get; set; }
         public Dictionary<Store, ShoppingCart> carts;
         public static int idBasketCounter = 0;
-        public int id;
 
         public ShoppingBasket()
         {
