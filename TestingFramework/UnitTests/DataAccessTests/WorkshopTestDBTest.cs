@@ -44,9 +44,9 @@ namespace TestingFramework.UnitTests.DataAccessTests
             }
             using (var ctx = new WorkshopTestDBContext())
             {
-                Member M1 = ctx.Members.Find(Member1.ID);
-                Member M2 = ctx.Members.Find(Member2.ID);
-                Member M3 = ctx.Members.Find(Member3.ID);
+                Member M1 = ctx.Members.Find(Member1.id);
+                Member M2 = ctx.Members.Find(Member2.id);
+                Member M3 = ctx.Members.Find(Member3.id);
                 Assert.IsNotNull(M1);
                 Assert.IsNotNull(M2);
                 Assert.IsNotNull(M3);
@@ -66,7 +66,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
             Member Member1 = new Member();
             ctx.Members.Add(Member1);
             ctx.SaveChanges();
-            Member M1 = ctx.Members.Find(Member1.ID);
+            Member M1 = ctx.Members.Find(Member1.id);
             Assert.AreSame(Member1, M1);
         }
     }

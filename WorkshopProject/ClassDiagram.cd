@@ -3,16 +3,24 @@
   <Class Name="Managment.Roles">
     <Position X="49.5" Y="33" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>hEgAEAQAAAAQAAAAAgIAACIiAEAAIAAAAAAAAKACgAA=</HashCode>
+      <HashCode>hEgAAAAAAAAQAAAAAAIAAAICAAAAIAAAAAAAACAAAgA=</HashCode>
       <FileName>User\Managment.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Managment.StoreManager">
-    <Position X="42.25" Y="36" Width="2" />
+    <Position X="41" Y="36.25" Width="3" />
     <TypeIdentifier>
-      <HashCode>AgAAAAABAAABAAAAABBAgAAAAAAAAAUBAACAABIAAQE=</HashCode>
+      <HashCode>AAAAAAABAAABAAAAABBAgAAAAAAAAAUBAACAABIAAwE=</HashCode>
       <FileName>User\Managment.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="store" />
+      <Property Name="myRoles" />
+      <Property Name="father" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="subManagers" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WorkshopProject.Client.HtmlPageManager">
     <Position X="27.75" Y="6.75" Width="3.75" />
@@ -36,8 +44,11 @@
         <Point X="19.5" Y="8.203" />
         <Point X="19.5" Y="6.227" />
         <Point X="24.031" Y="6.227" />
-        <Point X="24.031" Y="6.75" />
+        <Point X="24.031" Y="7.25" />
       </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.183" Y="0.695" />
+      </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AACAAAAAAAAAAACAAAAAAAAQBAAAAQAEAAAAAEACgAI=</HashCode>
@@ -53,7 +64,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="WorkshopProject.Communication.UserConnectionInfo" BaseTypeListCollapsed="true">
-    <Position X="23" Y="6.75" Width="4.25" />
+    <Position X="23" Y="7.25" Width="4.25" />
     <NestedTypes>
       <Class Name="WorkshopProject.Communication.UserConnectionInfo.JsonResponse" Collapsed="true">
         <TypeIdentifier>
@@ -109,7 +120,7 @@
   <Class Name="WorkshopProject.Product">
     <Position X="34.75" Y="35.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AgABAAEAAQAAAAAAoAAAARAAABAEgAAAAAAIAAAAAgA=</HashCode>
+      <HashCode>AgABAAEAAQAAAAAAoAAAARAAABAEgIAAAAAIAAAAAgA=</HashCode>
       <FileName>Store\Product.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -134,10 +145,10 @@
       <FileName>Store\Store.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
-      <Field Name="Stock" />
-      <Field Name="purchasePolicy" />
-      <Field Name="discountPolicy" />
-      <Field Name="storePolicy" />
+      <Property Name="Stock" />
+      <Property Name="purchasePolicy" />
+      <Property Name="discountPolicy" />
+      <Property Name="storePolicy" />
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WorkshopProject.WorkShop">
@@ -265,10 +276,10 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="WorkshopProject.Policies.Discount">
-    <Position X="13.5" Y="30.25" Width="1.5" />
+    <Position X="12.25" Y="30.25" Width="2.75" />
     <AssociationLine Name="outcome" Type="WorkshopProject.Policies.IOutcome" ManuallyRouted="true">
       <Path>
-        <Point X="13.5" Y="30.657" />
+        <Point X="12.25" Y="30.657" />
         <Point X="8.5" Y="30.657" />
         <Point X="8.5" Y="33.5" />
       </Path>
@@ -278,15 +289,15 @@
       <FileName>Policies\Discount.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="successor" />
-      <Field Name="outcome" />
-      <Field Name="condition" />
+      <Property Name="successor" />
+      <Property Name="outcome" />
+      <Property Name="condition" />
     </ShowAsAssociation>
   </Class>
   <Class Name="WorkshopProject.Policies.IBooleanExpression">
     <Position X="15.75" Y="34.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAIAAAAgAAAEAAAAAIAkAAgAAAAAAEAAgA=</HashCode>
+      <HashCode>AAAAAAAAAAAIAAAAgAAAEAAAAAIAkIAgAAAAAAEAAgA=</HashCode>
       <FileName>Policies\IBooleanExpression.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -499,9 +510,12 @@
   <Class Name="Users.Member">
     <Position X="45.5" Y="35.75" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>IEApAGABAAQggAhQDEBAAQMhAIAIQAMiAgQAQIIAAAA=</HashCode>
+      <HashCode>IEApAGABAAQgAAhQDEBAAQMhAIAIQAMiAgQAQIIAAgA=</HashCode>
       <FileName>User\Users.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="storeManaging" />
+    </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Users.SystemAdmin">
@@ -524,7 +538,7 @@
     <Lollipop Position="0.2" />
   </Struct>
   <Interface Name="WorkshopProject.Communication.IObserver">
-    <Position X="23" Y="5" Width="1.5" />
+    <Position X="24.25" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>Communication\IObserver.cs</FileName>

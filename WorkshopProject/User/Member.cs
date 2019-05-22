@@ -10,20 +10,24 @@ using Shopping;
 using WorkshopProject.Log;
 using WorkshopProject.Communication;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Users
 {
     public class Member : User, IObserverSubject
     {
         [Key]
-        public int ID; //why do we need id?
-        public string username;
-        public LinkedList<StoreManager> storeManaging;
-        public DateTime birthdate;
-        public string country;
-        private List<string> notifications;
-        private HashSet<IObserver> observers;
-        private Object notificationLock;
+        public int id { get; set; }
+        public string username { get; set; }
+        public LinkedList<StoreManager> storeManaging { get; set; }
+        [Column(TypeName = "DateTime2")]
+        public DateTime birthdate { get; set; }
+        public string country { get; set; }
+        public List<string> notifications { get; set; }
+        [NotMapped]
+        public HashSet<IObserver> observers { get; set; }
+        [NotMapped]
+        public Object notificationLock { get; set; }
 
 
         public Member() : base()
@@ -36,14 +40,14 @@ namespace Users
 
         public Member(string username, int ID) : this()//Register
         {
-            this.ID = ID;
+            this.id = ID;
             this.username = username;
             this.country = "none";
         }
 
         public Member(string username, int ID, DateTime birthdate, string country) : this()//Register
         {
-            this.ID = ID;
+            this.id = ID;
             this.username = username;
             this.birthdate = birthdate;
             this.country = country;

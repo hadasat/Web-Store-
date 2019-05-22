@@ -29,7 +29,7 @@ namespace WorkshopProject.DataAccessLayer
 
         public bool AddMember(Member member)
         {
-            return Add(new Integer(member.ID), member, Members);
+            return Add(new Integer(member.id), member, Members);
         }
 
         public bool AddMember(Store store)

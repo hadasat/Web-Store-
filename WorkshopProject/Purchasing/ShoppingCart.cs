@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +12,10 @@ namespace Shopping
 
     public class ShoppingCart
     {
+        [Key]
+        public int id { get; set; }
         public Dictionary<Product, int> products;
         public static int idCartCounter = 0;
-        public int id;
 
         public ShoppingCart()
         {

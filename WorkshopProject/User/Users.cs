@@ -10,6 +10,7 @@ using Shopping;
 using WorkshopProject.Log;
 using WorkshopProject.Communication;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Users
 {

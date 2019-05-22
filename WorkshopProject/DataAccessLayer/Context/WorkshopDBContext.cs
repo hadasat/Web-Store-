@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using Users;
 using Tansactions;
+using WorkshopProject.Policies;
+using Shopping;
+using Managment;
 
 namespace WorkshopProject.DataAccessLayer.Context
 {
@@ -28,8 +31,17 @@ namespace WorkshopProject.DataAccessLayer.Context
         public DbSet<Member> Members { get; set; }
         public DbSet<Store> Stores { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
+        public DbSet<IBooleanExpression> Policies { get; set; }
+        public DbSet<ShoppingBasket> ShoppingBaskets { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+
         //jonathan: why is Tranaction static?
         //public DbSet<Transaction> Transactions { get; set; }
+
+
+        public DbSet<StoreManager> StoreManagers { get; set; }
+        public DbSet<Roles> Roles { get; set; }
     }
 
     public class WorkshopProductionDBContext : WorkshopDBContext
