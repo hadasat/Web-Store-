@@ -35,7 +35,10 @@ namespace Users
             notificationLock = new Object();
             notifications = new List<string>();
             observers = new HashSet<IObserver>();
-            this.storeManaging = new LinkedList<StoreManager>();
+            if (storeManaging == null)
+            {
+                storeManaging = new LinkedList<StoreManager>();
+            }
         }
 
         public Member(string username, int ID) : this()//Register

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,9 @@ namespace WorkshopProject
         public string name { get; set; }
         public int rank { get; set; }
         public Boolean isActive { get; set; }
-        public Dictionary<int, Product> Stock { get; set; }
+        [NotMapped]
+        private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD
+        public List<Stock> StockList { get; set; } //added for DB. Through "getStock" translates it to dictionary for backwards compatibility
         public List<IBooleanExpression> purchasePolicy { get; set; }
         public List<Discount> discountPolicy { get; set; }
         public List<IBooleanExpression> storePolicy { get; set; }
@@ -30,7 +33,8 @@ namespace WorkshopProject
             this.name = name;
             this.rank = rank;
             this.isActive = isActive;
-            Stock = new Dictionary<int, Product>();
+            //Stock = new Dictionary<int, Product>();
+            StockList = new List<Stock>();
 
             //make purchasePolicy and storePolicy
             this.purchasePolicy = new List<IBooleanExpression>();
@@ -43,6 +47,10 @@ namespace WorkshopProject
 
         public Dictionary<int, Product> GetStock()
         {
+            if (Stock == null)
+            {
+                Stock = getStockListAsDictionary();
+            }
             return Stock;
         }
 
@@ -99,9 +107,9 @@ namespace WorkshopProject
         public Product getProduct(int productId)
         {
 
-            if (!Stock.ContainsKey(productId))
+            if (!GetStock().ContainsKey(productId))
                 return null;
-            return Stock[productId];
+            return GetStock()[productId];
 
         }
 
@@ -119,7 +127,7 @@ namespace WorkshopProject
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return -1;
 
-            Stock.Add(p.getId(), p);
+            GetStock().Add(p.getId(), p);
             Logger.Log("file", logLevel.INFO, "product " + p.getId() + " added");
             return p.getId();
         }
@@ -134,7 +142,7 @@ namespace WorkshopProject
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 
-            Stock.Remove(product.getId());
+            GetStock().Remove(product.getId());
             Logger.Log("file", logLevel.INFO, "product " + product.getId() + " removed");
             return true;
         }
@@ -186,11 +194,11 @@ namespace WorkshopProject
         {
             callback callback = delegate ()
             {
-                if (Stock.ContainsKey(p.getId()))
-                    Stock[p.getId()].amount += amountToBuy;
+                if (GetStock().ContainsKey(p.getId()))
+                    GetStock()[p.getId()].amount += amountToBuy;
             };
 
-            if (!Stock.ContainsKey(p.getId()) || removeFromStock(Stock[p.getId()], amountToBuy) == -1)
+            if (!GetStock().ContainsKey(p.getId()) || removeFromStock(GetStock()[p.getId()], amountToBuy) == -1)
                 return null;
 
             string buyMessage = String.Format("the product {0}, was bought from the store {1}", p.name, name);
@@ -223,7 +231,7 @@ namespace WorkshopProject
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 
-            if (!Stock.ContainsKey(product.getId()))
+            if (!GetStock().ContainsKey(product.getId()))
                 throw new Exception("Product not exist");
 
             product.amount += amountToAdd;
@@ -234,18 +242,18 @@ namespace WorkshopProject
 
         public bool checkAvailability(Product product, int amount)
         {
-            if (Stock.ContainsKey(product.getId()))
+            if (GetStock().ContainsKey(product.getId()))
             {
-                return Stock[product.getId()].amount >= amount;
+                return GetStock()[product.getId()].amount >= amount;
             }
             return false;
         }
 
         public bool changeProductInfo(User user, int productId, string name, string desc, double price, string category, int amount)
         {
-            if (!Stock.ContainsKey(productId) || !user.hasAddRemoveProductsPermission(this))
+            if (!GetStock().ContainsKey(productId) || !user.hasAddRemoveProductsPermission(this))
                 return false;
-            Product product = Stock[productId];
+            Product product = GetStock()[productId];
             product.name = name;
             product.description = desc;
             product.setPrice(price);
@@ -258,7 +266,7 @@ namespace WorkshopProject
         public Product findProduct(int productId)
         {
             Product output;
-            Stock.TryGetValue(productId, out output);
+            GetStock().TryGetValue(productId, out output);
             return output;
         }
 
@@ -361,6 +369,48 @@ namespace WorkshopProject
             return -1;
         }
 
+
+        private Dictionary<int, Product> getStockListAsDictionary()
+        {
+            Dictionary<int, Product> ret = new Dictionary<int, Product>();
+            foreach (Stock stock in this.StockList)
+            {
+                ret.Add(stock.amount, stock.product);
+            }
+            return ret;
+        }
+
+        //private void addToStockListAsDictionary(int amount, Product product)
+        //{
+        //    StockList.Add(new Stock(amount, product));
+        //}
+
+        //private Dictionary<int, Product> getStock()
+        //{
+        //    if(Stock == null)
+        //    {
+        //        Stock = getStockListAsDictionary();
+        //    }
+        //    return Stock;
+        //}
+    }
+
+
+    public class Stock
+    {
+        [Key]
+        public int id { get; set; }
+        public int amount { get; set; }
+        public Product product { get; set; }
+
+
+        public Stock() { }
+
+        public Stock(int amount, Product product)
+        {
+            this.amount = amount;
+            this.product = product;
+        }
     }
 
 }
