@@ -3,6 +3,7 @@ using Shopping;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,10 +19,12 @@ namespace WorkshopProject.Policies
     {
         [Key]
         public int id { get; set; }
-        public ItemFilter filter;
-        public IBooleanExpression firstChild;
-        public IBooleanExpression secondChild;
-        
+        public ItemFilter filter { get; set; }
+
+        public IBooleanExpression firstChild { get; set; }
+
+        public IBooleanExpression secondChild { get; set; }
+
         public static int Idcounter = 1;
 
         public abstract bool evaluate(List<ProductAmountPrice> products,User user);
