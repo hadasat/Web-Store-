@@ -120,6 +120,7 @@
     <Compile Include="System Service\TransactionService.cs" />
     <Compile Include="System Service\UserInterface.cs" />
     <Compile Include="System Service\UserService.cs" />
+    <Compile Include="User\Member.cs" />
     <Compile Include="User\Password.cs" />
     <Compile Include="Store\Product.cs" />
     <Compile Include="Store\RegularDiscount.cs" />
@@ -128,10 +129,12 @@
     <Compile Include="Store\Store.cs" />
     <Compile Include="User\Managment.cs" />
     <Compile Include="Purchasing\Transaction.cs" />
+    <Compile Include="User\SystemAdmin.cs" />
     <Compile Include="User\Users.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Store\WorkShop.cs" />
+    <Compile Include="User\UsersManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
