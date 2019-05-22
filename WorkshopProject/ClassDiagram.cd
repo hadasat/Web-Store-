@@ -8,7 +8,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Managment.StoreManager">
-    <Position X="42.25" Y="36" Width="2" />
+    <Position X="42" Y="36" Width="3" />
     <TypeIdentifier>
       <HashCode>AgAAAAABAAABAAAAABBAgAAAAAAAAAUBAACAABIAAQE=</HashCode>
       <FileName>User\Managment.cs</FileName>
@@ -265,10 +265,10 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="WorkshopProject.Policies.Discount">
-    <Position X="13.5" Y="30.25" Width="1.5" />
+    <Position X="12.25" Y="30.25" Width="2.75" />
     <AssociationLine Name="outcome" Type="WorkshopProject.Policies.IOutcome" ManuallyRouted="true">
       <Path>
-        <Point X="13.5" Y="30.657" />
+        <Point X="12.25" Y="30.657" />
         <Point X="8.5" Y="30.657" />
         <Point X="8.5" Y="33.5" />
       </Path>

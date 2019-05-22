@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,10 +10,11 @@ namespace WorkshopProject.Policies
 {
     public class Discount
     {
+        [Key]
+        public int id { get; set; }
         public Discount successor;
         public IOutcome outcome;
         public IBooleanExpression condition;
-        public int id;
 
         public static int DiscountCounter = 1;
 

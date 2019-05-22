@@ -13,7 +13,7 @@ using WorkshopProject.Policies;
 
 namespace WorkshopProject.DataAccessLayer
 {
-    public class DataAccessNonPersistent 
+    public class DataAccessNonPersistent : IDataAccess
     {
         protected bool isProduction; 
 

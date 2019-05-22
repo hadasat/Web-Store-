@@ -33,16 +33,12 @@ namespace WorkshopProject
             this.amount = amount;
         }
 
-
-
         public Product() { }
 
         public int getId()
         {
             return id;
-        }
-
-       
+        }   
 
         public double getPrice()
         {
@@ -62,7 +58,12 @@ namespace WorkshopProject
             return (id == p.id && storeId == p.storeId);
         }
 
-
-
+        public override int GetHashCode()
+        {
+            //return base.GetHashCode();
+            int result = id;
+            result = (result * 397) ^ storeId;
+            return result;
+        }
     }
 }
