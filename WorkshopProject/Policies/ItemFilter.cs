@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,9 +8,11 @@ using WorkshopProject;
 
 namespace WorkshopProject.Policies
 {
-    public interface ItemFilter
+    public abstract class ItemFilter
     {
-        List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products);
+        [Key]
+        public int id { get; set; }
+        public abstract List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products);
 
         //bool addStuff(List<ProductAmountPrice> products);
         //bool removeStuff(List<ProductAmountPrice> products);
@@ -19,20 +22,20 @@ namespace WorkshopProject.Policies
     {
         public AllProductsFilter() { }
 
-        public List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products) { return products; }
+        public override List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products) { return products; }
     }
    
 
     public class ProductListFilter : ItemFilter
     {
-        public List<int> productIds;
+        public List<int> productIds { get; set; }
         public ProductListFilter() {/*forJson*/ }
 
         public ProductListFilter(List<int> productIds) {
             this.productIds = productIds;
         }
 
-        public List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products) {
+        public override List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products) {
             List<ProductAmountPrice> ret = new List<ProductAmountPrice>();
             foreach (ProductAmountPrice pair in products)
             {
@@ -47,7 +50,7 @@ namespace WorkshopProject.Policies
 
     public class CategoryFilter : ItemFilter
     {
-        public string category;
+        public string category { get; set; }
 
         public CategoryFilter() {/*forJson*/ }
 
@@ -55,7 +58,7 @@ namespace WorkshopProject.Policies
             this.category = category.ToLower();
         }
 
-        public List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products)
+        public override List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products)
         {
             List<ProductAmountPrice> ret = new List<ProductAmountPrice>();
             foreach (ProductAmountPrice pair in products)

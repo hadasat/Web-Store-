@@ -11,12 +11,12 @@ namespace WorkshopProject.Policies
     public class MaxAmount : IBooleanExpression
     {
         //public string name = "MaxAmount";
-        public int amount;
+        public int amount { get; set; }
 
 
-        public MaxAmount() {/*for json*/ }
+        public MaxAmount() : base() {/*for json*/ }
 
-        public MaxAmount(int amount, ItemFilter filter)
+        public MaxAmount(int amount, ItemFilter filter) : base()
         {
             this.filter = filter;
             this.amount = amount;
@@ -41,11 +41,11 @@ namespace WorkshopProject.Policies
     public class MinAmount : IBooleanExpression
     {
        // public string name = "MinAmount";
-        public int amount;
+        public int amount { get; set; }
 
-        public MinAmount() {/*for json*/ }
+        public MinAmount() : base() {/*for json*/ }
 
-        public MinAmount(int amount, ItemFilter filter)
+        public MinAmount(int amount, ItemFilter filter) : base()
         {
             this.filter = filter;
             this.amount = amount;
@@ -69,12 +69,12 @@ namespace WorkshopProject.Policies
 
     public class UserAge : IBooleanExpression
     {
-        public int age;
+        public int age { get; set; }
         //public string name = "UserAge";
 
-        public UserAge() {/*for json*/ }
+        public UserAge() : base() {/*for json*/ }
 
-        public UserAge(int age, ItemFilter filter)
+        public UserAge(int age, ItemFilter filter) : base()
         {
             this.filter = filter;
             this.age = age;
@@ -105,12 +105,12 @@ namespace WorkshopProject.Policies
 
     public class UserCountry : IBooleanExpression
     {
-        public string country;
+        public string country { get; set; }
         //public string name = "UserCountry";
 
-        public UserCountry() {/*for json*/ }
+        public UserCountry() : base() {/*for json*/ }
 
-        public UserCountry(string country, ItemFilter filter)
+        public UserCountry(string country, ItemFilter filter) : base()
         {
             this.filter = filter;
             this.country = country;
@@ -144,7 +144,7 @@ namespace WorkshopProject.Policies
     {
         //public string name = "TrueCondition";
 
-        public TrueCondition()
+        public TrueCondition() : base()
         {
         }
 
@@ -169,7 +169,7 @@ namespace WorkshopProject.Policies
     public class FalseCondition : IBooleanExpression
     {
         //public string name = "FalseCondition";
-        public FalseCondition()
+        public FalseCondition() : base()
         {
             
         }
@@ -197,13 +197,13 @@ namespace WorkshopProject.Policies
     {
         //public string name = "AndExpression";
 
-        public AndExpression()
+        public AndExpression() : base()
         {
         }
 
         public override bool evaluate(List<ProductAmountPrice> products,User user)
         {
-            return (firstChild.evaluate(products,user) && secondChild.evaluate(products, user));
+            return (getFirstChild().evaluate(products,user) && getSecondChild().evaluate(products, user));
         }
 
 
@@ -213,7 +213,7 @@ namespace WorkshopProject.Policies
     {
         // public string name = "OrExpression";
 
-        public OrExpression() { }
+        public OrExpression() : base() { }
 
         public OrExpression(bool value)
         {
@@ -222,7 +222,7 @@ namespace WorkshopProject.Policies
 
         public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
-            return (firstChild.evaluate( products, user) || secondChild.evaluate( products, user));
+            return (getFirstChild().evaluate( products, user) || getSecondChild().evaluate( products, user));
         }
 
         
@@ -231,7 +231,7 @@ namespace WorkshopProject.Policies
     public class XorExpression : IBooleanExpression
     {
         //public string name = "XorExpression";
-        public XorExpression(bool value)
+        public XorExpression(bool value) : base()
         {
             this.id = Idcounter++;
         }
@@ -243,8 +243,8 @@ namespace WorkshopProject.Policies
 
         public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
-            bool firstExp = firstChild.evaluate(products, user);
-            bool secondExp = secondChild.evaluate(products, user);
+            bool firstExp = getFirstChild().evaluate(products, user);
+            bool secondExp = getSecondChild().evaluate(products, user);
             return firstExp ^ secondExp;
         }
     }

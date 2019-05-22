@@ -54,7 +54,7 @@ namespace TansactionsNameSpace
                 return;
             }
 
-            Dictionary<Store, ShoppingCart> carts = basket.carts;
+            Dictionary<Store, ShoppingCart> carts = basket.getCarts();
             List<ProductAmountPrice> purchasedProducts = new List<ProductAmountPrice>();
             //calc toal price
             foreach (KeyValuePair<Store, ShoppingCart> c in carts)

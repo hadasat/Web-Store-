@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class ClassForTestExampleTests
     {
         [TestInitialize]
