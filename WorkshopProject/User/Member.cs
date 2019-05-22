@@ -9,11 +9,13 @@ using WorkshopProject;
 using Shopping;
 using WorkshopProject.Log;
 using WorkshopProject.Communication;
+using System.ComponentModel.DataAnnotations;
 
 namespace Users
 {
     public class Member : User, IObserverSubject
     {
+        [KEY]
         public int ID; //why do we need id?
         public string username;
         public LinkedList<StoreManager> storeManaging;
