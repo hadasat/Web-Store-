@@ -143,9 +143,9 @@ namespace IntegrationTests
             string cart = user.GetShoppingCart(storeId[0]);
             JsonShoppingCart jsonshopping = JsonConvert.DeserializeObject<JsonShoppingCart>(cart);
             ShoppingCart shopping = new ShoppingCart(jsonshopping);
-            ShoppingCart actualShopping = userShoppingBasket.carts[store[0]];
-            int recivedNum = shopping.products.Count();
-            int actualNum = actualShopping.products.Count;
+            ShoppingCart actualShopping = userShoppingBasket.getCarts()[store[0]];
+            int recivedNum = shopping.getProducts().Count();
+            int actualNum = actualShopping.getProducts().Count;
             Assert.AreEqual(actualNum, recivedNum);
 
             recivedNum = shopping.getTotalAmount();
@@ -198,8 +198,8 @@ namespace IntegrationTests
             actualNum = userShoppingBasket.getProductAmount(product[1]);
             Assert.AreEqual(actualNum, recivedNum,"4");
             //check total amount
-            recivedNum = shopping.carts.Count;
-            actualNum = userShoppingBasket.carts.Count;
+            recivedNum = shopping.getCarts().Count;
+            actualNum = userShoppingBasket.getCarts().Count;
             Assert.AreEqual(actualNum, recivedNum,"5");
 
         }

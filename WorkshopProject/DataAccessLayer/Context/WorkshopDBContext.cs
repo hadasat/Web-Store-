@@ -32,7 +32,7 @@ namespace WorkshopProject.DataAccessLayer.Context
         public DbSet<Store> Stores { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Discount> Discounts { get; set; }
-        public DbSet<IBooleanExpression> Policies { get; set; }
+        public DbSet<IBooleanExpression> PurchasingPolicies { get; set; }
         public DbSet<ShoppingBasket> ShoppingBaskets { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
@@ -42,6 +42,13 @@ namespace WorkshopProject.DataAccessLayer.Context
 
         public DbSet<StoreManager> StoreManagers { get; set; }
         public DbSet<Roles> Roles { get; set; }
+        public DbSet<Stock> Stock { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+
+        public DbSet<IOutcome> PolicyOutcomes { get; set; }
+        public DbSet<ItemFilter> PolicyFilters { get; set; }
+        public DbSet<ShoppingCartAndStore> ProductsInCarts { get; set; }
+        public DbSet<JsonShoppingCartValue> CartsInBaskets { get; set; }
     }
 
     public class WorkshopProductionDBContext : WorkshopDBContext

@@ -58,7 +58,7 @@ namespace WorkshopProject.Tests
                 //zero amount - remove product from list
                 Assert.IsTrue(shoppingCart.setProductAmount(testp, 0));
                 Assert.AreEqual(shoppingCart.getProductAmount(testp), 0);
-                Assert.IsFalse(shoppingCart.products.ContainsKey(testp));
+                Assert.IsFalse(shoppingCart.getProducts().ContainsKey(testp));
             }
             finally
             {

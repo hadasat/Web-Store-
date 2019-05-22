@@ -201,7 +201,7 @@ namespace WorkshopProject.DataAccessLayer
         public bool SavePolicy(IBooleanExpression entity)
         {
             WorkshopDBContext ctx = getContext();
-            DbSet<IBooleanExpression> set = ctx.Policies;
+            DbSet<IBooleanExpression> set = ctx.PurchasingPolicies;
 
             return Save(entity, entity.id, ctx, set);
         }
@@ -209,7 +209,7 @@ namespace WorkshopProject.DataAccessLayer
         public IBooleanExpression GetPolicy(int id)
         {
             WorkshopDBContext ctx = getContext();
-            DbSet<IBooleanExpression> set = ctx.Policies;
+            DbSet<IBooleanExpression> set = ctx.PurchasingPolicies;
 
             return set.Find(id);
         }
@@ -217,7 +217,7 @@ namespace WorkshopProject.DataAccessLayer
         public bool RemovePolicy(int id)
         {
             WorkshopDBContext ctx = getContext();
-            DbSet<IBooleanExpression> set = ctx.Policies;
+            DbSet<IBooleanExpression> set = ctx.PurchasingPolicies;
 
             return Remove(id, ctx, set);
         }

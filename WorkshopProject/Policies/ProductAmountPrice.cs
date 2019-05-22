@@ -30,7 +30,7 @@ namespace WorkshopProject.Policies
         public static List<ProductAmountPrice> translateCart(ShoppingCart cart)
         {
             List<ProductAmountPrice> output = new List<ProductAmountPrice>();
-            Dictionary<Product, int> products = cart.products;
+            Dictionary<Product, int> products = cart.getProducts();
             foreach(KeyValuePair<Product,int> p in products)
             {
                 ProductAmountPrice newProduct = new ProductAmountPrice(p.Key, p.Value, p.Key.price);

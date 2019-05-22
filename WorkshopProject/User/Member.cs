@@ -23,7 +23,7 @@ namespace Users
         [Column(TypeName = "DateTime2")]
         public DateTime birthdate { get; set; }
         public string country { get; set; }
-        public List<string> notifications { get; set; }
+        public List<Notification> notifications { get; set; }
         [NotMapped]
         public HashSet<IObserver> observers { get; set; }
         [NotMapped]
@@ -33,9 +33,12 @@ namespace Users
         public Member() : base()
         {/*added for json*/
             notificationLock = new Object();
-            notifications = new List<string>();
+            notifications = new List<Notification>();
             observers = new HashSet<IObserver>();
-            this.storeManaging = new LinkedList<StoreManager>();
+            if (storeManaging == null)
+            {
+                storeManaging = new LinkedList<StoreManager>();
+            }
         }
 
         public Member(string username, int ID) : this()//Register
@@ -301,7 +304,7 @@ namespace Users
         {
             lock (notificationLock)
             {
-                notifications.Add(msg);
+                notifications.Add(new Notification(msg));
             }
             notifyAllObservers();
         }
@@ -312,12 +315,22 @@ namespace Users
             {
                 if (notifications.Count != 0)
                 {
-                    List<string> res = notifications;
-                    notifications = new List<string>();
+                    List<string> res = notificationListToStringList(notifications);
+                    notifications.Clear();
                     return res;
                 }
             }
             return null;
+        }
+
+        private List<string> notificationListToStringList(List<Notification> notifications)
+        {
+            List<string> ret = new List<string>();
+            foreach(Notification n in notifications)
+            {
+                ret.Add(n.msg);
+            }
+            return ret;
         }
 
         public bool subscribe(IObserver observer)
@@ -408,5 +421,19 @@ namespace Users
 
 
         #endregion
+    }
+
+
+    public class Notification
+    {
+        [Key]
+        public int id { get; set; }
+        public string msg { get; set; }
+
+        public Notification() { }
+        public Notification(string msg)
+        {
+            this.msg = msg;
+        }
     }
 }
