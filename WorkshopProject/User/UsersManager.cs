@@ -36,11 +36,11 @@ namespace Users
 
         public static void removeMember(Member m)
         {
-            if (m.ID == 0)
+            if (m.id == 0)
                 throw new Exception("don't remove Admin!");
             try
             {
-                members.Remove(m.ID);
+                members.Remove(m.id);
                 mapIDUsermane.Remove(m.username);
             }
             catch (Exception ignore)

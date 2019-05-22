@@ -14,6 +14,8 @@ namespace Users
 {
     public class SystemAdmin : Member
     {
+        public SystemAdmin() : base() { } /* added for DB */
+
         public SystemAdmin(string username, int ID) : base(username, ID) { }
 
         public SystemAdmin(string username, int ID, DateTime birthdate, string country) : base(username, ID, birthdate, country) { }
