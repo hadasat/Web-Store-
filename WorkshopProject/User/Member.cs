@@ -15,7 +15,7 @@ namespace Users
 {
     public class Member : User, IObserverSubject
     {
-        [KEY]
+        [Key]
         public int ID; //why do we need id?
         public string username;
         public LinkedList<StoreManager> storeManaging;
