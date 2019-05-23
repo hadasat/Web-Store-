@@ -16,7 +16,7 @@ namespace TansactionsNameSpace
 
     public class Transaction
     {
-        static int transactionCounter = 0;
+        static int transactionCounter = 1;
 
         public User user;
         public List<ShoppingCartDeal> sucess;
@@ -29,13 +29,14 @@ namespace TansactionsNameSpace
         {
             this.user = user;
             this.total = 0;
-            List<ShoppingCartDeal> sucess = new List<ShoppingCartDeal>();
-            List<ShoppingCartDeal> fail = new List<ShoppingCartDeal>();
+            sucess = new List<ShoppingCartDeal>();
+            fail = new List<ShoppingCartDeal>();
             purchase(userCredit, userCsv, userExpiryDate, targetAddress);
-            if (transactionSatus == status.empty)
+            if (transactionSatus == status.empty || sucess.Count == 0)
                 id = -1;
             else
                 id = transactionCounter++;
+
         }
 
         public void returnProducts(List<Store.callback> callbacks)

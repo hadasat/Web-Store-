@@ -61,7 +61,7 @@ namespace WorkshopProject.Tests
                 string expirydate = "", shippingAddress = "";
                 Transaction transaction = new Transaction(user, credit, csv, expirydate, shippingAddress);
                 int transactionId = transaction.id;
-                Assert.IsTrue(transactionId > 0, "fail to purchase legal transaction");
+                Assert.IsTrue(transactionId > 0, "fail to purchase legal transaction trans id:" + transactionId);
 
                 //check if the product remove from user
                 int productAmount = user.shoppingBasket.getProductAmount(pro[0]);
