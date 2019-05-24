@@ -350,6 +350,15 @@ namespace WorkshopProject.DataAccessLayer
         protected static WorkshopProductionDBContext productionContext; //= new WorkshopProductionDBContext();
         protected static WorkshopTestDBContext testContext; //= new WorkshopProductionDBContext();
 
+        public DataAccessPersistent() : base(false)
+        {
+        }
+
+        public DataAccessPersistent(bool isProduction) : base(isProduction)
+        {
+        }
+
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public override DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters)
         {
