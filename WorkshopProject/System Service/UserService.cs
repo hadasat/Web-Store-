@@ -28,7 +28,16 @@ namespace WorkshopProject.System_Service
                 ((Member)user).addManager(username, rolesOb, storeId);
             return true;
         }
-    
+
+        public static bool AddStoreManager(User user, int storeId, string username, Roles roles)
+        {
+            if (roles == null)
+                throw new Exception("illegal roles was enterd");
+            ((Member)user).addManager(username, roles, storeId);
+            return true;
+        }
+
+
         private static Roles createRole(string roles)
         {
             return JsonHandler.DeserializeObject<Roles>(roles);

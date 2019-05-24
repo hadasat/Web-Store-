@@ -66,7 +66,7 @@ namespace TestingFramework.AcceptanceTests
                 addRemoveStoreManger,
                 addRemoveStorePolicy
                 );
-            return JsonHandler.SerializeObject(roles);
+            return JsonHandler.SerializeObjectDynamic(roles);
         }
 
         //{id : int , name :string , price : int , rank : int  , category : string  }
