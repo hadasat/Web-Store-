@@ -1,13 +1,28 @@
 ﻿using Shopping;
+using System.Data.Entity.Infrastructure;
 using Users;
 using WorkshopProject.Policies;
 
 namespace WorkshopProject.DataAccessLayer
 {
+    /// <exception cref="DbUpdateException"></exception>
+    /// <exception cref="DbUpdateConcurrencyException">Thrown when conflicting updates occur</exception>
+    /// <exception cref="DbEntityValidationException"></exception>
+    /// <exception cref="NotSupportedException"></exception>
+    /// <exception cref="ObjectDisposedException">Calling a disposed context</exception>
+    /// <exception cref="InvalidOperationException"></exception>
     public interface IDataAccess
     {
+        DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters);
         Discount GetDiscount(int id);
         Member GetMember(int id);
+
+        /// <summary>
+        /// Gets the mode of the DataAccess.
+        /// True: Production.
+        /// False: Test.
+        /// </summary>
+        /// <param name="isProduction"></param>
         bool GetMode();
         IBooleanExpression GetPolicy(int id);
         Product GetProduct(int id);
@@ -28,6 +43,13 @@ namespace WorkshopProject.DataAccessLayer
         bool SaveShoppingBasket(ShoppingBasket entity);
         bool SaveShoppingCart(ShoppingCart entity);
         bool SaveStore(Store entity);
+
+        /// <summary>
+        /// Sets the mode of the DataAccess.
+        /// True: Production.
+        /// False: Test.
+        /// </summary>
+        /// <param name="isProduction"></param>
         void SetMode(bool isProduction);
     }
 }

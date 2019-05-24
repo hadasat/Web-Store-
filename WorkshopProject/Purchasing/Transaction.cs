@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
 using WorkshopProject.Policies;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TansactionsNameSpace
 {
@@ -18,12 +20,18 @@ namespace TansactionsNameSpace
     {
         static int transactionCounter = 1;
 
-        public User user;
-        public List<ShoppingCartDeal> sucess;
-        public List<ShoppingCartDeal> fail;
-        public double total;
-        public status transactionSatus;
-        public int id;
+        [Key]
+        public int id { get; set; }
+        [NotMapped]
+        public User user { get; set; }
+        public Member member { get { return (user is Member) ? (Member)user : null; } set => member = value; }
+        public List<ShoppingCartDeal> sucess { get; set; }
+        public List<ShoppingCartDeal> fail { get; set; }
+        public double total { get; set; }
+        public status transactionSatus { get; set; }
+
+
+        public Transaction() { } //added for DB
 
         public Transaction(User user, int userCredit, int userCsv, string userExpiryDate, string targetAddress)
         {
@@ -155,16 +163,18 @@ namespace TansactionsNameSpace
             List<IBooleanExpression> storePolicy = store.storePolicy;
             return ConsistencyStub.checkConsistency(user, discount, purchase, storePolicy, cart);
         }
-
     }
 
     public class ShoppingCartDeal
     {
-        public List<ProductAmountPrice> products;
-        public String storeName;
-        public int storId;
-        public double totalPrice;
-        public status transStatus;
+        [Key]
+        public int id { get; set; }
+        public List<ProductAmountPrice> products { get; set; }
+        public String storeName { get; set; }
+        public int storId { get; set; }
+        public double totalPrice { get; set; }
+        [NotMapped]
+        public status transStatus { get; set; }
 
         public ShoppingCartDeal(List<ProductAmountPrice> products, String storeName, double totalPrice,int storId, status transStatus)
         {
