@@ -328,6 +328,7 @@ namespace WorkshopProject.DataAccessLayer
             else
             {
                 set.Remove(entity);
+                ctx.SaveChanges();
                 return true;
             }
         }

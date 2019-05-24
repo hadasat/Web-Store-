@@ -41,7 +41,9 @@ namespace TestingFramework.UnitTests.DataAccessTests
 
         public int SaveNewMember()
         {
-            Member member = new Member("user", 0, new DateTime(), "country");
+            Member member = new Member();
+            member.country = "Test";
+            member.username = "Test";
 
             bool result = dal.SaveMember(member);
             Assert.IsTrue(result);
@@ -61,14 +63,29 @@ namespace TestingFramework.UnitTests.DataAccessTests
         [TestCategory("DAL - persistent")]
         public void SaveExisitingMemberTest()
         {
+            Member member = new Member();
+            member.country = "Test";
+            member.username = "Test";
 
+            bool result = dal.SaveMember(member);
+            Assert.IsTrue(result);
+
+            member.country = "Test2";
+            result = dal.SaveMember(member);
+            Assert.IsTrue(result);
+
+            member = dal.GetMember(member.id);
+            Assert.AreEqual("Test2", member.country);
         }
 
         [TestMethod]
         [TestCategory("DAL - persistent")]
         public void RemoveExistingMemberTest()
         {
-
+            int memberId = SaveNewMember();
+            dal.RemoveMember(memberId);
+            Member result = dal.GetMember(memberId);
+            Assert.IsNull(result);
         }
     }
 }
