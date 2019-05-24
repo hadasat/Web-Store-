@@ -43,6 +43,9 @@ public static class TransactionService
             int credit = 0, csv = 0;
             string expirydate ="",shippingAddress = "";
             Transaction transaction = new Transaction(user, credit, csv,expirydate , shippingAddress );
+            /*if (user is Member)
+                ((Member)user).addTransactionHistory(transaction);
+                */
             return transaction;
 
             //return JsonConvert.SerializeObject(new IdMessage(transId));
