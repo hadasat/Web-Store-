@@ -46,13 +46,15 @@ namespace WorkshopProject.System_Service
     
         private static Roles createRole(string roles)
         {
-            JObject json = JObject.Parse(roles);
-            bool addRemovePurchasing = (bool)json["addRemovePurchasing"];
-            bool addRemoveDiscountPolicy = (bool)json["addRemoveDiscountPolicy"];
-            bool addRemoveStoreManger = (bool)json["addRemoveStoreManger"];
-            bool closeStore = (bool)json["closeStore"];
+            return JsonHandler.DeserializeObject<Roles>(roles);
 
-            return new Roles(true, addRemoveDiscountPolicy, addRemoveDiscountPolicy, true, closeStore, true, true, true,true);
+            //JObject json = JObject.Parse(roles);
+            //bool addRemovePurchasing = (bool)json["addRemovePurchasing"];
+            //bool addRemoveDiscountPolicy = (bool)json["addRemoveDiscountPolicy"];
+            //bool addRemoveStoreManger = (bool)json["addRemoveStoreManger"];
+            //bool closeStore = (bool)json["closeStore"];
+
+            //return new Roles(true, addRemoveDiscountPolicy, addRemoveDiscountPolicy, true, closeStore, true, true, true,true);
         }
 
         public static bool AddStoreOwner(User user, int storeId, string username)
