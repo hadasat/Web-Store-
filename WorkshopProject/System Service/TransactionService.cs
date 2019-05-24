@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tansactions;
+using TansactionsNameSpace;
 using Users;
 
 
@@ -38,10 +38,15 @@ public static class TransactionService
             return ret;
         }
 
-        public static int BuyShoppingBasket(User user)
+        public static Transaction BuyShoppingBasket(User user)
         {
-            int transId = Transaction.purchase(user);
-            return transId;
+            int credit = 0, csv = 0;
+            string expirydate ="",shippingAddress = "";
+            Transaction transaction = new Transaction(user, credit, csv,expirydate , shippingAddress );
+            /*if (user is Member)
+                ((Member)user).addTransactionHistory(transaction);
+                */
+            return transaction;
 
             //return JsonConvert.SerializeObject(new IdMessage(transId));
         }
