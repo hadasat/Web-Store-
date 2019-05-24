@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -86,6 +88,25 @@ namespace TestingFramework.UnitTests.DataAccessTests
             dal.RemoveMember(memberId);
             Member result = dal.GetMember(memberId);
             Assert.IsNull(result);
+        }
+
+
+        [TestMethod]
+        [TestCategory("DAL - persistent")]
+        public void SqlTest()
+        {
+            string name = "FindMe";
+            Member member = new Member();
+            member.username = name;
+
+            bool result = dal.SaveMember(member);
+
+            string sql = "select * from Members where username = @name";
+            SqlParameter sqlparam = new SqlParameter("@name", name);
+            DbRawSqlQuery<Member> query = dal.SqlQuery<Member>(sql, sqlparam);
+            Member memberExtracted = query.FirstOrDefault();
+            Assert.IsNotNull(memberExtracted);
+            Assert.AreEqual(name, memberExtracted.username);
         }
     }
 }
