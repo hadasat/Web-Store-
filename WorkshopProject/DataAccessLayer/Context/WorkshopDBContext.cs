@@ -39,7 +39,7 @@ namespace WorkshopProject.DataAccessLayer.Context
         //jonathan: why is Tranaction static?
         //public DbSet<Transaction> Transactions { get; set; }
 
-
+        public DbSet<Transaction> Transactions { get; set; }
         public DbSet<StoreManager> StoreManagers { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<Stock> Stock { get; set; }
@@ -49,6 +49,8 @@ namespace WorkshopProject.DataAccessLayer.Context
         public DbSet<ItemFilter> PolicyFilters { get; set; }
         public DbSet<ShoppingCartAndStore> ProductsInCarts { get; set; }
         public DbSet<JsonShoppingCartValue> CartsInBaskets { get; set; }
+        public DbSet<ShoppingCartDeal> ShoppingCarDeals { get; set; }
+        public DbSet<ProductAmountPrice> ProductAmountPrices { get; set; }
     }
 
     public class WorkshopProductionDBContext : WorkshopDBContext
