@@ -67,15 +67,6 @@ namespace TestingFramework.AcceptanceTests
                 addRemoveStorePolicy
                 );
             return JsonHandler.SerializeObject(roles);
-
-            //return JsonHandler.SerializeObject(
-            //    new ManagerRolesContainer(
-            //        addRemovePurchasing,
-            //        addRemoveDiscountPolicy,
-            //        addRemoveStoreManger,
-            //        closeStore,
-            //        addRemoveStorePolicy)
-            //    );
         }
 
         //{id : int , name :string , price : int , rank : int  , category : string  }
