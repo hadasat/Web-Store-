@@ -12,14 +12,14 @@ using WorkshopProject.DataAccessLayer;
 namespace TestingFramework.UnitTests.DataAccessTests
 {
     [TestClass]
-    public class DataAccessPersistentTest
+    public class DataAccessTest
     {
-        DataAccessPersistent dal;
+        IDataAccess dal;
 
         [TestInitialize]
         public void Init()
         {
-            dal = new DataAccessPersistent();
+            dal = DataAccessDriver.GetDataAccess();
             dal.SetMode(false);
         }
 
@@ -30,7 +30,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
         }
 
         [TestMethod]
-        [TestCategory("DAL - persistent")]
+        [TestCategory("DAL")]
         public void GetMemberTest()
         {
             int id = SaveNewMember();
@@ -53,7 +53,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
         }
 
         [TestMethod]
-        [TestCategory("DAL - persistent")]
+        [TestCategory("DAL")]
         public void SaveNewMemberTest()
         {
             SaveNewMember();
@@ -62,7 +62,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
 
 
         [TestMethod]
-        [TestCategory("DAL - persistent")]
+        [TestCategory("DAL")]
         public void SaveExisitingMemberTest()
         {
             Member member = new Member();
@@ -81,7 +81,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
         }
 
         [TestMethod]
-        [TestCategory("DAL - persistent")]
+        [TestCategory("DAL")]
         public void RemoveExistingMemberTest()
         {
             int memberId = SaveNewMember();
@@ -92,7 +92,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
 
 
         [TestMethod]
-        [TestCategory("DAL - persistent")]
+        [TestCategory("DAL")]
         public void SqlTest()
         {
             string name = "FindMe";
