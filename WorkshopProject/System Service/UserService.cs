@@ -23,10 +23,7 @@ namespace WorkshopProject.System_Service
         public static bool AddStoreManager(User user, int storeId, string username, string roles)
         {
             Roles rolesOb = createRole(roles);
-            if(rolesOb == null)
-                throw new Exception("illegal roles was enterd");
-                ((Member)user).addManager(username, rolesOb, storeId);
-            return true;
+            return AddStoreManager(user, storeId, username, rolesOb);
         }
 
         public static bool AddStoreManager(User user, int storeId, string username, Roles roles)
