@@ -11,6 +11,7 @@ using WorkshopProject.Log;
 using WorkshopProject.Communication;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TansactionsNameSpace;
 
 namespace Users
 {
@@ -28,6 +29,7 @@ namespace Users
         public HashSet<IObserver> observers { get; set; }
         [NotMapped]
         public Object notificationLock { get; set; }
+        //public List<Transaction> purchasesHistory { get; set; }
 
 
         public Member() : base()
@@ -35,6 +37,7 @@ namespace Users
             notificationLock = new Object();
             notifications = new List<Notification>();
             observers = new HashSet<IObserver>();
+            
             if (storeManaging == null)
             {
                 storeManaging = new LinkedList<StoreManager>();
@@ -46,6 +49,7 @@ namespace Users
             this.id = ID;
             this.username = username;
             this.country = "none";
+            //purchasesHistory = new List<Transaction>();
         }
 
         public Member(string username, int ID, DateTime birthdate, string country) : this()//Register
@@ -54,6 +58,7 @@ namespace Users
             this.username = username;
             this.birthdate = birthdate;
             this.country = country;
+           // purchasesHistory = new List<Transaction>();
         }
 
 
@@ -298,7 +303,14 @@ namespace Users
 
             return false;
         }
-
+        /*
+        public void addTransactionHistory(Transaction t)
+        {
+            if (purchasesHistory == null)
+                purchasesHistory = new List<Transaction>();
+            purchasesHistory.Add(t);
+        }
+        */
         #region notificactions
         public void addMessage(string msg)
         {

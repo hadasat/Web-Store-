@@ -183,7 +183,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
 
                 bridge.AddProductToBasket(storeId, productId, 1);
                 bool result = bridge.BuyShoppingBasket();
-                Assert.IsFalse(result);
+                Assert.IsFalse(result,"shoping fail test");
             }
             finally
             {

@@ -26,6 +26,9 @@ namespace WorkshopProject
         public List<Discount> discountPolicy { get; set; }
         public List<IBooleanExpression> storePolicy { get; set; }
 
+        public int storeBankNum;
+        public int storeAccountNum;
+        public string storeAddress;
 
         public Store() { }
 
@@ -45,6 +48,25 @@ namespace WorkshopProject
 
         }
 
+        public Store(int id, string name, int rank, Boolean isActive, int storeBankNum, int storeAccountNum, string storeAddress)
+        {
+            this.id = id;
+            this.name = name;
+            this.rank = rank;
+            this.isActive = isActive;
+            //Stock = new Dictionary<int, Product>();
+            StockList = new List<Stock>();
+
+            //make purchasePolicy and storePolicy
+            this.purchasePolicy = new List<IBooleanExpression>();
+            this.storePolicy = new List<IBooleanExpression>();
+            this.discountPolicy = new List<Discount>();
+
+            this.storeBankNum = storeBankNum;
+            this.storeAccountNum = storeAccountNum;
+            this.storeAddress = storeAddress;
+
+        }
 
         public Dictionary<int, Product> GetStock()
         {
