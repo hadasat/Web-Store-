@@ -99,7 +99,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="UnitTests\ClientTests\HtmlPageManagerTests.cs" />
-    <Compile Include="UnitTests\DataAccessTests\DataAccessPersistentTest.cs" />
+    <Compile Include="UnitTests\DataAccessTests\DataAccessTest.cs" />
     <Compile Include="UnitTests\DataAccessTests\WorkshopTestDBTest.cs" />
     <Compile Include="UnitTests\Examples\ClassForTestExampleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

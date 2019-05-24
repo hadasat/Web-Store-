@@ -10,6 +10,7 @@ using TansactionsNameSpace;
 using Users;
 using WorkshopProject.Communication;
 using WorkshopProject.DataAccessLayer.Context;
+using WorkshopProject.DataAccessLayer.Examples;
 using WorkshopProject.Examples;
 using WorkshopProject.System_Service;
 
@@ -20,9 +21,11 @@ namespace WorkshopProject
     {
         static void Main(string[] args)
         {
+            //DataAccessExamples.main();
+
             //Console.ReadLine();
-            WorkshopDBContext ctx = new WorkshopProductionDBContext();
-            ctx.Members.Add(new Member());
+            //WorkshopDBContext ctx = new WorkshopProductionDBContext();
+            //ctx.Members.Add(new Member());
 
             Setup();
             CommunicationManager manager = new CommunicationManager();

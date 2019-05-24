@@ -9,9 +9,9 @@ using Users;
 
 namespace WorkshopProject.DataAccessLayer.Examples
 {
-    class DataAccessExamples
+    public static class DataAccessExamples
     {
-        void main()
+        public static void main()
         {
             IDataAccess dal = DataAccessDriver.GetDataAccess();
 
