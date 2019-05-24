@@ -85,9 +85,6 @@
     <Compile Include="DataAccessLayer\Context\WorkshopDBContext.cs" />
     <Compile Include="DataAccessLayer\DataAccessDriver.cs" />
     <Compile Include="DataAccessLayer\DataAccessConcrete.cs" />
-    <Compile Include="DataAccessLayer\Deprecated\DuplicateHandler.cs" />
-    <Compile Include="DataAccessLayer\Deprecated\ContextHandler.cs" />
-    <Compile Include="DataAccessLayer\Deprecated\ObjectMapper.cs" />
     <Compile Include="DataAccessLayer\IDataAccess.cs" />
     <Compile Include="Examples\ClassForTestExample.cs" />
     <Compile Include="Examples\LogExample.cs" />
@@ -173,6 +170,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="DataAccessLayer\Examples\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
