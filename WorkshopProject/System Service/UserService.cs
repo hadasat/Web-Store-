@@ -40,15 +40,29 @@ namespace WorkshopProject.System_Service
             return JsonHandler.DeserializeObject<Roles>(roles);
         }
 
-        public static bool AddStoreOwner(User user, int storeId, string username)
+        public static int AddStoreOwner(User user, int storeId, string username)
         {
             Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true,true);
             if(!(user is Member))
                 throw new Exception("user can't do this");
 
-            ((Member)user).addStoreOwner(username, ownerRoles, storeId);
+            int request = ((Member)user).addStoreOwner(username, ownerRoles, storeId);
 
-            return true;
+            return request;
+        }
+
+        public static bool ApproveOwnershipRequest(User user, int requestID)
+        {
+            if (!(user is Member))
+                throw new Exception("user can't do this");
+            return ((Member)user).approveOwnershipRequest(requestID);
+        }
+
+        public static bool DisApproveOwnershipRequest(User user, int requestID)
+        {
+            if (!(user is Member))
+                throw new Exception("user can't do this");
+            return ((Member)user).disapproveOwnershipRequest(requestID);
         }
 
         public static Member login(string username, string password,User user)

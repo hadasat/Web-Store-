@@ -207,7 +207,7 @@ namespace Users
 
 
 
-        public static void createOwnershipRequest(Store store, Member memberThatOpenRequest, Member candidate)
+        public static int createOwnershipRequest(Store store, Member memberThatOpenRequest, Member candidate)
         {
 
             int requestID = ownerShipRequestsIDGenerator++;
@@ -223,11 +223,24 @@ namespace Users
             newOwnership.approveOrDisapprovedOwnership(1, memberThatOpenRequest);//first approval of asker
             ownershipsRequestList[requestID] = (newOwnership);//add ownership request to list
             newOwnership.sendRequestsToOwners();//should handle notifications
+            return requestID;
         }
 
         public static void deleteOwnershipRequest(OwnershipRequest ownership)
         {
             ownershipsRequestList.Remove(ownership.getID());
+        }
+
+        public static OwnershipRequest getOwnershipRequest(int id)
+        {
+            try
+            {
+                return ownershipsRequestList[id];
+            } catch (Exception ex)
+            {
+                ///somtihng went wrong with id's
+                throw ex;
+            }
         }
 
         public static int getNumOfOwners(Store store)
@@ -326,7 +339,7 @@ namespace Users
 
 
             //send to all members in owners.
-            //I SAVED USERNAME - U CAN GET THE MEMBER ITSELF WITH THIS LINE
+            //I SAVED USERNAMES - U CAN GET THE MEMBER ITSELF WITH THIS LINE
             ////ConnectionStubTemp.getMember(username);
         }
 

@@ -188,41 +188,29 @@ namespace Users
             StoreManager myStoreRoles = getStoreManagerOb(store);
             return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
         }
-        //TODO
-        public bool addStoreOwner(string username, Roles role, int StoreID)
-        {
-            /*
-            Store store = GetStore(StoreID);
-            StoreManager myStoreRoles = getStoreManagerOb(store);
-            Member candidate = ConnectionStubTemp.getMember(username);
-            if (candidate.isStoresManagers())
-            {
-                try
-                {
-                    candidate.GetStore(StoreID);
-                } catch (Exception ex)
-                {
-                    myStoreRoles.CreateNewManager(candidate, role);
-                }
-                StoreManager candidateStoreManager = candidate.getStoreManagerOb(store);
-                candidateStoreManager.SetStoreOwnerTrue();
-            }
-            return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
-            */
 
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="role"></param>
+        /// <param name="StoreID"></param>
+        /// <returns> the request nunmber if nessecary, else -1</returns>
+        public int addStoreOwner(string username, Roles role, int StoreID)
+        {
             Store store = GetStore(StoreID);
             int numberOfOwners = ConnectionStubTemp.getNumOfOwners(store);
             if (numberOfOwners > 1)
             {
-                //made as exception for being easy at the client side, can be changed!
-                ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
-                throw new Exception("Waiting for all of the other owners permissions");
+                int requestId = ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
+                return requestId;
             } else if(numberOfOwners <= 0)
             {
                 throw new Exception("You dont own this store! should not happen!!");
             }
             ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
-            return true;
+            return -1;
         }
 
 
@@ -252,6 +240,24 @@ namespace Users
             return true;
 
         }
+
+
+        //true on succsess exception if somthing went wrong
+        public bool approveOwnershipRequest(int requestId)
+        {
+            OwnershipRequest ownershipRequest = ConnectionStubTemp.getOwnershipRequest(requestId);
+            ownershipRequest.approveOrDisapprovedOwnership(1, this);
+            return true;
+        }
+
+        //true on succsess exception if somthing went wrong
+        public bool disapproveOwnershipRequest(int requestId)
+        {
+            OwnershipRequest ownershipRequest = ConnectionStubTemp.getOwnershipRequest(requestId);
+            ownershipRequest.approveOrDisapprovedOwnership(-1, this);
+            return true;
+        }
+
 
 
         public bool addManager(string username, Roles role, Store store)
@@ -348,6 +354,10 @@ namespace Users
 
             return acc;
         }
+
+
+
+
 
 
 
@@ -469,6 +479,9 @@ namespace Users
             sendMessageToAllManagers(storeId, msg);
             sendMessageToAdmin(msg);
         }
+
+
+
 
 
 

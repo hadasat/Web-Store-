@@ -70,7 +70,36 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 notLoggedInException();
-            return UserService.AddStoreOwner(user, storeId, userToAdd);
+            int ownerShipRequestID =  UserService.AddStoreOwner(user, storeId, userToAdd);
+            if(ownerShipRequestID == -1)
+            {
+                //this means there was only one user that was an owner so he approved hemself the request,
+                //no need to de anything except for updating the memebr on succses
+                return true;
+            } else
+            {
+                //in this case:
+                //needs to reserve the request id and that the client side will be able to show
+                //the rigth request to the relevant user
+               
+            }
+
+            return true;
+        }
+
+
+        public bool ApproveOwnershipRequest(int requestID)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return UserService.ApproveOwnershipRequest(user, requestID);
+        }
+
+        public bool DisApproveOwnershipRequest(int requestID)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return UserService.DisApproveOwnershipRequest(user, requestID);
         }
 
         public Transaction BuyShoppingBasket()
