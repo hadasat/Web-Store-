@@ -191,6 +191,7 @@ namespace Users
         //TODO
         public bool addStoreOwner(string username, Roles role, int StoreID)
         {
+            /*
             Store store = GetStore(StoreID);
             StoreManager myStoreRoles = getStoreManagerOb(store);
             Member candidate = ConnectionStubTemp.getMember(username);
@@ -207,6 +208,8 @@ namespace Users
                 candidateStoreManager.SetStoreOwnerTrue();
             }
             return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
+            */
+            throw new Exception("waiting for all of other owners permissions");
         }
 
 

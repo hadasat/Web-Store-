@@ -21,6 +21,9 @@ namespace Users
         public static Dictionary<string, int> mapIDUsermane = new Dictionary<string, int>();
         // <username, ID>
 
+        public static LinkedList<OwnershipRequest> ownershipsRequestList = new LinkedList<OwnershipRequest>();
+
+
         public static int memberIDGenerator = 0;
 
         public static void init()
@@ -202,6 +205,110 @@ namespace Users
 
         /*** END - SYSTEM ADMIN FUNCTIONS ***/
 
+
+
+        public static void createOwnershipRequest(Store store, Member memberThatOpenRequest, Member candidate)
+        {
+            OwnershipRequest newOwnership = new OwnershipRequest(store,candidate,memberThatOpenRequest);
+
+            foreach(KeyValuePair<int, Member> entry in members)
+            {
+                Member m = entry.Value;
+                if (m.isStoresOwner(store.id))
+                {
+                    newOwnership.addOwner(m);
+                }
+            }
+            newOwnership.approveOrDisapprovedOwnership(1, memberThatOpenRequest);//first approval of asker
+            ownershipsRequestList.AddFirst(newOwnership);//add ownership request to list
+            newOwnership.sendRequestsToOwners();//should handle notifications
+        }
+
+        public static void deleteOwnershipRequest(OwnershipRequest ownership)
+        {
+            ownershipsRequestList.Remove(ownership);
+        }
+
+    }
+
+
+
+    public class OwnershipRequest
+    {
+        private Store store;
+        private Member initiate;
+        private Member candidate;
+        public static Dictionary<String, int> owners = new Dictionary<String, int>();
+        //approved, ownerNames
+        private readonly object OwnersLock = new object();
+        private int counter = 0;
+        private readonly object CounterLock = new object();
+        private bool done;
+        private readonly object doneLock = new object();
+
+        public OwnershipRequest(Store store, Member candidate, Member initiate)
+        {
+            this.store = store;
+            this.candidate = candidate;
+            this.initiate = initiate;
+            this.counter = 0;
+            this.done = false;
+        }
+
+        public void addOwner(Member member)
+        {
+            owners[member.username] = 0;
+            lock (CounterLock)
+            {
+                counter++;
+            }
+        }
+
+
+        // 1 opproved -1 disapproved
+        public void approveOrDisapprovedOwnership(int desition, Member member)
+        {
+            lock(OwnersLock)
+            {
+                owners[member.username] = desition;
+            }
+            lock(CounterLock)
+            {
+                counter--;
+                if(isFullfielld())
+                {
+
+                    lock (doneLock)
+                    {
+                        if (!done)
+                        {
+                            done = true;
+                            makeOwner();
+                        }
+                    }
+                }
+            }
+        }
+
+        private bool isFullfielld()
+        {
+            lock(CounterLock)
+            {
+                return counter == 0;
+            }
+        }
+
+        public void sendRequestsToOwners()
+        {
+
+        }
+
+        public void makeOwner()
+        {
+            Roles roles = initiate.getStoreManagerRoles(store.id);
+            initiate.addStoreOwner(candidate.username, roles, store.id);
+            ConnectionStubTemp.deleteOwnershipRequest(this);
+        }
 
 
     }
