@@ -94,8 +94,8 @@ namespace Users
 
         public void closeStore(Store store)
         {
-            Roles myRoles = getStoreManagerRoles(store);
-            if (!myRoles.isStoreOwner())
+            StoreManager st = getStoreManagerOb(store);
+            if (!st.isStoreOwner())
             {
                 throw new Exception("you cant close this store");
             }
@@ -188,7 +188,7 @@ namespace Users
             StoreManager myStoreRoles = getStoreManagerOb(store);
             return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
         }
-
+        //TODO
         public bool addStoreOwner(string username, Roles role, int StoreID)
         {
             Store store = GetStore(StoreID);
@@ -290,18 +290,19 @@ namespace Users
 
         public bool isStoresOwner(int storeId)
         {
+            bool acc = false;
             if (storeManaging.Count == 0) { return false; }
 
             foreach (StoreManager currManger in storeManaging)
             {
                 if (currManger.GetStore().id == storeId)
                 {
-                    Roles role = currManger.GetRoles();
-                    return role.isStoreOwner();
+                    StoreManager st = getStoreManagerOb(GetStore(storeId));
+                    acc = acc | st.isStoreOwner();
                 }
             }
 
-            return false;
+            return acc;
         }
         /*
         public void addTransactionHistory(Transaction t)

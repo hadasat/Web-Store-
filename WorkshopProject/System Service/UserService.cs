@@ -46,7 +46,7 @@ namespace WorkshopProject.System_Service
             if(!(user is Member))
                 throw new Exception("user can't do this");
 
-            ((Member)user).addManager(username, ownerRoles, storeId);
+            ((Member)user).addStoreOwner(username, ownerRoles, storeId);
 
             return true;
         }
