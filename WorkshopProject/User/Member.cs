@@ -201,15 +201,17 @@ namespace Users
         {
             Store store = GetStore(StoreID);
             int numberOfOwners = ConnectionStubTemp.getNumOfOwners(store);
+            int requestId;
             if (numberOfOwners > 1)
             {
-                int requestId = ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
+                requestId = ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
                 return requestId;
             } else if(numberOfOwners <= 0)
             {
                 throw new Exception("You dont own this store! should not happen!!");
             }
-            ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
+            requestId = ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
+            ConnectionStubTemp.deleteOwnershipRequest(ConnectionStubTemp.getOwnershipRequest(requestId));
             return -1;
         }
 
