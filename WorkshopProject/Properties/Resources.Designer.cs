@@ -61,25 +61,50 @@ namespace WorkshopProject.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
+        ///&lt;html lang=&quot;en&quot;&gt;
+        ///&lt;head&gt;
+        ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
+        ///    &lt;title&gt;WorkShop&lt;/title&gt;
+        ///    &lt;script type=&quot;text/javascript&quot; src=&quot;/wot/communication.js&quot;&gt;&lt;/script&gt;
+        ///
+        ///
+        ///    &lt;!-- BOOTSTRAP FILES --&gt;
+        ///    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;
+        ///    &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js&quot;&gt;&lt;/script&gt;
+        ///    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js&quot;&gt;&lt;/script&gt;
+        ///  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string adminActions {
+            get {
+                return ResourceManager.GetString("adminActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to var webSocketClient;
         ///var msgHandler;
         ///var startPageHandler;
         ///var signoutHandler;
+        ///var isOldConnection= false;
+        ///const urlAddress = &quot;ws://localhost:8080/wot&quot;;
+        ///var init = function(){};
         ///
         /////back button stack
-        ///
-        ///function start() {
+        ///var connected=false;
+        ///function onStart(initFunc) {
         ///    console.log(&quot;start&quot;);
-        ///    const urlAddress = &quot;ws://localhost:8080/wot&quot;;
+        ///    
         ///    console.log(&quot;connecting to server &quot; + urlAddress + &quot;\n&quot;);
-        ///    var isOldConnection= false;
+        ///
+        ///
+        ///
         ///
         ///    if (typeof(Storage) === &quot;undefined&quot;) {
         ///        alert(&quot;this web browser is supported&quot;);
         ///    }
         ///    if (sessionStorage.connectionId){
-        ///        isOldConnection = true;
-        ///        webSocketClient = new WebSoc [rest of string was truncated]&quot;;.
+        ///        i [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string communication {
             get {
@@ -182,6 +207,27 @@ namespace WorkshopProject.Properties {
         ///    &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js&quot;&gt;&lt;/script&gt;
         ///    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js&quot;&gt;&lt;/script&gt;
         ///  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///&lt;!DOCTYPE html&gt;
+        ///&lt;html lang=&quot;en&quot;&gt;
+        ///&lt;head&gt;
+        ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
+        ///    &lt;title&gt;WorkShop&lt;/title&gt;
+        ///    &lt;script type=&quot;text/javascript&quot; src=&quot;/wot/communication.js&quot;&gt;&lt;/script&gt;
+        ///
+        ///
+        ///    &lt;!-- BOOTSTRAP FILES --&gt;
+        ///    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;
+        ///    &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js&quot;&gt;&lt;/script&gt;
+        ///    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js&quot;&gt;&lt;/script&gt;        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string shoppingBasket {
             get {

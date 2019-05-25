@@ -140,12 +140,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Client\HtmlPages\adminActions.html" />
     <Content Include="Client\HtmlPages\communication.js" />
     <Content Include="Client\HtmlPages\index.html" />
     <Content Include="Client\HtmlPages\navbar.js" />
     <None Include="Client\HtmlPages\product.html" />
     <None Include="Client\HtmlPages\newStore.html" />
     <None Include="Client\HtmlPages\shoppingBasket.html" />
+    <None Include="Client\HtmlPages\Search.html" />
     <Content Include="Client\HtmlPages\SignIn.css" />
     <Content Include="Client\HtmlPages\SignIn.html" />
     <Content Include="Client\HtmlPages\store.html" />
