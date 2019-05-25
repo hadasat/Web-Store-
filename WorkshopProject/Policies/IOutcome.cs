@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,8 +8,10 @@ using Users;
 
 namespace WorkshopProject.Policies
 {
-    public interface IOutcome
+    public abstract class IOutcome
     {
-        List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user);
+        [Key]
+        public int id { get; set; }
+        public abstract List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user);
     }
 }

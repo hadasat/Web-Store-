@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,10 +10,11 @@ namespace WorkshopProject.Policies
 {
     public class Discount
     {
-        public Discount successor;
-        public IOutcome outcome;
-        public IBooleanExpression condition;
-        public int id;
+        [Key]
+        public int id { get; set; }
+        public Discount successor { get; set; }
+        public IOutcome outcome { get; set; }
+        public IBooleanExpression condition { get; set; }
 
         public static int DiscountCounter = 1;
 
@@ -65,6 +67,12 @@ namespace WorkshopProject.Policies
                 if (id == ((Discount)obj).id)
                     return true;
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            //return base.GetHashCode();
+            return id;
         }
     }
 }

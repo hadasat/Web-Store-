@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,9 @@ namespace WorkshopProject.Policies
 {
     public class FreeProduct : IOutcome
     {
-        int productId;
-        int amount;
+        [Key]
+        public int productId {get; set;}
+        public int amount { get; set; }
 
         public FreeProduct(int productId, int amount)
         {
@@ -18,7 +20,7 @@ namespace WorkshopProject.Policies
             this.amount = amount;
         }
 
-        public List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
+        public override List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
         {
             Product product = WorkShop.findProduct(productId).Values.First();
             ProductAmountPrice freeProduct = new ProductAmountPrice(product, amount, 0);
@@ -30,14 +32,14 @@ namespace WorkshopProject.Policies
 
     public class Percentage : IOutcome
     {
-        public double percentage;
+        public double percentage { get; set; }
 
         public Percentage(double percentage)
         {
             this.percentage = percentage;
         }
 
-        public List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
+        public override List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
         {
             foreach (ProductAmountPrice p in products)
                 p.price = calcPrice(p.price);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +11,11 @@ namespace WorkshopProject.Policies
 {
     public class ProductAmountPrice
     {
-        public Product product;
-        public int amount;
-        public double price;
+        [Key]
+        public int id { get; set; }
+        public Product product { get; set; }
+        public int amount { get; set; }
+        public double price { get; set; }
 
         public ProductAmountPrice(Product product, int amount, double price)
         {
@@ -30,7 +33,7 @@ namespace WorkshopProject.Policies
         public static List<ProductAmountPrice> translateCart(ShoppingCart cart)
         {
             List<ProductAmountPrice> output = new List<ProductAmountPrice>();
-            Dictionary<Product, int> products = cart.products;
+            Dictionary<Product, int> products = cart.getProducts();
             foreach(KeyValuePair<Product,int> p in products)
             {
                 ProductAmountPrice newProduct = new ProductAmountPrice(p.Key, p.Value, p.Key.price);

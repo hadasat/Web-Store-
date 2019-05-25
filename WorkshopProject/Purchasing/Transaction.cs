@@ -9,51 +9,88 @@ using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
 using WorkshopProject.Policies;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Tansactions
+namespace TansactionsNameSpace
 {
-    public static class Transaction
+    public enum status {Sucess ,empty , StokesShortage, Consistency ,Policies ,Payment ,Supply} 
+
+    public class Transaction
     {
-        static int transactionCounter = 0;
+        static int transactionCounter = 1;
 
-        static int storeBankNum = 12;
-        static int storeAccountNum = 12;
-        static int userCredit = 27;
-        static int userCsv = 388;
-        static string userExpiryDate = "never";
+        [Key]
+        public int id { get; set; }
+        [NotMapped]
+        public User user { get; set; }
+        public Member member { get { return (user is Member) ? (Member)user : null; } set => member = value; }
+        public List<ShoppingCartDeal> sucess { get; set; }
+        public List<ShoppingCartDeal> fail { get; set; }
+        public double total { get; set; }
+        public status transactionSatus { get; set; }
 
-        static string sourceAddress = "beer sheva";
-        static string targetAddress = "tel aviv";
 
-        public static int purchase(User user)
+        public Transaction() { } //added for DB
+
+        public Transaction(User user, int userCredit, int userCsv, string userExpiryDate, string targetAddress)
         {
-            int transactionFail = 0;
-            int numSucessTransaction = 0;
-            double totalPrice = 0;
+            this.user = user;
+            this.total = 0;
+            sucess = new List<ShoppingCartDeal>();
+            fail = new List<ShoppingCartDeal>();
+            purchase(userCredit, userCsv, userExpiryDate, targetAddress);
+            if (transactionSatus == status.empty || sucess.Count == 0)
+                id = -1;
+            else
+                id = transactionCounter++;
 
+        }
+
+        public void returnProducts(List<Store.callback> callbacks)
+        {
+            foreach (Store.callback call in callbacks)
+                call();
+        }
+
+        public void purchase(int userCredit, int userCsv, string userExpiryDate, string targetAddress)
+        {
             ShoppingBasket basket = user.shoppingBasket;
             //check the basket is empty
             if (basket.isEmpty())
-                return -1;
+            {
+                transactionSatus = status.empty;
+                return;
+            }
 
-            Dictionary<Store, ShoppingCart> carts = basket.carts;
+            Dictionary<Store, ShoppingCart> carts = basket.getCarts();
             List<ProductAmountPrice> purchasedProducts = new List<ProductAmountPrice>();
-            List<Store.callback> callbacks = new List<Store.callback>();
             //calc toal price
             foreach (KeyValuePair<Store, ShoppingCart> c in carts)
             {
+                List<Store.callback> callbacks = new List<Store.callback>();
                 Store currStore = c.Key;
                 ShoppingCart currShoppingCart = c.Value;
+                List<ProductAmountPrice> currStoreProducts = ProductAmountPrice.translateCart(currShoppingCart);
                 //check consistency
                 if (!checkConsistency(user, currStore, currShoppingCart))
+                {
+                    ShoppingCartDeal failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Consistency);
+                    fail.Add(failcartDeal);
                     break;
-                List<ProductAmountPrice> currStoreProducts = ProductAmountPrice.translateCart(currShoppingCart);
+                }
                 //check store policies  
                 if (!currStore.checkPolicies(currStoreProducts, user))
+                {
+                    ShoppingCartDeal failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Policies);
+                    fail.Add(failcartDeal);
                     break;
+                }
 
                 double totalCart = 0;
+                //applay discount
                 currStoreProducts = currStore.afterDiscount(currStoreProducts, user);
+                bool allProductsAreAvailable = true;
                 foreach (ProductAmountPrice p in currStoreProducts)
                 {
                     Store.callback currCallBack = currStore.buyProduct(p.product, p.amount);
@@ -63,43 +100,55 @@ namespace Tansactions
                         purchasedProducts.Add(p);
                         totalCart += calcPrice(p.product, p.amount);
                     }
+                    else
+                    {
+                        allProductsAreAvailable = false;
+                        break;
+                    }
+                }
+                //cancel this store transaction
+                if (!allProductsAreAvailable)
+                {
+                    ShoppingCartDeal failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, totalCart, currStore.id, status.StokesShortage);
+                    fail.Add(failcartDeal);
+                    returnProducts(callbacks);
+                    break;
                 }
 
                 //return products to store if transaction fails
+                int storeBankNum = currStore.storeBankNum;
+                int storeAccountNum = currStore.storeAccountNum;
+                string sourceAddress = currStore.storeAddress;
+
                 if (!PaymentStub.Pay(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate))
                 {
-                    foreach (Store.callback call in callbacks)
-                        call();
-                    transactionFail = -2;
+                    returnProducts(callbacks);
+                    ShoppingCartDeal failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Payment);
+                    fail.Add(failcartDeal);
+                    continue;
                 }
                 else if (!SupplyStub.supply(sourceAddress, targetAddress))
                 {
-                    foreach (Store.callback call in callbacks)
-                        call();
-                    transactionFail = -3;
+                    returnProducts(callbacks);
+                    ShoppingCartDeal failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Supply);
+                    fail.Add(failcartDeal);
+                    continue;
                 }
-                else
+                else // purches all cart products
                 {
                     purchasedProducts.Concat(currStoreProducts);
-                    numSucessTransaction++;
-                    totalPrice += totalCart;
+                    this.total += totalCart;
+                    ShoppingCartDeal sucessCartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, totalCart, currStore.id, status.Sucess);
+                    sucess.Add(sucessCartDeal);
                 }
             }
-            //parches 
-            //send products
-
-            if (transactionFail < 0)
-                return transactionFail;
+            //empty all bought products
             foreach (ProductAmountPrice p in purchasedProducts)
             {
                 Store store;
-                if((store = WorkShop.getStore(p.product.storeId)) != null)
+                if ((store = WorkShop.getStore(p.product.storeId)) != null)
                     basket.setProductAmount(store, p.product, 0);
             }
-            if(numSucessTransaction >0)
-                return ++transactionCounter;
-            return -5;
-
         }
 
         private static double calcPrice(Product p, int amount)
@@ -107,14 +156,35 @@ namespace Tansactions
             return amount * (p.getPrice());
         }
 
-        public static bool checkConsistency(User user,Store store,ShoppingCart cart)
+        public static bool checkConsistency(User user, Store store, ShoppingCart cart)
         {
-            List<Discount>discount = store.discountPolicy;
+            List<Discount> discount = store.discountPolicy;
             List<IBooleanExpression> purchase = store.purchasePolicy;
             List<IBooleanExpression> storePolicy = store.storePolicy;
-            return ConsistencyStub.checkConsistency(user,discount, purchase, storePolicy, cart);
+            return ConsistencyStub.checkConsistency(user, discount, purchase, storePolicy, cart);
         }
-        
+    }
+
+    public class ShoppingCartDeal
+    {
+        [Key]
+        public int id { get; set; }
+        public List<ProductAmountPrice> products { get; set; }
+        public String storeName { get; set; }
+        public int storId { get; set; }
+        public double totalPrice { get; set; }
+        [NotMapped]
+        public status transStatus { get; set; }
+
+        public ShoppingCartDeal(List<ProductAmountPrice> products, String storeName, double totalPrice,int storId, status transStatus)
+        {
+            this.products = products;
+            this.storeName = storeName;
+            this.totalPrice = totalPrice;
+            this.storId = storId;
+            this.transStatus = transStatus;
+        }
 
     }
+
 }

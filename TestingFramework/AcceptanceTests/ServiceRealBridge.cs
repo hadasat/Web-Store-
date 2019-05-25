@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using Microsoft.CSharp.RuntimeBinder;
 using System.Dynamic;
 using WorkshopProject;
+using Managment;
 
 namespace TestingFramework.AcceptanceTests
 {
@@ -52,16 +53,20 @@ namespace TestingFramework.AcceptanceTests
             return ret;
         }
 
-        private string createRolesJson(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore,bool addRemoveStorePolicy)
+        private string createRolesJson(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore, bool addRemoveStorePolicy)
         {
-            return JsonHandler.SerializeObject(
-                new ManagerRolesContainer(
-                    addRemovePurchasing,
-                    addRemoveDiscountPolicy,
-                    addRemoveStoreManger,
-                    closeStore,
-                    addRemoveStorePolicy)
+            Roles roles = new Roles(
+                true,
+                addRemovePurchasing,
+                addRemoveDiscountPolicy,
+                addRemoveStoreManger,
+                closeStore,
+                false,
+                true,
+                addRemoveStoreManger,
+                addRemoveStorePolicy
                 );
+            return JsonHandler.SerializeObjectDynamic(roles);
         }
 
         //{id : int , name :string , price : int , rank : int  , category : string  }

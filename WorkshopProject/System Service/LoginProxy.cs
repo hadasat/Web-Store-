@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TansactionsNameSpace;
 using Users;
 using WorkshopProject.Communication;
+using WorkshopProject.Policies;
 
 namespace WorkshopProject.System_Service
 {
@@ -71,7 +73,7 @@ namespace WorkshopProject.System_Service
             return UserService.AddStoreOwner(user, storeId, userToAdd);
         }
 
-        public int BuyShoppingBasket()
+        public Transaction BuyShoppingBasket()
         {
             return TransactionService.BuyShoppingBasket(user);
         }
@@ -158,12 +160,6 @@ namespace WorkshopProject.System_Service
         public bool Register(string username, string password,DateTime birthdath, string country)
         {
             return UserService.Register(username, password, birthdath,country);
-        }
-
-        public bool removeDiscountPolicy(int storeId)
-        {
-            //TODO
-            throw new NotImplementedException();
         }
 
         public bool RemoveProductFromStore(int storeId, int productId)
@@ -266,7 +262,55 @@ namespace WorkshopProject.System_Service
         }
 
 
-        //TODO: add policies to loginproxy
+        //**********POLICIES*********************
+
+        //policies
+        public int addDiscountPolicy(int storeId, string policy)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            Discount dicountPolicy = JsonHandler.DeserializeObject<Discount>(policy);
+            return PolicyService.addDiscountPolicy(user, storeId, dicountPolicy);
+        }
+
+        public bool removeDiscountPolicy(int storeId, int policyId)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return PolicyService.removeDiscountPolicy(user, storeId, policyId);            
+        }
+
+        public int addPurchasingPolicy(int storeId, string policy)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            IBooleanExpression purchasingPolicy = JsonHandler.DeserializeObject<IBooleanExpression>(policy);
+            return PolicyService.addPurchasingPolicy(user, storeId, purchasingPolicy);
+
+        }
+
+        public bool removePurchasingPolicy(int storeId, int policyId)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return PolicyService.removePurchasingPolicy(user, storeId, policyId);
+           
+        }
+
+        public int addStorePolicy(int storeId, string policy)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            IBooleanExpression storePolicy = JsonHandler.DeserializeObject<IBooleanExpression>(policy);
+            return PolicyService.addStorePolicy(user, storeId, storePolicy);
+        }
+
+        public bool removeStorePolicy(int storeId, int policyId)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return PolicyService.removeStorePolicy(user, storeId, policyId);
+        }
 
 
         private void notLoggedInException()
