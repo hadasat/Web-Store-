@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Log;
 using WorkshopProject.Policies;
 
@@ -31,6 +32,22 @@ namespace WorkshopProject
         public string storeAddress;
 
         public Store() { }
+
+           //constructor without the id for the db
+        public Store(string name, int rank, Boolean isActive)
+        {
+            this.name = name;
+            this.rank = rank;
+            this.isActive = isActive;
+            //Stock = new Dictionary<int, Product>();
+            StockList = new List<Stock>();
+
+            //make purchasePolicy and storePolicy
+            this.purchasePolicy = new List<IBooleanExpression>();
+            this.storePolicy = new List<IBooleanExpression>();
+            this.discountPolicy = new List<Discount>();
+
+        }
 
         public Store(int id, string name, int rank, Boolean isActive)
         {
@@ -148,7 +165,8 @@ namespace WorkshopProject
             //Verify Premission
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return -1;
-
+            IDataAccess dal = DataAccessDriver.GetDataAccess();
+            dal.SaveProduct(p);
             GetStock().Add(p.getId(), p);
             Logger.Log("file", logLevel.INFO, "product " + p.getId() + " added");
             return p.getId();

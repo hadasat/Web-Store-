@@ -6,11 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.System_Service
 { 
     public static class StoreService
     {
+        static IDataAccess dal = DataAccessDriver.GetDataAccess();
         private static void notActiveStoreError()
         {
             throw new Exception("Store not Active");
@@ -45,7 +47,7 @@ namespace WorkshopProject.System_Service
 
             if (!store.addProductTostock(user, product, amount))
                 throw new Exception("User does not have permission");
-
+            dal.SaveStore(store);
             return true; //All Valid
         }
 
@@ -61,6 +63,7 @@ namespace WorkshopProject.System_Service
             int id = store.addProduct(user, name, desc, price, category);
             if (id == -1)
                 throw new Exception("User does not have permission");
+            dal.SaveStore(store);
 
             //return successJason(); //All Valid
             //jonathan - we need the id of the new store, not a message

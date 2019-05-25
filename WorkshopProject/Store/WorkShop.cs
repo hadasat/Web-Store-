@@ -6,14 +6,18 @@ using System.Threading.Tasks;
 using static WorkshopProject.Category;
 using Users;
 using WorkshopProject.Log;
+using WorkshopProject.DataAccessLayer;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 
 namespace WorkshopProject
 {
     public  static class  WorkShop
     {
-       public  static Dictionary<int,Store> stores = new Dictionary<int, Store>();
-       public static  int id = 0;
-       
+       //public  static Dictionary<int,Store> stores = new Dictionary<int, Store>();
+       //public static  int id = 0;
+       static IDataAccess dal;
+
 
         /// <summary>
         /// Search products. if int is -1 - ignore. if string is null - ignore.
@@ -26,15 +30,19 @@ namespace WorkshopProject
         /// <returns>list of products</returns>
         public static List<Product>  search(string name, string category, double startPrice,double endPrice, int productRanking, int storeRanking)
         {
-            List<Product> matched_products = new List<Product>();
-            foreach (Store store in stores.Values)
+            List<Product> matched_products = new List<Product>();          
+            string sql = "select * from Stores";
+            SqlParameter sqlparam = new SqlParameter();
+            DbRawSqlQuery<Store> query = dal.SqlQuery<Store>(sql, sqlparam);
+            List<Store> stores = query.ToList();
+
+            foreach (Store store in stores)
             {
-                List<Product> res = store.searchProducts(name,category,startPrice,endPrice,
+                List<Product> res = store.searchProducts(name, category, startPrice, endPrice,
                     productRanking, storeRanking);
                 matched_products = matched_products.Concat(res).ToList();
-                   
             }
-            return matched_products;
+                return matched_products;
         }
 
 
@@ -45,14 +53,15 @@ namespace WorkshopProject
         /// <returns>Store if exist. otherwise return null</returns>
         public static  Store getStore(int store_id)
         {
-            try
-            {
-                return stores[store_id];
-            }
-            catch (KeyNotFoundException ignore)
-            {
-                return null;
-            }
+            //try
+            //{
+            //    return stores[store_id];
+            //}
+            //catch (KeyNotFoundException ignore)
+            //{
+            //    return null;
+            //}
+            return dal.GetStore(store_id);
 
 
         }
@@ -61,25 +70,27 @@ namespace WorkshopProject
        
         public static int createNewStore(string name, int rank, Boolean isActive, Member owner)
         {
-            Store store = new Store(id,name, rank, isActive);
-            stores.Add(id,store);
-            int currID = id;
-            id++;
+            Store store = new Store(name, rank, isActive);
+            //db
+            dal.SaveStore(store);  //may throw an exeption
+            //stores.Add(id,store);
+            int currID = store.id;
+           // id++;
             owner.addStore(store);
+            dal.SaveMember(owner);
             Logger.Log("file", logLevel.INFO,"store " + currID + " has added");
             return currID;
         }
 
         public static bool closeStore(int storeId, Member owner)
         {
-            try
-            {
-                owner.closeStore(stores[storeId]);
-                stores[storeId].isActive = false;
-            }catch(Exception ignore)
-            {
-                return false;
-            }
+            
+                Store s = dal.GetStore(storeId);
+                owner.closeStore(s);
+                s.isActive = false;
+                dal.SaveMember(owner);
+                dal.SaveStore(s);
+            
             Logger.Log("file", logLevel.INFO, "store " + storeId + " has closed");
             
             return true;
@@ -93,29 +104,36 @@ namespace WorkshopProject
         /// <returns>Product if exist in the WorkShop. otherwise return null</returns>
         internal static Product getProduct(int productId)
         {
-            foreach(Store store in stores.Values)
-            {
-                if (store.GetStock().ContainsKey(productId))
-                    return store.GetStock()[productId];
-            }
-            return null;
+            //foreach(Store store in stores.Values)
+            //{
+            //    if (store.GetStock().ContainsKey(productId))
+            //        return store.GetStock()[productId];
+            //}
+            //return null;
+            return dal.GetProduct(productId);
         }
 
         public static Dictionary<Store, Product> findProduct(int productId)
         {
-            Product product;
-            Dictionary<Store, Product> sroreProduct = new Dictionary<Store, Product>();
-            foreach (KeyValuePair<int, Store> s in stores)
-            {
-                Store store = s.Value;
-                product = store.findProduct(productId);
-                if (product != null)
-                {
-                    sroreProduct[store] = product;
-                    return sroreProduct;
-                }
-            }
-            return null;
+            //Product product;
+            //Dictionary<Store, Product> storeProduct = new Dictionary<Store, Product>();
+            //foreach (KeyValuePair<int, Store> s in stores)
+            //{
+            //    Store store = s.Value;
+            //    product = store.findProduct(productId);
+            //    if (product != null)
+            //    {
+            //        storeProduct[store] = product;
+            //        return storeProduct;
+            //    }
+            //}
+            Dictionary<Store, Product> storeProduct = new Dictionary<Store, Product>();
+            Product p = dal.GetProduct(productId);
+            if (p == null)
+                return null;
+            Store s = dal.GetStore(p.storeId);
+            storeProduct[s] = p;
+            return storeProduct;
         }
     }
 }
