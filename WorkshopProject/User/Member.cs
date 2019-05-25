@@ -209,7 +209,48 @@ namespace Users
             }
             return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
             */
-            throw new Exception("waiting for all of other owners permissions");
+
+            Store store = GetStore(StoreID);
+            int numberOfOwners = ConnectionStubTemp.getNumOfOwners(store);
+            if (numberOfOwners > 1)
+            {
+                //made as exception for being easy at the client side, can be changed!
+                ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
+                throw new Exception("Waiting for all of the other owners permissions");
+            } else if(numberOfOwners <= 0)
+            {
+                throw new Exception("You dont own this store! should not happen!!");
+            }
+            ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
+            return true;
+        }
+
+
+        public bool makeStoreOwner(string username, Roles role, int StoreID)
+        {
+            Store store = GetStore(StoreID);
+            StoreManager myStoreRoles = getStoreManagerOb(store);
+            Member candidate = ConnectionStubTemp.getMember(username);
+            if (candidate.isStoresManagers())
+            {
+                try
+                {
+                    candidate.GetStore(StoreID);
+                }
+                catch (Exception ex)
+                {
+                    myStoreRoles.CreateNewManager(candidate, role);
+                }
+
+            }
+            else
+            {
+                myStoreRoles.CreateNewManager(candidate, role);
+            }
+            StoreManager candidateStoreManager = candidate.getStoreManagerOb(store);
+            candidateStoreManager.SetStoreOwnerTrue();
+            return true;
+
         }
 
 
@@ -307,14 +348,9 @@ namespace Users
 
             return acc;
         }
-        /*
-        public void addTransactionHistory(Transaction t)
-        {
-            if (purchasesHistory == null)
-                purchasesHistory = new List<Transaction>();
-            purchasesHistory.Add(t);
-        }
-        */
+
+
+
         #region notificactions
         public void addMessage(string msg)
         {
@@ -438,6 +474,7 @@ namespace Users
 
         #endregion
     }
+
 
 
     public class Notification

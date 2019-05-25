@@ -20,11 +20,11 @@ namespace Users
         // <ID, MEMBER>
         public static Dictionary<string, int> mapIDUsermane = new Dictionary<string, int>();
         // <username, ID>
-
-        public static LinkedList<OwnershipRequest> ownershipsRequestList = new LinkedList<OwnershipRequest>();
-
+        public static Dictionary<int, OwnershipRequest> ownershipsRequestList = new Dictionary<int, OwnershipRequest>();
+        // <ID, ownershipRequest>
 
         public static int memberIDGenerator = 0;
+        public static int ownerShipRequestsIDGenerator = 0;
 
         public static void init()
         {
@@ -209,9 +209,10 @@ namespace Users
 
         public static void createOwnershipRequest(Store store, Member memberThatOpenRequest, Member candidate)
         {
-            OwnershipRequest newOwnership = new OwnershipRequest(store,candidate,memberThatOpenRequest);
 
-            foreach(KeyValuePair<int, Member> entry in members)
+            int requestID = ownerShipRequestsIDGenerator++;
+            OwnershipRequest newOwnership = new OwnershipRequest(requestID, store, candidate, memberThatOpenRequest);
+            foreach (KeyValuePair<int, Member> entry in members)
             {
                 Member m = entry.Value;
                 if (m.isStoresOwner(store.id))
@@ -220,14 +221,29 @@ namespace Users
                 }
             }
             newOwnership.approveOrDisapprovedOwnership(1, memberThatOpenRequest);//first approval of asker
-            ownershipsRequestList.AddFirst(newOwnership);//add ownership request to list
+            ownershipsRequestList[requestID] = (newOwnership);//add ownership request to list
             newOwnership.sendRequestsToOwners();//should handle notifications
         }
 
         public static void deleteOwnershipRequest(OwnershipRequest ownership)
         {
-            ownershipsRequestList.Remove(ownership);
+            ownershipsRequestList.Remove(ownership.getID());
         }
+
+        public static int getNumOfOwners(Store store)
+        {
+            int ret = 0;
+            foreach (KeyValuePair<int, Member> entry in members)
+            {
+                Member m = entry.Value;
+                if (m.isStoresOwner(store.id))
+                {
+                    ret++;
+                }
+            }
+            return ret;
+        }
+
 
     }
 
@@ -235,19 +251,21 @@ namespace Users
 
     public class OwnershipRequest
     {
+        private int ID;
         private Store store;
         private Member initiate;
         private Member candidate;
         public static Dictionary<String, int> owners = new Dictionary<String, int>();
-        //approved, ownerNames
+        //<ownerNames, approved>
         private readonly object OwnersLock = new object();
         private int counter = 0;
         private readonly object CounterLock = new object();
         private bool done;
         private readonly object doneLock = new object();
 
-        public OwnershipRequest(Store store, Member candidate, Member initiate)
+        public OwnershipRequest(int id, Store store, Member candidate, Member initiate)
         {
+            this.ID = id;
             this.store = store;
             this.candidate = candidate;
             this.initiate = initiate;
@@ -266,11 +284,11 @@ namespace Users
 
 
         // 1 opproved -1 disapproved
-        public void approveOrDisapprovedOwnership(int desition, Member member)
+        public void approveOrDisapprovedOwnership(int decition, Member member)
         {
             lock(OwnersLock)
             {
-                owners[member.username] = desition;
+                owners[member.username] = decition;
             }
             lock(CounterLock)
             {
@@ -300,16 +318,29 @@ namespace Users
 
         public void sendRequestsToOwners()
         {
+            // message:
+            //store <name / id>
+            //owner that made the qequest <username>
+            //member candidate <username>
 
+
+
+            //send to all members in owners.
+            //I SAVED USERNAME - U CAN GET THE MEMBER ITSELF WITH THIS LINE
+            ////ConnectionStubTemp.getMember(username);
         }
 
         public void makeOwner()
         {
             Roles roles = initiate.getStoreManagerRoles(store.id);
-            initiate.addStoreOwner(candidate.username, roles, store.id);
+            initiate.makeStoreOwner(candidate.username, roles, store.id);
             ConnectionStubTemp.deleteOwnershipRequest(this);
         }
 
+        public int getID()
+        {
+            return ID;
+        }
 
     }
 }
