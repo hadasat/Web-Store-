@@ -331,16 +331,20 @@ namespace Users
 
         public void sendRequestsToOwners()
         {
-            // message:
-            //store <name / id>
-            //owner that made the qequest <username>
-            //member candidate <username>
+            if (owners.Count != 0)
+            {
+                // message:
+                //store <name / id>
+                //owner that made the qequest <username>
+                //member candidate <username>
 
 
 
-            //send to all members in owners.
-            //I SAVED USERNAMES - U CAN GET THE MEMBER ITSELF WITH THIS LINE
-            ////ConnectionStubTemp.getMember(username);
+                //send to all members in owners.
+                //I SAVED USERNAMES - U CAN GET THE MEMBER ITSELF WITH THIS LINE
+                ////ConnectionStubTemp.getMember(username);
+
+            }
         }
 
         public void makeOwner()
