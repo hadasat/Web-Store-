@@ -15,7 +15,7 @@ namespace WorkshopProject.System_Service
     //Message Format: {message: String}
     //Search Format: {List<Product> products}
 
-public static class TransactionService
+    public static class TransactionService
     {
 
         public static bool AddProductToBasket(User user, int storeId, int productId, int amount)

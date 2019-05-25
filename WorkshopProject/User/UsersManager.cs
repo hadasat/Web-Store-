@@ -306,17 +306,21 @@ namespace Users
             lock(CounterLock)
             {
                 counter--;
-                if(isFullfielld())
+            }
+            if (isFullfielld())
+            {
+                lock (doneLock)
                 {
-
-                    lock (doneLock)
+                    if (!done && checkIfApproved())
                     {
-                        if (!done)
-                        {
-                            done = true;
-                            makeOwner();
-                        }
+                        done = true;
+                        makeOwner();
+                    } else
+                    {
+                        //needs to decide if somthing happens in case of
+                        //unapproval
                     }
+                    
                 }
             }
         }
@@ -327,6 +331,16 @@ namespace Users
             {
                 return counter == 0;
             }
+        }
+
+        private bool checkIfApproved()
+        {
+            bool ans = true;
+            foreach (KeyValuePair<String, int> entry in owners)
+            {
+                ans = ans & (entry.Value == 1);
+            }
+            return ans;
         }
 
         public void sendRequestsToOwners()
