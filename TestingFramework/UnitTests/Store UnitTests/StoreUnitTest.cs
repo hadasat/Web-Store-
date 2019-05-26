@@ -33,11 +33,12 @@ namespace WorkshopProject.Tests
         }
 
         //[TestCleanup]
-        public void Cealup()
+        public void CleanUp()
         {
             god.removeStore(storeId, ownerId);
             god.removeMember("username");
             god.removeMember("some member");
+            god.cleanUpAllData();
         }
 
         [TestMethod()]
@@ -55,7 +56,7 @@ namespace WorkshopProject.Tests
             }
             finally
             {
-                Cealup();
+                CleanUp();
             }
 
         }
@@ -80,7 +81,7 @@ namespace WorkshopProject.Tests
             }
             finally
             {
-                Cealup();
+                CleanUp();
             }
 
         }
@@ -104,7 +105,7 @@ namespace WorkshopProject.Tests
             }
             finally
             {
-                Cealup();
+                CleanUp();
             }
 
 
@@ -138,7 +139,7 @@ namespace WorkshopProject.Tests
             }
             finally
             {
-                Cealup();
+                CleanUp();
             }
 
         }
@@ -163,7 +164,7 @@ namespace WorkshopProject.Tests
             }
             finally
             {
-                Cealup();
+                CleanUp();
             }
 
         }
@@ -188,7 +189,7 @@ namespace WorkshopProject.Tests
             }
             finally
             {
-                Cealup();
+                CleanUp();
             }
         }
 
@@ -214,7 +215,7 @@ namespace WorkshopProject.Tests
             }
             finally
             {
-                Cealup();
+                CleanUp();
             }
 
 

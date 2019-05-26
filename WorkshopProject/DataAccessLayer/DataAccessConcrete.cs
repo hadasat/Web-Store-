@@ -44,6 +44,18 @@ namespace WorkshopProject.DataAccessLayer
             return getContext().Database.SqlQuery<T>(sql, paramaters);
         }
 
+        public virtual int ExecuteSqlCommand(string sql, params object[] paramaters)
+        {
+            return getContext().Database.ExecuteSqlCommand(sql, paramaters);
+        }
+
+        public virtual bool Delete()
+        {
+            return getContext().Database.Delete();
+        }
+
+
+
         public virtual bool SaveMember(Member entity)
         {
             WorkshopDBContext ctx = getContext();
@@ -259,6 +271,8 @@ namespace WorkshopProject.DataAccessLayer
                 return new WorkshopTestDBContext();
             }
         }
+
+       
     }
 
     public class DataAccessStatic : DataAccessNonPersistent
@@ -279,6 +293,18 @@ namespace WorkshopProject.DataAccessLayer
         public override DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters)
         {
             return base.SqlQuery<T>(sql, paramaters);
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public override int ExecuteSqlCommand(string sql, params object[] paramaters)
+        {
+            return base.ExecuteSqlCommand(sql, paramaters);
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public override bool Delete()
+        {
+            return base.Delete();
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]

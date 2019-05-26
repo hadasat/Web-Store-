@@ -2,10 +2,13 @@
 using Password;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.System_Service
 {
@@ -47,7 +50,14 @@ namespace WorkshopProject.System_Service
     public class GodObject : IGodObject
     {
 
+        IDataAccess dal;
 
+        public GodObject()
+        {
+            dal = DataAccessDriver.GetDataAccess();
+            dal.SetMode(false);
+        }
+        
         public int addMember(string username, string password)
         {
             ConnectionStubTemp.registerNewUser(username, password, DateTime.Today.AddYears(1), "");
@@ -66,8 +76,8 @@ namespace WorkshopProject.System_Service
         public int addStore(string name, int rank, int ownerId)
         {
             Member owner = ConnectionStubTemp.getMember(ownerId);
-            WorkShop.createNewStore(name, rank, true, owner);
-            return WorkShop.id - 1;
+            return WorkShop.createNewStore(name, rank, true, owner);
+            
         }
 
         public bool appointUserToStoreOwnership(int storeId, int newOwnerId, int storeOwnerId)
@@ -160,19 +170,54 @@ namespace WorkshopProject.System_Service
         {
             Member owner = ConnectionStubTemp.getMember(ownerId);
             WorkShop.closeStore(storeId, owner);
-            WorkShop.stores.Remove(storeId);
+            //WorkShop.stores.Remove(storeId);
+            dal.RemoveStore(storeId);
             return true;
         }
 
         public void cleanUpAllData()
         {
-            WorkShop.stores = new Dictionary<int, Store>();
-            WorkShop.id = 0;
+           // WorkShop.stores = new Dictionary<int, Store>();
+            //WorkShop.id = 0;
             ConnectionStubTemp.pHandler = new PasswordHandler();
             ConnectionStubTemp.members = new Dictionary<int, Member>();
             ConnectionStubTemp.mapIDUsermane = new Dictionary<string, int>();
             ConnectionStubTemp.memberIDGenerator = 0;
             ConnectionStubTemp.init();
+
+
+
+            //string[] dbs = { "StoreManagers","Products","Discounts","PurchasingPolicies"
+            //    ,"ShoppingCarts","ShoppingBaskets","Transactions",
+            //    "Roles","Stock","Notifications","PolicyOutcomes","PolicyFilters","Stores","Members"};
+
+            //string removeTable = "DELETE FROM  ";
+            //foreach(string db in dbs)
+            //{
+            //    SqlParameter sqlparam = new SqlParameter("@table", db);
+            // dal.ExecuteSqlCommand(removeTable + db, sqlparam);
+            //}
+            //string[] tables = {"Stores","Products", "Discounts","Members",
+            //"ShoppingBaskets","ShoppingCarts","IBooleanExpressions"};
+
+            //string selectStatment = "SELECT *  FROM ";
+            //foreach (string table in tables)
+            //{
+            //    SqlParameter sqlparam = new SqlParameter();
+            //    DbRawSqlQuery<Object> query = dal.SqlQuery<Object>(selectStatment, sqlparam);
+            //    List<Object> list = query.ToList();
+            //    foreach(Object o in list)
+            //    {
+
+            //    }
+
+            //}
+            dal.Delete();
+        }
+
+        private void removeRecords(Store list)
+        {
+           
         }
 
         public void purchaseProduct(int productId)

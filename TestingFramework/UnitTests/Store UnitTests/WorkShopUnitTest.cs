@@ -28,9 +28,9 @@ namespace WorkshopProject.Tests
         }
 
         //[TestCleanup]
-        public void Cealup()
+        public void CleanUp()
         {
-            god.removeMember("username");
+            god.cleanUpAllData();
         }
 
         [TestMethod()]
@@ -40,6 +40,7 @@ namespace WorkshopProject.Tests
             try
             {
                 Init();
+               
                 string store1Name = "store1 test";
                 string store2Name = "store2 test";
                 int store1Id = WorkShop.createNewStore(store1Name, 1, true, member);
@@ -52,7 +53,7 @@ namespace WorkshopProject.Tests
             }
             finally
             {
-                Cealup();
+                CleanUp();
             }
 
         }

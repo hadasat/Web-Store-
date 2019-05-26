@@ -83,6 +83,7 @@ namespace WorkshopProject.DataAccessLayer.Examples
             SqlParameter sqlparam = new SqlParameter("@name", nameToSearch);
             DbRawSqlQuery<Member> query = dal.SqlQuery<Member>(sql, sqlparam);
             Member memberQuery = query.FirstOrDefault();
+           
         }
 
     }

@@ -14,9 +14,9 @@ namespace WorkshopProject
 {
     public  static class  WorkShop
     {
-       //public  static Dictionary<int,Store> stores = new Dictionary<int, Store>();
-       //public static  int id = 0;
-       static IDataAccess dal;
+        //public  static Dictionary<int,Store> stores = new Dictionary<int, Store>();
+        //public static  int id = 0;
+        static IDataAccess dal = DataAccessDriver.GetDataAccess();
 
 
         /// <summary>
@@ -134,6 +134,11 @@ namespace WorkshopProject
             Store s = dal.GetStore(p.storeId);
             storeProduct[s] = p;
             return storeProduct;
+        }
+
+        public static void RemoveStoreFromDB(int storeId)
+        {
+            dal.RemoveStore(storeId);
         }
     }
 }

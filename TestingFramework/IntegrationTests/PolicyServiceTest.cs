@@ -30,7 +30,7 @@ namespace IntegrationTests
         [TestCleanup]
         public void Cealup()
         {
-            WorkShop.stores.Remove(idStore);
+           // WorkShop.stores.Remove(idStore);
         }
 
         //discount

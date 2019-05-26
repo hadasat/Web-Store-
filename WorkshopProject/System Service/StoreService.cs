@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -96,6 +98,7 @@ namespace WorkshopProject.System_Service
             if (!store.changeProductInfo(user, productId, name, desc, price, category, amount))
                 throw new Exception("Error: User does not have permission Or Product does not exist");
 
+            dal.SaveStore(store);
             return true; //All Valid
         }
 
@@ -135,7 +138,8 @@ namespace WorkshopProject.System_Service
 
             if (!store.removeProductFromStore(user, product))
                 throw new Exception("Error: User does not have permission");
-
+            dal.RemoveProduct(product.id);
+            dal.SaveStore(store);
             return true; //All Valid
         }
 
@@ -161,7 +165,12 @@ namespace WorkshopProject.System_Service
         //TODO: add unit test
         public static List<Store> GetAllStores()
         {
-            return WorkShop.stores.Values.ToList();
+            //return WorkShop.stores.Values.ToList();
+            string sql = "select * from Stores";
+            SqlParameter sqlparam = new SqlParameter();
+            DbRawSqlQuery<Store> query = dal.SqlQuery<Store>(sql, sqlparam);
+            List<Store> stores = query.ToList();
+            return stores;
         }
 
         //TODO: add unit test / delete

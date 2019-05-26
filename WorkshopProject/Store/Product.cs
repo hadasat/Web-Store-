@@ -23,7 +23,7 @@ namespace WorkshopProject
 
         public Product(string name , double price, string desc, string category,int rank,int amount , int storeId)
         {
-            this.id = idGenerator++;
+            //this.id = idGenerator++;
             this.name = name;
             this.price = price;
             this.category = category;

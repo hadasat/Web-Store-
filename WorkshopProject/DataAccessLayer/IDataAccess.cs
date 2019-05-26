@@ -14,6 +14,8 @@ namespace WorkshopProject.DataAccessLayer
     public interface IDataAccess
     {
         DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters);
+        int ExecuteSqlCommand(string sql, params object[] paramaters);
+        bool Delete();
         Discount GetDiscount(int id);
         Member GetMember(int id);
 
