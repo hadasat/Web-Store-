@@ -58,7 +58,7 @@ function onStart(initFunc) {
                 console.log("got new id "+msg.data);
                 break;
             case "notification":
-                alert(msg.data);
+                handleNotification(msg);alert(msg.data);
                 break;
             default:
                 handleMessage(msg);
@@ -70,7 +70,23 @@ function onStart(initFunc) {
 
 
     
+function handleNotification(msg){
+    switch (msg.info){
+        case "message":
+            alert(msg.data); 
+            break;
+        case 'addManagerConfirmation':
 
+            break;
+        default:
+            return;
+    }
+    if(msg.info==='message'){
+        alert(msg.data); 
+    }else{
+
+    }
+}
 
 
 function handleMessage(res){

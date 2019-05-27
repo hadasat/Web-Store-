@@ -85,9 +85,7 @@
     <Compile Include="DataAccessLayer\Context\WorkshopDBContext.cs" />
     <Compile Include="DataAccessLayer\DataAccessDriver.cs" />
     <Compile Include="DataAccessLayer\DataAccessConcrete.cs" />
-    <Compile Include="DataAccessLayer\Deprecated\DuplicateHandler.cs" />
-    <Compile Include="DataAccessLayer\Deprecated\ContextHandler.cs" />
-    <Compile Include="DataAccessLayer\Deprecated\ObjectMapper.cs" />
+    <Compile Include="DataAccessLayer\Examples\DataAccessExamples.cs" />
     <Compile Include="DataAccessLayer\IDataAccess.cs" />
     <Compile Include="Examples\ClassForTestExample.cs" />
     <Compile Include="Examples\LogExample.cs" />
@@ -142,12 +140,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Client\HtmlPages\adminActions.html" />
     <Content Include="Client\HtmlPages\communication.js" />
     <Content Include="Client\HtmlPages\index.html" />
     <Content Include="Client\HtmlPages\navbar.js" />
     <None Include="Client\HtmlPages\product.html" />
     <None Include="Client\HtmlPages\newStore.html" />
     <None Include="Client\HtmlPages\shoppingBasket.html" />
+    <None Include="Client\HtmlPages\Search.html" />
     <Content Include="Client\HtmlPages\SignIn.css" />
     <Content Include="Client\HtmlPages\SignIn.html" />
     <Content Include="Client\HtmlPages\store.html" />

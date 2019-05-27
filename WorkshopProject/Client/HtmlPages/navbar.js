@@ -30,18 +30,27 @@ document.getElementById("navbar_header").innerHTML = `
 
             </ul>
             <ul class="navbar-nav ml-auto">
+                <li  class="nav-item">
+                    <a class="nav-link"  href="javascript:r();" >Notification <span class="badge badge-info">0</span></a>
+                </li>
+                <li id="nav_admin" class="nav-item">
+                    <a class="nav-link" href="/wot/adminactions">Admin Actions</a>
+                </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Advance Search</a>
+                    <a class="nav-link" href="/wot/search">Advance Search </a>
                 </li>
             </ul>
-
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
         </div>
     </nav>
 `;
+
+$('#navbar_header').on('click','#nav_notification',function(){
+    console.log("test");
+});
+
+function r(){
+    console.log("ttt");
+}
 
 
 // <!-- NavBar  Script -->
@@ -63,6 +72,12 @@ document.getElementById("navbar_header").innerHTML = `
         $("#nav_userName").hide();
         $("#nav_opensStore").hide();
     }
+
+    if(username.toLowerCase()==='admin')
+        $("#nav_admin").show();
+    else
+        $("#nav_admin").hide();
+
 }
 
 $('#nav_signOut').on('click', ()=>{

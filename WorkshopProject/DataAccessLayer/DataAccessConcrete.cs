@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
@@ -26,39 +27,24 @@ namespace WorkshopProject.DataAccessLayer
             this.isProduction = isProduction;
         }
 
-        /// <summary>
-        /// Sets the mode of the DataAccess.
-        /// True: Production.
-        /// False: Test.
-        /// </summary>
-        /// <param name="isProduction"></param>
-        public void SetMode(bool isProduction)
+
+        public virtual void SetMode(bool isProduction)
         {
             this.isProduction = isProduction;
         }
 
-        /// <summary>
-        /// Gets the mode of the DataAccess.
-        /// True: Production.
-        /// False: Test.
-        /// </summary>
-        /// <param name="isProduction"></param>
-        public bool GetMode()
+        public virtual bool GetMode()
         {
             return isProduction;
         }
 
-        /// <summary>
-        /// Saves an object in the database. If it is new - it is added into the DB. If it is not new it will be updated.
-        /// </summary>
-        /// <exception cref="DbUpdateException"></exception>
-        /// <exception cref="DbUpdateConcurrencyException">Thrown when conflicting updates occur</exception>
-        /// <exception cref="DbEntityValidationException"></exception>
-        /// <exception cref="NotSupportedException"></exception>
-        /// <exception cref="ObjectDisposedException"></exception>
-        /// <exception cref="InvalidOperationException"></exception>
-        /// <param name="isProduction"></param>
-        public bool SaveMember(Member entity)
+
+        public virtual DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters)
+        {
+            return getContext().Database.SqlQuery<T>(sql, paramaters);
+        }
+
+        public virtual bool SaveMember(Member entity)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<Member> set = ctx.Members;
@@ -66,7 +52,7 @@ namespace WorkshopProject.DataAccessLayer
             return Save(entity, entity.id, ctx, set);
         }
 
-        public Member GetMember(int id)
+        public virtual Member GetMember(int id)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<Member> set = ctx.Members;
@@ -74,7 +60,7 @@ namespace WorkshopProject.DataAccessLayer
             return set.Find(id);
         }
 
-        public bool RemoveMember(int id)
+        public virtual bool RemoveMember(int id)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<Member> set = ctx.Members;
@@ -82,18 +68,7 @@ namespace WorkshopProject.DataAccessLayer
             return Remove(id, ctx, set);
         }
 
-
-        /// <summary>
-        /// Saves an object in the database. If it is new - it is added into the DB. If it is not new it will be updated.
-        /// </summary>
-        /// <exception cref="DbUpdateException"></exception>
-        /// <exception cref="DbUpdateConcurrencyException">Thrown when conflicting updates occur</exception>
-        /// <exception cref="DbEntityValidationException"></exception>
-        /// <exception cref="NotSupportedException"></exception>
-        /// <exception cref="ObjectDisposedException"></exception>
-        /// <exception cref="InvalidOperationException"></exception>
-        /// <param name="isProduction"></param>
-        public bool SaveStore(Store entity)
+        public virtual bool SaveStore(Store entity)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<Store> set = ctx.Stores;
@@ -101,7 +76,7 @@ namespace WorkshopProject.DataAccessLayer
             return Save(entity, entity.id, ctx, set);
         }
 
-        public Store GetStore(int id)
+        public virtual Store GetStore(int id)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<Store> set = ctx.Stores;
@@ -110,7 +85,7 @@ namespace WorkshopProject.DataAccessLayer
         }
 
 
-        public bool RemoveStore(int id)
+        public virtual bool RemoveStore(int id)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<Store> set = ctx.Stores;
@@ -118,17 +93,7 @@ namespace WorkshopProject.DataAccessLayer
             return Remove(id, ctx, set);
         }
 
-        /// <summary>
-        /// Saves an object in the database. If it is new - it is added into the DB. If it is not new it will be updated.
-        /// </summary>
-        /// <exception cref="DbUpdateException"></exception>
-        /// <exception cref="DbUpdateConcurrencyException">Thrown when conflicting updates occur</exception>
-        /// <exception cref="DbEntityValidationException"></exception>
-        /// <exception cref="NotSupportedException"></exception>
-        /// <exception cref="ObjectDisposedException"></exception>
-        /// <exception cref="InvalidOperationException"></exception>
-        /// <param name="isProduction"></param>
-        public bool SaveProduct(Product entity)
+        public virtual bool SaveProduct(Product entity)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<Product> set = ctx.Products;
@@ -136,7 +101,7 @@ namespace WorkshopProject.DataAccessLayer
             return Save(entity, entity.id, ctx, set);
         }
 
-        public Product GetProduct(int id)
+        public virtual Product GetProduct(int id)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<Product> set = ctx.Products;
@@ -144,7 +109,7 @@ namespace WorkshopProject.DataAccessLayer
             return set.Find(id);
         }
 
-        public bool RemoveProduct(int id)
+        public virtual bool RemoveProduct(int id)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<Product> set = ctx.Products;
@@ -152,18 +117,7 @@ namespace WorkshopProject.DataAccessLayer
             return Remove(id, ctx, set);
         }
 
-
-        /// <summary>
-        /// Saves an object in the database. If it is new - it is added into the DB. If it is not new it will be updated.
-        /// </summary>
-        /// <exception cref="DbUpdateException"></exception>
-        /// <exception cref="DbUpdateConcurrencyException">Thrown when conflicting updates occur</exception>
-        /// <exception cref="DbEntityValidationException"></exception>
-        /// <exception cref="NotSupportedException"></exception>
-        /// <exception cref="ObjectDisposedException"></exception>
-        /// <exception cref="InvalidOperationException"></exception>
-        /// <param name="isProduction"></param>
-        public bool SaveDiscount(Discount entity)
+        public virtual bool SaveDiscount(Discount entity)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<Discount> set = ctx.Discounts;
@@ -171,7 +125,7 @@ namespace WorkshopProject.DataAccessLayer
             return Save(entity, entity.id, ctx, set);
         }
 
-        public Discount GetDiscount(int id)
+        public virtual Discount GetDiscount(int id)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<Discount> set = ctx.Discounts;
@@ -179,7 +133,7 @@ namespace WorkshopProject.DataAccessLayer
             return set.Find(id);
         }
 
-        public bool RemoveDiscount(int id)
+        public virtual bool RemoveDiscount(int id)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<Discount> set = ctx.Discounts;
@@ -187,18 +141,7 @@ namespace WorkshopProject.DataAccessLayer
             return Remove(id, ctx, set);
         }
 
-
-        /// <summary>
-        /// Saves an object in the database. If it is new - it is added into the DB. If it is not new it will be updated.
-        /// </summary>
-        /// <exception cref="DbUpdateException"></exception>
-        /// <exception cref="DbUpdateConcurrencyException">Thrown when conflicting updates occur</exception>
-        /// <exception cref="DbEntityValidationException"></exception>
-        /// <exception cref="NotSupportedException"></exception>
-        /// <exception cref="ObjectDisposedException"></exception>
-        /// <exception cref="InvalidOperationException"></exception>
-        /// <param name="isProduction"></param>
-        public bool SavePolicy(IBooleanExpression entity)
+        public virtual bool SavePolicy(IBooleanExpression entity)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<IBooleanExpression> set = ctx.PurchasingPolicies;
@@ -206,7 +149,7 @@ namespace WorkshopProject.DataAccessLayer
             return Save(entity, entity.id, ctx, set);
         }
 
-        public IBooleanExpression GetPolicy(int id)
+        public virtual IBooleanExpression GetPolicy(int id)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<IBooleanExpression> set = ctx.PurchasingPolicies;
@@ -214,7 +157,7 @@ namespace WorkshopProject.DataAccessLayer
             return set.Find(id);
         }
 
-        public bool RemovePolicy(int id)
+        public virtual bool RemovePolicy(int id)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<IBooleanExpression> set = ctx.PurchasingPolicies;
@@ -222,18 +165,7 @@ namespace WorkshopProject.DataAccessLayer
             return Remove(id, ctx, set);
         }
 
-        
-        /// <summary>
-        /// Saves an object in the database. If it is new - it is added into the DB. If it is not new it will be updated.
-        /// </summary>
-        /// <exception cref="DbUpdateException"></exception>
-        /// <exception cref="DbUpdateConcurrencyException">Thrown when conflicting updates occur</exception>
-        /// <exception cref="DbEntityValidationException"></exception>
-        /// <exception cref="NotSupportedException"></exception>
-        /// <exception cref="ObjectDisposedException"></exception>
-        /// <exception cref="InvalidOperationException"></exception>
-        /// <param name="isProduction"></param>
-        public bool SaveShoppingBasket(ShoppingBasket entity)
+        public virtual bool SaveShoppingBasket(ShoppingBasket entity)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<ShoppingBasket> set = ctx.ShoppingBaskets;
@@ -241,7 +173,7 @@ namespace WorkshopProject.DataAccessLayer
             return Save(entity, entity.id, ctx, set);
         }
 
-        public ShoppingBasket GetShoppingBasket(int id)
+        public virtual ShoppingBasket GetShoppingBasket(int id)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<ShoppingBasket> set = ctx.ShoppingBaskets;
@@ -249,7 +181,7 @@ namespace WorkshopProject.DataAccessLayer
             return set.Find(id);
         }
 
-        public bool RemoveShoppingBasket(int id)
+        public virtual bool RemoveShoppingBasket(int id)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<ShoppingBasket> set = ctx.ShoppingBaskets;
@@ -258,17 +190,7 @@ namespace WorkshopProject.DataAccessLayer
         }
 
         
-        /// <summary>
-        /// Saves an object in the database. If it is new - it is added into the DB. If it is not new it will be updated.
-        /// </summary>
-        /// <exception cref="DbUpdateException"></exception>
-        /// <exception cref="DbUpdateConcurrencyException">Thrown when conflicting updates occur</exception>
-        /// <exception cref="DbEntityValidationException"></exception>
-        /// <exception cref="NotSupportedException"></exception>
-        /// <exception cref="ObjectDisposedException"></exception>
-        /// <exception cref="InvalidOperationException"></exception>
-        /// <param name="isProduction"></param>
-        public bool SaveShoppingCart(ShoppingCart entity)
+        public virtual bool SaveShoppingCart(ShoppingCart entity)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<ShoppingCart> set = ctx.ShoppingCarts;
@@ -276,7 +198,7 @@ namespace WorkshopProject.DataAccessLayer
             return Save(entity, entity.id, ctx, set);
         }
 
-        public ShoppingCart GetShoppingCart(int id)
+        public virtual ShoppingCart GetShoppingCart(int id)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<ShoppingCart> set = ctx.ShoppingCarts;
@@ -284,7 +206,7 @@ namespace WorkshopProject.DataAccessLayer
             return set.Find(id);
         }
 
-        public bool RemoveShoppingCart(int id)
+        public virtual bool RemoveShoppingCart(int id)
         {
             WorkshopDBContext ctx = getContext();
             DbSet<ShoppingCart> set = ctx.ShoppingCarts;
@@ -295,14 +217,15 @@ namespace WorkshopProject.DataAccessLayer
 
         protected virtual bool Save<T>(T entity, int id, WorkshopDBContext ctx, DbSet<T> set) where T : class
         {
-            bool isNew = (set.Find(id) == null);
-            if (isNew)
+            T exsitingEntity = set.Find(id);
+            if (exsitingEntity == null)
             {
                 set.Add(entity);
             }
             else
             {
-                ctx.Entry(entity).State = EntityState.Modified;
+                ctx.Entry(exsitingEntity).CurrentValues.SetValues(entity);
+                //ctx.Entry(entity).State = EntityState.Modified;
             }
 
             ctx.SaveChanges();
@@ -320,6 +243,7 @@ namespace WorkshopProject.DataAccessLayer
             else
             {
                 set.Remove(entity);
+                ctx.SaveChanges();
                 return true;
             }
         }
@@ -337,10 +261,37 @@ namespace WorkshopProject.DataAccessLayer
         }
     }
 
-    public class DataAccessPersistent : DataAccessNonPersistent
+    public class DataAccessStatic : DataAccessNonPersistent
     {
         protected static WorkshopProductionDBContext productionContext; //= new WorkshopProductionDBContext();
         protected static WorkshopTestDBContext testContext; //= new WorkshopProductionDBContext();
+
+        public DataAccessStatic() : base(false)
+        {
+        }
+
+        public DataAccessStatic(bool isProduction) : base(isProduction)
+        {
+        }
+
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public override DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters)
+        {
+            return base.SqlQuery<T>(sql, paramaters);
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        protected override bool Save<T>(T entity, int id, WorkshopDBContext ctx, DbSet<T> set)
+        {
+            return base.Save(entity,id , ctx, set);
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        protected override bool Remove<T>(int id, WorkshopDBContext ctx, DbSet<T> set) 
+        {
+            return base.Remove(id, ctx, set);
+        }
 
         protected override WorkshopDBContext getContext()
         {
