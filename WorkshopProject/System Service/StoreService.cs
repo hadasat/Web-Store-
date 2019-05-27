@@ -167,7 +167,6 @@ namespace WorkshopProject.System_Service
         {
             //return WorkShop.stores.Values.ToList();
             string sql = "select * from Stores";
-            //SqlParameter sqlparam = new SqlParameter();
             DbRawSqlQuery<Store> query = dal.SqlQuery<Store>(sql);
             List<Store> stores = query.ToList();
             return stores;
