@@ -36,17 +36,22 @@ namespace IntegrationTests
         [TestInitialize]
         public void init()
         {
+            
             god = new GodObject();
+            CleanUp();
             service = new SystemServiceImpl();
             //service.Register("user", "123");
             owner_id = god.addMember("owner", "123");
             service.login("owner", "123");
+            //User u = ConnectionStubTemp.getMember(owner_id);
+
             store_id = god.addStore("store_test", 1, owner_id);
             pid = god.addProductToStore(store_id, name, price, cat, desc, keyword, amount, rank);
+            Store s = WorkShop.getStore(store_id);
         }
 
         [TestCleanup]
-        public void Cealup()
+        public void CleanUp()
         {
             god.cleanUpAllData();
         }
@@ -165,6 +170,7 @@ namespace IntegrationTests
         [TestCategory("StoreServiceTest")]
         public void RemoveProductFromStoreTest()
         {
+            Store s = WorkShop.getStore(store_id);
             string res = service.RemoveProductFromStore(store_id, pid);
             Assert.IsTrue(getMsg(res) == successMsg);
             Assert.IsTrue(WorkShop.getStore(store_id).getProduct(pid) == null,

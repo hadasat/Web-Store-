@@ -69,7 +69,12 @@ namespace WorkshopProject.System_Service
         {
             Store store = WorkShop.getStore(storeId);
             Product p = new Product(name, price, desc, category, rank, amount, storeId);
+            dal.SaveProduct(p);
             store.GetStock().Add(p.getId(), p);
+            //dal.SaveProduct(p);
+            Store s1 = dal.GetStore(storeId);
+            dal.SaveStore(store);
+            Store s2 = dal.GetStore(storeId);
             return p.getId();
         }
 

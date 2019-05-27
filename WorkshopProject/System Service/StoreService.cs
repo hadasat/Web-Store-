@@ -65,7 +65,7 @@ namespace WorkshopProject.System_Service
             int id = store.addProduct(user, name, desc, price, category);
             if (id == -1)
                 throw new Exception("User does not have permission");
-            dal.SaveStore(store);
+           // dal.SaveStore(store);
 
             //return successJason(); //All Valid
             //jonathan - we need the id of the new store, not a message
