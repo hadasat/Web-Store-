@@ -77,7 +77,7 @@ namespace WorkshopProject
             int currID = store.id;
            // id++;
             owner.addStore(store);
-            dal.SaveMember(owner);
+            //dal.SaveMember(owner);
             Logger.Log("file", logLevel.INFO,"store " + currID + " has added");
             return currID;
         }
@@ -87,14 +87,16 @@ namespace WorkshopProject
             
                 Store s = dal.GetStore(storeId);
                 owner.closeStore(s);
-                s.isActive = false;
-                dal.SaveMember(owner);
+                s.changeActiveState(false);
+                //dal.SaveMember(owner);
                 dal.SaveStore(s);
             
             Logger.Log("file", logLevel.INFO, "store " + storeId + " has closed");
             
             return true;
         }
+
+        
 
 
         /// <summary>

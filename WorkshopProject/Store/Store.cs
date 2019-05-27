@@ -180,6 +180,7 @@ namespace WorkshopProject
             dal.SaveProduct(p);
             GetStock().Add(p.getId(), p);
             Logger.Log("file", logLevel.INFO, "product " + p.getId() + " added");
+            dal.SaveStore(this);
             return p.getId();
         }
 
@@ -270,6 +271,15 @@ namespace WorkshopProject
 
             p.amount -= amountToBuy;
             return p.amount;
+        }
+
+        /// <summary>
+        /// true to reactive store , false to close store 
+        /// </summary>
+        /// <param name="active"></param>
+        public void changeActiveState(bool active)
+        {
+            this.isActive = active;
         }
 
         public bool addProductTostock(User user, Product product, int amountToAdd)
