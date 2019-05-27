@@ -20,7 +20,7 @@ namespace WorkshopProject
         public string name { get; set; }
         public int rank { get; set; }
         public Boolean isActive { get; set; }
-        [NotMapped]
+        //[NotMapped]
         private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD
         public List<Stock> StockList { get; set; } //added for DB. Through "getStock" translates it to dictionary for backwards compatibility
         public List<IBooleanExpression> purchasePolicy { get; set; }
@@ -96,13 +96,37 @@ namespace WorkshopProject
 
         }
 
-        public Dictionary<int, Product> GetStock()
+        public List<Stock> GetStock()
         {
-            if (Stock == null)
+            //if (Stock == null)
+            //{
+            //    Stock = getStockListAsDictionary();
+            //}
+            //return Stock;
+            return StockList;
+        }
+        public void AddToStock(int amount, Product prod)
+        {
+            StockList.Add(new Stock(amount, prod));
+        }
+
+        public bool RemoveFromStock(int productId)
+        {
+            Stock toRemove;
+            foreach (Stock st in StockList)
             {
-                Stock = getStockListAsDictionary();
+                if (st.product.id == productId)
+                {
+                    toRemove = st;
+                    return StockList.Remove(toRemove);
+                }
             }
-            return Stock;
+            return false;
+        }
+
+        public bool StockHas(int id)
+        {
+            return getProduct(id) != null;
         }
 
         public List<ProductAmountPrice> afterDiscount(List<ProductAmountPrice> products, User user)
@@ -136,9 +160,10 @@ namespace WorkshopProject
         {
 
             List<Product> matched_products = new List<Product>();
-            Dictionary<int, Product> products = GetStock();
-            foreach (Product item in products.Values)
+            List<Stock> products = GetStock();
+            foreach (Stock stock in products)
             {
+                Product item = stock.product;
                 if ((name == "" || name == item.name) && (category == "" || category == item.category)
                     && (endPrice == -1 || endPrice >= item.getPrice()) && (startPrice == -1 || startPrice <= item.getPrice())
                     && (storeRanking == -1 || storeRanking <= rank) && (productRanking == -1 || productRanking <= item.rank))
@@ -157,10 +182,18 @@ namespace WorkshopProject
         /// <returns>product. if fail returns null</returns>
         public Product getProduct(int productId)
         {
+            foreach(Stock st in StockList){
+                if(st.product.id == productId)
+                {
+                    return st.product;
+                }
+            }
+            return null;
 
-            if (!GetStock().ContainsKey(productId))
-                return null;
-            return GetStock()[productId];
+
+            //if (!GetStock().ContainsKey(productId))
+            //    return null;
+            //return GetStock()[productId];
 
         }
 
@@ -178,7 +211,7 @@ namespace WorkshopProject
                 return -1;
             IDataAccess dal = DataAccessDriver.GetDataAccess();
             dal.SaveProduct(p);
-            GetStock().Add(p.getId(), p);
+            AddToStock(p.getId(), p);
             Logger.Log("file", logLevel.INFO, "product " + p.getId() + " added");
             dal.SaveStore(this);
             return p.getId();
@@ -194,7 +227,7 @@ namespace WorkshopProject
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 
-            GetStock().Remove(product.getId());
+            RemoveFromStock(product.getId());
             Logger.Log("file", logLevel.INFO, "product " + product.getId() + " removed");
             return true;
         }
@@ -246,11 +279,11 @@ namespace WorkshopProject
         {
             callback callback = delegate ()
             {
-                if (GetStock().ContainsKey(p.getId()))
+                if (StockHas(p.getId()))
                     GetStock()[p.getId()].amount += amountToBuy;
             };
 
-            if (!GetStock().ContainsKey(p.getId()) || removeFromStock(GetStock()[p.getId()], amountToBuy) == -1)
+            if (!StockHas(p.getId()) || removeFromStock(getProduct(p.getId()), amountToBuy) == -1)
                 return null;
 
             string buyMessage = String.Format("the product {0}, was bought from the store {1}", p.name, name);
@@ -293,7 +326,7 @@ namespace WorkshopProject
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 
-            if (!GetStock().ContainsKey(product.getId()))
+            if (!StockHas(product.getId()))
                 throw new Exception("Product not exist");
 
             product.amount += amountToAdd;
@@ -310,7 +343,7 @@ namespace WorkshopProject
 
         public bool checkAvailability(Product product, int amount)
         {
-            if (GetStock().ContainsKey(product.getId()))
+            if (StockHas(product.getId()))
             {
                 return GetStock()[product.getId()].amount >= amount;
             }
@@ -319,11 +352,11 @@ namespace WorkshopProject
 
         public bool changeProductInfo(User user, int productId, string name, string desc, double price, string category, int amount)
         {
-            if (!GetStock().ContainsKey(productId) || !user.hasAddRemoveProductsPermission(this))
+            if (!StockHas(productId) || !user.hasAddRemoveProductsPermission(this))
                 return false;
             if (!amountIsLegal(amount))
                 throw new Exception("new amount is illegal");
-            Product product = Stock[productId];
+            Product product = getProduct(productId);
             product.name = name;
             product.description = desc;
             product.setPrice(price);
@@ -335,9 +368,7 @@ namespace WorkshopProject
 
         public Product findProduct(int productId)
         {
-            Product output;
-            GetStock().TryGetValue(productId, out output);
-            return output;
+            return getProduct(productId);
         }
 
         //*****************POLICIES**************************8
@@ -449,20 +480,6 @@ namespace WorkshopProject
             }
             return ret;
         }
-
-        //private void addToStockListAsDictionary(int amount, Product product)
-        //{
-        //    StockList.Add(new Stock(amount, product));
-        //}
-
-        //private Dictionary<int, Product> getStock()
-        //{
-        //    if(Stock == null)
-        //    {
-        //        Stock = getStockListAsDictionary();
-        //    }
-        //    return Stock;
-        //}
     }
 
 

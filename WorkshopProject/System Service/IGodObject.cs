@@ -70,7 +70,7 @@ namespace WorkshopProject.System_Service
             Store store = WorkShop.getStore(storeId);
             Product p = new Product(name, price, desc, category, rank, amount, storeId);
             dal.SaveProduct(p);
-            store.GetStock().Add(p.getId(), p);
+            store.AddToStock(p.getId(), p);
             //dal.SaveProduct(p);
             Store s1 = dal.GetStore(storeId);
             dal.SaveStore(store);
@@ -168,7 +168,7 @@ namespace WorkshopProject.System_Service
         public bool removeProductFromStore(int storeId, int productID)
         {
             Store store = WorkShop.getStore(storeId);
-            return store.GetStock().Remove(productID);
+            return store.RemoveFromStock(productID);
         }
 
         public bool removeStore(int storeId, int ownerId)
