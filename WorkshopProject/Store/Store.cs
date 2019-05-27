@@ -31,7 +31,12 @@ namespace WorkshopProject
         public int storeAccountNum;
         public string storeAddress;
 
-        public Store() { }
+        public Store() {
+            if(StockList == null)
+            {
+                StockList = new List<Stock>();
+            }
+        }
 
            //constructor without the id for the db
         public Store(string name, int rank, Boolean isActive)
@@ -40,7 +45,10 @@ namespace WorkshopProject
             this.rank = rank;
             this.isActive = isActive;
             //Stock = new Dictionary<int, Product>();
-            StockList = new List<Stock>();
+            if (StockList == null)
+            {
+                StockList = new List<Stock>();
+            }
 
             //make purchasePolicy and storePolicy
             this.purchasePolicy = new List<IBooleanExpression>();
@@ -56,7 +64,10 @@ namespace WorkshopProject
             this.rank = rank;
             this.isActive = isActive;
             //Stock = new Dictionary<int, Product>();
-            StockList = new List<Stock>();
+            if (StockList == null)
+            {
+                StockList = new List<Stock>();
+            }
 
             //make purchasePolicy and storePolicy
             this.purchasePolicy = new List<IBooleanExpression>();
