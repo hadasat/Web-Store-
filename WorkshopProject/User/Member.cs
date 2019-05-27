@@ -94,8 +94,8 @@ namespace Users
 
         public void closeStore(Store store)
         {
-            Roles myRoles = getStoreManagerRoles(store);
-            if (!myRoles.isStoreOwner())
+            StoreManager st = getStoreManagerOb(store);
+            if (!st.isStoreOwner())
             {
                 throw new Exception("you cant close this store");
             }
@@ -189,7 +189,34 @@ namespace Users
             return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
         }
 
-        public bool addStoreOwner(string username, Roles role, int StoreID)
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="role"></param>
+        /// <param name="StoreID"></param>
+        /// <returns> the request nunmber if nessecary, else -1</returns>
+        public int addStoreOwner(string username, Roles role, int StoreID)
+        {
+            Store store = GetStore(StoreID);
+            int numberOfOwners = ConnectionStubTemp.getNumOfOwners(store);
+            int requestId;
+            if (numberOfOwners > 1)
+            {
+                requestId = ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
+                return requestId;
+            } else if(numberOfOwners <= 0)
+            {
+                throw new Exception("You dont own this store! should not happen!!");
+            }
+            requestId = ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
+            ConnectionStubTemp.deleteOwnershipRequest(ConnectionStubTemp.getOwnershipRequest(requestId));
+            return -1;
+        }
+
+
+        public bool makeStoreOwner(string username, Roles role, int StoreID)
         {
             Store store = GetStore(StoreID);
             StoreManager myStoreRoles = getStoreManagerOb(store);
@@ -199,15 +226,40 @@ namespace Users
                 try
                 {
                     candidate.GetStore(StoreID);
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     myStoreRoles.CreateNewManager(candidate, role);
                 }
-                StoreManager candidateStoreManager = candidate.getStoreManagerOb(store);
-                candidateStoreManager.SetStoreOwnerTrue();
+
             }
-            return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
+            else
+            {
+                myStoreRoles.CreateNewManager(candidate, role);
+            }
+            StoreManager candidateStoreManager = candidate.getStoreManagerOb(store);
+            candidateStoreManager.SetStoreOwnerTrue();
+            return true;
+
         }
+
+
+        //true on succsess exception if somthing went wrong
+        public bool approveOwnershipRequest(int requestId)
+        {
+            OwnershipRequest ownershipRequest = ConnectionStubTemp.getOwnershipRequest(requestId);
+            ownershipRequest.approveOrDisapprovedOwnership(1, this);
+            return true;
+        }
+
+        //true on succsess exception if somthing went wrong
+        public bool disapproveOwnershipRequest(int requestId)
+        {
+            OwnershipRequest ownershipRequest = ConnectionStubTemp.getOwnershipRequest(requestId);
+            ownershipRequest.approveOrDisapprovedOwnership(-1, this);
+            return true;
+        }
+
 
 
         public bool addManager(string username, Roles role, Store store)
@@ -290,27 +342,27 @@ namespace Users
 
         public bool isStoresOwner(int storeId)
         {
+            bool acc = false;
             if (storeManaging.Count == 0) { return false; }
 
             foreach (StoreManager currManger in storeManaging)
             {
                 if (currManger.GetStore().id == storeId)
                 {
-                    Roles role = currManger.GetRoles();
-                    return role.isStoreOwner();
+                    StoreManager st = getStoreManagerOb(GetStore(storeId));
+                    acc = acc | st.isStoreOwner();
                 }
             }
 
-            return false;
+            return acc;
         }
-        /*
-        public void addTransactionHistory(Transaction t)
-        {
-            if (purchasesHistory == null)
-                purchasesHistory = new List<Transaction>();
-            purchasesHistory.Add(t);
-        }
-        */
+
+
+
+
+
+
+
         #region notificactions
         public void addMessage(string msg)
         {
@@ -432,8 +484,12 @@ namespace Users
 
 
 
+
+
+
         #endregion
     }
+
 
 
     public class Notification
