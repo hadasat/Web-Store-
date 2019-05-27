@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject.DataAccessLayer;
+using WorkshopProject.DataAccessLayer.Context;
 using WorkshopProject.Log;
 using WorkshopProject.Policies;
 
@@ -21,7 +22,7 @@ namespace WorkshopProject
         public int rank { get; set; }
         public Boolean isActive { get; set; }
         //[NotMapped]
-        private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD
+        //private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD
         public List<Stock> StockList { get; set; } //added for DB. Through "getStock" translates it to dictionary for backwards compatibility
         public List<IBooleanExpression> purchasePolicy { get; set; }
         public List<Discount> discountPolicy { get; set; }
@@ -107,7 +108,8 @@ namespace WorkshopProject
         }
         public void AddToStock(int amount, Product prod)
         {
-            StockList.Add(new Stock(amount, prod));
+            Stock newStock = new Stock(amount, prod);
+            StockList.Add(newStock);
         }
 
         public bool RemoveFromStock(int productId)

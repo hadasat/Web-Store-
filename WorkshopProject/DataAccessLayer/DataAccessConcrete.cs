@@ -260,7 +260,7 @@ namespace WorkshopProject.DataAccessLayer
             }
         }
 
-        protected virtual WorkshopDBContext getContext()
+        public virtual WorkshopDBContext getContext()
         {
             if (isProduction)
             {
@@ -319,7 +319,7 @@ namespace WorkshopProject.DataAccessLayer
             return base.Remove(id, ctx, set);
         }
 
-        protected override WorkshopDBContext getContext()
+        public override WorkshopDBContext getContext()
         {
             if (isProduction)
             {

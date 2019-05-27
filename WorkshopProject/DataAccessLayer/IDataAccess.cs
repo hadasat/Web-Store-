@@ -1,6 +1,7 @@
 ﻿using Shopping;
 using System.Data.Entity.Infrastructure;
 using Users;
+using WorkshopProject.DataAccessLayer.Context;
 using WorkshopProject.Policies;
 
 namespace WorkshopProject.DataAccessLayer
@@ -53,5 +54,7 @@ namespace WorkshopProject.DataAccessLayer
         /// </summary>
         /// <param name="isProduction"></param>
         void SetMode(bool isProduction);
+
+        WorkshopDBContext getContext();
     }
 }

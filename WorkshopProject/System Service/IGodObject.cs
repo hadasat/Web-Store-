@@ -72,7 +72,7 @@ namespace WorkshopProject.System_Service
             dal.SaveProduct(p);
             store.AddToStock(p.getId(), p);
             //dal.SaveProduct(p);
-            Store s1 = dal.GetStore(storeId);
+            //Store s1 = dal.GetStore(storeId);
             dal.SaveStore(store);
             Store s2 = dal.GetStore(storeId);
             return p.getId();
