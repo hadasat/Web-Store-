@@ -350,7 +350,7 @@ namespace Users
             {
                 if (currMember.isStoresOwner(store.id) && currMember.id != creatorId)
                 {
-                    currMember.addMessage("Doy you agree adding "+candidateName+ " as a co-owner to the store "+store.name);
+                    currMember.addMessage("addManagerConfirmation-Do you agree adding " + candidateName+ " as a co-owner to the store "+store.name);
                 }
             }
 
