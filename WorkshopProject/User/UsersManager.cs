@@ -20,8 +20,11 @@ namespace Users
         // <ID, MEMBER>
         public static Dictionary<string, int> mapIDUsermane = new Dictionary<string, int>();
         // <username, ID>
+        public static Dictionary<int, OwnershipRequest> ownershipsRequestList = new Dictionary<int, OwnershipRequest>();
+        // <ID, ownershipRequest>
 
         public static int memberIDGenerator = 0;
+        public static int ownerShipRequestsIDGenerator = 0;
 
         public static void init()
         {
@@ -203,6 +206,172 @@ namespace Users
         /*** END - SYSTEM ADMIN FUNCTIONS ***/
 
 
+
+        public static int createOwnershipRequest(Store store, Member memberThatOpenRequest, Member candidate)
+        {
+
+            int requestID = ownerShipRequestsIDGenerator++;
+            OwnershipRequest newOwnership = new OwnershipRequest(requestID, store, candidate, memberThatOpenRequest);
+            foreach (KeyValuePair<int, Member> entry in members)
+            {
+                Member m = entry.Value;
+                if (m.isStoresOwner(store.id))
+                {
+                    newOwnership.addOwner(m);
+                }
+            }
+            newOwnership.approveOrDisapprovedOwnership(1, memberThatOpenRequest);//first approval of asker
+            ownershipsRequestList[requestID] = (newOwnership);//add ownership request to list
+            newOwnership.sendRequestsToOwners();//should handle notifications
+            return requestID;
+        }
+
+        public static void deleteOwnershipRequest(OwnershipRequest ownership)
+        {
+            ownershipsRequestList.Remove(ownership.getID());
+        }
+
+        public static OwnershipRequest getOwnershipRequest(int id)
+        {
+            try
+            {
+                return ownershipsRequestList[id];
+            } catch (Exception ex)
+            {
+                ///somtihng went wrong with id's
+                throw ex;
+            }
+        }
+
+        public static int getNumOfOwners(Store store)
+        {
+            int ret = 0;
+            foreach (KeyValuePair<int, Member> entry in members)
+            {
+                Member m = entry.Value;
+                if (m.isStoresOwner(store.id))
+                {
+                    ret++;
+                }
+            }
+            return ret;
+        }
+
+
+    }
+
+
+
+    public class OwnershipRequest
+    {
+        private int ID;
+        private Store store;
+        private Member initiate;
+        private Member candidate;
+        public static Dictionary<String, int> owners = new Dictionary<String, int>();
+        //<ownerNames, approved>
+        private readonly object OwnersLock = new object();
+        private int counter = 0;
+        private readonly object CounterLock = new object();
+        private bool done;
+        private readonly object doneLock = new object();
+
+        public OwnershipRequest(int id, Store store, Member candidate, Member initiate)
+        {
+            this.ID = id;
+            this.store = store;
+            this.candidate = candidate;
+            this.initiate = initiate;
+            this.counter = 0;
+            this.done = false;
+        }
+
+        public void addOwner(Member member)
+        {
+            owners[member.username] = 0;
+            lock (CounterLock)
+            {
+                counter++;
+            }
+        }
+
+
+        // 1 opproved -1 disapproved
+        public void approveOrDisapprovedOwnership(int decition, Member member)
+        {
+            lock(OwnersLock)
+            {
+                owners[member.username] = decition;
+            }
+            lock(CounterLock)
+            {
+                counter--;
+            }
+            if (isFullfielld())
+            {
+                lock (doneLock)
+                {
+                    if (!done && checkIfApproved())
+                    {
+                        done = true;
+                        makeOwner();
+                    } else
+                    {
+                        //needs to decide if somthing happens in case of
+                        //unapproval
+                    }
+                    
+                }
+            }
+        }
+
+        private bool isFullfielld()
+        {
+            lock(CounterLock)
+            {
+                return counter == 0;
+            }
+        }
+
+        private bool checkIfApproved()
+        {
+            bool ans = true;
+            foreach (KeyValuePair<String, int> entry in owners)
+            {
+                ans = ans & (entry.Value == 1);
+            }
+            return ans;
+        }
+
+        public void sendRequestsToOwners()
+        {
+            if (owners.Count != 0)
+            {
+                // message:
+                //store <name / id>
+                //owner that made the qequest <username>
+                //member candidate <username>
+
+
+
+                //send to all members in owners.
+                //I SAVED USERNAMES - U CAN GET THE MEMBER ITSELF WITH THIS LINE
+                ////ConnectionStubTemp.getMember(username);
+
+            }
+        }
+
+        public void makeOwner()
+        {
+            Roles roles = initiate.getStoreManagerRoles(store.id);
+            initiate.makeStoreOwner(candidate.username, roles, store.id);
+            ConnectionStubTemp.deleteOwnershipRequest(this);
+        }
+
+        public int getID()
+        {
+            return ID;
+        }
 
     }
 }

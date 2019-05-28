@@ -17,6 +17,7 @@ namespace Managment
         [Key]
         public int id { get; set; }
 
+
         public bool AddRemoveProducts { get; set; }
         public bool AddRemovePurchasing { get; set; }
         public bool AddRemoveDiscountPolicy { get; set; }
@@ -71,7 +72,7 @@ namespace Managment
             return true;
         }
 
-
+        /*
         public bool isStoreOwner()
         {
             return  this.AddRemoveProducts &&
@@ -82,18 +83,21 @@ namespace Managment
                     this.CustomerCommunication &&
                     this.AppointManager &&
                     this.AppointOwner;
-        }
+        }*/
+
+
     }
 
     public class StoreManager
     {
-        private bool storeOwner;
+
         [Key]
         public int id { get; set; }
         public Store store { get; set; }
         public Roles myRoles { get; set; }
         public LinkedList<StoreManager> subManagers { get; set; }
         public StoreManager father { get; set; }
+        private bool storeOwner;
 
         public StoreManager(Store store, Roles storeRoles)
         {
@@ -108,7 +112,7 @@ namespace Managment
           manager (needs to be like hes and below) */
         public bool CreateNewManager(Member member, Roles roles)
         {
-            if (myRoles.isStoreOwner() && myRoles.CompareRoles(roles) && checkNotAManager(member))
+            if (this.storeOwner && myRoles.CompareRoles(roles) && checkNotAManager(member))
             {
                 StoreManager newSubStoreManager = new StoreManager(this.store, roles);
                 newSubStoreManager.setFather(this);
@@ -210,6 +214,11 @@ namespace Managment
         public void SetStoreOwnerFalse()
         {
             this.storeOwner = false;
+        }
+
+        public bool isStoreOwner()
+        {
+            return this.storeOwner;
         }
     }
 }

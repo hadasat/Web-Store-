@@ -129,11 +129,14 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 return notLoggedInError();
-            bool ret;
+            int ret;
+            bool result = false;
             try
             {
                 ret = UserService.AddStoreOwner(user, storeId, userToAdd);
-                return resultJson(ret);
+                if (ret == -1)
+                    result = true;
+                return resultJson(result);
             }
             catch (Exception e)
             {
