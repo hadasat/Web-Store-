@@ -11,7 +11,7 @@ namespace WorkshopProject.DataAccessLayer
         Member GetMember(int key);
         bool GetMode();
         Store GetStore(int key);
-        Store GetProduct(int key);
+        Product GetProduct(int key);
         bool RemoveEntity<T>(int key) where T : class;
         bool SaveEntity<T>(T entity, int key) where T : class;
         void SetMode(bool isProduction);

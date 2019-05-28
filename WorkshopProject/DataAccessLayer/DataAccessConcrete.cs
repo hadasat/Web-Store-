@@ -72,11 +72,6 @@ namespace WorkshopProject.DataAccessLayer
         //        DbSet <T> set = ctx.Set<T>();
         //        IQueryable<T> queryable = getQueryableWithIncludes(set);
         //        ret = queryable.Where(e => e.id == key);
-
-
-
-
-
         //    }
         //    return ret;
         //}

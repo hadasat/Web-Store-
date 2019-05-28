@@ -18,6 +18,8 @@ namespace WorkshopProject.Policies
 
         public static int DiscountCounter = 1;
 
+
+        public Discount() { }
         public Discount(IBooleanExpression condition, IOutcome outcome)
         {
             this.condition = condition;
