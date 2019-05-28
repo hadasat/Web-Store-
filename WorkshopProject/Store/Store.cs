@@ -21,19 +21,20 @@ namespace WorkshopProject
         public string name { get; set; }
         public int rank { get; set; }
         public Boolean isActive { get; set; }
-        //[NotMapped]
-        //private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD
-        public List<Stock> StockList { get; set; } //added for DB. Through "getStock" translates it to dictionary for backwards compatibility
+        public ICollection<Stock> StockList { get; set; } //added for DB
         public List<IBooleanExpression> purchasePolicy { get; set; }
         public List<Discount> discountPolicy { get; set; }
         public List<IBooleanExpression> storePolicy { get; set; }
+
+        //[NotMapped]
+        //private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD
 
         public int storeBankNum;
         public int storeAccountNum;
         public string storeAddress;
 
         public Store() {
-            if(StockList == null)
+            if (StockList == null)
             {
                 StockList = new List<Stock>();
             }
@@ -97,7 +98,7 @@ namespace WorkshopProject
 
         }
 
-        public List<Stock> GetStock()
+        public ICollection<Stock> GetStock()
         {
             //if (Stock == null)
             //{
@@ -162,7 +163,7 @@ namespace WorkshopProject
         {
 
             List<Product> matched_products = new List<Product>();
-            List<Stock> products = GetStock();
+            ICollection<Stock> products = GetStock();
             foreach (Stock stock in products)
             {
                 Product item = stock.product;
@@ -282,7 +283,7 @@ namespace WorkshopProject
             callback callback = delegate ()
             {
                 if (StockHas(p.getId()))
-                    GetStock()[p.getId()].amount += amountToBuy;
+                    getProduct(p.getId()).amount += amountToBuy;
             };
 
             if (!StockHas(p.getId()) || removeFromStock(getProduct(p.getId()), amountToBuy) == -1)
@@ -347,7 +348,7 @@ namespace WorkshopProject
         {
             if (StockHas(product.getId()))
             {
-                return GetStock()[product.getId()].amount >= amount;
+                return getProduct(product.getId()).amount >= amount;
             }
             return false;
         }

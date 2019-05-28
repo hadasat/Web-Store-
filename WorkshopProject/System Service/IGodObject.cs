@@ -160,7 +160,7 @@ namespace WorkshopProject.System_Service
         public bool removeProductFromStock(int storeId, int ProductId, int amountToRemove)
         {
             Store store = WorkShop.getStore(storeId);
-            store.GetStock()[ProductId].amount -= amountToRemove;
+            store.getProduct(ProductId).amount -= amountToRemove;
             return true;
 
         }
