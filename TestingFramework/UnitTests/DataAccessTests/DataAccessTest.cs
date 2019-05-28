@@ -47,7 +47,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
             member.country = "Test";
             member.username = "Test";
 
-            bool result = dal.SaveMember(member);
+            bool result = dal.SaveEntity(member, member.id);
             Assert.IsTrue(result);
             return member.id;
         }
@@ -69,11 +69,11 @@ namespace TestingFramework.UnitTests.DataAccessTests
             member.country = "Test";
             member.username = "Test";
 
-            bool result = dal.SaveMember(member);
+            bool result = dal.SaveEntity(member, member.id);
             Assert.IsTrue(result);
 
             member.country = "Test2";
-            result = dal.SaveMember(member);
+            result = dal.SaveEntity(member, member.id);
             Assert.IsTrue(result);
 
             member = dal.GetMember(member.id);
@@ -85,7 +85,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
         public void RemoveExistingMemberTest()
         {
             int memberId = SaveNewMember();
-            dal.RemoveMember(memberId);
+            dal.RemoveEntity<Member>(memberId);
             Member result = dal.GetMember(memberId);
             Assert.IsNull(result);
         }
@@ -99,7 +99,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
             Member member = new Member();
             member.username = name;
 
-            bool result = dal.SaveMember(member);
+            bool result = dal.SaveEntity(member, member.id);
 
             string sql = "select * from Members where username = @name";
             SqlParameter sqlparam = new SqlParameter("@name", name);

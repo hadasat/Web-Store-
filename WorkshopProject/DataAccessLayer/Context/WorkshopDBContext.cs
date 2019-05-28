@@ -21,11 +21,18 @@ namespace WorkshopProject.DataAccessLayer.Context
             // OTHER OPTIONS:
             //Database.SetInitializer<SchoolDBContext>(new DropCreateDatabaseIfModelChanges<SchoolDBContext>());
             //Database.SetInitializer<SchoolDBContext>(new SchoolDBInitializer());
+
+            addIncludes();
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //Configure domain classes using modelBuilder here..
+        }
+
+        protected virtual void addIncludes()
+        {
+            //Stores = (DbSet<Store>)Stores.Include(s => s.Stocks);
         }
 
         public DbSet<Member> Members { get; set; }

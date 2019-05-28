@@ -93,11 +93,20 @@ namespace Managment
 
         [Key]
         public int id { get; set; }
+        [Include]
         public Store store { get; set; }
+        [Include]
         public Roles myRoles { get; set; }
+        [Include]
         public LinkedList<StoreManager> subManagers { get; set; }
+        [Include]
         public StoreManager father { get; set; }
         private bool storeOwner;
+
+
+        public StoreManager() {
+            subManagers = new LinkedList<StoreManager>();
+        }
 
         public StoreManager(Store store, Roles storeRoles)
         {
