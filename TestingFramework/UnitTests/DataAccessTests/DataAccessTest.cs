@@ -156,21 +156,21 @@ namespace TestingFramework.UnitTests.DataAccessTests
 
         }
 
-        [TestMethod]
-        [TestCategory("DAL")]
-        public void AddDiscount()
-        {
-            IBooleanExpression cond = new TrueCondition();
-            IOutcome outcome = new Percentage();
-            Discount discount = new Discount(cond, outcome);
+        //[TestMethod]
+        //[TestCategory("DAL")]
+        //public void AddDiscount()
+        //{
+        //    IBooleanExpression cond = new TrueCondition();
+        //    IOutcome outcome = new Percentage();
+        //    Discount discount = new Discount(cond, outcome);
 
-            dal.SaveEntity(discount, discount.id);
+        //    dal.SaveEntity(discount, discount.id);
 
-            Discount replicated = null;
-            using (WorkshopDBContext ctx = dal.getContext()){
-                replicated = ctx.Discounts.Find(discount.id);
-            }
-            Assert.IsNotNull(replicated.outcome);
-        }
+        //    Discount replicated = null;
+        //    using (WorkshopDBContext ctx = dal.getContext()){
+        //        replicated = ctx.Discounts.Find(discount.id);
+        //    }
+        //    Assert.IsNotNull(replicated.outcome);
+        //}
     }
 }
