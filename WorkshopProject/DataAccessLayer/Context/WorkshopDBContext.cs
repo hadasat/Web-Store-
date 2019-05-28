@@ -32,7 +32,7 @@ namespace WorkshopProject.DataAccessLayer.Context
 
         protected virtual void addIncludes()
         {
-            Stores = (DbSet<Store>)Stores.Include(s => s.Stocks);
+            //Stores = (DbSet<Store>)Stores.Include(s => s.Stocks);
         }
 
         public DbSet<Member> Members { get; set; }

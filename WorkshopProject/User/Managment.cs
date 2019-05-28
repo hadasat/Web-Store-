@@ -99,6 +99,11 @@ namespace Managment
         public StoreManager father { get; set; }
         private bool storeOwner;
 
+
+        public StoreManager() {
+            subManagers = new LinkedList<StoreManager>();
+        }
+
         public StoreManager(Store store, Roles storeRoles)
         {
             this.store = store;

@@ -35,7 +35,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
         {
             int id = SaveNewMember();
             Member member;
-            member = dal.GetEntity<Member>(id);
+            member = dal.GetMember(id);
             Assert.IsNotNull(member);
             Assert.AreEqual(member.id, id);
         }
@@ -76,7 +76,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
             result = dal.SaveEntity(member, member.id);
             Assert.IsTrue(result);
 
-            member = dal.GetEntity<Member>(member.id);
+            member = dal.GetMember(member.id);
             Assert.AreEqual("Test2", member.country);
         }
 
@@ -86,7 +86,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
         {
             int memberId = SaveNewMember();
             dal.RemoveEntity<Member>(memberId);
-            Member result = dal.GetEntity<Member>(memberId);
+            Member result = dal.GetMember(memberId);
             Assert.IsNull(result);
         }
 
