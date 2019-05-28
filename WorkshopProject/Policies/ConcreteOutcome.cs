@@ -14,6 +14,8 @@ namespace WorkshopProject.Policies
         public int productId {get; set;}
         public int amount { get; set; }
 
+        public FreeProduct() { }
+
         public FreeProduct(int productId, int amount)
         {
             this.productId = productId;
@@ -33,6 +35,8 @@ namespace WorkshopProject.Policies
     public class Percentage : IOutcome
     {
         public double percentage { get; set; }
+
+        public Percentage() { }
 
         public Percentage(double percentage)
         {

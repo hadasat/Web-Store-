@@ -11,6 +11,7 @@ using WorkshopProject;
 using WorkshopProject.DataAccessLayer;
 using WorkshopProject.DataAccessLayer.Context;
 using System.Data.Entity;
+using WorkshopProject.Policies;
 
 namespace TestingFramework.UnitTests.DataAccessTests
 {
@@ -153,6 +154,23 @@ namespace TestingFramework.UnitTests.DataAccessTests
             //DataAccessDriver.GetDataAccess().GetStore(store.id);
 
 
+        }
+
+        [TestMethod]
+        [TestCategory("DAL")]
+        public void AddDiscount()
+        {
+            IBooleanExpression cond = new TrueCondition();
+            IOutcome outcome = new Percentage();
+            Discount discount = new Discount(cond, outcome);
+
+            dal.SaveEntity(discount, discount.id);
+
+            Discount replicated = null;
+            using (WorkshopDBContext ctx = dal.getContext()){
+                replicated = ctx.Discounts.Find(discount.id);
+            }
+            Assert.IsNotNull(replicated.outcome);
         }
     }
 }
