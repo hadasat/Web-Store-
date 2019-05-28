@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -85,7 +85,7 @@
             var cat = $("#pCat").val();
             var keyWord = $("#pKeyWord").val();
 
-            sendRequest('data','searchProducts',{nane: name,category: cat,keyword: keyWord,startPrice: fromPrice
+            sendRequest('data','searchProducts',{name: name,category: cat,keyword: keyWord,startPrice: fromPrice
             , endPrice : toPrice, productRank : pRank, storeRank : sRank})
             .then(function(res){
                 displayResults(res.$values);
