@@ -144,7 +144,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
 
             int count = 0;
             Store store2 = dal.GetStore(store.id);
-            //Assert.AreEqual(store2.GetStock().Count, 1);
+            Assert.AreEqual(store2.GetStock().Count, 1);
             foreach(Stock st in store.Stocks)
             {
                 count++;
