@@ -43,6 +43,7 @@ namespace Users.Tests
 
         [TestMethod()]
         [TestCategory("TestUser")]
+        [TestCategory("Regression")]
         public void loginMember_Test()
         {
             try
@@ -62,11 +63,11 @@ namespace Users.Tests
                 try
                 {
                     user.loginMember(username, password);
-                    Assert.IsTrue(true);
+                    Assert.IsTrue(false);
                 }
                 catch (Exception ex)//registerd
                 {
-                    Assert.IsTrue(false);
+                    Assert.IsTrue(true);
                 }
             }
             finally

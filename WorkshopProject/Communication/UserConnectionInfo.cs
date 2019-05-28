@@ -234,6 +234,7 @@ namespace WorkshopProject.Communication
             string password = (string)msgObj["data"]["password"];
             string birthDateString = (string)msgObj["data"]["birthdate"];
             string country = (string)msgObj["data"]["country"];
+
             DateTime birthDate = DateTime.MaxValue;
             if (birthDateString != null)
             {
