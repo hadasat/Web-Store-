@@ -106,7 +106,18 @@ namespace WorkshopProject.DataAccessLayer
                     .Include(s => s.discountPolicy)
                     .Include(s => s.storePolicy)
                     
-                    .Where(m => m.id == key).FirstOrDefault();
+                    .Where(p => p.id == key).FirstOrDefault();
+            }
+            return ret;
+        }
+
+        public Product GetProduct(int key)
+        {
+            Product ret = null;
+            using (WorkshopDBContext ctx = getContext())
+            {
+                ret = ctx.Products
+                    .Where(p => p.id == key).FirstOrDefault();
             }
             return ret;
         }

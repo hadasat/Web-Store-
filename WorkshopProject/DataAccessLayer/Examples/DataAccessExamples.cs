@@ -69,7 +69,7 @@ namespace WorkshopProject.DataAccessLayer.Examples
 
 
             /**GETTING THE MEMBER**/
-            Member sameMember = dal.GetEntity<Member>(member.id);
+            Member sameMember = dal.GetMember(member.id);
 
 
 
