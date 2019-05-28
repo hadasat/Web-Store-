@@ -112,41 +112,41 @@ namespace TestingFramework.UnitTests.DataAccessTests
             Assert.AreEqual(name, memberExtracted.username);
         }
 
-        [TestMethod]
-        [TestCategory("DAL")]
-        public void AddStoreWithStock()
-        {
-            Store store = new Store("store", 0, true);
-            //dal.SaveStore(store);
+        //[TestMethod]
+        //[TestCategory("DAL")]
+        //public void AddStoreWithStock()
+        //{
+        //    Store store = new Store("store", 0, true);
+        //    //dal.SaveStore(store);
 
-            Product prod = new Product("product", 10, "desc", "cat", 0, 10, store.id);
+        //    Product prod = new Product("product", 10, "desc", "cat", 0, 10, store.id);
 
-            //store.AddToStock(20, prod);
-            Stock neStock = new Stock(20, prod);
+        //    //store.AddToStock(20, prod);
+        //    Stock neStock = new Stock(20, prod);
 
 
-            store.GetStock().Add(neStock);
+        //    store.GetStock().Add(neStock);
 
-            WorkshopDBContext ctx = dal.getContext();
-            ctx.Stock.Add(neStock);
-            ctx.Stores.Add(store);
-            ctx.Products.Add(prod);
-            ctx.SaveChanges();
+        //    WorkshopDBContext ctx = dal.getContext();
+        //    ctx.Stock.Add(neStock);
+        //    ctx.Stores.Add(store);
+        //    ctx.Products.Add(prod);
+        //    ctx.SaveChanges();
 
             
    
-            ctx.Dispose();
+        //    ctx.Dispose();
 
 
 
-            Store store2 = dal.getContext().Stores.Include(s => s.Stocks).Where(s => s.id == store.id).FirstOrDefault();
-            ctx.Dispose();
-            //Store store2 = dal.GetStore(store.id);
-            Assert.AreEqual(store2.GetStock().Count, 1);
+        //    Store store2 = dal.getContext().Stores.Include(s => s.Stocks).Where(s => s.id == store.id).FirstOrDefault();
+        //    ctx.Dispose();
+        //    //Store store2 = dal.GetStore(store.id);
+        //    Assert.AreEqual(store2.GetStock().Count, 1);
 
-            //DataAccessDriver.GetDataAccess().GetStore(store.id);
+        //    //DataAccessDriver.GetDataAccess().GetStore(store.id);
 
 
-        }
+        //}
     }
 }
