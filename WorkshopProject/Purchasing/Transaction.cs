@@ -173,6 +173,7 @@ namespace TansactionsNameSpace
     {
         [Key]
         public int id { get; set; }
+        [Include]
         public List<ProductAmountPrice> products { get; set; }
         public String storeName { get; set; }
         public int storId { get; set; }
