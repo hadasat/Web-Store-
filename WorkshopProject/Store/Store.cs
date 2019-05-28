@@ -21,7 +21,7 @@ namespace WorkshopProject
         public string name { get; set; }
         public int rank { get; set; }
         public Boolean isActive { get; set; }
-        public ICollection<Stock> Stocks { get; set; } 
+        public virtual ICollection<Stock> Stocks { get; set; } 
         public List<IBooleanExpression> purchasePolicy { get; set; }
         public List<Discount> discountPolicy { get; set; }
         public List<IBooleanExpression> storePolicy { get; set; }
