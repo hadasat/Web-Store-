@@ -11,6 +11,7 @@ namespace Shopping
         public int id { get; set; }
         [NotMapped]
         private Dictionary<Store, ShoppingCart> carts; //ONLY USE GETTER
+        [Include]
         public List<ShoppingCartAndStore> cartsList { get; set; }
         public static int idBasketCounter = 0;
 

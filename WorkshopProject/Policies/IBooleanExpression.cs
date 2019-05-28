@@ -19,6 +19,7 @@ namespace WorkshopProject.Policies
     {
         [Key]
         public int id { get; set; }
+        [Include]
         public ItemFilter filter { get; set; }
 
         [NotMapped]
@@ -27,6 +28,7 @@ namespace WorkshopProject.Policies
         [NotMapped]
         public IBooleanExpression secondChild { get { return children[1]; } set => children[1] = value; }
 
+        [Include]
         public List<IBooleanExpression> children { get; set; } 
 
 

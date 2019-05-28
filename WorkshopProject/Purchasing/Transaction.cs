@@ -24,10 +24,14 @@ namespace TansactionsNameSpace
         public int id { get; set; }
         [NotMapped]
         public User user { get; set; }
+        [Include]
         public Member member { get { return (user is Member) ? (Member)user : null; } set => member = value; }
+        [Include]
         public List<ShoppingCartDeal> sucess { get; set; }
+        [Include]
         public List<ShoppingCartDeal> fail { get; set; }
         public double total { get; set; }
+        [Include]
         public status transactionSatus { get; set; }
 
 

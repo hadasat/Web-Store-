@@ -436,6 +436,7 @@ namespace WorkshopProject
         [Key]
         public int id { get; set; }
         public int amount { get; set; }
+        [Include]
         public Product product { get; set; }
 
 
