@@ -18,11 +18,12 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
 
         [TestMethod]
         [TestCategory("Req_2")]
+        [TestCategory("Regression")]
         public void RegisterNewUser()
         {
             try
             {
-                bool result = bridge.Register(user, password);
+                bool result = bridge.Register(user, password, DateTime.Now, "shit");
 
                 Assert.IsTrue(result);
 
@@ -39,13 +40,14 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         //TODO: dependant test
         [TestMethod]
         [TestCategory("Req_2")]
+        [TestCategory("Regression")]
         public void RegisterExistingUser()
         {
             try
             {
-                bridge.Register(user, password);
+                bridge.Register(user, password,DateTime.Now,"shit");
 
-                bool result = bridge.Register(user, password);
+                bool result = bridge.Register(user, password, DateTime.Now, "shit");
 
                 Assert.IsFalse(result);
             }
@@ -57,6 +59,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
 
         [TestMethod]
         [TestCategory("Req_2")]
+        [TestCategory("Regression")]
         public void RegisterIllegalUser()
         {
             try
@@ -65,7 +68,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
                 string user = ";";
                 string password = "123456";
 
-                bool result = bridge.Register(user, password);
+                bool result = bridge.Register(user, password, DateTime.Now, "shit");
 
                 Assert.IsFalse(result);
 
@@ -73,7 +76,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
                 user = "User";
                 password = "";
 
-                result = bridge.Register(user, password);
+                result = bridge.Register(user, password, DateTime.Now, "shit");
 
                 Assert.IsFalse(result);
 

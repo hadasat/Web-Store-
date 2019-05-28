@@ -242,24 +242,8 @@ namespace WorkshopProject.Communication
             }
             try
             {
-                bool registrAns;
-                if (birthDate != DateTime.MaxValue)
-                {
-                    //has birth date
-                    registrAns = user.Register(userName, password, birthDate, country);
-                }
-                else
-                {
-                    registrAns = user.Register(userName, password);
-                }
-                if (registrAns)
-                {
-                    response = JsonResponse.generateActionSucces(requestId);
-                }
-                else
-                {
-                    response = JsonResponse.generateActionError(requestId, "can't register due to an unknown reason");
-                }
+                response = user.Register(userName, password, birthDate, country) ?
+                    JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "can't register due to an unknown reason");
             }
             catch (Exception e)
             {

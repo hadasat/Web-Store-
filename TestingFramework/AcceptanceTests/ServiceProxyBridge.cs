@@ -93,10 +93,10 @@ namespace TestingFramework.AcceptanceTests
             throw new NotImplementedException();
         }
 
-        public bool Register(string user, string password)
-        {
-            throw new NotImplementedException();
-        }
+        //public bool Register(string user, string password)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public bool RemoveStoreManager(int storeId, string user)
         {
