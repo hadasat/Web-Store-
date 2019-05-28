@@ -61,7 +61,7 @@ namespace WorkshopProject
             //{
             //    return null;
             //}
-            return dal.GetStore(store_id);
+            return dal.GetEntity<Store>(store_id);
 
 
         }
@@ -72,7 +72,7 @@ namespace WorkshopProject
         {
             Store store = new Store(name, rank, isActive);
             //db
-            dal.SaveStore(store);  //may throw an exeption
+            dal.SaveEntity(store, store.id);  //may throw an exeption
             //stores.Add(id,store);
             int currID = store.id;
            // id++;
@@ -85,11 +85,11 @@ namespace WorkshopProject
         public static bool closeStore(int storeId, Member owner)
         {
             
-                Store s = dal.GetStore(storeId);
+                Store s = dal.GetEntity<Store>(storeId);
                 owner.closeStore(s);
                 s.changeActiveState(false);
                 //dal.SaveMember(owner);
-                dal.SaveStore(s);
+                dal.SaveEntity(s, s.id);
             
             Logger.Log("file", logLevel.INFO, "store " + storeId + " has closed");
             
@@ -112,7 +112,7 @@ namespace WorkshopProject
             //        return store.GetStock()[productId];
             //}
             //return null;
-            return dal.GetProduct(productId);
+            return dal.GetEntity<Product>(productId);
         }
 
         public static Dictionary<Store, Product> findProduct(int productId)
@@ -130,17 +130,17 @@ namespace WorkshopProject
             //    }
             //}
             Dictionary<Store, Product> storeProduct = new Dictionary<Store, Product>();
-            Product p = dal.GetProduct(productId);
+            Product p = dal.GetEntity<Product>(productId);
             if (p == null)
                 return null;
-            Store s = dal.GetStore(p.storeId);
+            Store s = dal.GetEntity<Store>(p.storeId);
             storeProduct[s] = p;
             return storeProduct;
         }
 
         public static void RemoveStoreFromDB(int storeId)
         {
-            dal.RemoveStore(storeId);
+            dal.RemoveEntity<Store>(storeId);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace WorkshopProject.System_Service
 
             if (!store.addProductTostock(user, product, amount))
                 throw new Exception("User does not have permission");
-            dal.SaveStore(store);
+            dal.SaveEntity(store, store.id);
             return true; //All Valid
         }
 
@@ -98,7 +98,7 @@ namespace WorkshopProject.System_Service
             if (!store.changeProductInfo(user, productId, name, desc, price, category, amount))
                 throw new Exception("Error: User does not have permission Or Product does not exist");
 
-            dal.SaveStore(store);
+            dal.SaveEntity(store, store.id);
             return true; //All Valid
         }
 
@@ -138,8 +138,8 @@ namespace WorkshopProject.System_Service
 
             if (!store.removeProductFromStore(user, product))
                 throw new Exception("Error: User does not have permission");
-            dal.RemoveProduct(product.id);
-            dal.SaveStore(store);
+            dal.RemoveEntity<Product>(product.id);
+            dal.SaveEntity(store, store.id);
             return true; //All Valid
         }
 

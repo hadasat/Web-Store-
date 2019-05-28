@@ -213,10 +213,10 @@ namespace WorkshopProject
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return -1;
             IDataAccess dal = DataAccessDriver.GetDataAccess();
-            dal.SaveProduct(p);
+            dal.SaveEntity(p, p.id);
             AddToStock(p.getId(), p);
             Logger.Log("file", logLevel.INFO, "product " + p.getId() + " added");
-            dal.SaveStore(this);
+            dal.SaveEntity(this, this.id);
             return p.getId();
         }
 

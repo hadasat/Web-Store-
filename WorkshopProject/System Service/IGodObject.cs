@@ -69,12 +69,12 @@ namespace WorkshopProject.System_Service
         {
             Store store = WorkShop.getStore(storeId);
             Product p = new Product(name, price, desc, category, rank, amount, storeId);
-            dal.SaveProduct(p);
+            dal.SaveEntity(p, p.id);
             store.AddToStock(p.getId(), p);
             //dal.SaveProduct(p);
             //Store s1 = dal.GetStore(storeId);
-            dal.SaveStore(store);
-            Store s2 = dal.GetStore(storeId);
+            dal.SaveEntity(store, store.id);
+            Store s2 = dal.GetEntity<Store>(storeId);
             return p.getId();
         }
 
@@ -176,7 +176,7 @@ namespace WorkshopProject.System_Service
             Member owner = ConnectionStubTemp.getMember(ownerId);
             WorkShop.closeStore(storeId, owner);
             //WorkShop.stores.Remove(storeId);
-            dal.RemoveStore(storeId);
+            dal.RemoveEntity<Store>(storeId);
             return true;
         }
 
