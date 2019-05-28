@@ -21,9 +21,13 @@ namespace WorkshopProject
         public Boolean isActive { get; set; }
         [NotMapped]
         private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD
+        [Include]
         public List<Stock> Stocks { get; set; } //added for DB. Through "getStock" translates it to dictionary for backwards compatibility
+        [Include]
         public List<IBooleanExpression> purchasePolicy { get; set; }
+        [Include]
         public List<Discount> discountPolicy { get; set; }
+        [Include]
         public List<IBooleanExpression> storePolicy { get; set; }
 
         public int storeBankNum;

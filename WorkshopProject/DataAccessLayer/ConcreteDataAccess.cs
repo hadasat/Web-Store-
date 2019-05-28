@@ -54,6 +54,25 @@ namespace WorkshopProject.DataAccessLayer
             return isProduction;
         }
 
+        //public T GetEntity<T>(int key) where T : class
+        //{
+        //    if (key <= 0)
+        //    {
+        //        key = -1;
+        //    }
+
+        //    T ret = null;
+        //    using (WorkshopDBContext ctx = getContext())
+        //    {
+        //        string table = getTableNameFromDbSet<T>(ctx);
+        //        string sql = String.Format("SELECT * FROM {0} WHERE id = @key", table);
+        //        SqlParameter[] sqlparams = { new SqlParameter("@table", table), new SqlParameter("@key", key) };
+        //        ret = SqlQuery<T>(sql, sqlparams).FirstOrDefault();
+        //    }
+        //    return ret;
+        //}
+
+
         public Member GetMember(int key)
         {
             Member ret = null;
