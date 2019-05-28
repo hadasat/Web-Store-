@@ -55,25 +55,61 @@ namespace WorkshopProject.DataAccessLayer
         }
 
 
-        public T GetEntity<T>(int key) where T : class
-        {
-            if (key <= 0)
-            {
-                key = -1;
-            }
+        //public T GetEntity<T>(int key) where T : class
+        //{
+        //    if (key <= 0)
+        //    {
+        //        key = -1;
+        //    }
 
-            T ret = null;
+        //    T ret = null;
+        //    using (WorkshopDBContext ctx = getContext())
+        //    {
+        //        string table = getTableNameFromDbSet<T>(ctx);
+        //        string sql = String.Format("SELECT * FROM {0} WHERE id = @key", table);
+        //        SqlParameter[] sqlparams = { new SqlParameter("@table", table) , new SqlParameter("@key", key) };
+        //        //ret = SqlQuery<T>(sql, sqlparams).FirstOrDefault();
+        //        DbSet <T> set = ctx.Set<T>();
+        //        IQueryable<T> queryable = getQueryableWithIncludes(set);
+        //        ret = queryable.Where(e => e.id == key);
+
+
+
+
+
+        //    }
+        //    return ret;
+        //}
+
+
+        public Member GetMember(int key)
+        {
+            Member ret = null;
             using (WorkshopDBContext ctx = getContext())
             {
-                string table = getTableNameFromDbSet<T>(ctx);
-                string sql = String.Format("SELECT * FROM {0} WHERE id = @key", table);
-                SqlParameter[] sqlparams = { new SqlParameter("@table", table) , new SqlParameter("@key", key) };
-                ret = SqlQuery<T>(sql, sqlparams).FirstOrDefault();
+                ret = ctx.Members
+                    .Include(m => m.storeManaging)
+                    .Include(m => m.notifications)
+                    .Where(m => m.id == key).FirstOrDefault();
             }
             return ret;
         }
 
-
+        public Store GetStore(int key)
+        {
+            Store ret = null;
+            using (WorkshopDBContext ctx = getContext())
+            {
+                ret = ctx.Stores
+                    .Include(s => s.Stocks)
+                    .Include(s => s.purchasePolicy)
+                    .Include(s => s.discountPolicy)
+                    .Include(s => s.storePolicy)
+                    
+                    .Where(m => m.id == key).FirstOrDefault();
+            }
+            return ret;
+        }
 
         public virtual DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters) where T : class
         {
@@ -190,32 +226,38 @@ namespace WorkshopProject.DataAccessLayer
             return ret;
         }
 
-        //protected DbSet<T> getDbSetIncludes<T>(DbSet<T> set) where T : class
-        //{
-        //    return null;
-        //}
+        protected IQueryable<T> getQueryableWithIncludes<T>(DbSet<T> set) where T : class
+        {
+            IQueryable<T> ret = set;
+            var propsToLoad = GetPropsToLoad(typeof(T));
+            foreach (var prop in propsToLoad)
+            {
+                ret = ret.Include(prop);
+            }
+            return ret;
+        }
 
 
-        //protected IEnumerable<string> GetPropsToLoad(Type type)
-        //{
-        //    HashSet<Type> _visitedTypes = new HashSet<Type>();
-        //    _visitedTypes.Add(type);
-        //    var propsToLoad = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-        //                                      .Where(p => p.GetCustomAttributes(typeof(IncludeAttribute), true).Any());
+        protected IEnumerable<string> GetPropsToLoad(Type type)
+        {
+            HashSet<Type> _visitedTypes = new HashSet<Type>();
+            _visitedTypes.Add(type);
+            var propsToLoad = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                              .Where(p => p.GetCustomAttributes(typeof(IncludeAttribute), true).Any());
 
-        //    foreach (var prop in propsToLoad)
-        //    {
-        //        yield return prop.Name;
+            foreach (var prop in propsToLoad)
+            {
+                yield return prop.Name;
 
-        //        if (_visitedTypes.Contains(prop.PropertyType))
-        //            continue;
+                if (_visitedTypes.Contains(prop.PropertyType))
+                    continue;
 
-        //        foreach (var subProp in GetPropsToLoad(prop.PropertyType))
-        //        {
-        //            yield return prop.Name + "." + subProp;
-        //        }
-        //    }
-        //}
+                foreach (var subProp in GetPropsToLoad(prop.PropertyType))
+                {
+                    yield return prop.Name + "." + subProp;
+                }
+            }
+        }
     }
 
     public class DataAccessStatic : DataAccessNonPersistent
@@ -276,9 +318,9 @@ namespace WorkshopProject.DataAccessLayer
 
 
 //https://www.trycatchfail.com/2013/02/02/a-generic-entity-framework-5-repository-with-eager-loading/
-/*
-public class IncludeAttribute : Attribute { }
 
+public class IncludeAttribute : Attribute { }
+/*
 public class PropertyIncluder <TEntity> where TEntity : class
 {
     private readonly Func<DbQuery<TEntity>, DbQuery<TEntity>> _includeMethod;
