@@ -74,7 +74,7 @@ namespace WorkshopProject.System_Service
             //dal.SaveProduct(p);
             //Store s1 = dal.GetStore(storeId);
             dal.SaveEntity(store, store.id);
-            Store s2 = dal.GetEntity<Store>(storeId);
+            Store s2 = dal.GetStore(storeId);
             return p.getId();
         }
 

@@ -61,7 +61,7 @@ namespace WorkshopProject
             //{
             //    return null;
             //}
-            return dal.GetEntity<Store>(store_id);
+            return dal.GetStore(store_id);
 
 
         }
@@ -85,7 +85,7 @@ namespace WorkshopProject
         public static bool closeStore(int storeId, Member owner)
         {
             
-                Store s = dal.GetEntity<Store>(storeId);
+                Store s = dal.GetStore(storeId);
                 owner.closeStore(s);
                 s.changeActiveState(false);
                 //dal.SaveMember(owner);
@@ -112,7 +112,7 @@ namespace WorkshopProject
             //        return store.GetStock()[productId];
             //}
             //return null;
-            return dal.GetEntity<Product>(productId);
+            return dal.GetProduct(productId);
         }
 
         public static Dictionary<Store, Product> findProduct(int productId)
@@ -130,10 +130,10 @@ namespace WorkshopProject
             //    }
             //}
             Dictionary<Store, Product> storeProduct = new Dictionary<Store, Product>();
-            Product p = dal.GetEntity<Product>(productId);
+            Product p = dal.GetProduct(productId);
             if (p == null)
                 return null;
-            Store s = dal.GetEntity<Store>(p.storeId);
+            Store s = dal.GetStore(p.storeId);
             storeProduct[s] = p;
             return storeProduct;
         }
