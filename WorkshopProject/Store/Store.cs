@@ -16,12 +16,12 @@ namespace WorkshopProject
 {
     public class Store
     {
-        [Key]
+        //[Key]
         public int id { get; set; }
         public string name { get; set; }
         public int rank { get; set; }
         public Boolean isActive { get; set; }
-        public ICollection<Stock> StockList { get; set; } //added for DB
+        public ICollection<Stock> Stocks { get; set; } 
         public List<IBooleanExpression> purchasePolicy { get; set; }
         public List<Discount> discountPolicy { get; set; }
         public List<IBooleanExpression> storePolicy { get; set; }
@@ -34,10 +34,10 @@ namespace WorkshopProject
         public string storeAddress;
 
         public Store() {
-            if (StockList == null)
-            {
-                StockList = new List<Stock>();
-            }
+            //if (StockList == null)
+            //{
+                Stocks = new List<Stock>();
+            //}
         }
 
            //constructor without the id for the db
@@ -47,9 +47,9 @@ namespace WorkshopProject
             this.rank = rank;
             this.isActive = isActive;
             //Stock = new Dictionary<int, Product>();
-            if (StockList == null)
+            if (Stocks == null)
             {
-                StockList = new List<Stock>();
+                Stocks = new List<Stock>();
             }
 
             //make purchasePolicy and storePolicy
@@ -66,9 +66,9 @@ namespace WorkshopProject
             this.rank = rank;
             this.isActive = isActive;
             //Stock = new Dictionary<int, Product>();
-            if (StockList == null)
+            if (Stocks == null)
             {
-                StockList = new List<Stock>();
+                Stocks = new List<Stock>();
             }
 
             //make purchasePolicy and storePolicy
@@ -85,7 +85,7 @@ namespace WorkshopProject
             this.rank = rank;
             this.isActive = isActive;
             //Stock = new Dictionary<int, Product>();
-            StockList = new List<Stock>();
+            Stocks = new List<Stock>();
 
             //make purchasePolicy and storePolicy
             this.purchasePolicy = new List<IBooleanExpression>();
@@ -105,23 +105,23 @@ namespace WorkshopProject
             //    Stock = getStockListAsDictionary();
             //}
             //return Stock;
-            return StockList;
+            return Stocks;
         }
         public void AddToStock(int amount, Product prod)
         {
             Stock newStock = new Stock(amount, prod);
-            StockList.Add(newStock);
+            Stocks.Add(newStock);
         }
 
         public bool RemoveFromStock(int productId)
         {
             Stock toRemove;
-            foreach (Stock st in StockList)
+            foreach (Stock st in Stocks)
             {
                 if (st.product.id == productId)
                 {
                     toRemove = st;
-                    return StockList.Remove(toRemove);
+                    return Stocks.Remove(toRemove);
                 }
             }
             return false;
@@ -185,7 +185,7 @@ namespace WorkshopProject
         /// <returns>product. if fail returns null</returns>
         public Product getProduct(int productId)
         {
-            foreach(Stock st in StockList){
+            foreach(Stock st in Stocks){
                 if(st.product.id == productId)
                 {
                     return st.product;
@@ -477,7 +477,7 @@ namespace WorkshopProject
         private Dictionary<int, Product> getStockListAsDictionary()
         {
             Dictionary<int, Product> ret = new Dictionary<int, Product>();
-            foreach (Stock stock in this.StockList)
+            foreach (Stock stock in this.Stocks)
             {
                 ret.Add(stock.amount, stock.product);
             }

@@ -10,6 +10,7 @@ using Users;
 using WorkshopProject;
 using WorkshopProject.DataAccessLayer;
 using WorkshopProject.DataAccessLayer.Context;
+using System.Data.Entity;
 
 namespace TestingFramework.UnitTests.DataAccessTests
 {
@@ -131,10 +132,16 @@ namespace TestingFramework.UnitTests.DataAccessTests
             ctx.Stores.Add(store);
             ctx.Products.Add(prod);
             ctx.SaveChanges();
+
+            
+   
             ctx.Dispose();
 
 
-            Store store2 = dal.GetStore(store.id);
+
+            Store store2 = dal.getContext().Stores.Include(s => s.Stocks).Where(s => s.id == store.id).FirstOrDefault();
+            ctx.Dispose();
+            //Store store2 = dal.GetStore(store.id);
             Assert.AreEqual(store2.GetStock().Count, 1);
 
             //DataAccessDriver.GetDataAccess().GetStore(store.id);
