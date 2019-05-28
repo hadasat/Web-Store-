@@ -27,6 +27,7 @@ namespace WorkshopProject.DataAccessLayer
         T GetEntity<T>(int key) where T : class; 
         bool SaveEntity<T>(T entity, int key) where T : class;
         bool RemoveEntity<T>(int key) where T : class;
+        bool Delete();
     }
 }
 

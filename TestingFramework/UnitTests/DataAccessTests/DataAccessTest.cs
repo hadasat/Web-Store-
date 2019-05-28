@@ -138,6 +138,9 @@ namespace TestingFramework.UnitTests.DataAccessTests
             //ctx.Dispose();
 
 
+            dal.SaveEntity(store, store.id);
+
+
 
             Store store2 = dal.GetEntity<Store>(store.id);
             Assert.AreEqual(store2.GetStock().Count, 1);

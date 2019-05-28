@@ -130,6 +130,11 @@ namespace WorkshopProject.DataAccessLayer
             return true;
         }
 
+        public virtual bool Delete()
+        {
+            return getContext().Database.Delete();
+        }
+
         protected virtual bool remove<T>(int id, WorkshopDBContext ctx, DbSet<T> set) where T : class
         {
             T entity = set.Find(id);
