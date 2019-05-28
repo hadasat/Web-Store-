@@ -52,7 +52,7 @@ namespace IntegrationTests
         public void Init()
         {
             userShoppingBasket = user.user.shoppingBasket;
-            menager.Register("hadas", "atiya");
+            menager.Register("hadas", "atiya", DateTime.Now, "shit");
             menager.login("hadas", "atiya");
             
             for(int i=0; i < store.Length; i++)

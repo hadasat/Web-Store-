@@ -124,10 +124,4 @@
   <data name="SignIn" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SignIn.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="WSClientExample" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\WSClientExample.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="WSSclientExample" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\WSSclientExample.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
 </root>
