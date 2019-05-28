@@ -59,10 +59,10 @@ namespace WorkshopProject.DataAccessLayer
             Member ret = null;
             using (WorkshopDBContext ctx = getContext())
             {
-                ret = ctx.Members
-                    .Include(m => m.storeManaging)
-                    .Include(m => m.notifications)
-                    .Where(m => m.id == key).FirstOrDefault();
+                IQueryable<Member> q = getQueryableWithIncludes(ctx.Set<Member>());
+                ret = q
+
+                    .Where(e => e.id == key).FirstOrDefault();
             }
             return ret;
         }
@@ -74,16 +74,11 @@ namespace WorkshopProject.DataAccessLayer
             {
                 IQueryable<Store> q = getQueryableWithIncludes(ctx.Set<Store>());
                 ret = q
-
-
-
-
                     //.Include(s => s.Stocks)
                     //.Include(s => s.purchasePolicy)
                     //.Include(s => s.discountPolicy)
                     //.Include(s => s.storePolicy)
-
-                    .Where(p => p.id == key).FirstOrDefault();
+                    .Where(e => e.id == key).FirstOrDefault();
             }
             return ret;
         }
@@ -93,8 +88,10 @@ namespace WorkshopProject.DataAccessLayer
             Product ret = null;
             using (WorkshopDBContext ctx = getContext())
             {
-                ret = ctx.Products
-                    .Where(p => p.id == key).FirstOrDefault();
+                IQueryable<Product> q = getQueryableWithIncludes(ctx.Set<Product>());
+                ret = q
+
+                    .Where(e => e.id == key).FirstOrDefault();
             }
             return ret;
         }
