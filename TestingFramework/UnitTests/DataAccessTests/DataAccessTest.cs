@@ -29,84 +29,84 @@ namespace TestingFramework.UnitTests.DataAccessTests
             //this method is called ONCE AFTER the test run
         }
 
-        //[TestMethod]
-        //[TestCategory("DAL")]
-        //public void GetMemberTest()
-        //{
-        //    int id = SaveNewMember();
-        //    Member member;
-        //    member = dal.GetMember(id);
-        //    Assert.IsNotNull(member);
-        //    Assert.AreEqual(member.id, id);
-        //}
+        [TestMethod]
+        [TestCategory("DAL")]
+        public void GetMemberTest()
+        {
+            int id = SaveNewMember();
+            Member member;
+            member = dal.GetEntity<Member>(id);
+            Assert.IsNotNull(member);
+            Assert.AreEqual(member.id, id);
+        }
 
 
-        //public int SaveNewMember()
-        //{
-        //    Member member = new Member();
-        //    member.country = "Test";
-        //    member.username = "Test";
+        public int SaveNewMember()
+        {
+            Member member = new Member();
+            member.country = "Test";
+            member.username = "Test";
 
-        //    bool result = dal.SaveMember(member);
-        //    Assert.IsTrue(result);
-        //    return member.id;
-        //}
+            bool result = dal.SaveEntity(member, member.id);
+            Assert.IsTrue(result);
+            return member.id;
+        }
 
-        //[TestMethod]
-        //[TestCategory("DAL")]
-        //public void SaveNewMemberTest()
-        //{
-        //    SaveNewMember();
-        //}
-
-
-
-        //[TestMethod]
-        //[TestCategory("DAL")]
-        //public void SaveExisitingMemberTest()
-        //{
-        //    Member member = new Member();
-        //    member.country = "Test";
-        //    member.username = "Test";
-
-        //    bool result = dal.SaveMember(member);
-        //    Assert.IsTrue(result);
-
-        //    member.country = "Test2";
-        //    result = dal.SaveMember(member);
-        //    Assert.IsTrue(result);
-
-        //    member = dal.GetMember(member.id);
-        //    Assert.AreEqual("Test2", member.country);
-        //}
-
-        //[TestMethod]
-        //[TestCategory("DAL")]
-        //public void RemoveExistingMemberTest()
-        //{
-        //    int memberId = SaveNewMember();
-        //    dal.RemoveMember(memberId);
-        //    Member result = dal.GetMember(memberId);
-        //    Assert.IsNull(result);
-        //}
+        [TestMethod]
+        [TestCategory("DAL")]
+        public void SaveNewMemberTest()
+        {
+            SaveNewMember();
+        }
 
 
-        //[TestMethod]
-        //[TestCategory("DAL")]
-        //public void SqlTest()
-        //{
-        //    string name = "FindMe";
-        //    Member member = new Member();
-        //    member.username = name;
 
-        //    bool result = dal.SaveMember(member);
+        [TestMethod]
+        [TestCategory("DAL")]
+        public void SaveExisitingMemberTest()
+        {
+            Member member = new Member();
+            member.country = "Test";
+            member.username = "Test";
 
-        //    string sql = "select * from Members where username = @name";
-        //    SqlParameter sqlparam = new SqlParameter("@name", name);
-        //    DbRawSqlQuery<Member> query = dal.SqlQuery<Member>(sql, sqlparam);
-        //    Member memberExtracted = query.FirstOrDefault();
-        //    Assert.IsNotNull(memberExtracted);
-        //    Assert.AreEqual(name, memberExtracted.username);
-        //}
+            bool result = dal.SaveEntity(member, member.id);
+            Assert.IsTrue(result);
+
+            member.country = "Test2";
+            result = dal.SaveEntity(member, member.id);
+            Assert.IsTrue(result);
+
+            member = dal.GetEntity<Member>(member.id);
+            Assert.AreEqual("Test2", member.country);
+        }
+
+        [TestMethod]
+        [TestCategory("DAL")]
+        public void RemoveExistingMemberTest()
+        {
+            int memberId = SaveNewMember();
+            dal.RemoveEntity<Member>(memberId);
+            Member result = dal.GetEntity<Member>(memberId);
+            Assert.IsNull(result);
+        }
+
+
+        [TestMethod]
+        [TestCategory("DAL")]
+        public void SqlTest()
+        {
+            string name = "FindMe";
+            Member member = new Member();
+            member.username = name;
+
+            bool result = dal.SaveEntity(member, member.id);
+
+            string sql = "select * from Members where username = @name";
+            SqlParameter sqlparam = new SqlParameter("@name", name);
+            DbRawSqlQuery<Member> query = dal.SqlQuery<Member>(sql, sqlparam);
+            Member memberExtracted = query.FirstOrDefault();
+            Assert.IsNotNull(memberExtracted);
+            Assert.AreEqual(name, memberExtracted.username);
+        }
     }
 }

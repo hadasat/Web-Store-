@@ -23,10 +23,10 @@ namespace WorkshopProject.DataAccessLayer
         bool GetMode();
         void SetMode(bool isProduction);
         WorkshopDBContext getContext();
-        DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters);
-        T Get<T>(int key);
-        bool SaveEntity<T>(T entity, int key);
-        bool RemoveEntity<T>(int key);
+        DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters) where T : class;
+        T GetEntity<T>(int key) where T : class; 
+        bool SaveEntity<T>(T entity, int key) where T : class;
+        bool RemoveEntity<T>(int key) where T : class;
     }
 }
 

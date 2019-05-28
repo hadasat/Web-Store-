@@ -17,7 +17,7 @@ using WorkshopProject.Policies;
 
 namespace WorkshopProject.DataAccessLayer
 {
-    public class DataAccessNonPersistent //: IDataAccess
+    public class DataAccessNonPersistent : IDataAccess
     {
         protected bool isProduction;
 
@@ -53,7 +53,7 @@ namespace WorkshopProject.DataAccessLayer
         }
 
 
-        public T Get<T>(int key) where T : class
+        public T GetEntity<T>(int key) where T : class
         {
             if (key <= 0)
             {
@@ -63,9 +63,9 @@ namespace WorkshopProject.DataAccessLayer
             T ret = null;
             using (WorkshopDBContext ctx = getContext())
             {
-                string tableName = getTableNameFromDbSet<T>(ctx);
-                string sql = "SELECT * FROM @table WHERE id = @key";
-                SqlParameter[] sqlparams = { new SqlParameter("@table", tableName) , new SqlParameter("@key", key) };
+                string table = getTableNameFromDbSet<T>(ctx);
+                string sql = String.Format("SELECT * FROM {0} WHERE id = @key", table);
+                SqlParameter[] sqlparams = { new SqlParameter("@table", table) , new SqlParameter("@key", key) };
                 ret = SqlQuery<T>(sql, sqlparams).FirstOrDefault();
             }
             return ret;
@@ -73,7 +73,7 @@ namespace WorkshopProject.DataAccessLayer
 
 
 
-        public virtual DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters)
+        public virtual DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters) where T : class
         {
             return getContext().Database.SqlQuery<T>(sql, paramaters);
         }
@@ -173,12 +173,14 @@ namespace WorkshopProject.DataAccessLayer
 
             // Find the storage entity set (table) that the entity is mapped
             var table = mapping
-                .EntityTypeMappings.Single()
-                .Fragments.Single()
+                .EntityTypeMappings.FirstOrDefault()
+                .Fragments.FirstOrDefault()
                 .StoreEntitySet;
 
             // Return the table name from the storage entity set
-            return (string)table.MetadataProperties["Table"].Value ?? table.Name;
+            string ret = (string)table.MetadataProperties["Table"].Value ?? table.Name;
+
+            return ret;
         }
     }
 
