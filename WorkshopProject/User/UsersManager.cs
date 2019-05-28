@@ -222,7 +222,7 @@ namespace Users
             }
             newOwnership.approveOrDisapprovedOwnership(1, memberThatOpenRequest);//first approval of asker
             ownershipsRequestList[requestID] = (newOwnership);//add ownership request to list
-            newOwnership.sendRequestsToOwners();//should handle notifications
+            newOwnership.sendRequestsToOwners(store,memberThatOpenRequest.id,candidate.username);//should handle notifications
             return requestID;
         }
 
@@ -343,22 +343,32 @@ namespace Users
             return ans;
         }
 
-        public void sendRequestsToOwners()
+        public void sendRequestsToOwners(Store store,int creatorId, string candidateName)
         {
-            if (owners.Count != 0)
+            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            foreach (Member currMember in members)
             {
-                // message:
-                //store <name / id>
-                //owner that made the qequest <username>
-                //member candidate <username>
-
-
-
-                //send to all members in owners.
-                //I SAVED USERNAMES - U CAN GET THE MEMBER ITSELF WITH THIS LINE
-                ////ConnectionStubTemp.getMember(username);
-
+                if (currMember.isStoresOwner(store.id) && currMember.id != creatorId)
+                {
+                    currMember.addMessage("Doy you agree adding "+candidateName+ " as a co-owner to the store "+store.name);
+                }
             }
+
+
+            //if (owners.Count != 0)
+            //{
+            //    // message:
+            //    //store <name / id>
+            //    //owner that made the qequest <username>
+            //    //member candidate <username>
+
+
+
+            //    //send to all members in owners.
+            //    //I SAVED USERNAMES - U CAN GET THE MEMBER ITSELF WITH THIS LINE
+            //    ////ConnectionStubTemp.getMember(username);
+
+            //}
         }
 
         public void makeOwner()
