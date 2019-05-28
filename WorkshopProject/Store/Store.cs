@@ -24,7 +24,9 @@ namespace WorkshopProject
         [Include]
         public virtual ICollection<Stock> Stocks { get; set; } 
         public List<IBooleanExpression> purchasePolicy { get; set; }
+        [Include]
         public List<Discount> discountPolicy { get; set; }
+        [Include]
         public List<IBooleanExpression> storePolicy { get; set; }
 
         //[NotMapped]
@@ -489,6 +491,7 @@ namespace WorkshopProject
         [Key]
         public int id { get; set; }
         public int amount { get; set; }
+        [Include]
         public Product product { get; set; }
 
 

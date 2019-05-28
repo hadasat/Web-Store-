@@ -54,15 +54,34 @@ namespace WorkshopProject.DataAccessLayer
             return isProduction;
         }
 
+        //public T GetEntity<T>(int key) where T : class
+        //{
+        //    if (key <= 0)
+        //    {
+        //        key = -1;
+        //    }
+
+        //    T ret = null;
+        //    using (WorkshopDBContext ctx = getContext())
+        //    {
+        //        string table = getTableNameFromDbSet<T>(ctx);
+        //        string sql = String.Format("SELECT * FROM {0} WHERE id = @key", table);
+        //        SqlParameter[] sqlparams = { new SqlParameter("@table", table), new SqlParameter("@key", key) };
+        //        ret = SqlQuery<T>(sql, sqlparams).FirstOrDefault();
+        //    }
+        //    return ret;
+        //}
+
+
         public Member GetMember(int key)
         {
             Member ret = null;
             using (WorkshopDBContext ctx = getContext())
             {
-                ret = ctx.Members
-                    .Include(m => m.storeManaging)
-                    .Include(m => m.notifications)
-                    .Where(m => m.id == key).FirstOrDefault();
+                IQueryable<Member> q = getQueryableWithIncludes(ctx.Set<Member>());
+                ret = q
+
+                    .Where(e => e.id == key).FirstOrDefault();
             }
             return ret;
         }
@@ -74,16 +93,11 @@ namespace WorkshopProject.DataAccessLayer
             {
                 IQueryable<Store> q = getQueryableWithIncludes(ctx.Set<Store>());
                 ret = q
-
-
-
-
                     //.Include(s => s.Stocks)
                     //.Include(s => s.purchasePolicy)
                     //.Include(s => s.discountPolicy)
                     //.Include(s => s.storePolicy)
-
-                    .Where(p => p.id == key).FirstOrDefault();
+                    .Where(e => e.id == key).FirstOrDefault();
             }
             return ret;
         }
@@ -93,8 +107,10 @@ namespace WorkshopProject.DataAccessLayer
             Product ret = null;
             using (WorkshopDBContext ctx = getContext())
             {
-                ret = ctx.Products
-                    .Where(p => p.id == key).FirstOrDefault();
+                IQueryable<Product> q = getQueryableWithIncludes(ctx.Set<Product>());
+                ret = q
+
+                    .Where(e => e.id == key).FirstOrDefault();
             }
             return ret;
         }

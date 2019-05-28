@@ -17,6 +17,7 @@ namespace Shopping
         public int id { get; set; }
         [NotMapped]
         private Dictionary<Product, int> products; //USE ONLY GETTER
+        [Include]
         public List<JsonShoppingCartValue> productsList { get; set; }
         public static int idCartCounter = 0;
 
