@@ -21,7 +21,7 @@ namespace WorkshopProject
         public Boolean isActive { get; set; }
         [NotMapped]
         private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD
-        public List<Stock> StockList { get; set; } //added for DB. Through "getStock" translates it to dictionary for backwards compatibility
+        public List<Stock> Stocks { get; set; } //added for DB. Through "getStock" translates it to dictionary for backwards compatibility
         public List<IBooleanExpression> purchasePolicy { get; set; }
         public List<Discount> discountPolicy { get; set; }
         public List<IBooleanExpression> storePolicy { get; set; }
@@ -39,7 +39,7 @@ namespace WorkshopProject
             this.rank = rank;
             this.isActive = isActive;
             //Stock = new Dictionary<int, Product>();
-            StockList = new List<Stock>();
+            Stocks = new List<Stock>();
 
             //make purchasePolicy and storePolicy
             this.purchasePolicy = new List<IBooleanExpression>();
@@ -55,7 +55,7 @@ namespace WorkshopProject
             this.rank = rank;
             this.isActive = isActive;
             //Stock = new Dictionary<int, Product>();
-            StockList = new List<Stock>();
+            Stocks = new List<Stock>();
 
             //make purchasePolicy and storePolicy
             this.purchasePolicy = new List<IBooleanExpression>();
@@ -404,7 +404,7 @@ namespace WorkshopProject
         private Dictionary<int, Product> getStockListAsDictionary()
         {
             Dictionary<int, Product> ret = new Dictionary<int, Product>();
-            foreach (Stock stock in this.StockList)
+            foreach (Stock stock in this.Stocks)
             {
                 ret.Add(stock.amount, stock.product);
             }
