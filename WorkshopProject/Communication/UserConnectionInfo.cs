@@ -156,12 +156,12 @@ namespace WorkshopProject.Communication
                     if (curr.StartsWith("addManagerConfirmation-"))
                     {
                         string dataToSend = curr.Substring(curr.IndexOf("-"));
-                        var notificationObj = new { type = "addManagerConfirmation", data = dataToSend, requestId = -1 };
+                        var notificationObj = new {type = "notification", info = "addManagerConfirmation", data = dataToSend, requestId = -1 };
                         msgToSend = JsonHandler.SerializeObject(notificationObj);
                     }
                     else
                     {
-                        var notificationObj = new { type = "notification", data = curr, requestId = -1 };
+                        var notificationObj = new { type = "notification",info = "message", data = curr, requestId = -1 };
                         msgToSend = JsonHandler.SerializeObject(notificationObj);
                     }
 
