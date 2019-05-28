@@ -54,29 +54,6 @@ namespace WorkshopProject.DataAccessLayer
             return isProduction;
         }
 
-
-        //public T GetEntity<T>(int key) where T : class
-        //{
-        //    if (key <= 0)
-        //    {
-        //        key = -1;
-        //    }
-
-        //    T ret = null;
-        //    using (WorkshopDBContext ctx = getContext())
-        //    {
-        //        string table = getTableNameFromDbSet<T>(ctx);
-        //        string sql = String.Format("SELECT * FROM {0} WHERE id = @key", table);
-        //        SqlParameter[] sqlparams = { new SqlParameter("@table", table) , new SqlParameter("@key", key) };
-        //        //ret = SqlQuery<T>(sql, sqlparams).FirstOrDefault();
-        //        DbSet <T> set = ctx.Set<T>();
-        //        IQueryable<T> queryable = getQueryableWithIncludes(set);
-        //        ret = queryable.Where(e => e.id == key);
-        //    }
-        //    return ret;
-        //}
-
-
         public Member GetMember(int key)
         {
             Member ret = null;
@@ -95,12 +72,17 @@ namespace WorkshopProject.DataAccessLayer
             Store ret = null;
             using (WorkshopDBContext ctx = getContext())
             {
-                ret = ctx.Stores
-                    .Include(s => s.Stocks)
-                    .Include(s => s.purchasePolicy)
-                    .Include(s => s.discountPolicy)
-                    .Include(s => s.storePolicy)
-                    
+                IQueryable<Store> q = getQueryableWithIncludes(ctx.Set<Store>());
+                ret = q
+
+
+
+
+                    //.Include(s => s.Stocks)
+                    //.Include(s => s.purchasePolicy)
+                    //.Include(s => s.discountPolicy)
+                    //.Include(s => s.storePolicy)
+
                     .Where(p => p.id == key).FirstOrDefault();
             }
             return ret;
@@ -266,6 +248,9 @@ namespace WorkshopProject.DataAccessLayer
         }
     }
 
+
+
+
     public class DataAccessStatic : DataAccessNonPersistent
     {
         protected static WorkshopProductionDBContext productionContext; //= new WorkshopProductionDBContext();
@@ -380,15 +365,6 @@ public class PropertyIncluder <TEntity> where TEntity : class
 
 
     */
-
-
-
-
-
-
-
-
-
 
 
 
