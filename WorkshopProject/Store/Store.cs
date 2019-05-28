@@ -66,10 +66,7 @@ namespace WorkshopProject
             this.rank = rank;
             this.isActive = isActive;
             //Stock = new Dictionary<int, Product>();
-            if (Stocks == null)
-            {
-                Stocks = new List<Stock>();
-            }
+            Stocks = new List<Stock>();
 
             //make purchasePolicy and storePolicy
             this.purchasePolicy = new List<IBooleanExpression>();

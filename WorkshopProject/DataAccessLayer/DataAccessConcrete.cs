@@ -8,12 +8,14 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject.DataAccessLayer.Context;
 using WorkshopProject.Policies;
+using System.ServiceModel.DomainServices.Server;
 
 namespace WorkshopProject.DataAccessLayer
 {
@@ -187,6 +189,33 @@ namespace WorkshopProject.DataAccessLayer
 
             return ret;
         }
+
+        //protected DbSet<T> getDbSetIncludes<T>(DbSet<T> set) where T : class
+        //{
+        //    return null;
+        //}
+
+
+        //protected IEnumerable<string> GetPropsToLoad(Type type)
+        //{
+        //    HashSet<Type> _visitedTypes = new HashSet<Type>();
+        //    _visitedTypes.Add(type);
+        //    var propsToLoad = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+        //                                      .Where(p => p.GetCustomAttributes(typeof(IncludeAttribute), true).Any());
+
+        //    foreach (var prop in propsToLoad)
+        //    {
+        //        yield return prop.Name;
+
+        //        if (_visitedTypes.Contains(prop.PropertyType))
+        //            continue;
+
+        //        foreach (var subProp in GetPropsToLoad(prop.PropertyType))
+        //        {
+        //            yield return prop.Name + "." + subProp;
+        //        }
+        //    }
+        //}
     }
 
     public class DataAccessStatic : DataAccessNonPersistent
@@ -242,6 +271,86 @@ namespace WorkshopProject.DataAccessLayer
         }
     }
 }
+
+
+
+
+//https://www.trycatchfail.com/2013/02/02/a-generic-entity-framework-5-repository-with-eager-loading/
+/*
+public class IncludeAttribute : Attribute { }
+
+public class PropertyIncluder <TEntity> where TEntity : class
+{
+    private readonly Func<DbQuery<TEntity>, DbQuery<TEntity>> _includeMethod;
+    private readonly HashSet<Type> _visitedTypes;
+
+    public PropertyIncluder()
+    {
+        //Recursively get properties to include
+        _visitedTypes = new HashSet<Type>();
+        var propsToLoad = GetPropsToLoad(typeof(TEntity)).ToArray();
+
+        _includeMethod = d =>
+        {
+            var dbSet = d;
+            foreach (var prop in propsToLoad)
+            {
+                dbSet = dbSet.Include(prop);
+            }
+
+            return dbSet;
+        };
+    }
+
+    private IEnumerable<string> GetPropsToLoad(Type type)
+    {
+        _visitedTypes.Add(type);
+        var propsToLoad = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                          .Where(p => p.GetCustomAttributes(typeof(IncludeAttribute), true).Any());
+
+        foreach (var prop in propsToLoad)
+        {
+            yield return prop.Name;
+
+            if (_visitedTypes.Contains(prop.PropertyType))
+                continue;
+
+            foreach (var subProp in GetPropsToLoad(prop.PropertyType))
+            {
+                yield return prop.Name + "." + subProp;
+            }
+        }
+    }
+
+    public DbQuery<TEntity> BuildQuery(DbSet<TEntity> dbSet)
+    {
+        return _includeMethod(dbSet);
+    }
+}
+
+
+
+
+    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
