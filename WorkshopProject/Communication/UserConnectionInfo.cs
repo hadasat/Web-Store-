@@ -152,9 +152,20 @@ namespace WorkshopProject.Communication
             {
                 foreach (string curr in messages)
                 {
-                    var notificationObj = new { type = "notification", data = curr, requestId = -1 };
-                    string msgToSend = JsonHandler.SerializeObject(notificationObj);
-                    msgSender.sendMessageToUser(msgToSend, id);
+                    string msgToSend;
+                    if (curr.StartsWith("addManagerConfirmation-"))
+                    {
+                        string dataToSend = curr.Substring(curr.IndexOf("-"));
+                        var notificationObj = new {type = "notification", info = "addManagerConfirmation", data = dataToSend, requestId = -1 };
+                        msgToSend = JsonHandler.SerializeObject(notificationObj);
+                    }
+                    else
+                    {
+                        var notificationObj = new { type = "notification",info = "message", data = curr, requestId = -1 };
+                        msgToSend = JsonHandler.SerializeObject(notificationObj);
+                    }
+
+                    sendMyselfAMessage(msgToSend);
                 }
             }
         }
