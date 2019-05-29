@@ -222,7 +222,7 @@ namespace Users
             }
             newOwnership.approveOrDisapprovedOwnership(1, memberThatOpenRequest);//first approval of asker
             ownershipsRequestList[requestID] = (newOwnership);//add ownership request to list
-            newOwnership.sendRequestsToOwners(store,memberThatOpenRequest.id,candidate.username);//should handle notifications
+            newOwnership.sendRequestsToOwners(store,memberThatOpenRequest.id,candidate.username,requestID);//should handle notifications
             return requestID;
         }
 
@@ -343,14 +343,15 @@ namespace Users
             return ans;
         }
 
-        public void sendRequestsToOwners(Store store,int creatorId, string candidateName)
+        public void sendRequestsToOwners(Store store,int creatorId, string candidateName,int requestId)
         {
             List<Member> members = ConnectionStubTemp.members.Values.ToList();
             foreach (Member currMember in members)
             {
                 if (currMember.isStoresOwner(store.id) && currMember.id != creatorId)
                 {
-                    currMember.addMessage("addManagerConfirmation-Do you agree adding " + candidateName+ " as a co-owner to the store "+store.name);
+                    currMember.addMessage("Do you agree adding " + candidateName+ " as a co-owner to the store "+store.name ,
+                        Notification.NotificationType.CREATE_OWNER,requestId);
                 }
             }
 

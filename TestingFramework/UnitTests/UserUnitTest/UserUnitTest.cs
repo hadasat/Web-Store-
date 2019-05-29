@@ -113,9 +113,13 @@ namespace Users.Tests
         {
             msg = new List<string>();
         }
-        public void update(List<string> messages)
+        public void update(List<Notification> notifications)
         {
-            msg = messages;
+            foreach (Notification curr in notifications)
+            {
+                msg.Add(curr.msg);
+            }
+
         }
     }
 
@@ -341,6 +345,7 @@ namespace Users.Tests
 
         [TestMethod()]
         [TestCategory("TestMember")]
+        [TestCategory("Regression")]
         public void NotificationTests()
         {
             try
@@ -355,6 +360,8 @@ namespace Users.Tests
                 Assert.IsTrue (obs1.msg.Count == 1, "bad message count 1");
                 Assert.IsTrue(obs1.msg[0] =="test1", "bad message");
 
+                obs1.msg.Clear();
+                obs2.msg.Clear();
                 //test 2 subscribed observers
                 member1.subscribe(obs2);
                 member1.addMessage("test1");
@@ -362,6 +369,9 @@ namespace Users.Tests
                 Assert.IsTrue(obs1.msg[0] == "test1", "bad message 2");
                 Assert.IsTrue(obs2.msg.Count == 1, "bad message count 1 for obs 2");
                 Assert.IsTrue(obs2.msg[0] == "test1", "bad message for obs 2");
+
+                obs1.msg.Clear();
+                obs2.msg.Clear();
 
                 member1.unsbscribe(obs1);
                 member1.unsbscribe(obs2);
