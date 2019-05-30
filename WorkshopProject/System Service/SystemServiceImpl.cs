@@ -279,19 +279,19 @@ namespace WorkshopProject.System_Service
             return resultJson(ret);
         }
 
-        public string Register(string username, string password)
-        {
-            bool ret;
-            try
-            {
-                ret = UserService.Register(username, password);
-                return resultJson(ret);
-            }
-            catch (Exception e)
-            {
-                return generateMessageFormatJason(e.Message);
-            }
-        }
+        //public string Register(string username, string password)
+        //{
+        //    bool ret;
+        //    try
+        //    {
+        //        ret = UserService.Register(username, password);
+        //        return resultJson(ret);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return generateMessageFormatJason(e.Message);
+        //    }
+        //}
         public string Register(string username, string password, DateTime birthdate,string country)
         {
             bool ret;

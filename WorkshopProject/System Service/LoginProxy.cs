@@ -182,10 +182,10 @@ namespace WorkshopProject.System_Service
             return ret;
         }
 
-        public bool Register(string username, string password)
-        {
-            return UserService.Register(username, password);
-        }
+        //public bool Register(string username, string password)
+        //{
+        //    return UserService.Register(username, password);
+        //}
         public bool Register(string username, string password,DateTime birthdath, string country)
         {
             return UserService.Register(username, password, birthdath,country);

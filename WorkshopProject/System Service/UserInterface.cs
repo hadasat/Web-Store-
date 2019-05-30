@@ -31,7 +31,7 @@ namespace WorkshopProject.System_Service
         String login(string username, string password);
 
         //Return: Message Format
-        String Register(string user, string password);
+        //String Register(string user, string password);
 
         //Return: Message Format
         String Register(string user, string password, DateTime birthdate, string country);

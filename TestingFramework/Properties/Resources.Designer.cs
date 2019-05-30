@@ -100,55 +100,5 @@ namespace TestingFramework.Properties {
                 return ResourceManager.GetString("SignIn", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
-        ///&lt;html lang=&quot;en&quot;&gt;
-        ///&lt;head&gt;
-        ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
-        ///    &lt;title&gt;WebSocket Echo Client&lt;/title&gt;
-        ///    &lt;script type=&quot;text/javascript&quot;&gt;
-        ///        var myId =-1;
-        ///        var createJsonToSend = function (message){
-        ///            var msg = {
-        ///                type: &quot;message&quot;,
-        ///                text: message,
-        ///                date: Date.now(),
-        ///                id: myId};
-        ///            return JSON.stringify(msg);
-        ///        };
-        ///        var start = function () {
-        ///            const printArea = document.getEle [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string WSClientExample {
-            get {
-                return ResourceManager.GetString("WSClientExample", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
-        ///&lt;html lang=&quot;en&quot;&gt;
-        ///&lt;head&gt;
-        ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
-        ///    &lt;title&gt;WebSocket Echo Client&lt;/title&gt;
-        ///    &lt;script type=&quot;text/javascript&quot;&gt;
-        ///        var myId =-1;
-        ///        var createJsonToSend = function (message){
-        ///            var msg = {
-        ///                type: &quot;message&quot;,
-        ///                text: message,
-        ///                date: Date.now(),
-        ///                id: myId};
-        ///            return JSON.stringify(msg);
-        ///        };
-        ///        var start = function () {
-        ///            const printArea = document.getEle [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string WSSclientExample {
-            get {
-                return ResourceManager.GetString("WSSclientExample", resourceCulture);
-            }
-        }
     }
 }

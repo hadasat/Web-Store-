@@ -23,9 +23,6 @@ namespace WorkshopProject.DataAccessLayer
             {
                 return new DataAccessNonPersistent(Production);
             }       
-        }
-    
-           
-        
+        }     
     }
 }

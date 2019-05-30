@@ -21,6 +21,9 @@ namespace WorkshopProject
     {
         static void Main(string[] args)
         {
+
+            //LogExample.RunMe();
+
             //DataAccessExamples.main();
 
             //Console.ReadLine();
@@ -42,7 +45,7 @@ namespace WorkshopProject
             LoginProxy service = new LoginProxy();
             try
             {
-                service.Register(username, password);
+                service.Register(username, password, DateTime.Now, "shit");
                 Console.WriteLine("Registering: " + username + ":" + password);
 
                 Member member = service.loginEx(username, password);

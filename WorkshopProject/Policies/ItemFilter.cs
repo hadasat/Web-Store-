@@ -12,6 +12,7 @@ namespace WorkshopProject.Policies
     {
         [Key]
         public int id { get; set; }
+        [Include]
         public abstract List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products);
 
         //bool addStuff(List<ProductAmountPrice> products);

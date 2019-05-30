@@ -43,6 +43,7 @@ namespace Users.Tests
 
         [TestMethod()]
         [TestCategory("TestUser")]
+        [TestCategory("Regression")]
         public void loginMember_Test()
         {
             try
@@ -58,15 +59,15 @@ namespace Users.Tests
                     Assert.IsTrue(true);
                 }
 
-                user.registerNewUser(username, password);
+                user.registerNewUser(username, password, DateTime.Now, "shit");
                 try
                 {
                     user.loginMember(username, password);
-                    Assert.IsTrue(true);
+                    Assert.IsTrue(false);
                 }
                 catch (Exception ex)//registerd
                 {
-                    Assert.IsTrue(false);
+                    Assert.IsTrue(true);
                 }
             }
             finally
@@ -78,12 +79,13 @@ namespace Users.Tests
 
         [TestMethod()]
         [TestCategory("TestUser")]
+        [TestCategory("Regression")]
         public void registerNewUser_Test()
         {
             try
             {
                 Init();
-                user.registerNewUser(username, password);
+                user.registerNewUser(username, password, DateTime.Now, "shit");
                 Assert.IsTrue(true);
                 try
                 {
@@ -138,9 +140,9 @@ namespace Users.Tests
             password = "password";
             user1 = new User();
             user2 = new User();
-            user1.registerNewUser(username + "1", password + "1");
+            user1.registerNewUser(username + "1", password + "1",DateTime.Now, "shit");
             member1 = user1.loginMember(username + "1", password + "1");
-            user2.registerNewUser(username + "2", password + "2");
+            user2.registerNewUser(username + "2", password + "2", DateTime.Now, "shit");
             member2 = user2.loginMember(username + "2", password + "2");
 
             //storeId = WorkShop.createNewStore("best shop", 1, true, member1);
@@ -398,7 +400,7 @@ namespace Users.Tests
         {
             admin = new SystemAdmin("admin", 1);
             user = new User();
-            user.registerNewUser("username","password");
+            user.registerNewUser("username","password", DateTime.Now, "shit");
             member = user.loginMember("username", "password");
         }
 

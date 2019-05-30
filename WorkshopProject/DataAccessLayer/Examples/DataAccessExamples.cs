@@ -17,8 +17,6 @@ namespace WorkshopProject.DataAccessLayer.Examples
 
 
 
-
-
             Member member = new Member();
             member.username = "DataAccessExample";
 
@@ -26,7 +24,7 @@ namespace WorkshopProject.DataAccessLayer.Examples
             //Hover over the "IDataAccess" to see a list of all possible exceptions
             try
             {
-                dal.SaveMember(member);
+                dal.SaveEntity(member, member.id);
             }
             catch (DbUpdateConcurrencyException concurrencyException)
             {
@@ -53,7 +51,7 @@ namespace WorkshopProject.DataAccessLayer.Examples
             member.username = "DataAccessExample2";
             try
             {
-                dal.SaveMember(member);
+                dal.SaveEntity(member, member.id);
             }
             catch (DbUpdateConcurrencyException concurrencyException)
             {
@@ -71,9 +69,7 @@ namespace WorkshopProject.DataAccessLayer.Examples
 
 
             /**GETTING THE MEMBER**/
-            Member sameMember = dal.GetMember(memberId);
-
-
+            Member sameMember = dal.GetMember(member.id);
 
 
 
