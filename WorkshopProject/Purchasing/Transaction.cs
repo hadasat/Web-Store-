@@ -14,7 +14,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TansactionsNameSpace
 {
-    public enum status {Sucess ,empty , StokesShortage, Consistency ,Policies ,Payment ,Supply} 
+    public enum status {Sucess ,empty , StokesShortage, Consistency ,Policies ,Payment ,Supply,ContactStoreForRefound} 
 
     public class Transaction
     {
@@ -98,7 +98,7 @@ namespace TansactionsNameSpace
                     {
                         callbacks.Add(currCallBack);
                         purchasedProducts.Add(p);
-                        totalCart += calcPrice(p.product, p.amount);
+                        totalCart += calcPrice(p.price, p.amount);
                     }
                     else
                     {
@@ -120,7 +120,7 @@ namespace TansactionsNameSpace
                 int storeAccountNum = currStore.storeAccountNum;
                 string sourceAddress = currStore.storeAddress;
 
-                if (!PaymentStub.Pay(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate))
+                if (!pay(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate))
                 {
                     returnProducts(callbacks);
                     ShoppingCartDeal failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Payment);
@@ -130,7 +130,12 @@ namespace TansactionsNameSpace
                 else if (!SupplyStub.supply(sourceAddress, targetAddress))
                 {
                     returnProducts(callbacks);
-                    ShoppingCartDeal failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Supply);
+                    ShoppingCartDeal failcartDeal;
+                    double refound = PaymentStub.Refund(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate);
+                    if(refound < 0)
+                        failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.ContactStoreForRefound);
+                    else
+                        failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Supply);
                     fail.Add(failcartDeal);
                     continue;
                 }
@@ -151,9 +156,16 @@ namespace TansactionsNameSpace
             }
         }
 
-        private static double calcPrice(Product p, int amount)
+        public double calcPrice(double product, int amount)
         {
-            return amount * (p.getPrice());
+            return product * amount;
+        }
+
+        private bool pay(double totalCart,int storeBankNum,int storeAccountNum,int userCredit,int userCsv,string userExpiryDate)
+        {
+            double sum = PaymentStub.Pay(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate);
+            return (sum > 0);
+
         }
 
         public static bool checkConsistency(User user, Store store, ShoppingCart cart)
