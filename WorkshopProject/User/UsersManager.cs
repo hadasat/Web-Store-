@@ -346,13 +346,14 @@ namespace Users
         public void sendRequestsToOwners(Store store,int creatorId, string candidateName)
         {
 
-
-            foreach (KeyValuePair<String, int> entry in owners)
+            lock (OwnersLock)
             {
-                Member currMember = ConnectionStubTemp.getMember(entry.Value);
-                currMember.addMessage("addManagerConfirmation-Do you agree adding " + candidateName + " as a co-owner to the store " + store.name);
+                foreach (KeyValuePair<String, int> entry in owners)
+                {
+                    Member currMember = ConnectionStubTemp.getMember(entry.Value);
+                    currMember.addMessage("addManagerConfirmation-Do you agree adding " + candidateName + " as a co-owner to the store " + store.name);
+                }
             }
-
 
             /*
             List<Member> members = ConnectionStubTemp.members.Values.ToList();
