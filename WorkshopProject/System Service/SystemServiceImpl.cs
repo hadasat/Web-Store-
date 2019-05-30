@@ -151,8 +151,9 @@ namespace WorkshopProject.System_Service
             Transaction ret;
             try
             {
-
-                ret = TransactionService.BuyShoppingBasket(user);
+                int credit =1, csv = 1;
+                string expiry = "",target = "z";
+                ret = TransactionService.BuyShoppingBasket(user, credit, csv, expiry, target);
                 return JsonConvert.SerializeObject(ret);
             }
             catch (Exception e)

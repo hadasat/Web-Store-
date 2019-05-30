@@ -38,11 +38,10 @@ namespace WorkshopProject.System_Service
             return ret;
         }
 
-        public static Transaction BuyShoppingBasket(User user)
+        public static Transaction BuyShoppingBasket(User user,int userCredit, int userCsv, string userExpiryDate, string targetAddress)
         {
-            int credit = 0, csv = 0;
-            string expirydate ="",shippingAddress = "";
-            Transaction transaction = new Transaction(user, credit, csv,expirydate , shippingAddress );
+            
+            Transaction transaction = new Transaction(user, userCredit, userCsv, userExpiryDate, targetAddress);
             /*if (user is Member)
                 ((Member)user).addTransactionHistory(transaction);
                 */
