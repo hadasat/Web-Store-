@@ -2,7 +2,7 @@
 
 namespace WorkshopProject.Examples
 {
-    class LogExample
+    public static class LogExample
     {
         public static void RunMe()
         {
@@ -26,10 +26,10 @@ namespace WorkshopProject.Examples
             Logger.Log("file", logLevel.INFO, "this message will be logged in the basic log");
 
             //this message will be logged in the event log ->    \bin\Log\Events.log
-            Logger.Log("event", logLevel.INFO, "this message will be logged");
+            Logger.Log("event", logLevel.INFO, "this message will be logged under event");
 
             //this message will be logged in the error log ->    \bin\Log\Errors.log
-            Logger.Log("error", logLevel.ERROR, "this message will be logged");
+            Logger.Log("error", logLevel.ERROR, "this message will be logged under error");
         }
 
     }
