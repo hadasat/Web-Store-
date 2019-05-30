@@ -73,7 +73,14 @@
     <script>
 
         onStart(function(){});
-        $('#search_btn').on('click',search);
+        $('#search_btn').on('click',function(){
+            cleanOldRes();
+            search();
+        });
+
+        function cleanOldRes(){
+            $(".grid").html('');
+        }
 
         function search(){
             var name = $("#pName").val();
@@ -117,7 +124,7 @@
        
     }
 
-    function displayNoProducts(){
+    function displayNoProductsFound(){
         $(".grid").append(`<div  class="text-center">
                         <h1 class="display-4">
                             No products found :(
