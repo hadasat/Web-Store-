@@ -33,22 +33,42 @@ namespace TansactionsNameSpace
         public double total { get; set; }
         [Include]
         public status transactionSatus { get; set; }
+        [NotMapped]
+        private IPayment paymentSystem;
+        [NotMapped]
+        private ISupply supplySystem;
+
+
+
 
 
         public Transaction() { } //added for DB
 
-        public Transaction(User user, int userCredit, int userCsv, string userExpiryDate, string targetAddress)
+        public Transaction(User user, int cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip, IPayment payService,ISupply supplyService)
+        {
+            constructorCommon(user, cardNumber, month, year, holder, ccv, id, name, address, city, country, zip, payService, supplyService);
+        }
+
+        public Transaction(User user, int cardNumber, int month, int year, string holder, int ccv, int id,string name, string address, string city, string country, string zip)
+        {
+            ExternalSystemConnection extSytem = new ExternalSystemConnection();
+            constructorCommon(user, cardNumber, month, year, holder, ccv, id, name, address, city, country, zip, (IPayment)extSytem, (ISupply)extSytem);
+        }
+
+        private void constructorCommon (User user, int cardNumber, int month, int year, string holder, int ccv, int userId, string name, string address, string city, string country, string zip, IPayment payService, ISupply supplyService)
         {
             this.user = user;
             this.total = 0;
             sucess = new List<ShoppingCartDeal>();
             fail = new List<ShoppingCartDeal>();
-            purchase(userCredit, userCsv, userExpiryDate, targetAddress);
+            paymentSystem = payService;
+            supplySystem = supplyService;
+
+            purchase(cardNumber, month, year, holder, ccv, userId, name, address, city, country, zip);
             if (transactionSatus == status.empty || sucess.Count == 0)
                 id = -1;
             else
                 id = transactionCounter++;
-
         }
 
         public void returnProducts(List<Store.callback> callbacks)
@@ -57,7 +77,7 @@ namespace TansactionsNameSpace
                 call();
         }
 
-        public void purchase(int userCredit, int userCsv, string userExpiryDate, string targetAddress)
+        public async void purchase(int cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
         {
             ShoppingBasket basket = user.shoppingBasket;
             //check the basket is empty
@@ -124,19 +144,22 @@ namespace TansactionsNameSpace
                 int storeAccountNum = currStore.storeAccountNum;
                 string sourceAddress = currStore.storeAddress;
 
-                if (!pay(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate))
+                int transactionId = await pay(cardNumber, month, year, holder, ccv, id);
+
+                if (transactionId == -1)
                 {
                     returnProducts(callbacks);
                     ShoppingCartDeal failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Payment);
                     fail.Add(failcartDeal);
                     continue;
                 }
-                else if (!SupplyStub.supply(sourceAddress, targetAddress))
+                else if ((await supplySystem.supply(name,address,city,country,zip)) == -1) // supply system fails
                 {
                     returnProducts(callbacks);
                     ShoppingCartDeal failcartDeal;
-                    double refound = PaymentStub.Refund(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate);
-                    if(refound < 0)
+                    bool refudnAns = await paymentSystem.cancelPayment(transactionId);
+                    //double refound = PaymentStub.Refund(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate);
+                    if(!refudnAns)
                         failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.ContactStoreForRefound);
                     else
                         failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Supply);
@@ -165,10 +188,9 @@ namespace TansactionsNameSpace
             return product * amount;
         }
 
-        private bool pay(double totalCart,int storeBankNum,int storeAccountNum,int userCredit,int userCsv,string userExpiryDate)
+        private async Task<int> pay(int cardNumber, int month, int year, string holder, int ccv, int id)
         {
-            double sum = PaymentStub.Pay(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate);
-            return (sum > 0);
+            return await paymentSystem.payment(cardNumber, month, year, holder, ccv, id);
 
         }
 

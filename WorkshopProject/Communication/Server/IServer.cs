@@ -7,15 +7,6 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject.Communication.Server
 {
-
-    public enum externalRequestType
-    {
-        pay,
-        cancel_pay,
-        supply,
-        cancel_supply
-    };
-
     interface IServer : IDisposable
     {
         void start(List<string> prefixes, INewConnectionHandler newConnectionHandler);
@@ -68,7 +59,6 @@ namespace WorkshopProject.Communication.Server
         /// <returns></returns>
         Task sendMessageToList(List<uint> idList, byte[] msg, WebSocketMessageType msgType);
 
-        Task sendHttpMessageToExternal(Dictionary<string, string> info, externalRequestType requestType);
         #endregion
     }
 }

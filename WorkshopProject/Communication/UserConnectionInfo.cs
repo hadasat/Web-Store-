@@ -590,7 +590,7 @@ namespace WorkshopProject.Communication
             int ownerRequestId = (int)msgObj["requestId"];
             try
             {
-                user.ApproveOwnershipRequest(ownerRequestId);
+                user.DisApproveOwnershipRequest(ownerRequestId);
             }
             catch (Exception e)
             {
@@ -598,6 +598,12 @@ namespace WorkshopProject.Communication
             }
         }
 
+
+        private async Task payHandlerAsync(JObject msgObj, string message)
+        {
+                     
+            
+        }
 
         /*
                 private void --(JObject msgObj, string message)
