@@ -213,7 +213,7 @@ namespace WorkshopProject
                 return -1;
             IDataAccess dal = DataAccessDriver.GetDataAccess();
             dal.SaveEntity(p, p.id);
-            AddToStock(p.getId(), p);
+            AddToStock(0, p);
             Logger.Log("file", logLevel.INFO, "product " + p.getId() + " added");
             dal.SaveEntity(this, this.id);
             return p.getId();
