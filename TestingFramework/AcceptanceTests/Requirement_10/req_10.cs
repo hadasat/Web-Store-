@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users;
 using WorkshopProject.Communication;
 using WorkshopProject.System_Service;
 
@@ -18,9 +19,13 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
             msg = new List<string>();
         }
 
-        public void update(List<string> messages)
+        public void update(List<Notification> notifications)
         {
-            this.msg = messages;
+            foreach (Notification curr in notifications)
+            {
+                msg.Add(curr.msg);
+            }
+            
         }
     }
 

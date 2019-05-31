@@ -375,29 +375,38 @@ namespace Users
             notifyAllObservers();
         }
 
-        private List<string> getAllMessages()
+        public void addMessage(string msg,Notification.NotificationType type, int requestId)
+        {
+            lock (notificationLock)
+            {
+                notifications.Add(new Notification(msg,type,requestId));
+            }
+            notifyAllObservers();
+        }
+
+        private List<Notification> getAllMessages()
         {
             lock (notificationLock)
             {
                 if (notifications.Count != 0)
                 {
-                    List<string> res = notificationListToStringList(notifications);
-                    notifications.Clear();
+                    List<Notification> res = notifications;
+                    notifications = new List<Notification>();
                     return res;
                 }
             }
             return null;
         }
 
-        private List<string> notificationListToStringList(List<Notification> notifications)
-        {
-            List<string> ret = new List<string>();
-            foreach(Notification n in notifications)
-            {
-                ret.Add(n.msg);
-            }
-            return ret;
-        }
+        //private List<string> notificationListToStringList(List<Notification> notifications)
+        //{
+        //    List<string> ret = new List<string>();
+        //    foreach(Notification n in notifications)
+        //    {
+        //        ret.Add(n.msg);
+        //    }
+        //    return ret;
+        //}
 
         public bool subscribe(IObserver observer)
         {
@@ -429,7 +438,7 @@ namespace Users
             {
                 if (notifications.Count != 0 & observers.Count != 0)
                 {
-                    List<string> notificationsToSend = getAllMessages();
+                    List<Notification> notificationsToSend = getAllMessages();
                     foreach (IObserver curr in observers)
                     {
                         curr.update(notificationsToSend);
@@ -496,14 +505,34 @@ namespace Users
 
     public class Notification
     {
+
+        public enum NotificationType{
+            NORMAL,
+            CREATE_OWNER
+        }
+
         [Key]
         public int id { get; set; }
         public string msg { get; set; }
+
+        public NotificationType notificationType { get; set; }
+
+        public int createOwnerReqeustId { get; set; }
 
         public Notification() { }
         public Notification(string msg)
         {
             this.msg = msg;
+            this.notificationType = NotificationType.NORMAL;
+            this.createOwnerReqeustId = -1;
         }
+        public Notification(string msg, NotificationType notificationType, int createOwnerRequestId)
+        {
+            this.msg = msg;
+            this.notificationType = notificationType;
+            this.createOwnerReqeustId = createOwnerRequestId;
+        }
+
+
     }
 }
