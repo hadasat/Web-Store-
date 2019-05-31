@@ -590,7 +590,7 @@ namespace WorkshopProject.Communication
             int ownerRequestId = (int)msgObj["requestId"];
             try
             {
-                user.ApproveOwnershipRequest(ownerRequestId);
+                user.DisApproveOwnershipRequest(ownerRequestId);
             }
             catch (Exception e)
             {
