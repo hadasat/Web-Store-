@@ -85,13 +85,18 @@ namespace Users
 
         }
 
-        public void registerNewUser(string username, string password)
-        {
-            ConnectionStubTemp.registerNewUser(username, password, DateTime.Today.AddYears(1), "all");
-        }
+        //public void registerNewUser(string username, string password)
+        //{
+        //    throw new Exception("can't register a new user without country or password");
+        //    //ConnectionStubTemp.registerNewUser(username, password, DateTime.Today.AddYears(1), "all");
+        //}
 
         public void registerNewUser(string username, string password, DateTime birthdate, string country)
         {
+            if (country == null || country == "" || birthdate == DateTime.MaxValue)
+            {
+                throw new Exception("bad country of birth date - can't register user");
+            }
             ConnectionStubTemp.registerNewUser(username, password, birthdate, country);
         }
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
+using Users;
 using WorkshopProject.Communication.Server;
 using WorkshopProject.Log;
 using WorkshopProject.System_Service;
@@ -91,7 +92,17 @@ namespace WorkshopProject.Communication
                 {"addproducttostock",addProductToStock},
                 {"getallstores",getAllStoresHandler},
                 {"addproducttobasket",addProductToBaksetHandler },
-                {"getshoppingbasket",getShoppingBasket}
+                {"getshoppingbasket",getShoppingBasketHandler},
+                {"removeproductfromstore",removeProductFromStoreHandler },
+                {"changeproductinfo",changeProductInfoHandler },   /// didn't test yet
+                {"closestore",closeStoreHandler },
+                {"searchproducts",searchProductsHandler },
+                {"getallmembers",getAllMembersHandler },
+                {"removeuser",removeUserHandler },
+                {"getallmanagers",getAllManagersHandler },
+                {"approveowenrshiprequest",approveOwnershipResponseHandler },
+                {"disapproveowenrshiprequest",disapproveOwnershipResponseHandler }
+
             };
         }
 
@@ -119,7 +130,7 @@ namespace WorkshopProject.Communication
             }
             else
             {
-                Logger.Log("file", logLevel.WARN, "received an unknown type of message from client");
+                Logger.Log("event", logLevel.WARN, "received an unknown type of message from client");
             }
 
 
@@ -138,15 +149,30 @@ namespace WorkshopProject.Communication
 
 
 
-        public void update(List<string> messages)
+        public void update(List<Notification> notifications)
         {
-            if (messages != null)
+            if (notifications != null)
             {
-                foreach (string curr in messages)
+                foreach (Notification currNotification in notifications)
                 {
-                    var notificationObj = new { type = "notification", data = curr, requestId = -1 };
-                    string msgToSend = JsonHandler.SerializeObject(notificationObj);
-                    msgSender.sendMessageToUser(msgToSend, id);
+                    string msgToSend;
+                    switch (currNotification.notificationType)
+                    {
+                        case Notification.NotificationType.NORMAL:
+                            var notificationObj = new { type = "notification", info = "message", data = currNotification.msg, requestId = -1 };
+                            msgToSend = JsonHandler.SerializeObject(notificationObj);
+                            break;
+
+                        case Notification.NotificationType.CREATE_OWNER:
+                            var dataObj = new { message = currNotification.msg, requestId = currNotification.createOwnerReqeustId };
+                            var notificationObj2 = new { type = "notification", info = "addManagerConfirmation", data = dataObj, requsetId = -1 };
+                            msgToSend = JsonHandler.SerializeObject(notificationObj2);
+                            break;
+                        default:
+                            continue; 
+                    }
+                    sendMyselfAMessage(msgToSend);
+
                 }
             }
         }
@@ -179,7 +205,7 @@ namespace WorkshopProject.Communication
             sendMyselfAMessage(JsonHandler.SerializeObject(responseObj));
         }
 
-        private void getShoppingBasket(JObject msgObj, string message)
+        private void getShoppingBasketHandler(JObject msgObj, string message)
         {
             JsonResponse response;
             int requestId = (int)msgObj["id"];
@@ -226,6 +252,7 @@ namespace WorkshopProject.Communication
             string password = (string)msgObj["data"]["password"];
             string birthDateString = (string)msgObj["data"]["birthdate"];
             string country = (string)msgObj["data"]["country"];
+
             DateTime birthDate = DateTime.MaxValue;
             if (birthDateString != null)
             {
@@ -233,24 +260,8 @@ namespace WorkshopProject.Communication
             }
             try
             {
-                bool registrAns;
-                if (birthDate != DateTime.MaxValue)
-                {
-                    //has birth date
-                    registrAns = user.Register(userName, password, birthDate, country);
-                }
-                else
-                {
-                    registrAns = user.Register(userName, password);
-                }
-                if (registrAns)
-                {
-                    response = JsonResponse.generateActionSucces(requestId);
-                }
-                else
-                {
-                    response = JsonResponse.generateActionError(requestId, "can't register due to an unknown reason");
-                }
+                response = user.Register(userName, password, birthDate, country) ?
+                    JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "can't register due to an unknown reason");
             }
             catch (Exception e)
             {
@@ -404,6 +415,189 @@ namespace WorkshopProject.Communication
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
+
+        private void removeProductFromStoreHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            int productId = (int)msgObj["data"]["productId"];
+
+            try
+            {
+                response = user.RemoveProductFromStore(storeId, productId) ?
+                    JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "failed to remove product");
+            }catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
+
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void changeProductInfoHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            int productId = (int)msgObj["data"]["productId"];
+            string name = (string)msgObj["data"]["name"];
+            string desc = (string)msgObj["data"]["desc"];
+            string category = (string)msgObj["data"]["category"];
+            ///will probalby crush
+            double price = (double)msgObj["data"]["price"];
+            int amount = (int)msgObj["data"]["amount"];
+
+            try
+            {
+                response = user.ChangeProductInfo(storeId, productId, name, desc, price, category, amount) ?
+                    JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "failed to change product info");
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
+
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+
+        private void closeStoreHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"];
+
+            try
+            {
+                response = user.closeStore(storeId) ?
+                    JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "failed to close store");
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
+
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+
+        private void searchProductsHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            string name = (string)msgObj["data"]["name"];
+            string category = (string)msgObj["data"]["category"];
+            string keyword = (string)msgObj["data"]["keyword"];
+
+            string stringStartPrice = (string)msgObj["data"]["startPrice"];
+            string stringEndPrice = (string)msgObj["data"]["endPrice"];
+            string stringProductRank = (string)msgObj["data"]["productRank"];
+            string stringStoreRank = (string)msgObj["data"]["storeRank"];
+
+
+            double startPrice = (stringStartPrice == "") ? -1 : Convert.ToDouble(stringStartPrice);
+            double endPrice = (stringEndPrice == "") ? -1 : Convert.ToDouble(stringEndPrice);
+            int productRank = (stringProductRank == "") ? -1 : Convert.ToInt32(stringProductRank);
+            int storeRank = (stringStoreRank == "") ? -1 : Convert.ToInt32(stringStoreRank);
+
+            try
+            {
+                String data_ans = JsonHandler.SerializeObject(user.SearchProducts(name, category, keyword, startPrice, endPrice, productRank, storeRank));
+                response = JsonResponse.generateDataSuccess(requestId, data_ans);
+            }catch (Exception e)
+            {
+                response = JsonResponse.generateDataFailure(requestId, e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void getAllMembersHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+
+
+            try
+            {    
+                String data_ans = JsonHandler.SerializeObject(user.GetAllMembers());
+                response = JsonResponse.generateDataSuccess(requestId, data_ans);
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateDataFailure(requestId, e.Message);
+            }
+            
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void removeUserHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            string userName = (string)msgObj["data"];
+
+            try
+            {
+                response = user.RemoveUser(userName) ?
+                    JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId,"can't remove user");
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
+
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void getAllManagersHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"];
+
+            try
+            {
+
+                String data_ans = JsonHandler.SerializeObject(user.GetAllManagers(storeId));
+                response = JsonResponse.generateDataSuccess(requestId, data_ans);
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateDataFailure(requestId, e.Message);
+            }
+            
+
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void approveOwnershipResponseHandler(JObject msgObj, string message)
+        {
+            int ownerRequestId = (int)msgObj["requestId"];
+            try
+            {
+                user.ApproveOwnershipRequest(ownerRequestId);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("error", logLevel.ERROR, "from approve response " + e.Message);
+            }
+            
+        }
+
+        private void disapproveOwnershipResponseHandler(JObject msgObj, string message)
+        {
+            int ownerRequestId = (int)msgObj["requestId"];
+            try
+            {
+                user.DisApproveOwnershipRequest(ownerRequestId);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("error", logLevel.ERROR, "from disapprove response " + e.Message);
+            }
+        }
+
 
         /*
                 private void --(JObject msgObj, string message)

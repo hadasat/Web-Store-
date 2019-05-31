@@ -6,6 +6,7 @@ namespace WorkshopProject.DataAccessLayer
 {
     public interface IDataAccess
     {
+        //bool CheckConnection();
         bool Delete();
         WorkshopDBContext getContext();
         Member GetMember(int key);

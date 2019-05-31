@@ -151,8 +151,9 @@ namespace WorkshopProject.System_Service
             Transaction ret;
             try
             {
-
-                ret = TransactionService.BuyShoppingBasket(user);
+                int credit =1, csv = 1;
+                string expiry = "",target = "z";
+                ret = TransactionService.BuyShoppingBasket(user, credit, csv, expiry, target);
                 return JsonConvert.SerializeObject(ret);
             }
             catch (Exception e)
@@ -278,19 +279,19 @@ namespace WorkshopProject.System_Service
             return resultJson(ret);
         }
 
-        public string Register(string username, string password)
-        {
-            bool ret;
-            try
-            {
-                ret = UserService.Register(username, password);
-                return resultJson(ret);
-            }
-            catch (Exception e)
-            {
-                return generateMessageFormatJason(e.Message);
-            }
-        }
+        //public string Register(string username, string password)
+        //{
+        //    bool ret;
+        //    try
+        //    {
+        //        ret = UserService.Register(username, password);
+        //        return resultJson(ret);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return generateMessageFormatJason(e.Message);
+        //    }
+        //}
         public string Register(string username, string password, DateTime birthdate,string country)
         {
             bool ret;

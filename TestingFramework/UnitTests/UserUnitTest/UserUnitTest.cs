@@ -43,6 +43,7 @@ namespace Users.Tests
 
         [TestMethod()]
         [TestCategory("TestUser")]
+        [TestCategory("Regression")]
         public void loginMember_Test()
         {
             try
@@ -58,15 +59,15 @@ namespace Users.Tests
                     Assert.IsTrue(true);
                 }
 
-                user.registerNewUser(username, password);
+                user.registerNewUser(username, password, DateTime.Now, "shit");
                 try
                 {
                     user.loginMember(username, password);
-                    Assert.IsTrue(true);
+                    Assert.IsTrue(false);
                 }
                 catch (Exception ex)//registerd
                 {
-                    Assert.IsTrue(false);
+                    Assert.IsTrue(true);
                 }
             }
             finally
@@ -78,12 +79,13 @@ namespace Users.Tests
 
         [TestMethod()]
         [TestCategory("TestUser")]
+        [TestCategory("Regression")]
         public void registerNewUser_Test()
         {
             try
             {
                 Init();
-                user.registerNewUser(username, password);
+                user.registerNewUser(username, password, DateTime.Now, "shit");
                 Assert.IsTrue(true);
                 try
                 {
@@ -111,9 +113,13 @@ namespace Users.Tests
         {
             msg = new List<string>();
         }
-        public void update(List<string> messages)
+        public void update(List<Notification> notifications)
         {
-            msg = messages;
+            foreach (Notification curr in notifications)
+            {
+                msg.Add(curr.msg);
+            }
+
         }
     }
 
@@ -138,9 +144,9 @@ namespace Users.Tests
             password = "password";
             user1 = new User();
             user2 = new User();
-            user1.registerNewUser(username + "1", password + "1");
+            user1.registerNewUser(username + "1", password + "1",DateTime.Now, "shit");
             member1 = user1.loginMember(username + "1", password + "1");
-            user2.registerNewUser(username + "2", password + "2");
+            user2.registerNewUser(username + "2", password + "2", DateTime.Now, "shit");
             member2 = user2.loginMember(username + "2", password + "2");
 
             //storeId = WorkShop.createNewStore("best shop", 1, true, member1);
@@ -339,6 +345,7 @@ namespace Users.Tests
 
         [TestMethod()]
         [TestCategory("TestMember")]
+        [TestCategory("Regression")]
         public void NotificationTests()
         {
             try
@@ -353,6 +360,8 @@ namespace Users.Tests
                 Assert.IsTrue (obs1.msg.Count == 1, "bad message count 1");
                 Assert.IsTrue(obs1.msg[0] =="test1", "bad message");
 
+                obs1.msg.Clear();
+                obs2.msg.Clear();
                 //test 2 subscribed observers
                 member1.subscribe(obs2);
                 member1.addMessage("test1");
@@ -360,6 +369,9 @@ namespace Users.Tests
                 Assert.IsTrue(obs1.msg[0] == "test1", "bad message 2");
                 Assert.IsTrue(obs2.msg.Count == 1, "bad message count 1 for obs 2");
                 Assert.IsTrue(obs2.msg[0] == "test1", "bad message for obs 2");
+
+                obs1.msg.Clear();
+                obs2.msg.Clear();
 
                 member1.unsbscribe(obs1);
                 member1.unsbscribe(obs2);
@@ -398,7 +410,7 @@ namespace Users.Tests
         {
             admin = new SystemAdmin("admin", 1);
             user = new User();
-            user.registerNewUser("username","password");
+            user.registerNewUser("username","password", DateTime.Now, "shit");
             member = user.loginMember("username", "password");
         }
 

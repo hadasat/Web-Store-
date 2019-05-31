@@ -102,9 +102,9 @@ namespace WorkshopProject.System_Service
             return UserService.DisApproveOwnershipRequest(user, requestID);
         }
 
-        public Transaction BuyShoppingBasket()
+        public Transaction BuyShoppingBasket(int userCredit, int userCsv, string userExpiryDate, string targetAddress)
         {
-            return TransactionService.BuyShoppingBasket(user);
+            return TransactionService.BuyShoppingBasket(user, userCredit, userCsv, userExpiryDate, targetAddress);
         }
 
         public bool ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount)
@@ -182,10 +182,10 @@ namespace WorkshopProject.System_Service
             return ret;
         }
 
-        public bool Register(string username, string password)
-        {
-            return UserService.Register(username, password);
-        }
+        //public bool Register(string username, string password)
+        //{
+        //    return UserService.Register(username, password);
+        //}
         public bool Register(string username, string password,DateTime birthdath, string country)
         {
             return UserService.Register(username, password, birthdath,country);

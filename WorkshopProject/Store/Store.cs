@@ -91,7 +91,6 @@ namespace WorkshopProject
             this.purchasePolicy = new List<IBooleanExpression>();
             this.storePolicy = new List<IBooleanExpression>();
             this.discountPolicy = new List<Discount>();
-
             this.storeBankNum = storeBankNum;
             this.storeAccountNum = storeAccountNum;
             this.storeAddress = storeAddress;

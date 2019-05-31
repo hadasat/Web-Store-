@@ -22,6 +22,7 @@ namespace WorkshopProject.DataAccessLayer
     public class DataAccessNonPersistent : IDataAccess
     {
         protected bool isProduction;
+        protected bool local;
 
         public DataAccessNonPersistent() : this(false)
         {
@@ -43,6 +44,13 @@ namespace WorkshopProject.DataAccessLayer
                 return new WorkshopTestDBContext();
             }
         }
+
+        //not working currently
+        public bool CheckConnection()
+        {
+            return getContext().CheckConnection();
+        }
+
 
         public virtual void SetMode(bool isProduction)
         {
@@ -122,6 +130,10 @@ namespace WorkshopProject.DataAccessLayer
 
         public virtual bool SaveEntity<T>(T entity, int key) where T : class
         {
+            if (!CheckConnection())
+            {
+                return false;
+            }
             if (key <= 0)
             {
                 key = -1;
