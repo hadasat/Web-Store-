@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject.External_Services
 {
-    public interface IPayment
+    public interface IPayment : IDisposable
     {
         /// <summary>
         /// payment method for external services
@@ -26,5 +26,6 @@ namespace WorkshopProject.External_Services
         /// <param name="transactionId"></param>
         /// <returns></returns>
         Task<bool> cancelPayment(int transactionId);
+
     }
 }

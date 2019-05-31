@@ -51,5 +51,10 @@ namespace WorkshopProject.External_Services
         {
             return Task.FromResult(ret);
         }
+
+        public void Dispose()
+        {
+            //does nothing
+        }
     }
 }

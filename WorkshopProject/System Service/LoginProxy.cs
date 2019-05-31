@@ -102,7 +102,7 @@ namespace WorkshopProject.System_Service
             return UserService.DisApproveOwnershipRequest(user, requestID);
         }
 
-        public Transaction BuyShoppingBasket(User user, int cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip, bool realConnection)
+        public Transaction BuyShoppingBasket(int cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
         {
             return TransactionService.BuyShoppingBasket(user,cardNumber,month,year,holder,ccv,id,name,address,city,country,zip);
         }

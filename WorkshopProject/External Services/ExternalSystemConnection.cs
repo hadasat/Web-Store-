@@ -8,7 +8,7 @@ using WorkshopProject.Log;
 
 namespace WorkshopProject.External_Services
 {
-    class ExternalSystemConnection : ISupply, IPayment
+    class ExternalSystemConnection : ISupply, IPayment,IDisposable
     {
         HttpClient client;
 
@@ -110,10 +110,16 @@ namespace WorkshopProject.External_Services
             }
             catch (Exception e)
             {
+                client.Dispose();
                 string logMsg = string.Format("can't convert from string to int the server respones {0}\n request type:{1}", responseString, requestInfo["action_type"]);
                 Logger.Log("error", logLevel.ERROR, logMsg);
                 return -1;
             }
+        }
+
+        public void Dispose()
+        {
+            client.Dispose();
         }
     }
 }
