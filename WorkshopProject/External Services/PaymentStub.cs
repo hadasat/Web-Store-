@@ -21,12 +21,12 @@ namespace WorkshopProject.External_Services
             ret = newRet;
         }
 
-        public static double Pay(double price,int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
+        public static bool Pay(double price,int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
         {
-            return price;
+            return ret;
         }
 
-        public static double Refund(double amount, int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
+        public static int Refund(int amount, int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
         {
             return amount;
         }

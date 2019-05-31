@@ -102,9 +102,9 @@ namespace WorkshopProject.System_Service
             return UserService.DisApproveOwnershipRequest(user, requestID);
         }
 
-        public Transaction BuyShoppingBasket(int userCredit, int userCsv, string userExpiryDate, string targetAddress)
+        public Transaction BuyShoppingBasket()
         {
-            return TransactionService.BuyShoppingBasket(user, userCredit, userCsv, userExpiryDate, targetAddress);
+            return TransactionService.BuyShoppingBasket(user);
         }
 
         public bool ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount)
