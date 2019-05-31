@@ -6,13 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Log;
 
 namespace Managment
 {
 
 
-    public class Roles
+    public class Roles : IEntity
     {
         [Key]
         public int id { get; set; }
@@ -88,7 +89,7 @@ namespace Managment
 
     }
 
-    public class StoreManager
+    public class StoreManager : IEntity
     {
 
         [Key]

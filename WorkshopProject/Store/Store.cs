@@ -14,7 +14,7 @@ using WorkshopProject.Policies;
 
 namespace WorkshopProject
 {
-    public class Store
+    public class Store : IEntity
     {
         //[Key]
         public int id { get; set; }
@@ -485,7 +485,7 @@ namespace WorkshopProject
     }
 
 
-    public class Stock
+    public class Stock : IEntity
     {
         [Key]
         public int id { get; set; }

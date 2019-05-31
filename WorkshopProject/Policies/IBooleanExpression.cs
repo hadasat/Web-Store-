@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.Policies
 {
@@ -15,7 +16,7 @@ namespace WorkshopProject.Policies
     /// Implements the Composite design pattern.
     /// This is essentially the "Purchasing Policy"
     /// </summary>
-    public abstract class IBooleanExpression
+    public abstract class IBooleanExpression : IEntity
     {
         [Key]
         public int id { get; set; }
