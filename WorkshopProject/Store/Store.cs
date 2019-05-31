@@ -37,10 +37,10 @@ namespace WorkshopProject
         public string storeAddress;
 
         public Store() {
-            //if (StockList == null)
-            //{
+            if (Stocks == null)
+            {
                 Stocks = new List<Stock>();
-            //}
+            }
         }
 
            //constructor without the id for the db

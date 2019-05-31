@@ -105,8 +105,8 @@ namespace IntegrationTests
             Response mes = JsonConvert.DeserializeObject<Response>(res);
             Assert.IsTrue(mes.id >= 0);
 
-
-            Product p = WorkShop.getStore(store_id).getProduct(mes.id);
+            Store store = WorkShop.getStore(store_id);
+            Product p = store.getProduct(mes.id);
             Assert.IsTrue(p != null);
             Assert.IsTrue(p.name == name && p.description == desc && p.price == price && p.category == cat);
         }

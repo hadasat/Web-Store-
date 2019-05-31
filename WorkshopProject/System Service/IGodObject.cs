@@ -70,7 +70,11 @@ namespace WorkshopProject.System_Service
             Store store = WorkShop.getStore(storeId);
             Product p = new Product(name, price, desc, category, rank, amount, storeId);
             dal.SaveEntity(p, p.id);
-            store.AddToStock(p.getId(), p);
+            //store.AddToStock(p.getId(), p);
+
+            Stock stock = new Stock(p.getId(), p);
+            store.GetStock().Add(stock);
+
             //dal.SaveProduct(p);
             //Store s1 = dal.GetStore(storeId);
             dal.SaveEntity(store, store.id);

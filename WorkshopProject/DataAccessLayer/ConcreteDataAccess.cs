@@ -33,6 +33,46 @@ namespace WorkshopProject.DataAccessLayer
             this.isProduction = isProduction;
         }
 
+
+
+        public void SaveStore(Store entity)
+        {
+            WorkshopDBContext ctx = getContext();
+            
+            Store existingEntity = ctx.Stores.Find(entity.id);
+            if (existingEntity == null)
+            {
+                ctx.Stores.Add(entity);
+            }
+            else
+            {
+
+                DbEntityEntry<Store> attachedEntry = ctx.Entry(existingEntity);
+                attachedEntry.CurrentValues.SetValues(entity);
+                attachedEntry.Entity.Stocks = entity.Stocks;
+                ctx.SaveChanges();
+
+
+                //set.Attach(entity);
+                //ctx.Entry(entity).State = EntityState.Modified;
+                //ctx.SaveChanges();
+
+                //ctx.Update(entity);
+
+
+                //ctx.Entry(exsitingEntity).CurrentValues.SetValues(entity);
+
+                //set.Attach(entity);
+                //context.Entry(entity).State = EntityState.Modified;
+                //context.SaveChanges();
+
+            }
+
+
+            //return true;
+        }
+
+
         public virtual WorkshopDBContext getContext()
         {
             if (isProduction)
@@ -168,25 +208,45 @@ namespace WorkshopProject.DataAccessLayer
             return ret;
         }
 
-        protected virtual bool save<T>(T entity, int id, WorkshopDBContext ctx, DbSet<T> set) where T : class
+        protected virtual bool save<T>(T entity, int id, WorkshopDBContext context, DbSet<T> set) where T : class
         {
-            T exsitingEntity = set.Find(id);
-            if (exsitingEntity == null)
+            T existingEntity = set.Find(id);
+            if (existingEntity == null)
             {
                 set.Add(entity);
             }
             else
             {
-                ctx.Entry(exsitingEntity).CurrentValues.SetValues(entity);
+
+                var attachedEntry = context.Entry(existingEntity);
+                attachedEntry.CurrentValues.SetValues(entity);
+
+                //set.Attach(entity);
+                //ctx.Entry(entity).State = EntityState.Modified;
+                //ctx.SaveChanges();
+
+                //ctx.Update(entity);
+
+
+                //ctx.Entry(exsitingEntity).CurrentValues.SetValues(entity);
+
+                //set.Attach(entity);
+                //context.Entry(entity).State = EntityState.Modified;
+                //context.SaveChanges();
+
+
+                //ctx.SaveChanges();
+                int inty = 1;
             }
 
-            //ctx.SaveChanges();
+            
             return true;
         }
 
         public virtual bool Delete()
         {
-            return getContext().Database.Delete();
+            return true;
+            //return getContext().Database.Delete();
         }
 
         protected virtual bool remove<T>(int id, WorkshopDBContext ctx, DbSet<T> set) where T : class
