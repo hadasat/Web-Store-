@@ -11,6 +11,8 @@ using WorkshopProject;
 using WorkshopProject.Policies;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WorkshopProject.DataAccessLayer;
+using System.Data.Entity.Infrastructure;
 
 namespace TansactionsNameSpace
 {
@@ -67,14 +69,14 @@ namespace TansactionsNameSpace
                 return;
             }
 
-            Dictionary<Store, ShoppingCart> carts = basket.getCarts();
+            List<ShoppingCartAndStore> carts = basket.getCarts();
             List<ProductAmountPrice> purchasedProducts = new List<ProductAmountPrice>();
             //calc toal price
-            foreach (KeyValuePair<Store, ShoppingCart> c in carts)
+            foreach (ShoppingCartAndStore c in carts)
             {
                 List<Store.callback> callbacks = new List<Store.callback>();
-                Store currStore = c.Key;
-                ShoppingCart currShoppingCart = c.Value;
+                Store currStore = c.store;
+                ShoppingCart currShoppingCart = c.cart;
                 List<ProductAmountPrice> currStoreProducts = ProductAmountPrice.translateCart(currShoppingCart);
                 //check consistency
                 if (!checkConsistency(user, currStore, currShoppingCart))
@@ -179,6 +181,38 @@ namespace TansactionsNameSpace
             List<IBooleanExpression> storePolicy = store.storePolicy;
             return ConsistencyStub.checkConsistency(user, discount, purchase, storePolicy, cart);
         }
+
+        
+
+        public static bool updateUser(User user)
+        {
+            bool sucess = false,tryAgain = true;
+            int maxTries = 10,counter =0;
+            if(user is Member)
+            {
+                Member member = (Member)user;
+                IDataAccess dal = DataAccessDriver.GetDataAccess();
+                while(tryAgain && counter < maxTries)
+                try
+                {
+                    dal.SaveEntity(member, member.id);
+                        sucess = true;
+                        tryAgain = false;
+                    }
+                catch (DbUpdateConcurrencyException concurrencyException)
+                {
+                        tryAgain = true;
+                        counter++;
+                }
+                catch (Exception e)
+                {
+                        sucess = false;
+                        tryAgain = false;
+                    }
+
+            }
+            return sucess;
+        }
     }
 
     public class ShoppingCartDeal
@@ -190,7 +224,7 @@ namespace TansactionsNameSpace
         public String storeName { get; set; }
         public int storId { get; set; }
         public double totalPrice { get; set; }
-        [NotMapped]
+        [Include]
         public status transStatus { get; set; }
 
         public ShoppingCartDeal(List<ProductAmountPrice> products, String storeName, double totalPrice,int storId, status transStatus)
@@ -201,7 +235,5 @@ namespace TansactionsNameSpace
             this.storId = storId;
             this.transStatus = transStatus;
         }
-
     }
-
 }

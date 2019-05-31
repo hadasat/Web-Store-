@@ -53,10 +53,9 @@ namespace WorkshopProject.DataAccessLayer.Context
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<IBooleanExpression> PurchasingPolicies { get; set; }
         public DbSet<ShoppingBasket> ShoppingBaskets { get; set; }
+        public DbSet<ShoppingCartAndStore> ProductsInCarts { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
-
-        //jonathan: why is Tranaction static?
-        //public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<ProductAmount> CartsInBaskets { get; set; }
 
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<StoreManager> StoreManagers { get; set; }
@@ -66,8 +65,9 @@ namespace WorkshopProject.DataAccessLayer.Context
 
         public DbSet<IOutcome> PolicyOutcomes { get; set; }
         public DbSet<ItemFilter> PolicyFilters { get; set; }
-       // public DbSet<ShoppingCartAndStore> ProductsInCarts { get; set; }
-       // public DbSet<JsonShoppingCartValue> CartsInBaskets { get; set; }
+
+
+        
         //public DbSet<ShoppingCartDeal> ShoppingCarDeals { get; set; }
         //public DbSet<ProductAmountPrice> ProductAmountPrices { get; set; }
     }
