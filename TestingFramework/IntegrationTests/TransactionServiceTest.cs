@@ -143,6 +143,7 @@ namespace IntegrationTests
 
         [TestMethod()]
         [TestCategory("TransactionServiceTest")]
+        [TestCategory("RegrationTest")]
         public void GetShoppingCartTest()
         {
             //init
@@ -151,9 +152,9 @@ namespace IntegrationTests
             addingProductToBasket(amountToBuy, 3);
 
             string cart = user.GetShoppingCart(storeId[0]);
-            JsonShoppingCart jsonshopping = JsonConvert.DeserializeObject<JsonShoppingCart>(cart);
-            ShoppingCart shopping = new ShoppingCart(jsonshopping);
-            ShoppingCart actualShopping = userShoppingBasket.getCarts()[store[0]];
+            ShoppingCart shopping = JsonConvert.DeserializeObject<ShoppingCart>(cart);
+
+            ShoppingCart actualShopping = userShoppingBasket.getCart(store[0]);
             int recivedNum = shopping.getProducts().Count();
             int actualNum = actualShopping.getProducts().Count;
             Assert.AreEqual(actualNum, recivedNum);
@@ -179,6 +180,7 @@ namespace IntegrationTests
 
         [TestMethod()]
         [TestCategory("TransactionServiceTest")]
+        [TestCategory("RegretionTest")]
         public void GetShoppingBasketTest()
         {
             //init
@@ -188,8 +190,7 @@ namespace IntegrationTests
             addingProductToBasket(amountToBuy, 1);
 
             string basket = user.GetShoppingBasket();
-            JsonShoppingBasket jsonShopping = JsonConvert.DeserializeObject<JsonShoppingBasket>(basket);
-            ShoppingBasket shopping = new ShoppingBasket(jsonShopping);
+            ShoppingBasket shopping = JsonConvert.DeserializeObject<ShoppingBasket>(basket);
             
             //check id
             int recivedNum = shopping.id;
@@ -216,6 +217,7 @@ namespace IntegrationTests
 
         [TestMethod()]
         [TestCategory("TransactionServiceTest")]
+
         public void SetProductAmountInBaketTest()
         {
             //init

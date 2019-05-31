@@ -51,13 +51,14 @@ namespace WorkshopProject.Policies
 
         [TestMethod]
         [TestCategory("POLICIES")]
+        [TestCategory("RegretionTest")]
         public void translateCartTest() {
             List<ProductAmountPrice> list = ProductAmountPrice.translateCart(shoppingCart);
             Assert.AreEqual(list.Count, shoppingCart.getProducts().Count);
 
             foreach(ProductAmountPrice item in list)
             {                
-                Assert.IsNotNull(shoppingCart.getProducts()[item.product]);
+                Assert.IsNotNull(shoppingCart.getProduct(item.product.id));
                 Assert.AreEqual(item.amount, shoppingCart.getProductAmount(item.product));
             }
 

@@ -42,39 +42,27 @@ namespace WorkshopProject.System_Service
         {
             
             Transaction transaction = new Transaction(user, userCredit, userCsv, userExpiryDate, targetAddress);
-            /*if (user is Member)
-                ((Member)user).addTransactionHistory(transaction);
-                */
             return transaction;
-
-            //return JsonConvert.SerializeObject(new IdMessage(transId));
         }
         
-        public static JsonShoppingCart GetShoppingCart(User user, int storeId)
+        public static ShoppingCart GetShoppingCart(User user, int storeId)
         {
             //find the product store;
             Store store = WorkShop.getStore(storeId);
             if (store == null) { 
                 throw new Exception("Illegal store id");
             }
-            ShoppingCart shoppingCart;
-            user.shoppingBasket.getCarts().TryGetValue(store,out shoppingCart);
+            ShoppingCart shoppingCart = user.shoppingBasket.getCart(store);
             if(shoppingCart == null)
             {
                 throw new Exception("Illegal store id for this user");
             }
-            JsonShoppingCart jsc = new JsonShoppingCart(shoppingCart);
-            return jsc;
+            return shoppingCart;
         }
 
-        public static JsonShoppingBasket GetShoppingBasket(User user)
+        public static ShoppingBasket GetShoppingBasket(User user)
         {
-            JsonShoppingBasket jsb = new JsonShoppingBasket(user.shoppingBasket);
-            return jsb;
-
-            
-
-
+            return user.shoppingBasket;
         }
 
         public static bool SetProductAmountInBasket(User user, int storeId,int productId, int amount)
@@ -83,18 +71,9 @@ namespace WorkshopProject.System_Service
             ShoppingBasket userShoppingBasket = user.shoppingBasket;
             Store store = WorkShop.getStore(storeId);
             Product product;
-            if (store != null && (product=store.findProduct(productId)) !=null)
+            if (store != null && (product = store.findProduct(productId)) != null)
             {
-                bool sucss;
-                //jonathan - this flow makes no sense
-                //if (product.amount <= amount)
-                    sucss = userShoppingBasket.setProductAmount(store, product, amount);
-               // else
-               //     sucss = false;
-                if (sucss)
-                    ret = true;
-                else
-                    ret = false;
+                ret = userShoppingBasket.setProductAmount(store, product, amount);
             }
             else
                 throw new Exception("Illegal Product id");

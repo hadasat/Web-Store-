@@ -69,14 +69,14 @@ namespace TansactionsNameSpace
                 return;
             }
 
-            Dictionary<Store, ShoppingCart> carts = basket.getCarts();
+            List<ShoppingCartAndStore> carts = basket.getCarts();
             List<ProductAmountPrice> purchasedProducts = new List<ProductAmountPrice>();
             //calc toal price
-            foreach (KeyValuePair<Store, ShoppingCart> c in carts)
+            foreach (ShoppingCartAndStore c in carts)
             {
                 List<Store.callback> callbacks = new List<Store.callback>();
-                Store currStore = c.Key;
-                ShoppingCart currShoppingCart = c.Value;
+                Store currStore = c.store;
+                ShoppingCart currShoppingCart = c.cart;
                 List<ProductAmountPrice> currStoreProducts = ProductAmountPrice.translateCart(currShoppingCart);
                 //check consistency
                 if (!checkConsistency(user, currStore, currShoppingCart))

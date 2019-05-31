@@ -210,7 +210,7 @@ namespace WorkshopProject.System_Service
 
         public string GetShoppingCart(int storeId)
         {
-            JsonShoppingCart ret;
+            ShoppingCart ret;
             try
             {
                 ret = TransactionService.GetShoppingCart(user, storeId);
@@ -224,7 +224,7 @@ namespace WorkshopProject.System_Service
 
         public string GetShoppingBasket()
         {
-            JsonShoppingBasket ret;
+            ShoppingBasket ret;
             try
             {
                 ret = TransactionService.GetShoppingBasket(user);
