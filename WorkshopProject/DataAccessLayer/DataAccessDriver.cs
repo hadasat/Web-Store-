@@ -13,7 +13,7 @@ namespace WorkshopProject.DataAccessLayer
         public static string localAdress = "Data Source=.\\SQLEXPRESS;";
 
         public static bool Persistent { get; set; } = false;
-        public static bool Local { get; set; } = false;
+        public static bool Local { get; set; } = true;
         public static bool Production { get; set; } = false;
 
         public static string connectionTestDB { get; set; } = "Initial Catalog=WorkshopTestDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
