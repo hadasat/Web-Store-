@@ -22,7 +22,8 @@ namespace WorkshopProject
         public int rank { get; set; }
         public Boolean isActive { get; set; }
         [Include]
-        public List<Stock> Stocks { get; set; } 
+        public List<Stock> Stocks { get; set; }
+        [Include]
         public List<IBooleanExpression> purchasePolicy { get; set; }
         [Include]
         public List<Discount> discountPolicy { get; set; }
@@ -103,7 +104,31 @@ namespace WorkshopProject
             base.Copy(other);
             if (other is Store)
             {
-                this.Stocks = ((Store)other).Stocks;
+                Store _other = ((Store)other);
+                Stocks = _other.Stocks;
+                purchasePolicy = _other.purchasePolicy;
+                discountPolicy = _other.discountPolicy;
+                storePolicy = _other.storePolicy;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            foreach(IEntity obj in Stocks)
+            {
+                obj.LoadMe();
+            }
+            foreach (IEntity obj in purchasePolicy)
+            {
+                obj.LoadMe();
+            }
+            foreach (IEntity obj in discountPolicy)
+            {
+                obj.LoadMe();
+            }
+            foreach (IEntity obj in storePolicy)
+            {
+                obj.LoadMe();
             }
         }
 
@@ -223,7 +248,7 @@ namespace WorkshopProject
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return -1;
             IDataAccess dal = DataAccessDriver.GetDataAccess();
-            dal.SaveEntity(p, p.id);
+            //dal.SaveEntity(p, p.id);
             AddToStock(p.getId(), p);
             Logger.Log("file", logLevel.INFO, "product " + p.getId() + " added");
             dal.SaveEntity(this, this.id);
@@ -502,7 +527,7 @@ namespace WorkshopProject
         public int id { get; set; }
         public int amount { get; set; }
         [Include]
-        public Product product { get; set; }
+        public virtual Product product { get; set; }
 
 
         public Stock() { }
@@ -511,6 +536,21 @@ namespace WorkshopProject
         {
             this.amount = amount;
             this.product = product;
+        }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is Stock)
+            {
+                Stock _other = ((Stock)other);
+                product = _other.product;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            product.LoadMe();
         }
     }
 

@@ -180,9 +180,39 @@ namespace TansactionsNameSpace
             List<IBooleanExpression> storePolicy = store.storePolicy;
             return ConsistencyStub.checkConsistency(user, discount, purchase, storePolicy, cart);
         }
+
+
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is Transaction)
+            {
+                Transaction _other = ((Transaction)other);
+                member = _other.member;
+                sucess = _other.sucess;
+                fail = _other.fail;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            foreach (IEntity obj in sucess)
+            {
+                obj.LoadMe();
+            }
+            foreach (IEntity obj in fail)
+            {
+                obj.LoadMe();
+            }
+            member.LoadMe();
+        }
+
+
+
     }
 
-    public class ShoppingCartDeal
+    public class ShoppingCartDeal : IEntity
     {
         [Key]
         public int id { get; set; }
@@ -203,6 +233,24 @@ namespace TansactionsNameSpace
             this.transStatus = transStatus;
         }
 
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is ShoppingCartDeal)
+            {
+                ShoppingCartDeal _other = ((ShoppingCartDeal)other);
+                products = _other.products;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            foreach (IEntity obj in products)
+            {
+                obj.LoadMe();
+            }
+        }
     }
 
 }

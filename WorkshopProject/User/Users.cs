@@ -99,6 +99,17 @@ namespace Users
 
         /****************************************************************/
 
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+        }
+
+        public override void LoadMe()
+        {
+
+        }
+
     }
 
 

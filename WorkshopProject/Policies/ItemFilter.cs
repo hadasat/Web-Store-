@@ -18,6 +18,16 @@ namespace WorkshopProject.Policies
 
         //bool addStuff(List<ProductAmountPrice> products);
         //bool removeStuff(List<ProductAmountPrice> products);
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+        }
+
+        public override void LoadMe()
+        {
+
+        }
     }
 
     public class AllProductsFilter : ItemFilter

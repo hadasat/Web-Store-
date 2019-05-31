@@ -80,5 +80,24 @@ namespace WorkshopProject.Policies
             //return base.GetHashCode();
             return id;
         }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is Discount)
+            {
+                Discount _other = ((Discount)other);
+                successor = _other.successor;
+                outcome = _other.outcome;
+                condition = _other.condition;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            successor.LoadMe();
+            outcome.LoadMe();
+            condition.LoadMe();
+        }
     }
 }

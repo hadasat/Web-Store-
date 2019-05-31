@@ -66,5 +66,15 @@ namespace WorkshopProject
             result = (result * 397) ^ storeId;
             return result;
         }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+        }
+
+        public override void LoadMe()
+        {
+            
+        }
     }
 }

@@ -114,19 +114,53 @@ namespace Shopping
             }
             return ret;
         }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is ShoppingCart)
+            {
+                ShoppingCart _other = ((ShoppingCart)other);
+                productsList = _other.productsList;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            foreach (IEntity obj in productsList)
+            {
+                obj.LoadMe();
+            }
+        }
     }
 
-    public class JsonShoppingCartValue
+    public class JsonShoppingCartValue : IEntity
     {
         [Key]
         public int id { get; set; }
-        public Product product { get; }
+        [Include]
+        public Product product { get; set; }
         public int amount { get; }
 
         public JsonShoppingCartValue(Product product,int amount)
         {
             this.product = product;
             this.amount = amount;
+        }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is JsonShoppingCartValue)
+            {
+                JsonShoppingCartValue _other = ((JsonShoppingCartValue)other);
+                product = _other.product;
+            }
+        }
+
+        public override void LoadMe()
+        {
+             product.LoadMe();
         }
     }
 

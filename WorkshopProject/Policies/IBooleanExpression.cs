@@ -95,6 +95,28 @@ namespace WorkshopProject.Policies
 
         //    return null;
         //}
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is IBooleanExpression)
+            {
+                IBooleanExpression _other = ((IBooleanExpression)other);
+                filter = _other.filter;
+                children = _other.children;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            foreach (IEntity obj in children)
+            {
+                obj.LoadMe();
+            }
+
+            filter.LoadMe();
+        }
+
     }
 
 }
