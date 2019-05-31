@@ -10,7 +10,7 @@ using TansactionsNameSpace;
 using Users;
 using WorkshopProject.Communication;
 using WorkshopProject.DataAccessLayer.Context;
-using WorkshopProject.DataAccessLayer.Examples;
+//using WorkshopProject.DataAccessLayer.Examples;
 using WorkshopProject.Examples;
 using WorkshopProject.System_Service;
 
@@ -21,6 +21,9 @@ namespace WorkshopProject
     {
         static void Main(string[] args)
         {
+
+            //LogExample.RunMe();
+
             //DataAccessExamples.main();
 
             //Console.ReadLine();
