@@ -10,7 +10,6 @@ namespace WorkshopProject.DataAccessLayer
     {
         public static bool Persistent { get; set; } = false;
 
-        
         public static bool Production { get; set; } = false;
 
         public static string connectionTestDB { get; set; } = "Data Source=10.0.0.60;User ID=workshop;Password=********;Initial Catalog=WorkshopTestDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";

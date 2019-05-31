@@ -9,6 +9,8 @@ using TansactionsNameSpace;
 using WorkshopProject.Policies;
 using Shopping;
 using Managment;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 
 namespace WorkshopProject.DataAccessLayer.Context
 {
@@ -17,12 +19,14 @@ namespace WorkshopProject.DataAccessLayer.Context
         public WorkshopDBContext(string DbName) : base(DbName)
         {
             Database.SetInitializer<WorkshopDBContext>(new CreateDatabaseIfNotExists<WorkshopDBContext>());
+            ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = 30;
+
+            this.Database.CommandTimeout = 30;
 
             // OTHER OPTIONS:
             //Database.SetInitializer<SchoolDBContext>(new DropCreateDatabaseIfModelChanges<SchoolDBContext>());
             //Database.SetInitializer<SchoolDBContext>(new SchoolDBInitializer());
 
-            addIncludes();
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -30,9 +34,18 @@ namespace WorkshopProject.DataAccessLayer.Context
             //Configure domain classes using modelBuilder here..
         }
 
-        protected virtual void addIncludes()
+        public bool CheckConnection()
         {
-            //Stores = (DbSet<Store>)Stores.Include(s => s.Stocks);
+            try
+            {
+                this.Database.Connection.Open();
+                this.Database.Connection.Close();
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+            return true;
         }
 
         public DbSet<Member> Members { get; set; }

@@ -44,6 +44,13 @@ namespace WorkshopProject.DataAccessLayer
             }
         }
 
+
+        public bool CheckConnection()
+        {
+            return getContext().CheckConnection();
+        }
+
+
         public virtual void SetMode(bool isProduction)
         {
             this.isProduction = isProduction;
@@ -122,6 +129,10 @@ namespace WorkshopProject.DataAccessLayer
 
         public virtual bool SaveEntity<T>(T entity, int key) where T : class
         {
+            if (!CheckConnection())
+            {
+                return false;
+            }
             if (key <= 0)
             {
                 key = -1;
