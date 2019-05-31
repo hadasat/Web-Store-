@@ -15,7 +15,7 @@ using TansactionsNameSpace;
 
 namespace Users
 {
-    public class Member : User, IObserverSubject
+    public class Member : User, IObserverSubject, IEntity
     {
         [Key]
         public int id { get; set; }

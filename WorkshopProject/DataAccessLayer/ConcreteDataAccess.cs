@@ -62,7 +62,7 @@ namespace WorkshopProject.DataAccessLayer
             return isProduction;
         }
 
-        //public T GetEntity<T>(int key) where T : class
+        //public T GetEntity<T>(int key) where T : class, IEntity
         //{
         //    if (key <= 0)
         //    {
@@ -75,10 +75,14 @@ namespace WorkshopProject.DataAccessLayer
         //        string table = getTableNameFromDbSet<T>(ctx);
         //        string sql = String.Format("SELECT * FROM {0} WHERE id = @key", table);
         //        SqlParameter[] sqlparams = { new SqlParameter("@table", table), new SqlParameter("@key", key) };
-        //        ret = SqlQuery<T>(sql, sqlparams).FirstOrDefault();
+        //        ret = (T) SqlQuery<T>(sql, sqlparams).FirstOrDefault();
         //    }
         //    return ret;
         //}
+
+
+       
+
 
 
         public Member GetMember(int key)
@@ -123,86 +127,115 @@ namespace WorkshopProject.DataAccessLayer
             return ret;
         }
 
-        public virtual DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters) where T : class
+        public virtual DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters) where T : class, IEntity
         {
             return getContext().Database.SqlQuery<T>(sql, paramaters);
         }
 
-        public virtual bool SaveEntity<T>(T entity, int key) where T : class
+        public void SaveStore(Store entity)
         {
-            if (!CheckConnection())
-            {
-                return false;
-            }
-            if (key <= 0)
-            {
-                key = -1;
-            }
-            bool ret = false;
-            using (WorkshopDBContext ctx = getContext())
-            {
-                DbSet<T> set = ctx.Set<T>();
+            WorkshopDBContext ctx = getContext();
 
-                ret = save(entity, key, ctx, set);
-                ctx.SaveChanges();
-                
-            }
-            return ret;
-        }
-        
-        public virtual bool RemoveEntity<T>(int key) where T : class
-        {
-            if (key <= 0)
+            Store existingEntity = ctx.Stores.Find(entity.id);
+            if (existingEntity == null)
             {
-                key = -1;
-            }
-            bool ret = false;
-            using (WorkshopDBContext ctx = getContext())
-            {
-                DbSet<T> set = ctx.Set<T>();
-
-                ret = remove(key, ctx, set);
-                ctx.SaveChanges();
-                
-            }
-            return ret;
-        }
-
-        protected virtual bool save<T>(T entity, int id, WorkshopDBContext ctx, DbSet<T> set) where T : class
-        {
-            T exsitingEntity = set.Find(id);
-            if (exsitingEntity == null)
-            {
-                set.Add(entity);
+                ctx.Stores.Add(entity);
             }
             else
             {
-                ctx.Entry(exsitingEntity).CurrentValues.SetValues(entity);
-            }
 
-            //ctx.SaveChanges();
+                DbEntityEntry<Store> attachedEntry = ctx.Entry(existingEntity);
+                attachedEntry.CurrentValues.SetValues(entity);
+                attachedEntry.Entity.Stocks = entity.Stocks;
+                ctx.SaveChanges();
+
+            }
+        }
+
+
+        public virtual bool SaveEntity<T>(IEntity entity, int key) where T : class, IEntity
+        {
+            using (WorkshopDBContext ctx = getContext())
+            {
+                DbSet set = ctx.Set<T>();
+                IEntity existingEntity = (IEntity) set.Find(entity.GetKey());
+                if (existingEntity == null)
+                {
+                    set.Add(entity);
+                }
+                else
+                {
+                    DbEntityEntry<IEntity> attachedEntry = ctx.Entry(existingEntity);
+                    attachedEntry.CurrentValues.SetValues(entity);
+                    attachedEntry.Entity.Copy(entity);
+                    ctx.SaveChanges();
+                }
+                ctx.SaveChanges();
+            }
             return true;
         }
+
+        public virtual bool RemoveEntity<T>(int key) where T : class, IEntity
+        {
+            if (key <= 0)
+            {
+                key = -1;
+            }
+
+            using (WorkshopDBContext ctx = getContext())
+            {
+                DbSet<T> set = ctx.Set<T>();
+
+                T entity = set.Find(key);
+                if (entity == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    set.Remove(entity);
+                }
+                ctx.SaveChanges();
+                
+            }
+            return true;
+        }
+
+        //protected virtual bool save<T>(IEntity entity, int id, WorkshopDBContext ctx, DbSet<IEntity> set) where T : IEntity
+        //{
+        //    IEntity exsitingEntity = set.Find(id);
+        //    if (exsitingEntity == null)
+        //    {
+        //        set.Add(entity);
+        //    }
+        //    else
+        //    {
+        //        ctx.Entry(exsitingEntity).CurrentValues.SetValues(entity);
+        //    }
+
+        //    //ctx.SaveChanges();
+        //    return true;
+        //}
 
         public virtual bool Delete()
         {
             return getContext().Database.Delete();
         }
 
-        protected virtual bool remove<T>(int id, WorkshopDBContext ctx, DbSet<T> set) where T : class
-        {
-            T entity = set.Find(id);
-            if (entity == null)
-            {
-                return false;
-            }
-            else
-            {
-                set.Remove(entity);
-                //ctx.SaveChanges();
-                return true;
-            }
-        }
+        //protected virtual bool remove<T>(int id, WorkshopDBContext ctx, DbSet<T> set) where T : class
+        //{
+        //    T entity = set.Find(id);
+        //    if (entity == null)
+        //    {
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        set.Remove(entity);
+        //        //ctx.SaveChanges();
+        //        return true;
+        //    }
+        //}
 
         protected string getTableNameFromDbSet<T>(DbContext context) where T : class
         {
@@ -293,23 +326,14 @@ namespace WorkshopProject.DataAccessLayer
         }
 
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public override DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters)
-        {
-            return base.SqlQuery<T>(sql, paramaters);
-        }
+        //[MethodImpl(MethodImplOptions.Synchronized)]
+        //public override DbRawSqlQuery<IEntity> SqlQuery<T>(string sql, params object[] paramaters)
+        //{
+        //    return base.SqlQuery<IEntity>(sql, paramaters);
+        //}
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        protected override bool save<T>(T entity, int id, WorkshopDBContext ctx, DbSet<T> set)
-        {
-            return base.save(entity,id , ctx, set);
-        }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        protected override bool remove<T>(int id, WorkshopDBContext ctx, DbSet<T> set) 
-        {
-            return base.remove(id, ctx, set);
-        }
+
 
         public override WorkshopDBContext getContext()
         {
