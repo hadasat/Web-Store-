@@ -11,6 +11,8 @@ using WorkshopProject;
 using WorkshopProject.Policies;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WorkshopProject.DataAccessLayer;
+using System.Data.Entity.Infrastructure;
 
 namespace TansactionsNameSpace
 {
@@ -178,6 +180,36 @@ namespace TansactionsNameSpace
             List<IBooleanExpression> purchase = store.purchasePolicy;
             List<IBooleanExpression> storePolicy = store.storePolicy;
             return ConsistencyStub.checkConsistency(user, discount, purchase, storePolicy, cart);
+        }
+
+        public static bool updateUser(User user)
+        {
+            bool sucess = false,tryAgain = true;
+            int maxTries = 10,counter =0;
+            if(user is Member)
+            {
+                Member member = (Member)user;
+                IDataAccess dal = DataAccessDriver.GetDataAccess();
+                while(tryAgain && counter < maxTries)
+                try
+                {
+                    dal.SaveEntity(member, member.id);
+                        sucess = true;
+                        tryAgain = false;
+                    }
+                catch (DbUpdateConcurrencyException concurrencyException)
+                {
+                        tryAgain = true;
+                        counter++;
+                }
+                catch (Exception e)
+                {
+                        sucess = false;
+                        tryAgain = false;
+                    }
+
+            }
+            return sucess;
         }
     }
 

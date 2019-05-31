@@ -51,8 +51,10 @@ namespace IntegrationTests
         [TestInitialize]
         public void Init()
         {
+            user.Register("user-hadas", "user-atiya", DateTime.Now.AddYears(-25), "shit");
+            user.login("user-hadas", "user-atiya");
             userShoppingBasket = user.user.shoppingBasket;
-            menager.Register("hadas", "atiya", DateTime.Now, "shit");
+            menager.Register("hadas", "atiya", DateTime.Now.AddYears(-25), "shit");
             menager.login("hadas", "atiya");
             
             for(int i=0; i < store.Length; i++)
@@ -94,6 +96,7 @@ namespace IntegrationTests
         [TestCategory("TransactionServiceTest")]
         public void AddProductToBasketTest()
         {
+            Init();
             //adding product to user basket
             addingProductToBasket(amountToBuy,0);
             Assert.AreEqual(amountToBuy, userShoppingBasket.getProductAmount(product[0]));
@@ -103,6 +106,8 @@ namespace IntegrationTests
             Assert.AreEqual(amountToBuy, userShoppingBasket.getProductAmount(product[2]));
             addingProductToBasket(amountToBuy, 1);
             Assert.AreEqual(amountToBuy, userShoppingBasket.getProductAmount(product[1]));
+
+            Transaction.updateUser(user.user);
 
             userShoppingBasket.cleanBasket();
         }
