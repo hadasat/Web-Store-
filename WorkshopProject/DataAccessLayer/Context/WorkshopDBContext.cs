@@ -9,6 +9,8 @@ using TansactionsNameSpace;
 using WorkshopProject.Policies;
 using Shopping;
 using Managment;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 
 namespace WorkshopProject.DataAccessLayer.Context
 {
@@ -17,12 +19,13 @@ namespace WorkshopProject.DataAccessLayer.Context
         public WorkshopDBContext(string DbName) : base(DbName)
         {
             Database.SetInitializer<WorkshopDBContext>(new CreateDatabaseIfNotExists<WorkshopDBContext>());
+            ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = 30;
+
+            this.Database.CommandTimeout = 30;
 
             // OTHER OPTIONS:
             //Database.SetInitializer<SchoolDBContext>(new DropCreateDatabaseIfModelChanges<SchoolDBContext>());
             //Database.SetInitializer<SchoolDBContext>(new SchoolDBInitializer());
-
-            addIncludes();
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -30,9 +33,18 @@ namespace WorkshopProject.DataAccessLayer.Context
             //Configure domain classes using modelBuilder here..
         }
 
-        protected virtual void addIncludes()
+        public bool CheckConnection()
         {
-            //Stores = (DbSet<Store>)Stores.Include(s => s.Stocks);
+            try
+            {
+                this.Database.Connection.Open();
+                this.Database.Connection.Close();
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+            return true;
         }
 
         public DbSet<Member> Members { get; set; }
@@ -62,8 +74,7 @@ namespace WorkshopProject.DataAccessLayer.Context
 
     public class WorkshopProductionDBContext : WorkshopDBContext
     {
-        //public WorkshopProductionDBContext() : base("WorkshopProductionDB")
-        public WorkshopProductionDBContext() : base(DataAccessDriver.connectionProductionDB)
+        public WorkshopProductionDBContext() : base(DataAccessDriver.getConnectionString(true))
         {
             Database.SetInitializer<WorkshopProductionDBContext>(new CreateDatabaseIfNotExists<WorkshopProductionDBContext>());
         }
@@ -71,10 +82,8 @@ namespace WorkshopProject.DataAccessLayer.Context
 
     public class WorkshopTestDBContext : WorkshopDBContext
     {
-        //public WorkshopTestDBContext() : base("WorkshopTestDB")
-        public WorkshopTestDBContext() : base(DataAccessDriver.connectionTestDB)
+        public WorkshopTestDBContext() : base(DataAccessDriver.getConnectionString(false))
         {
-            //Database.SetInitializer<WorkshopTestDBContext>(new DropCreateDatabaseAlways<WorkshopTestDBContext>());
             Database.SetInitializer<WorkshopTestDBContext>(new CreateDatabaseIfNotExists<WorkshopTestDBContext>());
         }
     }
