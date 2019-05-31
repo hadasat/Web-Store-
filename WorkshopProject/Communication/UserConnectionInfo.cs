@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
+using Users;
 using WorkshopProject.Communication.Server;
 using WorkshopProject.Log;
 using WorkshopProject.System_Service;
@@ -98,7 +99,9 @@ namespace WorkshopProject.Communication
                 {"searchproducts",searchProductsHandler },
                 {"getallmembers",getAllMembersHandler },
                 {"removeuser",removeUserHandler },
-                {"getallmanagers",getAllManagersHandler }
+                {"getallmanagers",getAllManagersHandler },
+                {"approveowenrshiprequest",approveOwnershipResponseHandler },
+                {"disapproveowenrshiprequest",disapproveOwnershipResponseHandler }
 
             };
         }
@@ -127,7 +130,7 @@ namespace WorkshopProject.Communication
             }
             else
             {
-                Logger.Log("file", logLevel.WARN, "received an unknown type of message from client");
+                Logger.Log("event", logLevel.WARN, "received an unknown type of message from client");
             }
 
 
@@ -146,26 +149,30 @@ namespace WorkshopProject.Communication
 
 
 
-        public void update(List<string> messages)
+        public void update(List<Notification> notifications)
         {
-            if (messages != null)
+            if (notifications != null)
             {
-                foreach (string curr in messages)
+                foreach (Notification currNotification in notifications)
                 {
                     string msgToSend;
-                    if (curr.StartsWith("addManagerConfirmation-"))
+                    switch (currNotification.notificationType)
                     {
-                        string dataToSend = curr.Substring(curr.IndexOf("-"));
-                        var notificationObj = new {type = "notification", info = "addManagerConfirmation", data = dataToSend, requestId = -1 };
-                        msgToSend = JsonHandler.SerializeObject(notificationObj);
-                    }
-                    else
-                    {
-                        var notificationObj = new { type = "notification",info = "message", data = curr, requestId = -1 };
-                        msgToSend = JsonHandler.SerializeObject(notificationObj);
-                    }
+                        case Notification.NotificationType.NORMAL:
+                            var notificationObj = new { type = "notification", info = "message", data = currNotification.msg, requestId = -1 };
+                            msgToSend = JsonHandler.SerializeObject(notificationObj);
+                            break;
 
+                        case Notification.NotificationType.CREATE_OWNER:
+                            var dataObj = new { message = currNotification.msg, requestId = currNotification.createOwnerReqeustId };
+                            var notificationObj2 = new { type = "notification", info = "addManagerConfirmation", data = dataObj, requsetId = -1 };
+                            msgToSend = JsonHandler.SerializeObject(notificationObj2);
+                            break;
+                        default:
+                            continue; 
+                    }
                     sendMyselfAMessage(msgToSend);
+
                 }
             }
         }
@@ -559,11 +566,39 @@ namespace WorkshopProject.Communication
             {
                 response = JsonResponse.generateDataFailure(requestId, e.Message);
             }
+            
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
 
-        
+        private void approveOwnershipResponseHandler(JObject msgObj, string message)
+        {
+            int ownerRequestId = (int)msgObj["requestId"];
+            try
+            {
+                user.ApproveOwnershipRequest(ownerRequestId);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("error", logLevel.ERROR, "from approve response " + e.Message);
+            }
+            
+        }
+
+        private void disapproveOwnershipResponseHandler(JObject msgObj, string message)
+        {
+            int ownerRequestId = (int)msgObj["requestId"];
+            try
+            {
+                user.DisApproveOwnershipRequest(ownerRequestId);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("error", logLevel.ERROR, "from disapprove response " + e.Message);
+            }
+        }
+
+
         /*
                 private void --(JObject msgObj, string message)
                 {

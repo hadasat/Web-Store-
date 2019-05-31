@@ -66,7 +66,7 @@ namespace WorkshopProject.Communication
             if (!addAns)
             {
                 //Console.WriteLine("error in adding to dictionary in Communication manager");
-                Logger.Log("file", logLevel.ERROR, "error in adding new connection to dictionary in Communication manager");
+                Logger.Log("error", logLevel.ERROR, "error in adding new connection to dictionary in Communication manager");
                 return null;
             }
 
