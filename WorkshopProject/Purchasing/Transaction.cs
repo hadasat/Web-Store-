@@ -224,7 +224,7 @@ namespace TansactionsNameSpace
         public String storeName { get; set; }
         public int storId { get; set; }
         public double totalPrice { get; set; }
-        [NotMapped]
+        [Include]
         public status transStatus { get; set; }
 
         public ShoppingCartDeal(List<ProductAmountPrice> products, String storeName, double totalPrice,int storId, status transStatus)
@@ -235,7 +235,5 @@ namespace TansactionsNameSpace
             this.storId = storId;
             this.transStatus = transStatus;
         }
-
     }
-
 }

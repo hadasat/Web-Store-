@@ -10,8 +10,6 @@ namespace Shopping
     {
         [Key]
         public int id { get; set; }
-        //[NotMapped]
-        //private Dictionary<Store, ShoppingCart> carts; //ONLY USE GETTER
         [Include]
         public List<ShoppingCartAndStore> cartsList { get; set; }
         public static int idBasketCounter = 0;
@@ -23,7 +21,7 @@ namespace Shopping
         }
 
         public List<ShoppingCartAndStore> getCarts() { return cartsList; }
-     
+
         public ShoppingCart getCart(int storeId)
         {
             Predicate<ShoppingCartAndStore> cartPredicat = s => ((ShoppingCartAndStore)s).store.id == storeId;
@@ -50,7 +48,7 @@ namespace Shopping
             if (amount == 0)
             {
                 //check if the storecart is empty now
-                if(containStore(cartPredicat))
+                if (containStore(cartPredicat))
                 {
                     ShoppingCart cart = cartAndStore.cart;
                     //set product amount to zero
@@ -128,6 +126,7 @@ namespace Shopping
         public int id { get; set; }
         [Include]
         public Store store { get; set; }
+        [Include]
         public ShoppingCart cart { get; set; }
 
         public ShoppingCartAndStore() { }
@@ -138,69 +137,4 @@ namespace Shopping
             this.cart = cart;
         }
     }
-
-
-
-    //public class JsonShoppingBasketValue
-    //{
-
-    //    public Store store { get; set; }
-    //    public JsonShoppingCart shoppingCart { get; set; }
-
-    //    public JsonShoppingBasketValue() { }
-
-    //    public JsonShoppingBasketValue(Store store, JsonShoppingCart shoppingCart)
-    //    {
-    //        this.store = store;
-    //        this.shoppingCart = shoppingCart;
-    //    }
-    //}
-    /*
-    public class JsonShoppingBasket
-    {
-        public List<JsonShoppingBasketValue> shoppingCarts { get; set; }
-        public int id { get; }
-
-        public JsonShoppingBasket(ShoppingBasket basket)
-        {
-            shoppingCarts = new List<JsonShoppingBasketValue>();
-            id = basket.id;
-            copyBasket(basket);
-        }
-
-        public JsonShoppingBasket()
-        {   
-        }
-        
-
-        private void copyBasket(ShoppingBasket basket)
-        {
-            Dictionary<Store, ShoppingCart> shoppingCartsForCopy = basket.getCarts();
-            foreach (KeyValuePair<Store, ShoppingCart> pair in shoppingCartsForCopy)
-            {
-                Store store = pair.Key;
-                JsonShoppingCart shoppingCart =new JsonShoppingCart(pair.Value);
-                JsonShoppingBasketValue item = new JsonShoppingBasketValue(store, shoppingCart);
-                shoppingCarts.Add(item);
-            }
-        }
-
-
-
-    }
-    */
 }
-
-
-
-/*public ShoppingBasket(ShoppingBasket s)
-{
-    this.carts = new Dictionary<Store, ShoppingCart>();
-    Dictionary<Store, ShoppingCart> carts = s.carts;
-    foreach (KeyValuePair<Store, ShoppingCart> c in carts)
-    {
-        Store store = c.Key;
-        ShoppingCart shopping = new ShoppingCart(c.Value);
-        this.carts[store] = shopping;
-    }
-}*/

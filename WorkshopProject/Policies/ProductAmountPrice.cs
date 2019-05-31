@@ -33,8 +33,8 @@ namespace WorkshopProject.Policies
         public static List<ProductAmountPrice> translateCart(ShoppingCart cart)
         {
             List<ProductAmountPrice> output = new List<ProductAmountPrice>();
-            List<JsonShoppingCartValue> products = cart.getProducts();
-            foreach(JsonShoppingCartValue p in products)
+            List<ProductAmount> products = cart.getProducts();
+            foreach(ProductAmount p in products)
             {
                 ProductAmountPrice newProduct = new ProductAmountPrice(p.product, p.amount, p.product.price);
                 output.Add(newProduct);

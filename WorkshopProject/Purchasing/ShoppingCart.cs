@@ -15,10 +15,8 @@ namespace Shopping
     {
         [Key]
         public int id { get; set; }
-        //[NotMapped]
-        //private Dictionary<Product, int> products; //USE ONLY GETTER
         [Include]
-        public List<JsonShoppingCartValue> products { get; set; }
+        public List<ProductAmount> products { get; set; }
         public static int idCartCounter = 0;
 
         public ShoppingCart()
@@ -26,33 +24,19 @@ namespace Shopping
             id = ++idCartCounter;
             if (products == null)
             {
-                products = new List<JsonShoppingCartValue>();
+                products = new List<ProductAmount>();
             }
-            //products = new Dictionary<Product, int>();
         }
 
-
-        //public ShoppingCart(JsonShoppingCart cart)
-        //{
-        //    if (cart != null)
-        //    {
-        //        id = cart.id;
-        //        products = new Dictionary<Product, int>();
-        //        foreach (JsonShoppingCartValue p in cart.products)
-        //        {
-        //            products.Add(p.product, p.amount);
-        //        }
-        //    }
-        //}
         public bool containProduct(Product product)
         {
-            Predicate<JsonShoppingCartValue> p = s => ((JsonShoppingCartValue)s).product.Equals(product);
+            Predicate<ProductAmount> p = s => ((ProductAmount)s).product.Equals(product);
             return products.Find(p) != null;
         }
 
-        public JsonShoppingCartValue getCartValue(int id)
+        public ProductAmount getCartValue(int id)
         {
-            Predicate<JsonShoppingCartValue> productPredicat = s => ((JsonShoppingCartValue)s).product.id == id;
+            Predicate<ProductAmount> productPredicat = s => ((ProductAmount)s).product.id == id;
             return products.Find(productPredicat);
         }
 
@@ -63,7 +47,7 @@ namespace Shopping
 
         public bool setProductAmount(Product product, int amount)
         {
-            JsonShoppingCartValue wannaBeCart;
+            ProductAmount wannaBeCart;
             if (amount == 0 && containProduct(product))
             {
                 wannaBeCart = getCartValue(product.id);
@@ -74,12 +58,12 @@ namespace Shopping
             {
                 if (containProduct(product))
                 {
-                    JsonShoppingCartValue p = getCartValue(product.id);
+                    ProductAmount p = getCartValue(product.id);
                     p.amount = amount;
                 }
                 else
                 {
-                    wannaBeCart = new JsonShoppingCartValue(product, amount);
+                    wannaBeCart = new ProductAmount(product, amount);
                     products.Add(wannaBeCart);
                 }
                 return true;
@@ -105,8 +89,8 @@ namespace Shopping
 
         public int getProductAmount(Product product)
         {
-            Predicate<JsonShoppingCartValue> productPredicat = s => ((JsonShoppingCartValue)s).product.Equals(product);
-            JsonShoppingCartValue cartValue = products.Find(productPredicat);
+            Predicate<ProductAmount> productPredicat = s => ((ProductAmount)s).product.Equals(product);
+            ProductAmount cartValue = products.Find(productPredicat);
             if (cartValue == null)
                 return 0;
             return cartValue.amount;
@@ -115,32 +99,21 @@ namespace Shopping
         public int getTotalAmount()
         {
             int total = 0;
-            foreach(JsonShoppingCartValue c in products)
+            foreach(ProductAmount c in products)
             {
                 total += c.amount;
             }
             return total;
         }
 
-        public List<JsonShoppingCartValue> getProducts()
+        public List<ProductAmount> getProducts()
         {
             return products;
         }
 
-        /*
-        private Dictionary<Product, int> productListToDictionary()
-        {
-            Dictionary<Product, int> ret = new Dictionary<Product, int>();
-            foreach (JsonShoppingCartValue prod in productsList)
-            {
-                ret.Add(prod.product, prod.amount);
-            }
-            return ret;
-        }
-        */
     }
 
-    public class JsonShoppingCartValue
+    public class ProductAmount
     {
         [Key]
         public int id { get; set; }
@@ -148,46 +121,10 @@ namespace Shopping
         public Product product { get; set; }
         public int amount { get; set; }
 
-        public JsonShoppingCartValue(Product product, int amount)
+        public ProductAmount(Product product, int amount)
         {
             this.product = product;
             this.amount = amount;
         }
-        
     }
 }   
-    //public class JsonShoppingCart
-    //{
-    //    public List<JsonShoppingCartValue> products { get; set; }
-    //    public int id { get; set; }
-
-    //    public JsonShoppingCart(ShoppingCart shopping)
-    //    {
-    //        products = new List<JsonShoppingCartValue>();
-    //        this.id = shopping.id;
-    //        copyCart(shopping);
-    //    }
-
-    //    public JsonShoppingCart(int id,List<JsonShoppingCartValue> list)
-    //    {
-    //        this.id = id;
-    //        products = list;
-            
-    //    }
-    //    public JsonShoppingCart()
-    //    {
-    //    }
-
-    //    private void copyCart(ShoppingCart shopping)
-    //    {
-    //        Dictionary<Product, int> shoppingProducts = shopping.getProducts();
-    //        foreach (KeyValuePair<Product,int> pair in shoppingProducts)
-    //        {
-    //            Product p = pair.Key;
-    //            int amount = pair.Value;
-    //            JsonShoppingCartValue item = new JsonShoppingCartValue(p, amount);
-    //            products.Add(item);
-    //        }
-    //    }
-
-    //}
