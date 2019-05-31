@@ -151,6 +151,7 @@
     <None Include="Client\HtmlPages\newStore.html" />
     <None Include="Client\HtmlPages\shoppingBasket.html" />
     <None Include="Client\HtmlPages\Search.html" />
+    <None Include="Client\HtmlPages\payment.html" />
     <Content Include="Client\HtmlPages\SignIn.css" />
     <Content Include="Client\HtmlPages\SignIn.html" />
     <Content Include="Client\HtmlPages\store.html" />

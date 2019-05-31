@@ -22,7 +22,8 @@ namespace WorkshopProject.Client
             newStore,
             shoppingBasket,
             search,
-            adminActions
+            adminActions,
+            payment
         };
 
         private static readonly Dictionary<string, PagesNames> enumStringMapping = new Dictionary<string, PagesNames>()
@@ -42,6 +43,7 @@ namespace WorkshopProject.Client
             {"/wot/shoppingbasket",PagesNames.shoppingBasket},
             {"/wot/search",PagesNames.search},
             {"/wot/adminactions",PagesNames.adminActions},
+            {"/wot/payment",PagesNames.payment},
         };
 
         public static readonly Dictionary<PagesNames, string> htmlPages = new Dictionary<PagesNames, string>()
@@ -57,6 +59,7 @@ namespace WorkshopProject.Client
             {PagesNames.shoppingBasket,Properties.Resources.shoppingBasket },
             {PagesNames.search,Properties.Resources.Search },
             {PagesNames.adminActions,Properties.Resources.adminActions },
+            {PagesNames.payment,Properties.Resources.payment },
             {PagesNames.Error,"<html><body>error path not found</body></html>" }
         };
 

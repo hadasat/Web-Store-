@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WorkShop</title>
+    <script type="text/javascript" src="/wot/communication.js"></script>
+
+
+    <!-- BOOTSTRAP FILES -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+
+
+    <!-- NAVBAR -->
+    <div id="navbar_header"></div>
+    <script type="text/javascript" src="/wot/navbar.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="page-header" class="pb-2 mt-4 mb-2 border-bottom text-center">
+            <h1>Payment</h1>
+        </div>
+        <form id="payment">
+                <div class="row" style="margin-bottom: 8px;">
+                        <div class="col">
+                            <label for="creditNum">Credit Card Number</label>
+                            <input id= "creditNum" type="number" class="form-control" placeholder="Credit Card Number">
+                        </div>
+                </div>
+                <div class="row" style="margin-bottom: 8px;">
+                        <div class="col">
+                                <label for="cvv">CVV</label> 
+                                <input id= "cvv"type="number"  class="form-control" placeholder="CVV" >
+                        </div>
+                        <div class="col">
+                                <label for="exDate">Expiration Date</label> 
+                                <input id= "exDate"type="text"  class="form-control" placeholder="Expiration Date" >
+                        </div>
+                </div>
+               
+                <div class="text-center">
+                    <button id="buy_btn" type="button" class="btn btn-success">Buy</button>
+                </div>
+        </form>
+        <hr>
+        <div class="grid row"> </div>  
+    </div>
+    <script>
+
+        onStart(function(){});
+        $('#buy_btn').on('click',function(){
+           
+        });
+
+        
+    </script>
+</body>
+</html>
