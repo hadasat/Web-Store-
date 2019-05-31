@@ -34,45 +34,6 @@ namespace WorkshopProject.DataAccessLayer
         }
 
 
-
-        public void SaveStore(Store entity)
-        {
-            WorkshopDBContext ctx = getContext();
-            
-            Store existingEntity = ctx.Stores.Find(entity.id);
-            if (existingEntity == null)
-            {
-                ctx.Stores.Add(entity);
-            }
-            else
-            {
-
-                DbEntityEntry<Store> attachedEntry = ctx.Entry(existingEntity);
-                attachedEntry.CurrentValues.SetValues(entity);
-                attachedEntry.Entity.Stocks = entity.Stocks;
-                ctx.SaveChanges();
-
-
-                //set.Attach(entity);
-                //ctx.Entry(entity).State = EntityState.Modified;
-                //ctx.SaveChanges();
-
-                //ctx.Update(entity);
-
-
-                //ctx.Entry(exsitingEntity).CurrentValues.SetValues(entity);
-
-                //set.Attach(entity);
-                //context.Entry(entity).State = EntityState.Modified;
-                //context.SaveChanges();
-
-            }
-
-
-            //return true;
-        }
-
-
         public virtual WorkshopDBContext getContext()
         {
             if (isProduction)
