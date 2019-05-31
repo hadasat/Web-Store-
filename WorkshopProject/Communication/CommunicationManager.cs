@@ -15,6 +15,7 @@ namespace WorkshopProject.Communication
 {
     class CommunicationManager : INewConnectionHandler, IWebScoketHandler, IWebSocketMessageSender
     {
+
         private IServer server;
         private ConcurrentDictionary<uint, UserConnectionInfo> activeConnections;
         private ConcurrentDictionary<uint, UserConnectionInfo> oldConnections;

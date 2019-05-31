@@ -124,6 +124,7 @@ namespace TestingFramework.AcceptanceTests
 
         public bool BuyShoppingBasket()
         {
+            //TODO amsel fix this shit
             string msg = service.BuyShoppingBasket();
             JObject json = JObject.Parse(msg);
             return ((int)json["id"] > 0);

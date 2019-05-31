@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Users;
 using WorkshopProject.Policies;
 using TansactionsNameSpace;
+using WorkshopProject.External_Services;
 
 namespace WorkshopProject.System_Service
 {
@@ -153,7 +154,9 @@ namespace WorkshopProject.System_Service
             {
                 int credit =1, csv = 1;
                 string expiry = "",target = "z";
-                ret = TransactionService.BuyShoppingBasket(user, credit, csv, expiry, target);
+                int cardNumber = 0, ccv = 0, month = 10, year = 2050, id = 123456789;
+                string holder = "mosh moshe", city = "shit", country = "shit", zip = "12345", address = "";
+                ret = new Transaction(user, cardNumber, month, year, holder, ccv, id, holder, address, city, country, zip, new PaymentStub (true),new SupplyStub(true));
                 return JsonConvert.SerializeObject(ret);
             }
             catch (Exception e)

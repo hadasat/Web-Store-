@@ -58,6 +58,7 @@ namespace WorkshopProject.Communication.Server
         /// <param name="msgType"></param>
         /// <returns></returns>
         Task sendMessageToList(List<uint> idList, byte[] msg, WebSocketMessageType msgType);
+
         #endregion
     }
 }

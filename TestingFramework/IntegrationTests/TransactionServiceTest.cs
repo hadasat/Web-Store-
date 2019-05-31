@@ -114,23 +114,27 @@ namespace IntegrationTests
 
         [TestMethod()]
         [TestCategory("TransactionServiceTest")]
+        [TestCategory("Regression")]
         public void BuyShoppingBasketTest()
         {
-            PaymentStub.setRet(true);
-            SupplyStub.setRet(true);
+            //PaymentStub.setRet(true);
+            //SupplyStub.setRet(true);
+            IPayment payStub = new PaymentStub(true);
+            ISupply supplyStub = new SupplyStub(true);
+
             ConsistencyStub.setRet(true);
 
             //init
             addingProductToBasket(amountToBuy, 0);
             addingProductToBasket(amountToBuy, 0);
             addingProductToBasket(amountToBuy, 1);
-            PaymentStub.setRet(true);
-            SupplyStub.setRet(true);
+            //PaymentStub.setRet(true);
+            //SupplyStub.setRet(true);
             ConsistencyStub.setRet(true);
 
-            int credit = 0, csv = 0;
-            string expirydate = "", shippingAddress = "";
-            Transaction transaction = new Transaction(user.user, credit, csv, expirydate, shippingAddress);
+            int cardNumber = 0, ccv = 0, month = 10, year = 2050, id = 123456789;
+            string holder = "mosh moshe", city = "shit", country = "shit", zip = "12345", address = "";
+            Transaction transaction = new Transaction(user.user, cardNumber,month,year,holder,ccv,id,holder,address,city,country,zip,payStub,supplyStub);
             int transId = transaction.id;
             Assert.IsTrue(transId > 0,"1");
             //chack the basket is empty
