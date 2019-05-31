@@ -90,6 +90,7 @@
     <Compile Include="DataAccessLayer\ConcreteDataAccess.cs" />
     <Compile Include="DataAccessLayer\Examples\DataAccessExamples.cs" />
     <Compile Include="DataAccessLayer\IDataAccess.cs" />
+    <Compile Include="DataAccessLayer\IEntity.cs" />
     <Compile Include="Examples\ClassForTestExample.cs" />
     <Compile Include="Examples\LogExample.cs" />
     <Compile Include="External Services\ConsistencyStub.cs" />
