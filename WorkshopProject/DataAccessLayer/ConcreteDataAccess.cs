@@ -22,6 +22,7 @@ namespace WorkshopProject.DataAccessLayer
     public class DataAccessNonPersistent : IDataAccess
     {
         protected bool isProduction;
+        protected bool local;
 
         public DataAccessNonPersistent() : this(false)
         {

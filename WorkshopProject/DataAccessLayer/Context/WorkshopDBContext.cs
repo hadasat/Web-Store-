@@ -74,7 +74,7 @@ namespace WorkshopProject.DataAccessLayer.Context
 
     public class WorkshopProductionDBContext : WorkshopDBContext
     {
-        public WorkshopProductionDBContext() : base(DataAccessDriver.getConnectionString())
+        public WorkshopProductionDBContext() : base(DataAccessDriver.getConnectionString(true))
         {
             Database.SetInitializer<WorkshopProductionDBContext>(new CreateDatabaseIfNotExists<WorkshopProductionDBContext>());
         }
@@ -82,7 +82,7 @@ namespace WorkshopProject.DataAccessLayer.Context
 
     public class WorkshopTestDBContext : WorkshopDBContext
     {
-        public WorkshopTestDBContext() : base(DataAccessDriver.getConnectionString())
+        public WorkshopTestDBContext() : base(DataAccessDriver.getConnectionString(false))
         {
             Database.SetInitializer<WorkshopTestDBContext>(new CreateDatabaseIfNotExists<WorkshopTestDBContext>());
         }
