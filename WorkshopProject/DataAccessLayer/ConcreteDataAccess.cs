@@ -44,7 +44,7 @@ namespace WorkshopProject.DataAccessLayer
             }
         }
 
-
+        //not working currently
         public bool CheckConnection()
         {
             return getContext().CheckConnection();

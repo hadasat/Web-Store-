@@ -33,14 +33,11 @@ namespace TestingFramework.UnitTests.DataAccessTests
         [TestCategory("DAL")]
         public void GetMemberTest()
         {
-            Assert.IsTrue(dal.CheckConnection());
-
-
-            //int id = SaveNewMember();
-            //Member member;
-            //member = dal.GetMember(id);
-            //Assert.IsNotNull(member);
-            //Assert.AreEqual(member.id, id);
+            int id = SaveNewMember();
+            Member member;
+            member = dal.GetMember(id);
+            Assert.IsNotNull(member);
+            Assert.AreEqual(member.id, id);
         }
 
 
