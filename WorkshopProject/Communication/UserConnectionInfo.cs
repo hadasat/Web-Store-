@@ -99,7 +99,9 @@ namespace WorkshopProject.Communication
                 {"searchproducts",searchProductsHandler },
                 {"getallmembers",getAllMembersHandler },
                 {"removeuser",removeUserHandler },
-                {"getallmanagers",getAllManagersHandler }
+                {"getallmanagers",getAllManagersHandler },
+                {"approveowenrshiprequest",approveOwnershipResponseHandler },
+                {"disapproveowenrshiprequest",disapproveOwnershipResponseHandler }
 
             };
         }
@@ -564,11 +566,39 @@ namespace WorkshopProject.Communication
             {
                 response = JsonResponse.generateDataFailure(requestId, e.Message);
             }
+            
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
 
-        
+        private void approveOwnershipResponseHandler(JObject msgObj, string message)
+        {
+            int ownerRequestId = (int)msgObj["requestId"];
+            try
+            {
+                user.ApproveOwnershipRequest(ownerRequestId);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("error", logLevel.ERROR, "from approve response " + e.Message);
+            }
+            
+        }
+
+        private void disapproveOwnershipResponseHandler(JObject msgObj, string message)
+        {
+            int ownerRequestId = (int)msgObj["requestId"];
+            try
+            {
+                user.ApproveOwnershipRequest(ownerRequestId);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("error", logLevel.ERROR, "from disapprove response " + e.Message);
+            }
+        }
+
+
         /*
                 private void --(JObject msgObj, string message)
                 {
