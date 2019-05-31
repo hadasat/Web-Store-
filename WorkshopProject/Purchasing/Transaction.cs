@@ -182,6 +182,8 @@ namespace TansactionsNameSpace
             return ConsistencyStub.checkConsistency(user, discount, purchase, storePolicy, cart);
         }
 
+        
+
         public static bool updateUser(User user)
         {
             bool sucess = false,tryAgain = true;
