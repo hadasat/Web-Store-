@@ -26,7 +26,6 @@ namespace WorkshopProject.DataAccessLayer.Context
             // OTHER OPTIONS:
             //Database.SetInitializer<SchoolDBContext>(new DropCreateDatabaseIfModelChanges<SchoolDBContext>());
             //Database.SetInitializer<SchoolDBContext>(new SchoolDBInitializer());
-
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -75,8 +74,7 @@ namespace WorkshopProject.DataAccessLayer.Context
 
     public class WorkshopProductionDBContext : WorkshopDBContext
     {
-        //public WorkshopProductionDBContext() : base("WorkshopProductionDB")
-        public WorkshopProductionDBContext() : base(DataAccessDriver.connectionProductionDB)
+        public WorkshopProductionDBContext() : base(DataAccessDriver.getConnectionString())
         {
             Database.SetInitializer<WorkshopProductionDBContext>(new CreateDatabaseIfNotExists<WorkshopProductionDBContext>());
         }
@@ -84,10 +82,8 @@ namespace WorkshopProject.DataAccessLayer.Context
 
     public class WorkshopTestDBContext : WorkshopDBContext
     {
-        //public WorkshopTestDBContext() : base("WorkshopTestDB")
-        public WorkshopTestDBContext() : base(DataAccessDriver.connectionTestDB)
+        public WorkshopTestDBContext() : base(DataAccessDriver.getConnectionString())
         {
-            //Database.SetInitializer<WorkshopTestDBContext>(new DropCreateDatabaseAlways<WorkshopTestDBContext>());
             Database.SetInitializer<WorkshopTestDBContext>(new CreateDatabaseIfNotExists<WorkshopTestDBContext>());
         }
     }
