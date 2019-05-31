@@ -22,7 +22,7 @@ namespace WorkshopProject
         public int rank { get; set; }
         public Boolean isActive { get; set; }
         [Include]
-        public virtual ICollection<Stock> Stocks { get; set; } 
+        public List<Stock> Stocks { get; set; } 
         public List<IBooleanExpression> purchasePolicy { get; set; }
         [Include]
         public List<Discount> discountPolicy { get; set; }
@@ -96,6 +96,17 @@ namespace WorkshopProject
             this.storeAddress = storeAddress;
 
         }
+
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is Store)
+            {
+                this.Stocks = ((Store)other).Stocks;
+            }
+        }
+
 
         public ICollection<Stock> GetStock()
         {
