@@ -127,7 +127,7 @@ namespace WorkshopProject.DataAccessLayer
             return ret;
         }
 
-        public virtual DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters) where T : class, IEntity
+        public virtual DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters) where T : IEntity
         {
             return getContext().Database.SqlQuery<T>(sql, paramaters);
         }
@@ -153,7 +153,7 @@ namespace WorkshopProject.DataAccessLayer
         }
 
 
-        public virtual bool SaveEntity<T>(IEntity entity, int key) where T : class, IEntity
+        public virtual bool SaveEntity<T>(T entity, int key) where T : IEntity
         {
             using (WorkshopDBContext ctx = getContext())
             {
@@ -175,7 +175,7 @@ namespace WorkshopProject.DataAccessLayer
             return true;
         }
 
-        public virtual bool RemoveEntity<T>(int key) where T : class, IEntity
+        public virtual bool RemoveEntity<T>(int key) where T : IEntity
         {
             if (key <= 0)
             {

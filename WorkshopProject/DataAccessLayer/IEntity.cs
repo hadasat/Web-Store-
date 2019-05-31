@@ -6,10 +6,61 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject.DataAccessLayer
 {
-    public interface IEntity
+    public class IEntity
     {
-        int GetKey();
+        public virtual int GetKey()
+        {
+            string propName = "id";
+            return (int) this.GetType().GetProperty(propName).GetValue(this, null);
+        }
 
-        void Copy(IEntity other);
+        public virtual void Copy(IEntity other)
+        {
+            var myProperties = this.GetType().GetProperties();
+            var otherProperties = other.GetType().GetProperties();
+
+            foreach (var myProperty in myProperties)
+            {
+                foreach (var otherProperty in otherProperties)
+                {
+                    if (myProperty.Name == otherProperty.Name && otherProperty.PropertyType == myProperty.PropertyType)
+                    {
+                        myProperty.SetValue(this, otherProperty.GetValue(this));
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
+
+
+
+
+/*
+https://www.pluralsight.com/guides/property-copying-between-two-objects-using-reflection
+
+    public class PropertyCopier<TParent, TChild> where TParent : class
+                                            where TChild : class
+{
+    public static void Copy(TParent parent, TChild child)
+    {
+        var parentProperties = parent.GetType().GetProperties();
+        var childProperties = child.GetType().GetProperties();
+
+        foreach (var parentProperty in parentProperties)
+        {
+            foreach (var childProperty in childProperties)
+            {
+                if (parentProperty.Name == childProperty.Name && parentProperty.PropertyType == childProperty.PropertyType)
+                {
+                    childProperty.SetValue(child, parentProperty.GetValue(parent));
+                    break;
+                }
+            }
+        }
+    }
+}
+
+
+    */
