@@ -126,7 +126,7 @@ namespace WorkshopProject.System_Service
             return JsonHandler.SerializeObject(StoreService.GetProductInfo(productId));
         }
 
-        public JsonShoppingCart GetShoppingCart(int storeId)
+        public ShoppingCart GetShoppingCart(int storeId)
         {
             return TransactionService.GetShoppingCart(user, storeId);
         }
