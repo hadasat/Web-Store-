@@ -23,16 +23,16 @@ namespace WorkshopProject.System_Service
             //return JsonConvert.SerializeObject(msg);
         }
 
-        public static bool addDiscountPolicy(int storeId)
-        {
-            Store store = WorkShop.getStore(storeId);
-            if (store == null)
-                throw new Exception("Store does not exist");
-            if (!store.isActive)
-                throw new Exception("Store does not exist");
+        //public static bool addDiscountPolicy(int storeId)
+        //{
+        //    Store store = WorkShop.getStore(storeId);
+        //    if (store == null)
+        //        throw new Exception("Store does not exist");
+        //    if (!store.isActive)
+        //        throw new Exception("Store does not exist");
 
-            return true; //All Valid
-        }
+        //    return true; //All Valid
+        //}
 
         public static bool AddProductToStock(User user, int storeId, int productId, int amount)
         {
@@ -56,7 +56,8 @@ namespace WorkshopProject.System_Service
         public static int AddProductToStore(User user, int storeId, string name, string desc, double price, string category)
         {
             sanitizeName(name);
-            checkPrice(price);
+            if (!checkPrice(price))
+                throw new Exception("price is illegal");
             Store store = WorkShop.getStore(storeId);
             if (store == null)
                 throw new Exception("Store does not exist");
@@ -65,12 +66,12 @@ namespace WorkshopProject.System_Service
             int id = store.addProduct(user, name, desc, price, category);
             if (id == -1)
                 throw new Exception("User does not have permission");
-           // dal.SaveStore(store);
 
             //return successJason(); //All Valid
             //jonathan - we need the id of the new store, not a message
             //IdMessage idMsg = new IdMessage(id);
             //return JsonConvert.SerializeObject(idMsg);
+            dal.SaveEntity(store, store.id);
 
             return id;
         }
@@ -119,10 +120,10 @@ namespace WorkshopProject.System_Service
             return product;
         }
 
-        public static string removeDiscountPolicy(int storeId)
-        {
-            throw new NotImplementedException();
-        }
+        //public static string removeDiscountPolicy(int storeId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public static bool RemoveProductFromStore(User user, int storeId, int productId)
         {
@@ -152,10 +153,10 @@ namespace WorkshopProject.System_Service
         }
 
 
-        public static string removePurchasingPolicy(int storeId)
-        {
-            throw new NotImplementedException();
-        }
+        //public static string removePurchasingPolicy(int storeId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public static Store GetStore(int storeId)
         {
@@ -213,11 +214,7 @@ namespace WorkshopProject.System_Service
         //jonathan
         private static bool checkPrice(double price)
         {
-            if (price <= 0)
-            {
-                throw new Exception("product price must be positive");
-            }
-            return true;
+            return price > 0;
         }
 
         private static bool sanitizeName(string storeName)
