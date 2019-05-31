@@ -2,10 +2,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 
 namespace Shopping
 {
-    public class ShoppingBasket
+    public class ShoppingBasket : IEntity
     {
         [Key]
         public int id { get; set; }

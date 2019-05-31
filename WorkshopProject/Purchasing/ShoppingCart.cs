@@ -7,11 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 
 namespace Shopping
 {
 
-    public class ShoppingCart
+    public class ShoppingCart : IEntity
     {
         [Key]
         public int id { get; set; }

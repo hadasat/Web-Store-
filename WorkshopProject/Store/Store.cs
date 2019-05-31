@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Log;
 using WorkshopProject.Policies;
 
 namespace WorkshopProject
 {
-    public class Store
+    public class Store : IEntity
     {
         [Key]
         public int id { get; set; }
@@ -430,7 +431,7 @@ namespace WorkshopProject
     }
 
 
-    public class Stock
+    public class Stock : IEntity
     {
         [Key]
         public int id { get; set; }

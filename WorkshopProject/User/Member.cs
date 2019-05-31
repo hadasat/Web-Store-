@@ -12,10 +12,11 @@ using WorkshopProject.Communication;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TansactionsNameSpace;
+using WorkshopProject.DataAccessLayer;
 
 namespace Users
 {
-    public class Member : User, IObserverSubject, IEntity
+    public class Member : User, IObserverSubject
     {
         [Key]
         public int id { get; set; }
@@ -62,7 +63,6 @@ namespace Users
             this.country = country;
            // purchasesHistory = new List<Transaction>();
         }
-
 
         /*** SERVICE LAYER FUNCTIONS***/
         public void logOut()
@@ -484,18 +484,13 @@ namespace Users
             sendMessageToAdmin(msg);
         }
 
-
-
-
-
-
         #endregion
     }
 
 
 
-    public class Notification
-    {
+    public class Notification : IEntity
+    { 
         [Key]
         public int id { get; set; }
         public string msg { get; set; }

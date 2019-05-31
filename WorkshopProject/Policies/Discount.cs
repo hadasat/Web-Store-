@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.Policies
 {
-    public class Discount
+    public class Discount : IEntity
     {
         [Key]
         public int id { get; set; }

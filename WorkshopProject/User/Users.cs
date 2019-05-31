@@ -11,15 +11,12 @@ using WorkshopProject.Log;
 using WorkshopProject.Communication;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WorkshopProject.DataAccessLayer;
 
 namespace Users
 {
 
-    
-
-
-
-    public class User : Permissions
+    public class User : IEntity, Permissions
     {
         [Key]
         public int id { get; set; }

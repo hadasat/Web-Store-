@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.Policies
 {
-    public abstract class ItemFilter
+    public abstract class ItemFilter : IEntity
     {
         [Key]
         public int id { get; set; }

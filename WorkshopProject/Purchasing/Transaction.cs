@@ -11,12 +11,13 @@ using WorkshopProject;
 using WorkshopProject.Policies;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WorkshopProject.DataAccessLayer;
 
 namespace TansactionsNameSpace
 {
     public enum status {Sucess ,empty , StokesShortage, Consistency ,Policies ,Payment ,Supply,ContactStoreForRefound} 
 
-    public class Transaction
+    public class Transaction : IEntity
     {
         static int transactionCounter = 1;
 
