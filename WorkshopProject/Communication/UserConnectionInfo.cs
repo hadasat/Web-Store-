@@ -130,7 +130,7 @@ namespace WorkshopProject.Communication
             }
             else
             {
-                Logger.Log("file", logLevel.WARN, "received an unknown type of message from client");
+                Logger.Log("event", logLevel.WARN, "received an unknown type of message from client");
             }
 
 
