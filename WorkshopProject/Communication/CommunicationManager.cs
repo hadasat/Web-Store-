@@ -15,6 +15,15 @@ namespace WorkshopProject.Communication
 {
     class CommunicationManager : INewConnectionHandler, IWebScoketHandler, IWebSocketMessageSender
     {
+
+        public enum externalRequestType
+        {
+            pay,
+            cancel_pay,
+            supply,
+            cancel_supply
+        };
+
         private IServer server;
         private ConcurrentDictionary<uint, UserConnectionInfo> activeConnections;
         private ConcurrentDictionary<uint, UserConnectionInfo> oldConnections;
@@ -102,6 +111,11 @@ namespace WorkshopProject.Communication
         public async Task sendMessageToUser(string msg, uint id)
         {
             await server.sendMessageById(id, msg);
+        }
+
+        public Task sendHttpToExternal(Dictionary<string, string> info,)
+        {
+            
         }
 
         #endregion

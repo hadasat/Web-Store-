@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -133,6 +134,17 @@ namespace WorkshopProject.Communication.Server
                 ans.Add(id);
             }
             return ans;
+        }
+
+
+        public async string sendHttpMessageToExternal(Dictionary<string, string> info, externalRequestType requestType)
+        {
+            HttpClient client = new HttpClient();
+
+            var content = new FormUrlEncodedContent(info);
+            var response = await client.PostAsync("https://cs-bgu-wsep.herokuapp.com", content);
+            string responseString = await response.Content.ReadAsStringAsync();
+            return responseString;
         }
 
         #endregion

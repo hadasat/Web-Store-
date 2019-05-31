@@ -9,5 +9,7 @@ namespace WorkshopProject.Communication.Server
     interface IWebSocketMessageSender
     {
         Task sendMessageToUser(string msg, uint id);
+
+        Task sendHttpToExternal(Dictionary<string,string> info, externalRequestType requestType);
     }
 }
