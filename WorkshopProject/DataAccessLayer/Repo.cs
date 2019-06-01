@@ -32,6 +32,12 @@ namespace WorkshopProject.DataAccessLayer
             SaveChanges();
         }
 
+
+        /// <summary>
+        /// Provides with id
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
         public void Add<T>(List<T> entity) where T : IEntity
         {
             ctx.Set<T>().AddRange(entity);
