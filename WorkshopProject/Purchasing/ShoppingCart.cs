@@ -100,7 +100,7 @@ namespace Shopping
         public int getTotalAmount()
         {
             int total = 0;
-            foreach(ProductAmount c in products)
+            foreach (ProductAmount c in products)
             {
                 total += c.amount;
             }
@@ -112,6 +112,25 @@ namespace Shopping
             return products;
         }
 
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is ShoppingCart)
+            {
+                ShoppingCart _other = ((ShoppingCart)other);
+                products = _other.products;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            foreach (IEntity obj in products)
+            {
+                obj.LoadMe();
+
+
+            }
+        }
     }
 
     public class ProductAmount : IEntity
@@ -131,16 +150,16 @@ namespace Shopping
         public override void Copy(IEntity other)
         {
             base.Copy(other);
-            if (other is JsonShoppingCartValue)
+            if (other is ProductAmount)
             {
-                JsonShoppingCartValue _other = ((JsonShoppingCartValue)other);
+                ProductAmount _other = ((ProductAmount)other);
                 product = _other.product;
             }
         }
 
         public override void LoadMe()
         {
-             product.LoadMe();
+            product.LoadMe();
         }
     }
-}   
+}
