@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 using static WorkshopProject.Category;
 using Users;
 using WorkshopProject.Log;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject
 {
     public  static class  WorkShop
     {
-       public  static Dictionary<int,Store> stores = new Dictionary<int, Store>();
-       public static  int id = 0;
-       
+       //public  static Dictionary<int,Store> stores = new Dictionary<int, Store>();
+        //public static  int id = 0;
+        public static Repo repo = new Repo();
 
         /// <summary>
         /// Search products. if int is -1 - ignore. if string is null - ignore.
@@ -27,7 +28,7 @@ namespace WorkshopProject
         public static List<Product>  search(string name, string category, double startPrice,double endPrice, int productRanking, int storeRanking)
         {
             List<Product> matched_products = new List<Product>();
-            foreach (Store store in stores.Values)
+            foreach (Store store in GetStores())
             {
                 List<Product> res = store.searchProducts(name,category,startPrice,endPrice,
                     productRanking, storeRanking);
@@ -47,7 +48,7 @@ namespace WorkshopProject
         {
             try
             {
-                return stores[store_id];
+                return GetStoreById(store_id);
             }
             catch (KeyNotFoundException ignore)
             {
@@ -61,10 +62,10 @@ namespace WorkshopProject
        
         public static int createNewStore(string name, int rank, Boolean isActive, Member owner)
         {
-            Store store = new Store(id,name, rank, isActive);
-            stores.Add(id,store);
-            int currID = id;
-            id++;
+            Store store = new Store(0,name, rank, isActive);
+            repo.Add<Store>(store);
+            int currID = store.id;
+            //id++;
             owner.addStore(store);
             Logger.Log("file", logLevel.INFO,"store " + currID + " has added");
             return currID;
@@ -74,8 +75,8 @@ namespace WorkshopProject
         {
             try
             {
-                owner.closeStore(stores[storeId]);
-                stores[storeId].isActive = false;
+                owner.closeStore(GetStoreById(storeId));
+                GetStoreById(storeId).isActive = false;
             }catch(Exception ignore)
             {
                 return false;
@@ -93,7 +94,7 @@ namespace WorkshopProject
         /// <returns>Product if exist in the WorkShop. otherwise return null</returns>
         internal static Product getProduct(int productId)
         {
-            foreach(Store store in stores.Values)
+            foreach(Store store in GetStores())
             {
                 if (store.GetStock().ContainsKey(productId))
                     return store.GetStock()[productId];
@@ -105,9 +106,10 @@ namespace WorkshopProject
         {
             Product product;
             Dictionary<Store, Product> sroreProduct = new Dictionary<Store, Product>();
-            foreach (KeyValuePair<int, Store> s in stores)
+            //foreach (KeyValuePair<int, Store> s in stores)
+            foreach (Store store in GetStores())
             {
-                Store store = s.Value;
+                //Store store = s.Value;
                 product = store.findProduct(productId);
                 if (product != null)
                 {
@@ -116,6 +118,21 @@ namespace WorkshopProject
                 }
             }
             return null;
+        }
+
+        public static List<Store> GetStores()
+        {
+            return repo.GetList<Store>();
+        }
+
+        public static Store GetStoreById(int id)
+        {
+            return (Store) repo.Get<Store>(id);
+        }
+
+        public static void Remove(int id)
+        {
+            repo.Remove<Store>(GetStoreById(id));
         }
     }
 }

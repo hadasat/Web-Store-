@@ -16,7 +16,7 @@ namespace WorkshopProject
     public class Store : IEntity
     {
         [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public string name { get; set; }
         public int rank { get; set; }
@@ -476,7 +476,7 @@ namespace WorkshopProject
     public class Stock : IEntity
     {
         [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public int amount { get; set; }
         [Include]

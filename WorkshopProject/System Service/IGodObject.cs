@@ -66,8 +66,8 @@ namespace WorkshopProject.System_Service
         public int addStore(string name, int rank, int ownerId)
         {
             Member owner = ConnectionStubTemp.getMember(ownerId);
-            WorkShop.createNewStore(name, rank, true, owner);
-            return WorkShop.id - 1;
+            int ret = WorkShop.createNewStore(name, rank, true, owner);
+            return ret;
         }
 
         public bool appointUserToStoreOwnership(int storeId, int newOwnerId, int storeOwnerId)
@@ -160,19 +160,20 @@ namespace WorkshopProject.System_Service
         {
             Member owner = ConnectionStubTemp.getMember(ownerId);
             WorkShop.closeStore(storeId, owner);
-            WorkShop.stores.Remove(storeId);
+            WorkShop.Remove(storeId);
             return true;
         }
 
+        //disabled for now
         public void cleanUpAllData()
         {
-            WorkShop.stores = new Dictionary<int, Store>();
-            WorkShop.id = 0;
-            ConnectionStubTemp.pHandler = new PasswordHandler();
-            ConnectionStubTemp.members = new Dictionary<int, Member>();
-            ConnectionStubTemp.mapIDUsermane = new Dictionary<string, int>();
-            ConnectionStubTemp.memberIDGenerator = 0;
-            ConnectionStubTemp.init();
+            //WorkShop.stores = new Dictionary<int, Store>();
+            //WorkShop.id = 0;
+            //ConnectionStubTemp.pHandler = new PasswordHandler();
+            //ConnectionStubTemp.members = new Dictionary<int, Member>();
+            //ConnectionStubTemp.mapIDUsermane = new Dictionary<string, int>();
+            //ConnectionStubTemp.memberIDGenerator = 0;
+            //ConnectionStubTemp.init();
         }
 
         public void purchaseProduct(int productId)

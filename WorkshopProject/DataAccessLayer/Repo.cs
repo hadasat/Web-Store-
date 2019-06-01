@@ -46,12 +46,12 @@ namespace WorkshopProject.DataAccessLayer
 
         public void Remove<T>(T entity) where T : IEntity
         {
-            ctx.Set<T>().Remove(entity);
+            //ctx.Set<T>().Remove(entity);
         }
 
         public void Remove<T>(List<T> entity) where T : IEntity
         {
-            ctx.Set<T>().RemoveRange(entity);
+            //ctx.Set<T>().RemoveRange(entity);
         }
 
         //public void Clear<T>() where T : IEntity

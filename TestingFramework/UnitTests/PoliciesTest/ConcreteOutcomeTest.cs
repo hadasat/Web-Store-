@@ -31,7 +31,7 @@ namespace WorkshopProject.Policies
         [TestCleanup]
         public void Cleanup()
         {
-            WorkShop.stores.Remove(storeId);
+            WorkShop.Remove(storeId);
         }
 
         [TestMethod]
