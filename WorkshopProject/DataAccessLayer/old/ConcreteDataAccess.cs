@@ -159,9 +159,9 @@ namespace WorkshopProject.DataAccessLayer
             IEntity existingEntity = (IEntity)set.Find(entity.GetKey());
             if (existingEntity == null)
             {
-                ctx.SaveChanges();
-                ctx.ChangeTracker.DetectChanges();
                 set.Add(entity);
+                ctx.ChangeTracker.DetectChanges();
+                ctx.SaveChanges();
             }
             else
             {
