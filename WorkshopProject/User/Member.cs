@@ -498,7 +498,7 @@ namespace Users
 
 
 
-    public class Notification
+    public class Notification : IEntity
     {
         [Include]
         public enum NotificationType{

@@ -155,5 +155,22 @@ namespace Shopping
             this.store = store;
             this.cart = cart;
         }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is ShoppingCartAndStore)
+            {
+                ShoppingCartAndStore _other = ((ShoppingCartAndStore)other);
+                store = _other.store;
+                cart = _other.cart;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            store.LoadMe();
+            cart.LoadMe();
+        }
     }
 }

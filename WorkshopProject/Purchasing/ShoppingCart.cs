@@ -114,7 +114,7 @@ namespace Shopping
 
     }
 
-    public class ProductAmount
+    public class ProductAmount : IEntity
     {
         [Key]
         public int id { get; set; }
