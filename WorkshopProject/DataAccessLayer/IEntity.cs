@@ -25,11 +25,14 @@ namespace WorkshopProject.DataAccessLayer
                 {
                     if (myProperty.Name == otherProperty.Name && otherProperty.PropertyType == myProperty.PropertyType)
                     {
-                        myProperty.SetValue(this, otherProperty.GetValue(this));
+                        myProperty.SetValue(this, otherProperty.GetValue(this), null);
+
+                       //myProperty.SetValue(this, otherProperty.GetValue(otherProperty, new object[] { }), new object[] { });
                         break;
                     }
                 }
             }
+
         }
     }
 }

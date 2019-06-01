@@ -72,6 +72,17 @@ namespace WorkshopProject
 
         }
 
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is Store)
+            {
+                this.Stocks = ((Store)other).Stocks;
+            }
+        }
+
+
         public Dictionary<int, Product> GetStock()
         {
             if (Stock == null)
