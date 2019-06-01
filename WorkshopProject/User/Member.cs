@@ -22,12 +22,12 @@ namespace Users
         public int id { get; set; }
         public string username { get; set; }
         [Include]
-        public LinkedList<StoreManager> storeManaging { get; set; }
+        public virtual LinkedList<StoreManager> storeManaging { get; set; }
         [Column(TypeName = "DateTime2")]
-        public DateTime birthdate { get; set; }
+        public virtual DateTime birthdate { get; set; }
         public string country { get; set; }
         [Include]
-        public List<Notification> notifications { get; set; }
+        public virtual List<Notification> notifications { get; set; }
         [NotMapped]
         public HashSet<IObserver> observers { get; set; }
         [NotMapped]

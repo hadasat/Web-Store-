@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject.DataAccessLayer;
-using WorkshopProject.DataAccessLayer.Context;
 using WorkshopProject.Log;
 using WorkshopProject.Policies;
 
@@ -16,18 +15,20 @@ namespace WorkshopProject
 {
     public class Store : IEntity
     {
-        //[Key]
+        [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public string name { get; set; }
         public int rank { get; set; }
         public Boolean isActive { get; set; }
         [Include]
-        public virtual ICollection<Stock> Stocks { get; set; } 
-        public List<IBooleanExpression> purchasePolicy { get; set; }
+        public virtual List<Stock> Stocks { get; set; } //added for DB. Through "getStock" translates it to dictionary for backwards compatibility
         [Include]
-        public List<Discount> discountPolicy { get; set; }
+        public virtual List<IBooleanExpression> purchasePolicy { get; set; }
         [Include]
-        public List<IBooleanExpression> storePolicy { get; set; }
+        public virtual List<Discount> discountPolicy { get; set; }
+        [Include]
+        public virtual List<IBooleanExpression> storePolicy { get; set; }
 
         //[NotMapped]
         //private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD

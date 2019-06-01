@@ -13,7 +13,7 @@ namespace WorkshopProject.Policies
     {
         [Key]
         public int id { get; set; }
-        [Include]
+
         public abstract List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user);
 
 

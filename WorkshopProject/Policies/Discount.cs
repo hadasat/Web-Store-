@@ -14,11 +14,11 @@ namespace WorkshopProject.Policies
         [Key]
         public int id { get; set; }
         [Include]
-        public Discount successor { get; set; }
+        public virtual Discount successor { get; set; }
         [Include]
-        public IOutcome outcome { get; set; }
+        public virtual IOutcome outcome { get; set; }
         [Include]
-        public IBooleanExpression condition { get; set; }
+        public virtual IBooleanExpression condition { get; set; }
 
         public static int DiscountCounter = 1;
 

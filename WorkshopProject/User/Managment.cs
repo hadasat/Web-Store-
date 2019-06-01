@@ -103,13 +103,13 @@ namespace Managment
         [Key]
         public int id { get; set; }
         [Include]
-        public Store store { get; set; }
+        public virtual Store store { get; set; }
         [Include]
-        public Roles myRoles { get; set; }
+        public virtual Roles myRoles { get; set; }
         [Include]
-        public LinkedList<StoreManager> subManagers { get; set; }
+        public virtual LinkedList<StoreManager> subManagers { get; set; }
         [Include]
-        public StoreManager father { get; set; }
+        public virtual StoreManager father { get; set; }
         private bool storeOwner;
 
 

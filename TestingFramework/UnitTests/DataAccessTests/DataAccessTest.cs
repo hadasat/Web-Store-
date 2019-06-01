@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
 using WorkshopProject.DataAccessLayer;
-using WorkshopProject.DataAccessLayer.Context;
 using System.Data.Entity;
 using WorkshopProject.Policies;
 

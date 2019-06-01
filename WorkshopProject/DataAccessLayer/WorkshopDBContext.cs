@@ -12,7 +12,7 @@ using Managment;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 
-namespace WorkshopProject.DataAccessLayer.Context
+namespace WorkshopProject.DataAccessLayer
 {
     public class WorkshopDBContext : DbContext
     {
