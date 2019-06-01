@@ -54,10 +54,12 @@ namespace WorkshopProject.DataAccessLayer
             ctx.Set<T>().RemoveRange(entity);
         }
 
-        public void Clear<T>() where T : IEntity
-        {
-            ctx.Set<T>().RemoveRange(GetList<T>());
-        }
+        //public void Clear<T>() where T : IEntity
+        //{
+        //    ctx.Set<T>().RemoveRange(GetList<T>());
+        //    ctx.ChangeTracker.DetectChanges();
+        //    ctx.SaveChanges();
+        //}
 
 
         public void SaveChanges()

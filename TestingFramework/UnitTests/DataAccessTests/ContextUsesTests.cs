@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
 using WorkshopProject.DataAccessLayer;
+using WorkshopProject.Policies;
 
 namespace TestingFramework.UnitTests.DataAccessTests
 {
@@ -15,7 +16,8 @@ namespace TestingFramework.UnitTests.DataAccessTests
     {
 
 
-
+        [TestMethod()]
+        [TestCategory("DAL - Repo")]
         public void StoreTest()
         {
 
@@ -32,6 +34,29 @@ namespace TestingFramework.UnitTests.DataAccessTests
 
             repo.Add(product1); repo.Add(product2); repo.Add(product3);
 
+            store.Stocks.Add(new Stock(10, product1));
+            store.Stocks.Add(new Stock(10, product2));
+            store.Stocks.Add(new Stock(10, product3));
+
+            store.purchasePolicy.Add(new TrueCondition());
+
+
+            repo.Update(store);
+
+            Store getStore = (Store) repo.Get<Store>(store.GetKey());
+
+            Assert.AreSame(getStore, store);
+            Assert.IsNotNull(getStore.Stocks);
+
+            Assert.IsNotNull(getStore.Stocks);
+
+
+
+            getStore = (Store)repo.Get<Store>(store.GetKey());
+            Assert.IsNotNull(getStore.Stocks[0].product);
+
+            //repo.Clear<Store>();
+           // Assert.IsNull(repo.Get<Store>(store.GetKey()));
         }
     }
 }

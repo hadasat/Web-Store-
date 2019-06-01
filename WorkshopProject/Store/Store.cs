@@ -36,7 +36,12 @@ namespace WorkshopProject
         public int storeAccountNum;
         public string storeAddress;
 
-        public Store() { }
+        public Store() {
+            Stocks = new List<Stock>();
+            this.purchasePolicy = new List<IBooleanExpression>();
+            this.storePolicy = new List<IBooleanExpression>();
+            this.discountPolicy = new List<Discount>();
+        }
 
         public Store(int id, string name, int rank, Boolean isActive)
         {
