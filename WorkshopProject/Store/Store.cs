@@ -24,13 +24,13 @@ namespace WorkshopProject
         [NotMapped]
         private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD
         [Include]
-        public List<Stock> Stocks { get; set; } //added for DB. Through "getStock" translates it to dictionary for backwards compatibility
+        public virtual List<Stock> Stocks { get; set; } //added for DB. Through "getStock" translates it to dictionary for backwards compatibility
         [Include]
-        public List<IBooleanExpression> purchasePolicy { get; set; }
+        public virtual List<IBooleanExpression> purchasePolicy { get; set; }
         [Include]
-        public List<Discount> discountPolicy { get; set; }
+        public virtual List<Discount> discountPolicy { get; set; }
         [Include]
-        public List<IBooleanExpression> storePolicy { get; set; }
+        public virtual List<IBooleanExpression> storePolicy { get; set; }
 
         public int storeBankNum;
         public int storeAccountNum;

@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
-using WorkshopProject.DataAccessLayer.Context;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Policies;
 using System.ServiceModel.DomainServices.Server;
 

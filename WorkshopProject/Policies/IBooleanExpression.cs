@@ -24,13 +24,13 @@ namespace WorkshopProject.Policies
         public ItemFilter filter { get; set; }
 
         [NotMapped]
-        public IBooleanExpression firstChild { get { return children[0]; } set => children[0] = value; }
+        public virtual IBooleanExpression firstChild { get { return children[0]; } set => children[0] = value; }
 
         [NotMapped]
-        public IBooleanExpression secondChild { get { return children[1]; } set => children[1] = value; }
+        public virtual IBooleanExpression secondChild { get { return children[1]; } set => children[1] = value; }
 
         [Include]
-        public List<IBooleanExpression> children { get; set; } 
+        public virtual List<IBooleanExpression> children { get; set; } 
 
 
         public static int Idcounter = 1;

@@ -12,7 +12,7 @@ namespace Shopping
         [Key]
         public int id { get; set; }
         [Include]
-        public List<ShoppingCartAndStore> cartsList { get; set; }
+        public virtual List<ShoppingCartAndStore> cartsList { get; set; }
         public static int idBasketCounter = 0;
 
         public ShoppingBasket()
@@ -149,9 +149,9 @@ namespace Shopping
         [Key]
         public int id { get; set; }
         [Include]
-        public Store store { get; set; }
+        public virtual Store store { get; set; }
         [Include]
-        public ShoppingCart cart { get; set; }
+        public virtual ShoppingCart cart { get; set; }
 
         public ShoppingCartAndStore() { }
 

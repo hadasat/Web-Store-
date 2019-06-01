@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity.Infrastructure;
 using Users;
-using WorkshopProject.DataAccessLayer.Context;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.DataAccessLayer
 {

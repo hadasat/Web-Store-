@@ -28,14 +28,14 @@ namespace TansactionsNameSpace
         [NotMapped]
         public User user { get; set; }
         [Include]
-        public Member member { get { return (user is Member) ? (Member)user : null; } set => member = value; }
+        public virtual Member member { get { return (user is Member) ? (Member)user : null; } set => member = value; }
         [Include]
-        public List<ShoppingCartDeal> sucess { get; set; }
+        public virtual List<ShoppingCartDeal> sucess { get; set; }
         [Include]
-        public List<ShoppingCartDeal> fail { get; set; }
+        public virtual List<ShoppingCartDeal> fail { get; set; }
         public double total { get; set; }
         [Include]
-        public status transactionSatus { get; set; }
+        public virtual status transactionSatus { get; set; }
         [NotMapped]
         private IPayment paymentSystem;
         [NotMapped]
@@ -287,12 +287,12 @@ namespace TansactionsNameSpace
         [Key]
         public int id { get; set; }
         [Include]
-        public List<ProductAmountPrice> products { get; set; }
+        public virtual List<ProductAmountPrice> products { get; set; }
         public String storeName { get; set; }
         public int storId { get; set; }
         public double totalPrice { get; set; }
         [Include]
-        public status transStatus { get; set; }
+        public virtual status transStatus { get; set; }
 
         public ShoppingCartDeal(List<ProductAmountPrice> products, String storeName, double totalPrice,int storId, status transStatus)
         {

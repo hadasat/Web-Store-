@@ -32,6 +32,9 @@ namespace WorkshopProject.DataAccessLayer
         //    }       
         //}    
         
+
+        
+
         public static string getConnectionString(bool Production)
         {
             string adress = Local ? localAdress : remoteAdress;
