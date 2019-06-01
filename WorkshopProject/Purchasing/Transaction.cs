@@ -41,10 +41,6 @@ namespace TansactionsNameSpace
         [NotMapped]
         private ISupply supplySystem;
 
-
-
-
-
         public Transaction() { } //added for DB
 
         public Transaction(User user, int cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip, IPayment payService,ISupply supplyService)
@@ -56,6 +52,11 @@ namespace TansactionsNameSpace
         {
             ExternalSystemConnection extSytem = new ExternalSystemConnection();
             constructorCommon(user, cardNumber, month, year, holder, ccv, id, name, address, city, country, zip, (IPayment)extSytem, (ISupply)extSytem);
+        }
+
+        public override int GetKey()
+        {
+            return id;
         }
 
         private async void constructorCommon (User user, int cardNumber, int month, int year, string holder, int ccv, int userId, string name, string address, string city, string country, string zip, IPayment payService, ISupply supplyService)
@@ -302,7 +303,10 @@ namespace TansactionsNameSpace
             this.transStatus = transStatus;
         }
 
-
+        public override int GetKey()
+        {
+            return id;
+        }
         public override void Copy(IEntity other)
         {
             base.Copy(other);

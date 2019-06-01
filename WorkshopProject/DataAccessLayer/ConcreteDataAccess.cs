@@ -166,7 +166,7 @@ namespace WorkshopProject.DataAccessLayer
                 DbEntityEntry<IEntity> attachedEntry = ctx.Entry(existingEntity);
                 attachedEntry.CurrentValues.SetValues(entity);
                 attachedEntry.Entity.Copy(entity);
-                ctx.SaveChanges();
+                //ctx.SaveChanges();
             }
             ctx.SaveChanges();
 

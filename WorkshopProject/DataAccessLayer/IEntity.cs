@@ -8,11 +8,11 @@ namespace WorkshopProject.DataAccessLayer
 {
     public abstract class IEntity
     {
-        public virtual int GetKey()
-        {
-            string propName = "id";
-            return (int) this.GetType().GetProperty(propName).GetValue(this, null);
-        }
+        public abstract int GetKey();
+        //{
+        //    string propName = "id";
+        //    return (int) this.GetType().GetProperty(propName).GetValue(this, null);
+        //}
 
         public virtual void Copy(IEntity other)
         {

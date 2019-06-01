@@ -30,6 +30,10 @@ namespace WorkshopProject.Policies
             this.outcome = outcome;
         }
 
+        public override int GetKey()
+        {
+            return id;
+        }
         public List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
         {
             if (condition.evaluate(products, user)){

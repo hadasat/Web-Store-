@@ -45,7 +45,10 @@ namespace WorkshopProject.Policies
             }
         }
 
-
+        public override int GetKey()
+        {
+            return id;
+        }
         public abstract bool evaluate(List<ProductAmountPrice> products,User user);
 
         public virtual void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)

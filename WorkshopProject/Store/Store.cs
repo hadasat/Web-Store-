@@ -73,7 +73,10 @@ namespace WorkshopProject
 
         }
 
-
+        public override int GetKey()
+        {
+            return id;
+        }
         public override void Copy(IEntity other)
         {
             base.Copy(other);
@@ -482,6 +485,11 @@ namespace WorkshopProject
             this.amount = amount;
             this.product = product;
         }
+        public override int GetKey()
+        {
+            return id;
+        }
+
         public override void Copy(IEntity other)
         {
             base.Copy(other);

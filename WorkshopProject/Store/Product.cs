@@ -38,6 +38,11 @@ namespace WorkshopProject
 
         public Product() { }
 
+        public override int GetKey()
+        {
+            return id;
+        }
+
         public int getId()
         {
             return id;

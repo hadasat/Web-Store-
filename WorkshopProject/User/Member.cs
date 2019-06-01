@@ -528,6 +528,10 @@ namespace Users
             this.createOwnerReqeustId = createOwnerRequestId;
         }
 
+        public override int GetKey()
+        {
+            return id;
+        }
         public override void Copy(IEntity other)
         {
             base.Copy(other);

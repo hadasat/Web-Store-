@@ -23,6 +23,11 @@ namespace Shopping
 
         public List<ShoppingCartAndStore> getCarts() { return cartsList; }
 
+        public override int GetKey()
+        {
+            return id;
+        }
+
         public ShoppingCart getCart(int storeId)
         {
             Predicate<ShoppingCartAndStore> cartPredicat = s => ((ShoppingCartAndStore)s).store.id == storeId;
@@ -154,6 +159,10 @@ namespace Shopping
         {
             this.store = store;
             this.cart = cart;
+        }
+        public override int GetKey()
+        {
+            return id;
         }
 
         public override void Copy(IEntity other)

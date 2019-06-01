@@ -32,6 +32,11 @@ namespace WorkshopProject.Policies
         //    return JsonConvert.DeserializeObject<Product>(json);
         //}
 
+        public override int GetKey()
+        {
+            return id;
+        }
+
         public static List<ProductAmountPrice> translateCart(ShoppingCart cart)
         {
             List<ProductAmountPrice> output = new List<ProductAmountPrice>();

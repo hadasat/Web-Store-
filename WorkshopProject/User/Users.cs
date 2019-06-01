@@ -30,6 +30,10 @@ namespace Users
             Logger.Log("file", logLevel.INFO, "New user been created");
         }
 
+        public override int GetKey()
+        {
+            return id;
+        }
         public virtual bool hasAddRemoveDiscountPermission(Store store)
         {
             return false;

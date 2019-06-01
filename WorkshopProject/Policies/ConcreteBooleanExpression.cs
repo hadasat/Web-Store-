@@ -35,7 +35,12 @@ namespace WorkshopProject.Policies
             //this exception is intended!
             throw new NotImplementedException();
         }
-        
+
+        public override int GetKey()
+        {
+            return id;
+        }
+
     }
 
     public class MinAmount : IBooleanExpression

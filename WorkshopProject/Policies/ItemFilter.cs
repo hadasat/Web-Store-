@@ -24,6 +24,11 @@ namespace WorkshopProject.Policies
             base.Copy(other);
         }
 
+        public override int GetKey()
+        {
+            return id;
+        }
+
         public override void LoadMe()
         {
 
