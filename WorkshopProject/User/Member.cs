@@ -67,7 +67,7 @@ namespace Users
         /*** SERVICE LAYER FUNCTIONS***/
         public void logOut()
         {
-            Logger.Log("file", logLevel.INFO, "user: " + this.username + "log out and succses");
+            Logger.Log("event", logLevel.INFO, "user: " + this.username + "log out and succses");
             ConnectionStubTemp.logout(username);
         }
 
@@ -81,7 +81,7 @@ namespace Users
             StoreManager storeOwnerManager = new StoreManager(store, storeOwner);
             storeOwnerManager.SetStoreOwnerTrue();
             storeManaging.AddFirst(storeOwnerManager);
-            Logger.Log("file", logLevel.INFO, "user: " + this.username + "created succesfully new store: " + store.id);
+            Logger.Log("event", logLevel.INFO, "user: " + this.username + "created succesfully new store: " + store.id);
         }
 
         public void addStoreToMe(StoreManager storeManager)
@@ -120,7 +120,7 @@ namespace Users
                     break;
                 }
             }
-            Logger.Log("file", logLevel.INFO, "user: " + this.username + "closed succesfully store: " + store.id);
+            Logger.Log("event", logLevel.INFO, "user: " + this.username + "closed succesfully store: " + store.id);
         }
 
         public bool isStoresManagers()
@@ -274,7 +274,7 @@ namespace Users
         //TODO : is there  need for remove manager option?
         public bool removeManager(string username, Store store)
         {
-            Logger.Log("file", logLevel.INFO, "user: " + this.username + "try to remove user: " + username);
+            Logger.Log("event", logLevel.INFO, "user: " + this.username + "try to remove user: " + username);
             StoreManager myStoreRoles = getStoreManagerOb(store);
             Member memberToRemove = ConnectionStubTemp.getMember(username);
             bool res = myStoreRoles.removeManager(memberToRemove.getStoreManagerOb(store));
@@ -284,7 +284,7 @@ namespace Users
 
         public bool removeManager(string username, int StoreID)
         {
-            Logger.Log("file", logLevel.INFO, "user: " + this.username + "try to remove user: " + username);
+            Logger.Log("event", logLevel.INFO, "user: " + this.username + "try to remove user: " + username);
             Store store = GetStore(StoreID);
             StoreManager myStoreRoles = getStoreManagerOb(store);
             Member memberToRemove = ConnectionStubTemp.getMember(username);

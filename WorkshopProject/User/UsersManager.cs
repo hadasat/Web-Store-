@@ -112,7 +112,7 @@ namespace Users
             int id;
             if (mapIDUsermane.TryGetValue(username, out id))
             {
-                Logger.Log("file", logLevel.INFO, "user try to register with taken username:" + username);
+                Logger.Log("event", logLevel.INFO, "user try to register with taken username:" + username);
                 throw new Exception("this username is already taken. try somthing else");
             }
             id = getID();
@@ -125,11 +125,11 @@ namespace Users
             if (username == "Admin" && password == "Admin")
             {
                 newMember = new SystemAdmin(username, id, birthdate, country);
-                Logger.Log("file", logLevel.INFO, "Admin has logged in");
+                Logger.Log("event", logLevel.INFO, "Admin has logged in");
             }
             members[id] = newMember;
             mapIDUsermane[username] = id;
-            Logger.Log("file", logLevel.INFO, "user:" + username + " succesfully registered");
+            Logger.Log("event", logLevel.INFO, "user:" + username + " succesfully registered");
         }
 
 
