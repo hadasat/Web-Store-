@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
-using WorkshopProject.DataAccessLayer.Context;
+using WorkshopProject.DataAccessLayer;
 
 namespace TestingFramework.UnitTests.DataAccessTests
 {

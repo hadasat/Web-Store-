@@ -85,6 +85,7 @@
     <Compile Include="Communication\Server\IWebSocketMessageSender.cs" />
     <Compile Include="Communication\Server\Server.cs" />
     <Compile Include="Communication\UserConnectionInfo.cs" />
+    <Compile Include="DataAccessLayer\Repo.cs" />
     <Compile Include="DataAccessLayer\WorkshopDBContext.cs" />
     <Compile Include="DataAccessLayer\DataAccessDriver.cs" />
     <Compile Include="DataAccessLayer\old\ConcreteDataAccess.cs" />
@@ -182,7 +183,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataAccessLayer\Context\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
