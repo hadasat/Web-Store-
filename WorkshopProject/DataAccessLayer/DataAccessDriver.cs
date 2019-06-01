@@ -12,7 +12,7 @@ namespace WorkshopProject.DataAccessLayer
         public static string remoteAdress = "Data Source=10.0.0.60;User ID = workshop; Password=********";
         public static string localAdress = "Data Source=.\\SQLEXPRESS;";
 
-        public static bool Persistent { get; set; } = true;
+        public static bool Persistent { get; set; } = false;
         public static bool Local { get; set; } = true;
         public static bool Production { get; set; } = false;
 
