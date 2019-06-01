@@ -106,14 +106,15 @@ namespace WorkshopProject
             }
         }
 
-        public ICollection<Stock> GetStock()
+        //public ICollection<Stock> GetStock()
+        public Dictionary<int, Product> GetStock()
         {
-            //if (Stock == null)
-            //{
-            //    Stock = getStockListAsDictionary();
-            //}
-            //return Stock;
-            return Stocks;
+            if (Stock == null)
+            {
+                Stock = getStockListAsDictionary();
+            }
+            return Stock;
+            //return Stocks;
         }
 
         public List<ProductAmountPrice> afterDiscount(List<ProductAmountPrice> products, User user)
