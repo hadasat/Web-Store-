@@ -58,7 +58,7 @@ function onStart(initFunc) {
                 console.log("got new id "+msg.data);
                 break;
             case "notification":
-                handleNotification(msg);alert(msg.data);
+                handleNotification(msg);
                 break;
             default:
                 handleMessage(msg);
@@ -76,15 +76,12 @@ function handleNotification(msg){
             alert(msg.data); 
             break;
         case 'addManagerConfirmation':
-
+            var ans = confirm(msg.data+'\n Press Ok to approve and Cancel to disapprove');
+            var request= ans? 'approveOwenrshipRequest' : 'disApproveOwenrshipRequest';
+            sendRequest('action',request,msg.data.requestId);
             break;
         default:
             return;
-    }
-    if(msg.info==='message'){
-        alert(msg.data); 
-    }else{
-
     }
 }
 

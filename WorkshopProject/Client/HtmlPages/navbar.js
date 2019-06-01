@@ -31,7 +31,7 @@ document.getElementById("navbar_header").innerHTML = `
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li  class="nav-item">
-                    <a class="nav-link"  href="javascript:r();" >Notification <span class="badge badge-info">0</span></a>
+                    <a class="nav-link"  href="#" >Notification <span class="badge badge-info">0</span></a>
                 </li>
                 <li id="nav_admin" class="nav-item">
                     <a class="nav-link" href="/wot/adminactions">Admin Actions</a>
@@ -47,11 +47,6 @@ document.getElementById("navbar_header").innerHTML = `
 $('#navbar_header').on('click','#nav_notification',function(){
     console.log("test");
 });
-
-function r(){
-    console.log("ttt");
-}
-
 
 // <!-- NavBar  Script -->
  function setUpOptBtn(){
