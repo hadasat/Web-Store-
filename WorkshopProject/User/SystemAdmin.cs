@@ -29,7 +29,7 @@ namespace Users
             }
             catch (Exception ex)
             {
-                Logger.Log("file", logLevel.INFO, "Admin fail removed user: " + userName + " user doen't exist");
+                Logger.Log("event", logLevel.INFO, "Admin fail removed user: " + userName + " user doen't exist");
                 throw new Exception(ex.ToString());
             }
             if (member.isStoresManagers())
@@ -48,12 +48,12 @@ namespace Users
                     }
                 }
                 ConnectionStubTemp.removeMember(member);
-                Logger.Log("file", logLevel.INFO, "Admin succesfully removed user: " + userName);
+                Logger.Log("event", logLevel.INFO, "Admin succesfully removed user: " + userName);
                 return ConnectionStubTemp.removeUser(userName, this);
             }
             else
             {
-                Logger.Log("file", logLevel.INFO, "Admin succesfully removed user: " + userName);
+                Logger.Log("event", logLevel.INFO, "Admin succesfully removed user: " + userName);
                 ConnectionStubTemp.removeMember(member);
                 return ConnectionStubTemp.removeUser(userName, this);
             }

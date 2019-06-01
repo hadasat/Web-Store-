@@ -34,9 +34,14 @@
 
  onStart(init);
  function init(){
+     cleanList()
     sendRequest('data','getAllMembers',null).then(function(res){
         addMembersToSelectList(res.$values);
     })
+ }
+
+ function cleanList(){
+    $('#members').html('');
  }
 
  function addMembersToSelectList(members){
