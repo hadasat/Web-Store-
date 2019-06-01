@@ -23,8 +23,9 @@ namespace Users
         public static Dictionary<int, OwnershipRequest> ownershipsRequestList = new Dictionary<int, OwnershipRequest>();
         // <ID, ownershipRequest>
 
-        public static int memberIDGenerator = 0;
+        //public static int memberIDGenerator = 0;
         public static int ownerShipRequestsIDGenerator = 0;
+        private static int DALTRIES = 5;
 
         public static void init()
         {
@@ -78,10 +79,12 @@ namespace Users
 
         /*** START - USER FUNCTIONS ***/
 
-        private static int getID()
-        {
-            return memberIDGenerator++;
-        }
+        //private static int getID()
+        //{
+        //    return memberIDGenerator++;
+        //}
+
+
         //sign in
         public static int identifyUser(string username, string password)
         {
@@ -105,8 +108,6 @@ namespace Users
         public static void registerNewUser(string username, string password, DateTime birthdate, string country)
         {
 
-
-
             //jonathan rewrite
             sanitizeInput(username, password);
             int id;
@@ -115,24 +116,39 @@ namespace Users
                 Logger.Log("event", logLevel.INFO, "user try to register with taken username:" + username);
                 throw new Exception("this username is already taken. try somthing else");
             }
-            id = getID();
-            pHandler.hashPassword(password, id);
+            //id = getID();
+            pHandler.hashPassword(password, 0);
             Member newMember;
             if (DateTime.Today < birthdate)
-                newMember = new Member(username, id);
+                newMember = new Member(username, 0);
             else
-                newMember = new Member(username, id, birthdate, country);
+                newMember = new Member(username, 0, birthdate, country);
             if (username == "Admin" && password == "Admin")
             {
-                newMember = new SystemAdmin(username, id, birthdate, country);
+                newMember = new SystemAdmin(username, 0, birthdate, country);
                 Logger.Log("event", logLevel.INFO, "Admin has logged in");
             }
-            members[id] = newMember;
-            mapIDUsermane[username] = id;
+
+            updateMemberInDal(newMember);
+
+            members[newMember.id] = newMember;
+            mapIDUsermane[username] = newMember.id;
             Logger.Log("event", logLevel.INFO, "user:" + username + " succesfully registered");
         }
 
-
+        private static void updateMemberInDal(Member m)
+        {
+            int i = 0;
+            bool res = false;
+            while (i < DALTRIES && !res)
+            {
+                res = UsersDalManager.createMember(m);
+            }
+            if (!res)
+            {
+                throw new Exception("Sorry somthing went wrong, please try agian");
+            }
+        }
 
 
         private static bool sanitizeInput(string username, string password)
@@ -177,7 +193,7 @@ namespace Users
 
         public static void logout(string username)
         {
-
+            
         }
 
 
@@ -192,8 +208,26 @@ namespace Users
         public static bool removeUser(string username, Member sa)
         {
             if (sa is SystemAdmin)
+            {
+                unactivateMember(getMember(username));
                 return true;
+            }
             return false;
+        }
+
+
+        private static void unactivateMember(Member m)
+        {
+            int i = 0;
+            bool res = false;
+            while (i < DALTRIES && !res)
+            {
+                res = UsersDalManager.unactivateMember(m);
+            }
+            if (!res)
+            {
+                throw new Exception("Sorry somthing went wrong, please try agian");
+            }
         }
 
 

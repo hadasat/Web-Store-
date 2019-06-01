@@ -20,6 +20,7 @@ namespace Users
     {
         [Key]
         public int id { get; set; }
+        public bool active { get; set; }
         public string username { get; set; }
         [Include]
         public LinkedList<StoreManager> storeManaging { get; set; }
@@ -32,7 +33,7 @@ namespace Users
         public HashSet<IObserver> observers { get; set; }
         [NotMapped]
         public Object notificationLock { get; set; }
-        //public List<Transaction> purchasesHistory { get; set; }
+
 
 
         public Member() : base()
@@ -50,18 +51,19 @@ namespace Users
         public Member(string username, int ID) : this()//Register
         {
             this.id = ID;
+            this.active = true;
             this.username = username;
             this.country = "none";
-            //purchasesHistory = new List<Transaction>();
+
         }
 
         public Member(string username, int ID, DateTime birthdate, string country) : this()//Register
         {
             this.id = ID;
+            this.active = true;
             this.username = username;
             this.birthdate = birthdate;
             this.country = country;
-           // purchasesHistory = new List<Transaction>();
         }
 
         /*** SERVICE LAYER FUNCTIONS***/
