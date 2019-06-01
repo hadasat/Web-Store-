@@ -246,6 +246,7 @@ namespace WorkshopProject.Communication.Server
             {
                 string htmlPageToSend = newConnectionHandler.httpNewConnectionHandler(context);
                 //return the html page received
+                context.Response.ContentType = "text/html";
                 using (Stream output = context.Response.OutputStream)
                 {
                     //convert the html page to bytes and send back
