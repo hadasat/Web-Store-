@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.Policies
 {
-    public class Discount
+    public class Discount : IEntity
     {
         [Key]
         public int id { get; set; }
@@ -78,6 +79,25 @@ namespace WorkshopProject.Policies
         {
             //return base.GetHashCode();
             return id;
+        }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is Discount)
+            {
+                Discount _other = ((Discount)other);
+                successor = _other.successor;
+                outcome = _other.outcome;
+                condition = _other.condition;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            successor.LoadMe();
+            outcome.LoadMe();
+            condition.LoadMe();
         }
     }
 }

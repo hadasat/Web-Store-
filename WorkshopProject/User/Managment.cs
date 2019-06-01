@@ -6,13 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Log;
 
 namespace Managment
 {
 
 
-    public class Roles
+    public class Roles : IEntity
     {
         [Key]
         public int id { get; set; }
@@ -85,10 +86,18 @@ namespace Managment
                     this.AppointOwner;
         }*/
 
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+        }
 
+        public override void LoadMe()
+        {
+
+        }
     }
 
-    public class StoreManager
+    public class StoreManager : IEntity
     {
 
         [Key]
@@ -228,6 +237,37 @@ namespace Managment
         public bool isStoreOwner()
         {
             return this.storeOwner;
+        }
+
+
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is StoreManager)
+            {
+                StoreManager _other = ((StoreManager)other);
+                store = _other.store;
+                myRoles = _other.myRoles;
+                subManagers = _other.subManagers;
+                father = _other.father;
+            }
+        }
+
+        public override void LoadMe()
+        {
+
+            store.LoadMe();
+
+            myRoles.LoadMe();
+
+            foreach (IEntity obj in subManagers)
+            {
+                obj.LoadMe();
+            }
+
+            father.LoadMe();
+
         }
     }
 }

@@ -7,57 +7,66 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 
 namespace Shopping
 {
 
-    public class ShoppingCart
+    public class ShoppingCart : IEntity
     {
         [Key]
         public int id { get; set; }
-        [NotMapped]
-        private Dictionary<Product, int> products; //USE ONLY GETTER
         [Include]
-        public List<JsonShoppingCartValue> productsList { get; set; }
+        public List<ProductAmount> products { get; set; }
         public static int idCartCounter = 0;
 
         public ShoppingCart()
         {
             id = ++idCartCounter;
-            if(productsList == null)
+            if (products == null)
             {
-                productsList = new List<JsonShoppingCartValue>();
+                products = new List<ProductAmount>();
             }
-            //products = new Dictionary<Product, int>();
         }
 
-
-        public ShoppingCart(JsonShoppingCart cart)
+        public bool containProduct(Product product)
         {
-            if (cart != null)
-            {
-                id = cart.id;
-                products = new Dictionary<Product, int>();
-                foreach (JsonShoppingCartValue p in cart.products)
-                {
-                    products.Add(p.product, p.amount);
-                }
-            }
+            Predicate<ProductAmount> p = s => ((ProductAmount)s).product.Equals(product);
+            return products.Find(p) != null;
+        }
+
+        public ProductAmount getCartValue(int id)
+        {
+            Predicate<ProductAmount> productPredicat = s => ((ProductAmount)s).product.id == id;
+            return products.Find(productPredicat);
+        }
+
+        public Product getProduct(int id)
+        {
+            return getCartValue(id).product;
         }
 
         public bool setProductAmount(Product product, int amount)
         {
-            if(amount == 0 && products.ContainsKey(product))
+            ProductAmount wannaBeCart;
+            if (amount == 0 && containProduct(product))
             {
-                getProducts().Remove(product);
+                wannaBeCart = getCartValue(product.id);
+                products.Remove(wannaBeCart);
                 return true;
             }
             else if (amount > 0)
             {
-                if (getProducts().ContainsKey(product))
-                    getProducts()[product] = amount;
+                if (containProduct(product))
+                {
+                    ProductAmount p = getCartValue(product.id);
+                    p.amount = amount;
+                }
                 else
-                    getProducts().Add(product, amount);
+                {
+                    wannaBeCart = new ProductAmount(product, amount);
+                    products.Add(wannaBeCart);
+                }
                 return true;
             }
             return false;
@@ -67,8 +76,11 @@ namespace Shopping
         {
             if (amount >= 0)
             {
-                if (getProducts().ContainsKey(product))
-                    setProductAmount(product, getProducts()[product] + amount);
+                if (containProduct(product))
+                {
+                    int currentAmount = getProductAmount(product);
+                    setProductAmount(product, currentAmount + amount);
+                }
                 else
                     setProductAmount(product, amount);
                 return true;
@@ -78,110 +90,76 @@ namespace Shopping
 
         public int getProductAmount(Product product)
         {
-            foreach (KeyValuePair<Product, int> p in getProducts()) 
-                if (p.Key.Equals(product))
-                    return p.Value;
-                    
-            return 0;
+            Predicate<ProductAmount> productPredicat = s => ((ProductAmount)s).product.Equals(product);
+            ProductAmount cartValue = products.Find(productPredicat);
+            if (cartValue == null)
+                return 0;
+            return cartValue.amount;
         }
 
         public int getTotalAmount()
         {
             int total = 0;
-            foreach (KeyValuePair<Product, int> c in getProducts())
+            foreach (ProductAmount c in products)
             {
-                total += c.Value;
+                total += c.amount;
             }
             return total;
         }
 
-        public Dictionary<Product, int> getProducts()
+        public List<ProductAmount> getProducts()
         {
-            if (products == null)
-            {
-                products = productListToDictionary();
-            }
             return products;
         }
 
-        private Dictionary<Product, int> productListToDictionary()
+        public override void Copy(IEntity other)
         {
-            Dictionary<Product, int> ret = new Dictionary<Product, int>();
-            foreach (JsonShoppingCartValue prod in productsList)
+            base.Copy(other);
+            if (other is ShoppingCart)
             {
-                ret.Add(prod.product, prod.amount);
+                ShoppingCart _other = ((ShoppingCart)other);
+                products = _other.products;
             }
-            return ret;
+        }
+
+        public override void LoadMe()
+        {
+            foreach (IEntity obj in products)
+            {
+                obj.LoadMe();
+
+
+            }
         }
     }
 
-    public class JsonShoppingCartValue
+    public class ProductAmount : IEntity
     {
         [Key]
         public int id { get; set; }
-        public Product product { get; }
-        public int amount { get; }
+        [Include]
+        public Product product { get; set; }
+        public int amount { get; set; }
 
-        public JsonShoppingCartValue(Product product,int amount)
+        public ProductAmount(Product product, int amount)
         {
             this.product = product;
             this.amount = amount;
         }
-    }
 
-    public class JsonShoppingCart
-    {
-        public List<JsonShoppingCartValue> products { get; set; }
-        public int id { get; set; }
-
-        public JsonShoppingCart(ShoppingCart shopping)
+        public override void Copy(IEntity other)
         {
-            products = new List<JsonShoppingCartValue>();
-            this.id = shopping.id;
-            copyCart(shopping);
-        }
-
-        public JsonShoppingCart(int id,List<JsonShoppingCartValue> list)
-        {
-            this.id = id;
-            products = list;
-            
-        }
-        public JsonShoppingCart()
-        {
-        }
-
-        private void copyCart(ShoppingCart shopping)
-        {
-            Dictionary<Product, int> shoppingProducts = shopping.getProducts();
-            foreach (KeyValuePair<Product,int> pair in shoppingProducts)
+            base.Copy(other);
+            if (other is ProductAmount)
             {
-                Product p = pair.Key;
-                int amount = pair.Value;
-                JsonShoppingCartValue item = new JsonShoppingCartValue(p, amount);
-                products.Add(item);
+                ProductAmount _other = ((ProductAmount)other);
+                product = _other.product;
             }
         }
 
+        public override void LoadMe()
+        {
+            product.LoadMe();
+        }
     }
 }
-/*public ShoppingCart(ShoppingCart s)
-{
-    this.products = new Dictionary<Product, int>();
-    Dictionary<Product, int> products = s.getProducts();
-    foreach (KeyValuePair<Product, int> c in products)
-    {
-        Product product = c.Key;
-        int amount = c.Value;
-        this.products[product] = amount;
-    }
-}*/
-
-/*public bool addProduct(Product product)
-   {
-       if (products.ContainsKey(product))
-           products[product]++;
-       products[product] = 1;
-       return true;
-   }*/
-

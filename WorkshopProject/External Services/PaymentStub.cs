@@ -7,33 +7,54 @@ using Users;
 
 namespace WorkshopProject.External_Services
 {
-    public static class PaymentStub
+    public class PaymentStub : IPayment
     {
-        public static bool ret = true;
+        public bool ret;
 
-        public static bool getRet()
+        public PaymentStub (bool active)
+        {
+            ret = active;
+        }
+
+
+        public bool getRet()
         {
             return ret;
         }
 
-        public static void setRet(bool newRet)
+        public void setRet(bool newRet)
         {
             ret = newRet;
         }
 
-        public static double Pay(double price,int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
+        public double Pay(double price, int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
         {
             return price;
         }
 
-        public static double Refund(double amount, int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
+        public double Refund(double amount, int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
         {
             return amount;
         }
 
-        public static bool connectionTest()
+        public bool connectionTest()
         {
             return ret;
+        }
+
+        public Task<int> payment(int cardNumber, int month, int year, string holder, int ccv, int id)
+        {
+            return ret ? Task.FromResult(10000) : Task.FromResult (- 1);
+        }
+
+        public Task<bool> cancelPayment(int transactionId)
+        {
+            return Task.FromResult(ret);
+        }
+
+        public void Dispose()
+        {
+            //does nothing
         }
     }
 }

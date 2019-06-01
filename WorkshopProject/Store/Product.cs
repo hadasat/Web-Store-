@@ -4,11 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkshopProject.DataAccessLayer;
 using static WorkshopProject.Category;
 
 namespace WorkshopProject
 {
-    public class Product
+    public class Product : IEntity
     {
         public static int idGenerator = 0;
         [Key]
@@ -64,6 +65,16 @@ namespace WorkshopProject
             int result = id;
             result = (result * 397) ^ storeId;
             return result;
+        }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+        }
+
+        public override void LoadMe()
+        {
+            
         }
     }
 }

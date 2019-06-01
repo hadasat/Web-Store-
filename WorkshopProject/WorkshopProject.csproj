@@ -90,10 +90,13 @@
     <Compile Include="DataAccessLayer\ConcreteDataAccess.cs" />
     <Compile Include="DataAccessLayer\Examples\DataAccessExamples.cs" />
     <Compile Include="DataAccessLayer\IDataAccess.cs" />
-    <Compile Include="DataAccessLayer\IDataAccess1.cs" />
+    <Compile Include="DataAccessLayer\IEntity.cs" />
     <Compile Include="Examples\ClassForTestExample.cs" />
     <Compile Include="Examples\LogExample.cs" />
     <Compile Include="External Services\ConsistencyStub.cs" />
+    <Compile Include="External Services\ExternalSystemConnection.cs" />
+    <Compile Include="External Services\IPayment.cs" />
+    <Compile Include="External Services\ISupply.cs" />
     <Compile Include="External Services\PaymentStub.cs" />
     <Compile Include="External Services\SupplyStub.cs" />
     <Compile Include="Communication\IObserver.cs" />

@@ -21,6 +21,7 @@ namespace TestingFramework.AcceptanceTests.Req_special
 
         [TestMethod]
         [TestCategory("Req_special")]
+        [TestCategory("Regression")]
         public void PaymentSystemConnectionTest()
         {
             try
@@ -36,13 +37,15 @@ namespace TestingFramework.AcceptanceTests.Req_special
 
         public void PaymentSystemConnectionTestInner()
         {
-            bool result = PaymentStub.connectionTest();
+            PaymentStub payStub = new PaymentStub(true);
+            bool result = payStub.connectionTest();
             Assert.IsTrue(result);
         }
 
 
         [TestMethod]
         [TestCategory("Req_special")]
+        [TestCategory("Regression")]
         public void SupplySystemConnectionTest()
         {
             try
@@ -58,7 +61,8 @@ namespace TestingFramework.AcceptanceTests.Req_special
 
         public void SupplySystemConnectionTestInner()
         {
-            bool result = SupplyStub.connectionTest();
+            SupplyStub supplyStub = new SupplyStub(true);
+            bool result = supplyStub.connectionTest();
             Assert.IsTrue(result);
         }
 

@@ -14,7 +14,7 @@ using WorkshopProject.Policies;
 
 namespace WorkshopProject
 {
-    public class Store
+    public class Store : IEntity
     {
         //[Key]
         public int id { get; set; }
@@ -97,6 +97,39 @@ namespace WorkshopProject
 
         }
 
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is Store)
+            {
+                Store _other = ((Store)other);
+                Stocks = _other.Stocks;
+                purchasePolicy = _other.purchasePolicy;
+                discountPolicy = _other.discountPolicy;
+                storePolicy = _other.storePolicy;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            foreach (IEntity obj in Stocks)
+            {
+                obj.LoadMe();
+            }
+            foreach (IEntity obj in purchasePolicy)
+            {
+                obj.LoadMe();
+            }
+            foreach (IEntity obj in discountPolicy)
+            {
+                obj.LoadMe();
+            }
+            foreach (IEntity obj in storePolicy)
+            {
+                obj.LoadMe();
+            }
+        }
         public ICollection<Stock> GetStock()
         {
             //if (Stock == null)
@@ -322,7 +355,7 @@ namespace WorkshopProject
             if (!amountIsLegal(amountToAdd))
             {
                 throw new Exception("the amount is illegal");
-                
+
             }
 
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
@@ -399,8 +432,8 @@ namespace WorkshopProject
                 return -3;
             Discount fakeDis = new Discount(null, null);
             fakeDis.id = discountId;
-            if(this.discountPolicy.Remove(fakeDis))
-                    return discountId;
+            if (this.discountPolicy.Remove(fakeDis))
+                return discountId;
             return -1;
         }
 
@@ -433,7 +466,7 @@ namespace WorkshopProject
             foreach (IBooleanExpression b in this.purchasePolicy)
                 if (b.id == policyId)
                     temp = b;
-            if(this.purchasePolicy.Remove(temp))
+            if (this.purchasePolicy.Remove(temp))
                 return policyId;
             return -1;
         }
@@ -485,7 +518,7 @@ namespace WorkshopProject
     }
 
 
-    public class Stock
+    public class Stock : IEntity
     {
         [Key]
         public int id { get; set; }
@@ -500,6 +533,20 @@ namespace WorkshopProject
         {
             this.amount = amount;
             this.product = product;
+        }
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is Stock)
+            {
+                Stock _other = ((Stock)other);
+                product = _other.product;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            product.LoadMe();
         }
     }
 

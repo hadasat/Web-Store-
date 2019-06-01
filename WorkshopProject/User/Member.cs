@@ -12,6 +12,7 @@ using WorkshopProject.Communication;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TansactionsNameSpace;
+using WorkshopProject.DataAccessLayer;
 
 namespace Users
 {
@@ -62,7 +63,6 @@ namespace Users
             this.country = country;
            // purchasesHistory = new List<Transaction>();
         }
-
 
         /*** SERVICE LAYER FUNCTIONS***/
         public void logOut()
@@ -493,19 +493,14 @@ namespace Users
             sendMessageToAdmin(msg);
         }
 
-
-
-
-
-
         #endregion
     }
 
 
 
-    public class Notification
+    public class Notification : IEntity
     {
-
+        [Include]
         public enum NotificationType{
             NORMAL,
             CREATE_OWNER
@@ -533,6 +528,20 @@ namespace Users
             this.createOwnerReqeustId = createOwnerRequestId;
         }
 
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is Notification)
+            {
+                Notification _other = ((Notification)other);
+                notificationType = _other.notificationType;
+            }
+        }
+
+        public override void LoadMe()
+        {
+
+        }
 
     }
 }

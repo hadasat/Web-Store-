@@ -101,7 +101,8 @@ namespace WorkshopProject.Communication
                 {"removeuser",removeUserHandler },
                 {"getallmanagers",getAllManagersHandler },
                 {"approveowenrshiprequest",approveOwnershipResponseHandler },
-                {"disapproveowenrshiprequest",disapproveOwnershipResponseHandler }
+                {"disapproveowenrshiprequest",disapproveOwnershipResponseHandler },
+                {"buyshoppingbasket",buyShoppingBasketHandler }
 
             };
         }
@@ -599,20 +600,50 @@ namespace WorkshopProject.Communication
         }
 
 
-        /*
-                private void --(JObject msgObj, string message)
-                {
-                    JsonResponse response;
-                    int requestId = (int)msgObj["id"];
+        private void buyShoppingBasketHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            //{int cardNumber, int month,int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip}
+            int cardNumber = (int)msgObj["data"]["cardNumber"];
+            int month = (int)msgObj["data"]["month"];
+            int year = (int)msgObj["data"]["year"];
+            string holder = (string)msgObj["data"]["holder"];
+            int ccv = (int)msgObj["data"]["cvv"];
+            int id = (int)msgObj["data"]["id"];
+            string name = (string)msgObj["data"]["name"];
+            string address = (string)msgObj["data"]["address"];
+            string city = (string)msgObj["data"]["city"];
+            string country = (string)msgObj["data"]["country"];
+            string zip = (string)msgObj["data"]["zip"];
 
-                    sendMyselfAMessage(JsonHandler.SerializeObject(response));
+            try
+            {
+                user.BuyShoppingBasket(cardNumber, month, year, holder, ccv, id, name, address, city, country, zip);
+                response = JsonResponse.generateActionSucces(requestId);
+            }catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
 
-                }
-         */
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+
+        }
+
+    /*
+            private void --(JObject msgObj, string message)
+            {
+                JsonResponse response;
+                int requestId = (int)msgObj["id"];
+
+                sendMyselfAMessage(JsonHandler.SerializeObject(response));
+
+            }
+     */
 
 
 
-        #endregion
+    #endregion
 
-    }
+}
 }

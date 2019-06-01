@@ -51,8 +51,10 @@ namespace IntegrationTests
         [TestInitialize]
         public void Init()
         {
+            user.Register("user-hadas", "user-atiya", DateTime.Now.AddYears(-25), "shit");
+            user.login("user-hadas", "user-atiya");
             userShoppingBasket = user.user.shoppingBasket;
-            menager.Register("hadas", "atiya", DateTime.Now, "shit");
+            menager.Register("hadas", "atiya", DateTime.Now.AddYears(-25), "shit");
             menager.login("hadas", "atiya");
             
             for(int i=0; i < store.Length; i++)
@@ -94,6 +96,7 @@ namespace IntegrationTests
         [TestCategory("TransactionServiceTest")]
         public void AddProductToBasketTest()
         {
+            Init();
             //adding product to user basket
             addingProductToBasket(amountToBuy,0);
             Assert.AreEqual(amountToBuy, userShoppingBasket.getProductAmount(product[0]));
@@ -104,28 +107,34 @@ namespace IntegrationTests
             addingProductToBasket(amountToBuy, 1);
             Assert.AreEqual(amountToBuy, userShoppingBasket.getProductAmount(product[1]));
 
+            Transaction.updateUser(user.user);
+
             userShoppingBasket.cleanBasket();
         }
 
         [TestMethod()]
         [TestCategory("TransactionServiceTest")]
+        [TestCategory("Regression")]
         public void BuyShoppingBasketTest()
         {
-            PaymentStub.setRet(true);
-            SupplyStub.setRet(true);
+            //PaymentStub.setRet(true);
+            //SupplyStub.setRet(true);
+            IPayment payStub = new PaymentStub(true);
+            ISupply supplyStub = new SupplyStub(true);
+
             ConsistencyStub.setRet(true);
 
             //init
             addingProductToBasket(amountToBuy, 0);
             addingProductToBasket(amountToBuy, 0);
             addingProductToBasket(amountToBuy, 1);
-            PaymentStub.setRet(true);
-            SupplyStub.setRet(true);
+            //PaymentStub.setRet(true);
+            //SupplyStub.setRet(true);
             ConsistencyStub.setRet(true);
 
-            int credit = 0, csv = 0;
-            string expirydate = "", shippingAddress = "";
-            Transaction transaction = new Transaction(user.user, credit, csv, expirydate, shippingAddress);
+            int cardNumber = 0, ccv = 0, month = 10, year = 2050, id = 123456789;
+            string holder = "mosh moshe", city = "shit", country = "shit", zip = "12345", address = "";
+            Transaction transaction = new Transaction(user.user, cardNumber,month,year,holder,ccv,id,holder,address,city,country,zip,payStub,supplyStub);
             int transId = transaction.id;
             Assert.IsTrue(transId > 0,"1");
             //chack the basket is empty
@@ -138,6 +147,7 @@ namespace IntegrationTests
 
         [TestMethod()]
         [TestCategory("TransactionServiceTest")]
+        [TestCategory("RegrationTest")]
         public void GetShoppingCartTest()
         {
             //init
@@ -146,9 +156,9 @@ namespace IntegrationTests
             addingProductToBasket(amountToBuy, 3);
 
             string cart = user.GetShoppingCart(storeId[0]);
-            JsonShoppingCart jsonshopping = JsonConvert.DeserializeObject<JsonShoppingCart>(cart);
-            ShoppingCart shopping = new ShoppingCart(jsonshopping);
-            ShoppingCart actualShopping = userShoppingBasket.getCarts()[store[0]];
+            ShoppingCart shopping = JsonConvert.DeserializeObject<ShoppingCart>(cart);
+
+            ShoppingCart actualShopping = userShoppingBasket.getCart(store[0]);
             int recivedNum = shopping.getProducts().Count();
             int actualNum = actualShopping.getProducts().Count;
             Assert.AreEqual(actualNum, recivedNum);
@@ -174,6 +184,7 @@ namespace IntegrationTests
 
         [TestMethod()]
         [TestCategory("TransactionServiceTest")]
+        [TestCategory("RegretionTest")]
         public void GetShoppingBasketTest()
         {
             //init
@@ -183,8 +194,7 @@ namespace IntegrationTests
             addingProductToBasket(amountToBuy, 1);
 
             string basket = user.GetShoppingBasket();
-            JsonShoppingBasket jsonShopping = JsonConvert.DeserializeObject<JsonShoppingBasket>(basket);
-            ShoppingBasket shopping = new ShoppingBasket(jsonShopping);
+            ShoppingBasket shopping = JsonConvert.DeserializeObject<ShoppingBasket>(basket);
             
             //check id
             int recivedNum = shopping.id;
@@ -211,6 +221,7 @@ namespace IntegrationTests
 
         [TestMethod()]
         [TestCategory("TransactionServiceTest")]
+
         public void SetProductAmountInBaketTest()
         {
             //init
