@@ -23,7 +23,7 @@ namespace WorkshopProject
         [NotMapped]
         private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD
         [Include]
-        public List<Stock> Stocks { get; set; }
+        public List<Stock> Stocks { get; set; } //added for DB. Through "getStock" translates it to dictionary for backwards compatibility
         [Include]
         public List<IBooleanExpression> purchasePolicy { get; set; }
         [Include]
@@ -88,7 +88,7 @@ namespace WorkshopProject
 
         public override void LoadMe()
         {
-            foreach(IEntity obj in Stocks)
+            foreach (IEntity obj in Stocks)
             {
                 obj.LoadMe();
             }
@@ -105,8 +105,6 @@ namespace WorkshopProject
                 obj.LoadMe();
             }
         }
-
-        //public ICollection<Stock> GetStock()
         public Dictionary<int, Product> GetStock()
         {
             if (Stock == null)
@@ -114,7 +112,6 @@ namespace WorkshopProject
                 Stock = getStockListAsDictionary();
             }
             return Stock;
-            //return Stocks;
         }
 
         public List<ProductAmountPrice> afterDiscount(List<ProductAmountPrice> products, User user)
@@ -188,9 +185,8 @@ namespace WorkshopProject
             //Verify Premission
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return -1;
-            IDataAccess dal = DataAccessDriver.GetDataAccess();
-            //dal.SaveEntity(p, p.id);
-            AddToStock(p.getId(), p);
+
+            GetStock().Add(p.getId(), p);
             Logger.Log("file", logLevel.INFO, "product " + p.getId() + " added");
             return p.getId();
         }
@@ -289,7 +285,7 @@ namespace WorkshopProject
             if (!amountIsLegal(amountToAdd))
             {
                 throw new Exception("the amount is illegal");
-                
+
             }
 
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
@@ -368,8 +364,8 @@ namespace WorkshopProject
                 return -3;
             Discount fakeDis = new Discount(null, null);
             fakeDis.id = discountId;
-            if(this.discountPolicy.Remove(fakeDis))
-                    return discountId;
+            if (this.discountPolicy.Remove(fakeDis))
+                return discountId;
             return -1;
         }
 
@@ -402,7 +398,7 @@ namespace WorkshopProject
             foreach (IBooleanExpression b in this.purchasePolicy)
                 if (b.id == policyId)
                     temp = b;
-            if(this.purchasePolicy.Remove(temp))
+            if (this.purchasePolicy.Remove(temp))
                 return policyId;
             return -1;
         }
@@ -474,7 +470,7 @@ namespace WorkshopProject
         public int id { get; set; }
         public int amount { get; set; }
         [Include]
-        public virtual Product product { get; set; }
+        public Product product { get; set; }
 
 
         public Stock() { }
@@ -484,7 +480,6 @@ namespace WorkshopProject
             this.amount = amount;
             this.product = product;
         }
-
         public override void Copy(IEntity other)
         {
             base.Copy(other);
