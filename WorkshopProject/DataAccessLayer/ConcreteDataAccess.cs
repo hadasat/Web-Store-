@@ -159,6 +159,8 @@ namespace WorkshopProject.DataAccessLayer
             IEntity existingEntity = (IEntity)set.Find(entity.GetKey());
             if (existingEntity == null)
             {
+                ctx.SaveChanges();
+                ctx.ChangeTracker.DetectChanges();
                 set.Add(entity);
             }
             else
@@ -166,9 +168,10 @@ namespace WorkshopProject.DataAccessLayer
                 DbEntityEntry<IEntity> attachedEntry = ctx.Entry(existingEntity);
                 attachedEntry.CurrentValues.SetValues(entity);
                 attachedEntry.Entity.Copy(entity);
+                ctx.ChangeTracker.DetectChanges();
                 ctx.SaveChanges();
             }
-            ctx.SaveChanges();
+            
 
             return true;
         }
