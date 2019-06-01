@@ -7,28 +7,43 @@ using Users;
 
 namespace WorkshopProject.External_Services
 {
-    public static class SupplyStub
+    public  class SupplyStub : ISupply
     {
-        public static bool ret = true;
+        public  bool ret ;
 
-        public static bool getRet()
+        public SupplyStub (bool active)
+        {
+            ret = active;
+        }
+
+        public  bool getRet()
         {
             return ret;
         }
 
-        public static void setRet(bool newRet)
+        public  void setRet(bool newRet)
         {
             ret = newRet;
         }
 
-        public static bool supply(string sourceAddress, string targetAddress)
+        public  bool supply(string sourceAddress, string targetAddress)
         {
             return ret;
         }
 
-        public static bool connectionTest()
+        public  bool connectionTest()
         {
             return ret;
+        }
+
+        public Task<int> supply(string name, string address, string city, string country, string zip)
+        {
+            return ret ? Task.FromResult(10000) : Task.FromResult(-1);
+        }
+
+        public Task<bool> cancelSupply(int transactionId)
+        {
+            return Task.FromResult(ret);
         }
     }
 }

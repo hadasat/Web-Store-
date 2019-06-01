@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
+using Users;
 using WorkshopProject.Communication.Server;
 using WorkshopProject.Log;
 using WorkshopProject.System_Service;
@@ -98,7 +99,10 @@ namespace WorkshopProject.Communication
                 {"searchproducts",searchProductsHandler },
                 {"getallmembers",getAllMembersHandler },
                 {"removeuser",removeUserHandler },
-                {"getallmanagers",getAllManagersHandler }
+                {"getallmanagers",getAllManagersHandler },
+                {"approveowenrshiprequest",approveOwnershipResponseHandler },
+                {"disapproveowenrshiprequest",disapproveOwnershipResponseHandler },
+                {"buyshoppingbasket",buyShoppingBasketHandler }
 
             };
         }
@@ -127,7 +131,7 @@ namespace WorkshopProject.Communication
             }
             else
             {
-                Logger.Log("file", logLevel.WARN, "received an unknown type of message from client");
+                Logger.Log("event", logLevel.WARN, "received an unknown type of message from client");
             }
 
 
@@ -146,26 +150,30 @@ namespace WorkshopProject.Communication
 
 
 
-        public void update(List<string> messages)
+        public void update(List<Notification> notifications)
         {
-            if (messages != null)
+            if (notifications != null)
             {
-                foreach (string curr in messages)
+                foreach (Notification currNotification in notifications)
                 {
                     string msgToSend;
-                    if (curr.StartsWith("addManagerConfirmation-"))
+                    switch (currNotification.notificationType)
                     {
-                        string dataToSend = curr.Substring(curr.IndexOf("-"));
-                        var notificationObj = new {type = "notification", info = "addManagerConfirmation", data = dataToSend, requestId = -1 };
-                        msgToSend = JsonHandler.SerializeObject(notificationObj);
-                    }
-                    else
-                    {
-                        var notificationObj = new { type = "notification",info = "message", data = curr, requestId = -1 };
-                        msgToSend = JsonHandler.SerializeObject(notificationObj);
-                    }
+                        case Notification.NotificationType.NORMAL:
+                            var notificationObj = new { type = "notification", info = "message", data = currNotification.msg, requestId = -1 };
+                            msgToSend = JsonHandler.SerializeObject(notificationObj);
+                            break;
 
+                        case Notification.NotificationType.CREATE_OWNER:
+                            var dataObj = new { message = currNotification.msg, requestId = currNotification.createOwnerReqeustId };
+                            var notificationObj2 = new { type = "notification", info = "addManagerConfirmation", data = dataObj, requsetId = -1 };
+                            msgToSend = JsonHandler.SerializeObject(notificationObj2);
+                            break;
+                        default:
+                            continue; 
+                    }
                     sendMyselfAMessage(msgToSend);
+
                 }
             }
         }
@@ -559,25 +567,83 @@ namespace WorkshopProject.Communication
             {
                 response = JsonResponse.generateDataFailure(requestId, e.Message);
             }
+            
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
 
-        
-        /*
-                private void --(JObject msgObj, string message)
-                {
-                    JsonResponse response;
-                    int requestId = (int)msgObj["id"];
+        private void approveOwnershipResponseHandler(JObject msgObj, string message)
+        {
+            int ownerRequestId = (int)msgObj["requestId"];
+            try
+            {
+                user.ApproveOwnershipRequest(ownerRequestId);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("error", logLevel.ERROR, "from approve response " + e.Message);
+            }
+            
+        }
 
-                    sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        private void disapproveOwnershipResponseHandler(JObject msgObj, string message)
+        {
+            int ownerRequestId = (int)msgObj["requestId"];
+            try
+            {
+                user.DisApproveOwnershipRequest(ownerRequestId);
+            }
+            catch (Exception e)
+            {
+                Logger.Log("error", logLevel.ERROR, "from disapprove response " + e.Message);
+            }
+        }
 
-                }
-         */
+
+        private void buyShoppingBasketHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            //{int cardNumber, int month,int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip}
+            int cardNumber = (int)msgObj["data"]["cardNumber"];
+            int month = (int)msgObj["data"]["month"];
+            int year = (int)msgObj["data"]["year"];
+            string holder = (string)msgObj["data"]["holder"];
+            int ccv = (int)msgObj["data"]["cvv"];
+            int id = (int)msgObj["data"]["id"];
+            string name = (string)msgObj["data"]["name"];
+            string address = (string)msgObj["data"]["address"];
+            string city = (string)msgObj["data"]["city"];
+            string country = (string)msgObj["data"]["country"];
+            string zip = (string)msgObj["data"]["zip"];
+
+            try
+            {
+                user.BuyShoppingBasket(cardNumber, month, year, holder, ccv, id, name, address, city, country, zip);
+                response = JsonResponse.generateActionSucces(requestId);
+            }catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
+
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+
+        }
+
+    /*
+            private void --(JObject msgObj, string message)
+            {
+                JsonResponse response;
+                int requestId = (int)msgObj["id"];
+
+                sendMyselfAMessage(JsonHandler.SerializeObject(response));
+
+            }
+     */
 
 
 
-        #endregion
+    #endregion
 
-    }
+}
 }

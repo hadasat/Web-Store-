@@ -35,6 +35,7 @@ namespace WorkshopProject.Tests
         
         [TestMethod()]
         [TestCategory("Unit test - ShoppingCartTest")]
+        [TestCategory("RegretionTest")]
         public void SetProductAmountTest()
         {
             try
@@ -44,7 +45,7 @@ namespace WorkshopProject.Tests
                 int newAmount = 20;
                 Product testp = new Product("testp", 10, "Category.Categories.category1", "g", 10, 10, 10);
                 shoppingCart.setProductAmount(testp, newAmount);
-                int inCartAmount = shoppingCart.getProducts()[testp];
+                int inCartAmount = shoppingCart.getProductAmount(testp);
                 Assert.AreEqual(newAmount, inCartAmount);
 
                 //mul amount 
@@ -57,8 +58,8 @@ namespace WorkshopProject.Tests
 
                 //zero amount - remove product from list
                 Assert.IsTrue(shoppingCart.setProductAmount(testp, 0));
-                Assert.AreEqual(shoppingCart.getProductAmount(testp), 0);
-                Assert.IsFalse(shoppingCart.getProducts().ContainsKey(testp));
+                Assert.AreEqual(0, shoppingCart.getProductAmount(testp));
+                //Assert.IsFalse(shoppingCart.getProducts().);
             }
             finally
             {

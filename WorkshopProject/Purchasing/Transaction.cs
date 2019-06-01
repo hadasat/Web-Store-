@@ -11,7 +11,9 @@ using WorkshopProject;
 using WorkshopProject.Policies;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WorkshopProject.Log;
 using WorkshopProject.DataAccessLayer;
+using System.Data.Entity.Infrastructure;
 
 namespace TansactionsNameSpace
 {
@@ -34,22 +36,53 @@ namespace TansactionsNameSpace
         public double total { get; set; }
         [Include]
         public status transactionSatus { get; set; }
+        [NotMapped]
+        private IPayment paymentSystem;
+        [NotMapped]
+        private ISupply supplySystem;
+
+
+
 
 
         public Transaction() { } //added for DB
 
-        public Transaction(User user, int userCredit, int userCsv, string userExpiryDate, string targetAddress)
+        public Transaction(User user, int cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip, IPayment payService,ISupply supplyService)
         {
-            this.user = user;
-            this.total = 0;
-            sucess = new List<ShoppingCartDeal>();
-            fail = new List<ShoppingCartDeal>();
-            purchase(userCredit, userCsv, userExpiryDate, targetAddress);
-            if (transactionSatus == status.empty || sucess.Count == 0)
-                id = -1;
-            else
-                id = transactionCounter++;
+            constructorCommon(user, cardNumber, month, year, holder, ccv, id, name, address, city, country, zip, payService, supplyService);
+        }
 
+        public Transaction(User user, int cardNumber, int month, int year, string holder, int ccv, int id,string name, string address, string city, string country, string zip)
+        {
+            ExternalSystemConnection extSytem = new ExternalSystemConnection();
+            constructorCommon(user, cardNumber, month, year, holder, ccv, id, name, address, city, country, zip, (IPayment)extSytem, (ISupply)extSytem);
+        }
+
+        private async void constructorCommon (User user, int cardNumber, int month, int year, string holder, int ccv, int userId, string name, string address, string city, string country, string zip, IPayment payService, ISupply supplyService)
+        {
+            try
+            {
+                this.user = user;
+                this.total = 0;
+                sucess = new List<ShoppingCartDeal>();
+                fail = new List<ShoppingCartDeal>();
+                paymentSystem = payService;
+                supplySystem = supplyService;
+
+                int transactionId = await purchase(cardNumber, month, year, holder, ccv, userId, name, address, city, country, zip);
+                if (transactionSatus == status.empty || sucess.Count == 0)
+                {
+                    id = -1;
+                    Logger.Log("error", logLevel.ERROR, "finished creating new transaction but the id is -1");
+                    throw new Exception("error completing transaction");
+                }
+                else
+                    id = transactionId;
+            }
+            finally
+            {
+                paymentSystem.Dispose();
+            }
         }
 
         public void returnProducts(List<Store.callback> callbacks)
@@ -58,38 +91,39 @@ namespace TansactionsNameSpace
                 call();
         }
 
-        public void purchase(int userCredit, int userCsv, string userExpiryDate, string targetAddress)
+        public async Task<int> purchase(int cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
         {
+            int transactionId = -1;
             ShoppingBasket basket = user.shoppingBasket;
             //check the basket is empty
             if (basket.isEmpty())
             {
                 transactionSatus = status.empty;
-                return;
+                throw new Exception("can't buy an empty shopping basket");
             }
 
-            Dictionary<Store, ShoppingCart> carts = basket.getCarts();
+            List<ShoppingCartAndStore> carts = basket.getCarts();
             List<ProductAmountPrice> purchasedProducts = new List<ProductAmountPrice>();
             //calc toal price
-            foreach (KeyValuePair<Store, ShoppingCart> c in carts)
+            foreach (ShoppingCartAndStore c in carts)
             {
                 List<Store.callback> callbacks = new List<Store.callback>();
-                Store currStore = c.Key;
-                ShoppingCart currShoppingCart = c.Value;
+                Store currStore = c.store;
+                ShoppingCart currShoppingCart = c.cart;
                 List<ProductAmountPrice> currStoreProducts = ProductAmountPrice.translateCart(currShoppingCart);
                 //check consistency
                 if (!checkConsistency(user, currStore, currShoppingCart))
                 {
                     ShoppingCartDeal failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Consistency);
                     fail.Add(failcartDeal);
-                    break;
+                    throw new Exception("The shopping basket has consistency error");
                 }
                 //check store policies  
                 if (!currStore.checkPolicies(currStoreProducts, user))
                 {
                     ShoppingCartDeal failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Policies);
                     fail.Add(failcartDeal);
-                    break;
+                    throw new Exception("You don't pass all purchsing polices, please remove any problematic items");
                 }
 
                 double totalCart = 0;
@@ -117,7 +151,7 @@ namespace TansactionsNameSpace
                     ShoppingCartDeal failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, totalCart, currStore.id, status.StokesShortage);
                     fail.Add(failcartDeal);
                     returnProducts(callbacks);
-                    break;
+                    throw new Exception("not all itmes are availabe");
                 }
 
                 //return products to store if transaction fails
@@ -125,24 +159,27 @@ namespace TansactionsNameSpace
                 int storeAccountNum = currStore.storeAccountNum;
                 string sourceAddress = currStore.storeAddress;
 
-                if (!pay(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate))
+                transactionId = await pay(cardNumber, month, year, holder, ccv, id);
+
+                if (transactionId == -1)
                 {
                     returnProducts(callbacks);
                     ShoppingCartDeal failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Payment);
                     fail.Add(failcartDeal);
-                    continue;
+                    throw new Exception("Payment was rejected by the payment service");
                 }
-                else if (!SupplyStub.supply(sourceAddress, targetAddress))
+                else if ((await supplySystem.supply(name,address,city,country,zip)) == -1) // supply system fails
                 {
                     returnProducts(callbacks);
                     ShoppingCartDeal failcartDeal;
-                    double refound = PaymentStub.Refund(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate);
-                    if(refound < 0)
+                    bool refudnAns = await paymentSystem.cancelPayment(transactionId);
+                    //double refound = PaymentStub.Refund(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate);
+                    if(!refudnAns)
                         failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.ContactStoreForRefound);
                     else
                         failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Supply);
                     fail.Add(failcartDeal);
-                    continue;
+                    throw new Exception("Supply adress was rejected");
                 }
                 else // purches all cart products
                 {
@@ -159,6 +196,7 @@ namespace TansactionsNameSpace
                 if ((store = WorkShop.getStore(p.product.storeId)) != null)
                     basket.setProductAmount(store, p.product, 0);
             }
+            return transactionId;
         }
 
         public double calcPrice(double product, int amount)
@@ -166,10 +204,9 @@ namespace TansactionsNameSpace
             return product * amount;
         }
 
-        private bool pay(double totalCart,int storeBankNum,int storeAccountNum,int userCredit,int userCsv,string userExpiryDate)
+        private async Task<int> pay(int cardNumber, int month, int year, string holder, int ccv, int id)
         {
-            double sum = PaymentStub.Pay(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate);
-            return (sum > 0);
+            return await paymentSystem.payment(cardNumber, month, year, holder, ccv, id);
 
         }
 
@@ -179,6 +216,38 @@ namespace TansactionsNameSpace
             List<IBooleanExpression> purchase = store.purchasePolicy;
             List<IBooleanExpression> storePolicy = store.storePolicy;
             return ConsistencyStub.checkConsistency(user, discount, purchase, storePolicy, cart);
+        }
+
+        
+
+        public static bool updateUser(User user)
+        {
+            bool sucess = false,tryAgain = true;
+            int maxTries = 10,counter =0;
+            if(user is Member)
+            {
+                Member member = (Member)user;
+                IDataAccess dal = DataAccessDriver.GetDataAccess();
+                while(tryAgain && counter < maxTries)
+                try
+                {
+                    dal.SaveEntity(member, member.id);
+                        sucess = true;
+                        tryAgain = false;
+                    }
+                catch (DbUpdateConcurrencyException concurrencyException)
+                {
+                        tryAgain = true;
+                        counter++;
+                }
+                catch (Exception e)
+                {
+                        sucess = false;
+                        tryAgain = false;
+                    }
+
+            }
+            return sucess;
         }
     }
 
@@ -191,7 +260,7 @@ namespace TansactionsNameSpace
         public String storeName { get; set; }
         public int storId { get; set; }
         public double totalPrice { get; set; }
-        [NotMapped]
+        [Include]
         public status transStatus { get; set; }
 
         public ShoppingCartDeal(List<ProductAmountPrice> products, String storeName, double totalPrice,int storId, status transStatus)
@@ -202,7 +271,5 @@ namespace TansactionsNameSpace
             this.storId = storId;
             this.transStatus = transStatus;
         }
-
     }
-
 }
