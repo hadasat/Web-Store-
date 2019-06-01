@@ -129,7 +129,8 @@ namespace TestingFramework.UnitTests.DataAccessTests
             //store.AddToStock(20, prod);
             Stock neStock = new Stock(20, prod);
             store.GetStock().Add(neStock);
-            ((DataAccessNonPersistent) dal).SaveStore(store);
+            //((DataAccessNonPersistent) dal).SaveStore(store);
+            dal.SaveEntity(store, store.id);
 
             int count = 0;
             Store store2 = DataAccessDriver.GetDataAccess().GetStore(store.id);
