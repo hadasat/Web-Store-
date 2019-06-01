@@ -20,7 +20,6 @@ namespace Users
     {
         [Key]
         public int id { get; set; }
-
         public ShoppingBasket shoppingBasket;
 
 
