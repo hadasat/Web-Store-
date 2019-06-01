@@ -14,15 +14,11 @@ namespace TestingFramework.UnitTests.DataAccessTests
     [TestClass]
     public class ContextUsesTests
     {
-
-
         [TestMethod()]
         [TestCategory("DAL - Repo")]
         public void StoreTest()
         {
-
             Repo repo = new Repo();
-
 
             Store store = new Store();
 
@@ -45,6 +41,9 @@ namespace TestingFramework.UnitTests.DataAccessTests
 
             Store getStore = (Store) repo.Get<Store>(store.GetKey());
 
+            getStore.name = "idk";
+            repo.Update<Store>(getStore);
+
             Assert.AreSame(getStore, store);
             Assert.IsNotNull(getStore.Stocks);
 
@@ -54,6 +53,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
 
             getStore = (Store)repo.Get<Store>(store.GetKey());
             Assert.IsNotNull(getStore.Stocks[0].product);
+            Assert.AreEqual(getStore.name, "idk");
 
             //repo.Clear<Store>();
            // Assert.IsNull(repo.Get<Store>(store.GetKey()));
