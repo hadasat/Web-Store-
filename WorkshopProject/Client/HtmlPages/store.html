@@ -98,11 +98,6 @@
                 </div>
                 <div>
                     <label class="checkbox">
-                        <input type="checkbox" value="" id="appointowners_check">Appoint owners
-                    </label>
-                </div>
-                <div>
-                    <label class="checkbox">
                         <input type="checkbox" value="" id="appointmanager_check">Appoint managers
                     </label>
                 </div>
@@ -241,7 +236,7 @@
 
         $('#addManager_btn').on('click',function(){
             var appointmanager_check = $('#appointmanager_check').prop('checked');
-            var appointowners_check = $('#appointmanager_check').prop('checked');
+            var appointowners_check = false;
             var close_check = $('#appointmanager_check').prop('checked');
             var communication_check = $('#appointmanager_check').prop('checked');
             var discounts_check = $('#appointmanager_check').prop('checked');
