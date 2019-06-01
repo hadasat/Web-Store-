@@ -55,8 +55,36 @@ namespace TestingFramework.UnitTests.DataAccessTests
             Assert.IsNotNull(getStore.Stocks[0].product);
             Assert.AreEqual(getStore.name, "idk");
 
+            //--------------------
+
+
+
+            repo = new Repo();
+
+            Store store2 = new Store();
+
+
+
+            getStore = (Store)repo.Get<Store>(store.GetKey());
+
+            getStore.name = "idk";
+            repo.Update<Store>(getStore);
+
+            Assert.AreSame(getStore, store);
+            Assert.IsNotNull(getStore.Stocks);
+
+            Assert.IsNotNull(getStore.Stocks);
+
+
+
+            getStore = (Store)repo.Get<Store>(store.GetKey());
+            Assert.IsNotNull(getStore.Stocks[0].product);
+            Assert.AreEqual(getStore.name, "idk");
+
+
+
             //repo.Clear<Store>();
-           // Assert.IsNull(repo.Get<Store>(store.GetKey()));
+            // Assert.IsNull(repo.Get<Store>(store.GetKey()));
         }
     }
 }

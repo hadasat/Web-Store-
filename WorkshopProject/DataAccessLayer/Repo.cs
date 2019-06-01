@@ -9,11 +9,11 @@ namespace WorkshopProject.DataAccessLayer
     //https://blog.goyello.com/2011/11/23/entity-framework-invalid-operation/
     public class Repo
     {
-        private WorkshopDBContext ctx;
+        private static WorkshopDBContext ctx;
 
         public Repo()
         {
-            ctx = new WorkshopTestDBContext();
+            if (ctx == null) { ctx = new WorkshopTestDBContext(); }
         }
 
         public IEntity Get<T>(int key) where T : IEntity
