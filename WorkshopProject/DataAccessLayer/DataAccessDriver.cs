@@ -20,17 +20,17 @@ namespace WorkshopProject.DataAccessLayer
 
         public static string connectionProductionDB { get; set; } = "Data Source=.\\SQLEXPRESS;Initial Catalog=WorkshopProductionDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-        public static IDataAccess GetDataAccess()
-        {
-            if (Persistent)
-            {
-                return new DataAccessStatic(Production);
-            }
-            else
-            {
-                return new DataAccessNonPersistent(Production);
-            }       
-        }    
+        //public static IDataAccess GetDataAccess()
+        //{
+        //    if (Persistent)
+        //    {
+        //        return new DataAccessStatic(Production);
+        //    }
+        //    else
+        //    {
+        //        return new DataAccessNonPersistent(Production);
+        //    }       
+        //}    
         
         public static string getConnectionString(bool Production)
         {

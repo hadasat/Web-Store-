@@ -19,7 +19,7 @@ using System.ServiceModel.DomainServices.Server;
 
 namespace WorkshopProject.DataAccessLayer
 {
-    public class DataAccessNonPersistent : IDataAccess
+    public class DataAccessNonPersistent //: IDataAccess
     {
         protected bool isProduction;
         protected bool local;

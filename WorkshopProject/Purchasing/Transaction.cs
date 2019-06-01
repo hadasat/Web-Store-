@@ -228,11 +228,11 @@ namespace TansactionsNameSpace
             if(user is Member)
             {
                 Member member = (Member)user;
-                IDataAccess dal = DataAccessDriver.GetDataAccess();
+                //IDataAccess dal = DataAccessDriver.GetDataAccess(); //TODO: old dal
                 while(tryAgain && counter < maxTries)
                 try
                 {
-                    dal.SaveEntity(member, member.id);
+                        //dal.SaveEntity(member, member.id); //TODO: old dal
                         sucess = true;
                         tryAgain = false;
                     }
