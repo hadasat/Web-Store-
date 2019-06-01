@@ -15,5 +15,16 @@ namespace WorkshopProject.Policies
         public int id { get; set; }
         [Include]
         public abstract List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user);
+
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+        }
+
+        public override void LoadMe()
+        {
+
+        }
     }
 }

@@ -110,7 +110,12 @@ namespace WorkshopProject.DataAccessLayer
                     //.Include(s => s.discountPolicy)
                     //.Include(s => s.storePolicy)
                     .Where(e => e.id == key).FirstOrDefault();
+              if (ret != null)
+                {
+                    ret.LoadMe();
+                }
             }
+
             return ret;
         }
 

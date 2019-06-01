@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WorkshopProject.DataAccessLayer
 {
-    public class IEntity
+    public abstract class IEntity
     {
         public virtual int GetKey()
         {
@@ -34,6 +34,8 @@ namespace WorkshopProject.DataAccessLayer
             }
 
         }
+
+        public abstract void LoadMe();
     }
 }
 

@@ -119,9 +119,27 @@ namespace Shopping
             return ret;
         }
 
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is ShoppingBasket)
+            {
+                ShoppingBasket _other = ((ShoppingBasket)other);
+                cartsList = _other.cartsList;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            foreach (IEntity obj in cartsList)
+            {
+                obj.LoadMe();
+            }
+        }
+
     }
 
-    public class ShoppingCartAndStore
+    public class ShoppingCartAndStore : IEntity
     {
         [Key]
         public int id { get; set; }

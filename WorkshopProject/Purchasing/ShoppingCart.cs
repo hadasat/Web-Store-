@@ -127,5 +127,20 @@ namespace Shopping
             this.product = product;
             this.amount = amount;
         }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is JsonShoppingCartValue)
+            {
+                JsonShoppingCartValue _other = ((JsonShoppingCartValue)other);
+                product = _other.product;
+            }
+        }
+
+        public override void LoadMe()
+        {
+             product.LoadMe();
+        }
     }
 }   

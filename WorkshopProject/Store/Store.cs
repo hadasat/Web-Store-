@@ -23,7 +23,7 @@ namespace WorkshopProject
         [NotMapped]
         private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD
         [Include]
-        public List<Stock> Stocks { get; set; } //added for DB. Through "getStock" translates it to dictionary for backwards compatibility
+        public List<Stock> Stocks { get; set; }
         [Include]
         public List<IBooleanExpression> purchasePolicy { get; set; }
         [Include]
@@ -78,18 +78,42 @@ namespace WorkshopProject
             base.Copy(other);
             if (other is Store)
             {
-                this.Stocks = ((Store)other).Stocks;
+                Store _other = ((Store)other);
+                Stocks = _other.Stocks;
+                purchasePolicy = _other.purchasePolicy;
+                discountPolicy = _other.discountPolicy;
+                storePolicy = _other.storePolicy;
             }
         }
 
-
-        public Dictionary<int, Product> GetStock()
+        public override void LoadMe()
         {
-            if (Stock == null)
+            foreach(IEntity obj in Stocks)
             {
-                Stock = getStockListAsDictionary();
+                obj.LoadMe();
             }
-            return Stock;
+            foreach (IEntity obj in purchasePolicy)
+            {
+                obj.LoadMe();
+            }
+            foreach (IEntity obj in discountPolicy)
+            {
+                obj.LoadMe();
+            }
+            foreach (IEntity obj in storePolicy)
+            {
+                obj.LoadMe();
+            }
+        }
+
+        public ICollection<Stock> GetStock()
+        {
+            //if (Stock == null)
+            //{
+            //    Stock = getStockListAsDictionary();
+            //}
+            //return Stock;
+            return Stocks;
         }
 
         public List<ProductAmountPrice> afterDiscount(List<ProductAmountPrice> products, User user)
@@ -163,8 +187,9 @@ namespace WorkshopProject
             //Verify Premission
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return -1;
-
-            GetStock().Add(p.getId(), p);
+            IDataAccess dal = DataAccessDriver.GetDataAccess();
+            //dal.SaveEntity(p, p.id);
+            AddToStock(p.getId(), p);
             Logger.Log("file", logLevel.INFO, "product " + p.getId() + " added");
             return p.getId();
         }
@@ -448,7 +473,7 @@ namespace WorkshopProject
         public int id { get; set; }
         public int amount { get; set; }
         [Include]
-        public Product product { get; set; }
+        public virtual Product product { get; set; }
 
 
         public Stock() { }
@@ -457,6 +482,21 @@ namespace WorkshopProject
         {
             this.amount = amount;
             this.product = product;
+        }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is Stock)
+            {
+                Stock _other = ((Stock)other);
+                product = _other.product;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            product.LoadMe();
         }
     }
 

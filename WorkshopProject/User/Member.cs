@@ -500,7 +500,7 @@ namespace Users
 
     public class Notification
     {
-
+        [Include]
         public enum NotificationType{
             NORMAL,
             CREATE_OWNER
@@ -528,6 +528,20 @@ namespace Users
             this.createOwnerReqeustId = createOwnerRequestId;
         }
 
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is Notification)
+            {
+                Notification _other = ((Notification)other);
+                notificationType = _other.notificationType;
+            }
+        }
+
+        public override void LoadMe()
+        {
+
+        }
 
     }
 }
