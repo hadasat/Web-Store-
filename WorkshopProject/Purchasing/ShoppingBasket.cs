@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 
 namespace Shopping
 {
-    public class ShoppingBasket
+    public class ShoppingBasket : IEntity
     {
         [Key]
         public int id { get; set; }
@@ -118,9 +119,27 @@ namespace Shopping
             return ret;
         }
 
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is ShoppingBasket)
+            {
+                ShoppingBasket _other = ((ShoppingBasket)other);
+                cartsList = _other.cartsList;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            foreach (IEntity obj in cartsList)
+            {
+                obj.LoadMe();
+            }
+        }
+
     }
 
-    public class ShoppingCartAndStore
+    public class ShoppingCartAndStore : IEntity
     {
         [Key]
         public int id { get; set; }
@@ -135,6 +154,23 @@ namespace Shopping
         {
             this.store = store;
             this.cart = cart;
+        }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is ShoppingCartAndStore)
+            {
+                ShoppingCartAndStore _other = ((ShoppingCartAndStore)other);
+                store = _other.store;
+                cart = _other.cart;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            store.LoadMe();
+            cart.LoadMe();
         }
     }
 }

@@ -5,14 +5,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.Policies
 {
-    public abstract class IOutcome
+    public abstract class IOutcome : IEntity
     {
         [Key]
         public int id { get; set; }
         [Include]
         public abstract List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user);
+
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+        }
+
+        public override void LoadMe()
+        {
+
+        }
     }
 }

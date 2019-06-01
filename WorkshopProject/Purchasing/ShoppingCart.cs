@@ -7,11 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 
 namespace Shopping
 {
 
-    public class ShoppingCart
+    public class ShoppingCart : IEntity
     {
         [Key]
         public int id { get; set; }
@@ -99,7 +100,7 @@ namespace Shopping
         public int getTotalAmount()
         {
             int total = 0;
-            foreach(ProductAmount c in products)
+            foreach (ProductAmount c in products)
             {
                 total += c.amount;
             }
@@ -111,9 +112,28 @@ namespace Shopping
             return products;
         }
 
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is ShoppingCart)
+            {
+                ShoppingCart _other = ((ShoppingCart)other);
+                products = _other.products;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            foreach (IEntity obj in products)
+            {
+                obj.LoadMe();
+
+
+            }
+        }
     }
 
-    public class ProductAmount
+    public class ProductAmount : IEntity
     {
         [Key]
         public int id { get; set; }
@@ -126,5 +146,20 @@ namespace Shopping
             this.product = product;
             this.amount = amount;
         }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is ProductAmount)
+            {
+                ProductAmount _other = ((ProductAmount)other);
+                product = _other.product;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            product.LoadMe();
+        }
     }
-}   
+}
