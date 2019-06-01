@@ -136,6 +136,7 @@
     <Compile Include="User\Managment.cs" />
     <Compile Include="Purchasing\Transaction.cs" />
     <Compile Include="User\SystemAdmin.cs" />
+    <Compile Include="User\UserDalManager.cs" />
     <Compile Include="User\Users.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

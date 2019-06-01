@@ -47,15 +47,23 @@ namespace Users
                         father.removeManager(st);
                     }
                 }
-                ConnectionStubTemp.removeMember(member);
-                Logger.Log("event", logLevel.INFO, "Admin succesfully removed user: " + userName);
-                return ConnectionStubTemp.removeUser(userName, this);
+                if (ConnectionStubTemp.removeUser(userName, this))
+                {
+                    ConnectionStubTemp.removeMember(member);
+                    Logger.Log("event", logLevel.INFO, "Admin succesfully removed user: " + userName);
+                    return true;
+                }
+                return false;
             }
             else
             {
-                Logger.Log("event", logLevel.INFO, "Admin succesfully removed user: " + userName);
-                ConnectionStubTemp.removeMember(member);
-                return ConnectionStubTemp.removeUser(userName, this);
+                if (ConnectionStubTemp.removeUser(userName, this))
+                {
+                    ConnectionStubTemp.removeMember(member);
+                    Logger.Log("event", logLevel.INFO, "Admin succesfully removed user: " + userName);
+                    return true;
+                }
+                return false;
             }
 
         }

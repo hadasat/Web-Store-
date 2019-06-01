@@ -23,13 +23,14 @@ namespace Users
         public static Dictionary<int, OwnershipRequest> ownershipsRequestList = new Dictionary<int, OwnershipRequest>();
         // <ID, ownershipRequest>
 
-        //public static int memberIDGenerator = 0;
+        public static int memberIDGenerator = 0;
         public static int ownerShipRequestsIDGenerator = 0;
         private static int DALTRIES = 5;
 
         public static void init()
         {
             registerNewUser("Admin", "Admin", DateTime.Today.AddYears(-120), "all");
+            //TODO: GET all members from data base
 
         }
 
@@ -42,6 +43,8 @@ namespace Users
         {
             if (m.id == 0)
                 throw new Exception("don't remove Admin!");
+
+            unactivateMember(m);
             try
             {
                 members.Remove(m.id);
@@ -79,10 +82,10 @@ namespace Users
 
         /*** START - USER FUNCTIONS ***/
 
-        //private static int getID()
-        //{
-        //    return memberIDGenerator++;
-        //}
+        private static int getID()
+        {
+            return memberIDGenerator++;
+        }
 
 
         //sign in
@@ -116,13 +119,13 @@ namespace Users
                 Logger.Log("event", logLevel.INFO, "user try to register with taken username:" + username);
                 throw new Exception("this username is already taken. try somthing else");
             }
-            //id = getID();
-            pHandler.hashPassword(password, 0);
+            id = getID();
+            pHandler.hashPassword(password, id);
             Member newMember;
             if (DateTime.Today < birthdate)
-                newMember = new Member(username, 0);
+                newMember = new Member(username, id);
             else
-                newMember = new Member(username, 0, birthdate, country);
+                newMember = new Member(username, id, birthdate, country);
             if (username == "Admin" && password == "Admin")
             {
                 newMember = new SystemAdmin(username, 0, birthdate, country);
@@ -209,7 +212,7 @@ namespace Users
         {
             if (sa is SystemAdmin)
             {
-                unactivateMember(getMember(username));
+                
                 return true;
             }
             return false;
