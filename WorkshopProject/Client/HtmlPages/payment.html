@@ -24,11 +24,12 @@
         <div id="page-header" class="pb-2 mt-4 mb-2 border-bottom text-center">
             <h1>Payment</h1>
         </div>
+        <p></p>
         <form id="payment">
                 <div class="row" style="margin-bottom: 8px;">
                         <div class="col">
                             <label for="creditNum">Credit Card Number</label>
-                            <input id= "creditNum" type="number" class="form-control" placeholder="Credit Card Number" required>
+                            <input id= "creditNum" type="number" class="form-control" placeholder="Number" required>
                         </div>
                 </div>
                 <div class="row" style="margin-bottom: 8px;">
@@ -106,13 +107,12 @@
 
            sendRequest('action','buyShoppingBasket',{cardNumber: creditNum , month: dateMonth,year: dateYear,
         holder: holder,cvv: cvv,id: id, name:name,address: add,city: city,
-        county: county ,zip: zip }.then(function(){
+        country: country ,zip: zip }).then(function(){
             alert("Purchasing succeed!");
             window.location.href = "/wot/main";
-        })
-
         });
 
+        });
         
     </script>
 </body>
