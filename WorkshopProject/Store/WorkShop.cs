@@ -120,25 +120,34 @@ namespace WorkshopProject
             return null;
         }
 
-        public static Policystatus addSystemPolicy(IBooleanExpression policy)
+        public static Policystatus addSystemPolicy(User user, IBooleanExpression policy)
         {
-            int newPolicyId = IBooleanExpression.checkExpression(policy);
-            if (newPolicyId > 0)
-                return Policystatus.Success;
-            return Policystatus.BadPolicy;
+            if (user is SystemAdmin)
+            {
+                if(!IBooleanExpression.confirmListConsist(policy,SystemPolicies))
+                    return Policystatus.UnauthorizedUser;
+                int newPolicyId = IBooleanExpression.checkExpression(policy);
+                if (newPolicyId > 0)
+                {
+                    SystemPolicies.Add(policy);
+                    return Policystatus.Success;
+                }
+                return Policystatus.BadPolicy;
+            }
+            return Policystatus.UnauthorizedUser;
         }
 
-        public static Policystatus removeSystemPolicy(int policyid)
+        public static Policystatus removeSystemPolicy(User user, int policyid)
         {
-            IBooleanExpression temp;
-            foreach (IBooleanExpression b in SystemPolicies)
-                if (b.id == policyid)
-                {
-                    temp = b;
-                    if (SystemPolicies.Remove(temp))
-                        return Policystatus.Success;
-                }
-            return Policystatus.BadPolicy;
+            if (user is SystemAdmin)
+            {
+                IBooleanExpression temp = new TrueCondition();
+                temp.id = policyid;
+
+                if (SystemPolicies.Remove(temp))
+                    return Policystatus.Success;
+            }
+            return Policystatus.UnauthorizedUser;
         }
     }
 }

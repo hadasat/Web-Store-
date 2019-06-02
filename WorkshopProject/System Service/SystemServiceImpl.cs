@@ -507,7 +507,8 @@ namespace WorkshopProject.System_Service
             {
                 Discount dicountPolicy = JsonHandler.DeserializeObject<Discount>(policy);
                 Policystatus res = PolicyService.addDiscountPolicy(user, storeId, dicountPolicy);
-                return JsonHandler.SerializeObject(res);
+                string h = JsonHandler.SerializeObject(res);
+                return h;
             }
             catch (Exception e)
             {

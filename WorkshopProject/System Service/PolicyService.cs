@@ -81,14 +81,14 @@ namespace WorkshopProject.System_Service
 
         }
         //System
-        public static Policystatus addSystemPolicy(User user, int storeId, IBooleanExpression policies)
+        public static Policystatus addSystemPolicy(User user, IBooleanExpression policies)
         {
-            return WorkShop.addSystemPolicy(policies);
+            return WorkShop.addSystemPolicy(user,policies);
         }
 
-        public static Policystatus removeSystemPolicy(User user, int storeId, int policyId)
+        public static Policystatus removeSystemPolicy(User user, int policyId)
         {
-            return WorkShop.removeSystemPolicy(policyId);
+            return WorkShop.removeSystemPolicy(user,policyId);
 
         }
 

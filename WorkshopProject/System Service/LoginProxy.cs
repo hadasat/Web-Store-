@@ -357,5 +357,20 @@ namespace WorkshopProject.System_Service
             return UserService.getRoleForStore(user,storeId);
         }
 
+        public Policystatus addSystemPolicy(User user, IBooleanExpression policies)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return PolicyService.addSystemPolicy(user, policies);
+        }
+
+        public Policystatus removeSystemPolicy(User user, int policyId)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return WorkShop.removeSystemPolicy(user, policyId);
+
+        }
+
     }
 }

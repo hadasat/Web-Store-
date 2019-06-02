@@ -212,9 +212,9 @@ namespace TansactionsNameSpace
 
         public static bool checkConsistency(User user, Store store, ShoppingCart cart)
         {
-            List<Discount> discount = store.discountPolicy;
-            List<IBooleanExpression> purchase = store.purchasePolicy;
-            List<IBooleanExpression> storePolicy = store.storePolicy;
+            List<Discount> discount = store.discountPolicies;
+            List<IBooleanExpression> purchase = store.purchasePolicies;
+            List<IBooleanExpression> storePolicy = store.storePolicies;
             return ConsistencyStub.checkConsistency(user, discount, purchase, storePolicy, cart);
         }
 

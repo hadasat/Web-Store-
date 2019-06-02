@@ -126,182 +126,181 @@ namespace WorkshopProject.Policies
         {
             return true;
         }
+    }
+    public class UserCountry : IBooleanExpression
+    {
+        public string country { get; set; }
+        //public string name = "UserCountry";
 
-        public class UserCountry : IBooleanExpression
+        public UserCountry() : base() {/*for json*/ }
+
+        public UserCountry(string country, ItemFilter filter) : base()
         {
-            public string country { get; set; }
-            //public string name = "UserCountry";
+            this.filter = filter;
+            this.country = country;
+            this.id = Idcounter++;
+        }
 
-            public UserCountry() : base() {/*for json*/ }
-
-            public UserCountry(string country, ItemFilter filter) : base()
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
+        {
+            if (user is Member)
             {
-                this.filter = filter;
-                this.country = country;
-                this.id = Idcounter++;
-            }
-
-            public override bool evaluate(List<ProductAmountPrice> products, User user)
-            {
-                if (user is Member)
+                List<ProductAmountPrice> filterProdact = filter.getFilteredItems(products);
+                string userCountry = ((Member)user).country;
+                if ((filterProdact.Count > 0 && !userCountry.Equals(country)) || (filterProdact.Count == 0))
                 {
-                    List<ProductAmountPrice> filterProdact = filter.getFilteredItems(products);
-                    string userCountry = ((Member)user).country;
-                    if ((filterProdact.Count > 0 && !userCountry.Equals(country)) || (filterProdact.Count == 0))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
+            }
+            return false;
+        }
+
+        public override void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
+        {
+            //this exception is intended!
+            throw new NotImplementedException();
+        }
+
+        public override bool checkConsistent(IBooleanExpression exp)
+        {
+            return true;
+        }
+
+    }
+
+    public class TrueCondition : IBooleanExpression
+    {
+        //public string name = "TrueCondition";
+
+        public TrueCondition() : base()
+        {
+        }
+
+        public TrueCondition(bool value)
+        {
+            this.id = Idcounter++;
+        }
+
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
+        {
+            return true;
+        }
+
+        public override void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
+        {
+            //this exception is intended!
+            throw new NotImplementedException();
+        }
+        public override bool checkConsistent(IBooleanExpression exp)
+        {
+            if (exp is FalseCondition)
                 return false;
-            }
+            return true;
+        }
+    }
 
-            public override void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
-            {
-                //this exception is intended!
-                throw new NotImplementedException();
-            }
-
-            public override bool checkConsistent(IBooleanExpression exp)
-            {
-                return true;
-            }
+    public class FalseCondition : IBooleanExpression
+    {
+        //public string name = "FalseCondition";
+        public FalseCondition() : base()
+        {
 
         }
 
-        public class TrueCondition : IBooleanExpression
+        public FalseCondition(bool value)
         {
-            //public string name = "TrueCondition";
-
-            public TrueCondition() : base()
-            {
-            }
-
-            public TrueCondition(bool value)
-            {
-                this.id = Idcounter++;
-            }
-
-            public override bool evaluate(List<ProductAmountPrice> products, User user)
-            {
-                return true;
-            }
-
-            public override void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
-            {
-                //this exception is intended!
-                throw new NotImplementedException();
-            }
-            public override bool checkConsistent(IBooleanExpression exp)
-            {
-                if (exp is FalseCondition)
-                    return false;
-                return true;
-            }
+            this.id = Idcounter++;
         }
 
-        public class FalseCondition : IBooleanExpression
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
-            //public string name = "FalseCondition";
-            public FalseCondition() : base()
-            {
+            return false;
+        }
 
-            }
+        public override void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
+        {
+            //this exception is intended!
+            throw new NotImplementedException();
+        }
 
-            public FalseCondition(bool value)
-            {
-                this.id = Idcounter++;
-            }
-
-            public override bool evaluate(List<ProductAmountPrice> products, User user)
-            {
+        public override bool checkConsistent(IBooleanExpression exp)
+        {
+            if (exp is TrueCondition)
                 return false;
-            }
+            return true;
+        }
 
-            public override void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
-            {
-                //this exception is intended!
-                throw new NotImplementedException();
-            }
+    }
 
-            public override bool checkConsistent(IBooleanExpression exp)
+    public class AndExpression : IBooleanExpression
+    {
+        //public string name = "AndExpression";
+
+        public AndExpression() : base()
+        {
+        }
+
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
+        {
+            return (getFirstChild().evaluate(products, user) && getSecondChild().evaluate(products, user));
+        }
+
+
+        public override bool checkConsistent(IBooleanExpression exp)
+        {
+            foreach (IBooleanExpression child in this.children)
             {
-                if (exp is TrueCondition)
+                if (!child.checkConsistent(exp))
                     return false;
-                return true;
             }
+            return true;
+        }
+    }
 
+    public class OrExpression : IBooleanExpression
+    {
+        // public string name = "OrExpression";
+
+        public OrExpression() : base() { }
+
+        public OrExpression(bool value)
+        {
+            this.id = Idcounter++;
         }
 
-        public class AndExpression : IBooleanExpression
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
-            //public string name = "AndExpression";
-
-            public AndExpression() : base()
-            {
-            }
-
-            public override bool evaluate(List<ProductAmountPrice> products, User user)
-            {
-                return (getFirstChild().evaluate(products, user) && getSecondChild().evaluate(products, user));
-            }
-
-
-            public override bool checkConsistent(IBooleanExpression exp)
-            {
-                foreach (IBooleanExpression child in this.children)
-                {
-                    if (!child.checkConsistent(exp))
-                        return false;
-                }
-                return true;
-            }
+            return (getFirstChild().evaluate(products, user) || getSecondChild().evaluate(products, user));
         }
 
-        public class OrExpression : IBooleanExpression
+        public override bool checkConsistent(IBooleanExpression exp)
         {
-            // public string name = "OrExpression";
+            return true;
+        }
+    }
 
-            public OrExpression() : base() { }
-
-            public OrExpression(bool value)
-            {
-                this.id = Idcounter++;
-            }
-
-            public override bool evaluate(List<ProductAmountPrice> products, User user)
-            {
-                return (getFirstChild().evaluate(products, user) || getSecondChild().evaluate(products, user));
-            }
-
-            public override bool checkConsistent(IBooleanExpression exp)
-            {
-                return true;
-            }
+    public class XorExpression : IBooleanExpression
+    {
+        //public string name = "XorExpression";
+        public XorExpression(bool value) : base()
+        {
+            this.id = Idcounter++;
         }
 
-        public class XorExpression : IBooleanExpression
+
+        public XorExpression()
         {
-            //public string name = "XorExpression";
-            public XorExpression(bool value) : base()
-            {
-                this.id = Idcounter++;
-            }
+        }
 
-
-            public XorExpression()
-            {
-            }
-
-            public override bool evaluate(List<ProductAmountPrice> products, User user)
-            {
-                bool firstExp = getFirstChild().evaluate(products, user);
-                bool secondExp = getSecondChild().evaluate(products, user);
-                return firstExp ^ secondExp;
-            }
-            public override bool checkConsistent(IBooleanExpression exp)
-            {
-                return true;
-            }
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
+        {
+            bool firstExp = getFirstChild().evaluate(products, user);
+            bool secondExp = getSecondChild().evaluate(products, user);
+            return firstExp ^ secondExp;
+        }
+        public override bool checkConsistent(IBooleanExpression exp)
+        {
+            return true;
         }
     }
 }
