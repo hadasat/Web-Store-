@@ -9,13 +9,13 @@ namespace WorkshopProject.System_Service
      public static class InitSystem
     {
         private static string filePath = "../../../hadas.txt";
-        private static string commandSyntax = @"^[a-zA-Z0-9]+\([a-zA-Z0-9]*(,[[a-zA-Z0-9]+)*\);";
+        private static string word = @"\b[a-zA-Z1-9\-]+\b";
+        private static string commandSyntax = @"^[a-zA-Z0-9\-]+\([a-zA-Z0-9]*(,[[a-zA-Z0-9]+)*\);";
 
         public static void updatePath(string new_path) { filePath = new_path; }
 
         public static string[] splitCommand(string sentence)
         {
-            string word = @"\b[a-zA-Z1-9\-]+\b";
             Regex rgxword = new Regex(word);
             List<string> args = new List<string>();
             foreach (Match match in rgxword.Matches(sentence))
@@ -49,7 +49,7 @@ namespace WorkshopProject.System_Service
                 case "register":
                     registerNewUser(fullcommand);
                     break;
-                case "appoint-manager":
+                case "make-admin":
                     appointManager(fullcommand);
                     break;
                 case "open-store":
@@ -61,7 +61,7 @@ namespace WorkshopProject.System_Service
                 case "add-product-stock":
                     addProductStock(fullcommand);
                     break;
-                case "add-product-store":
+                case "add-store-product":
                     addProductStore(fullcommand);
                     break;
                 case "add-store-owner":
@@ -79,7 +79,7 @@ namespace WorkshopProject.System_Service
 
         }
 
-        public static void appointManager(string[] fullcommand)
+        public static void makeAdmin(string[] fullcommand)
         {
 
         }

@@ -1,0 +1,9 @@
+register(u1,
+register(u2,
+register(u3,
+register(u4,
+register(u5,
+make-admin(u1,
+open-store(u2,s1
+add-store-product(u2,s1,diapers,cost:30,quantity:20)
+add-store-manager(u2 appoints u3 permission to manage inventory)
