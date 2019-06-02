@@ -12,6 +12,7 @@ using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.Policies
 {
+    public enum Policystatus { UnauthorizedUser, UnactiveStore, BadPolicy, InconsistPolicy, Success };
     /// <summary>
     /// Implements the Composite design pattern.
     /// This is essentially the "Purchasing Policy"
@@ -47,6 +48,8 @@ namespace WorkshopProject.Policies
 
 
         public abstract bool evaluate(List<ProductAmountPrice> products,User user);
+
+        public abstract bool checkConsistent(IBooleanExpression exp);
 
         public virtual void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
         {

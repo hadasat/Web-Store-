@@ -33,62 +33,63 @@ namespace WorkshopProject.System_Service
         }
 
         //discount
-        public static int addDiscountPolicy(User user, int storeId, Discount policies)
+        public static Policystatus addDiscountPolicy(User user, int storeId, Discount policies)
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            int policyId = store.AddDiscountPolicy(user, policies);
-            return policyId;
+            return store.AddDiscountPolicy(user, policies);
 
         }
 
-        public static bool removeDiscountPolicy(User user, int storeId, int policyId)
+        public static Policystatus removeDiscountPolicy(User user, int storeId, int policyId)
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            int response = store.RemoveDiscountPolicy(user, policyId);
-            if (response < 0)
-                removePolicyfailes(response);
-            return true;
+            return store.RemoveDiscountPolicy(user, policyId);
 
         }
 
         //purchasing
-        public static int addPurchasingPolicy(User user, int storeId, IBooleanExpression policies)
+        public static Policystatus addPurchasingPolicy(User user, int storeId, IBooleanExpression policies)
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            int policyId = store.AddPurchasPolicy(user, policies);
-            return policyId;
+            return store.AddPurchasPolicy(user, policies);
         }
 
-        public static bool removePurchasingPolicy(User user, int storeId, int policyId)
+        public static Policystatus removePurchasingPolicy(User user, int storeId, int policyId)
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            int response = store.RemovePurchasPolicy(user, policyId);
-            if (response < 0)
-                removePolicyfailes(response);
-            return true;
+            return store.RemovePurchasPolicy(user, policyId);
+          
         }
         
         //store
-        public static int addStorePolicy(User user, int storeId, IBooleanExpression policies)
+        public static Policystatus addStorePolicy(User user, int storeId, IBooleanExpression policies)
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            int policyId = store.AddStorePolicy(user, policies);
-            return policyId;
+           return store.AddStorePolicy(user, policies);
         }
         
-        public static bool removeStorePolicy(User user, int storeId, int policyId)
+        public static Policystatus removeStorePolicy(User user, int storeId, int policyId)
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            int response = store.RemoveStorePolicy(user, policyId);
-            if (response < 0)
-                removePolicyfailes(response);
-            return true;
+            return store.RemoveStorePolicy(user, policyId);
+
+        }
+        //System
+        public static Policystatus addSystemPolicy(User user, int storeId, IBooleanExpression policies)
+        {
+            return WorkShop.addSystemPolicy(policies);
+        }
+
+        public static Policystatus removeSystemPolicy(User user, int storeId, int policyId)
+        {
+            return WorkShop.removeSystemPolicy(policyId);
+
         }
 
     }

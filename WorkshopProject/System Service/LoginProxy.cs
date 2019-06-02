@@ -294,7 +294,7 @@ namespace WorkshopProject.System_Service
         //**********POLICIES*********************
 
         //policies
-        public int addDiscountPolicy(int storeId, string policy)
+        public Policystatus addDiscountPolicy(int storeId, string policy)
         {
             if (!loggedIn)
                 notLoggedInException();
@@ -302,14 +302,14 @@ namespace WorkshopProject.System_Service
             return PolicyService.addDiscountPolicy(user, storeId, dicountPolicy);
         }
 
-        public bool removeDiscountPolicy(int storeId, int policyId)
+        public Policystatus removeDiscountPolicy(int storeId, int policyId)
         {
             if (!loggedIn)
                 notLoggedInException();
             return PolicyService.removeDiscountPolicy(user, storeId, policyId);            
         }
 
-        public int addPurchasingPolicy(int storeId, string policy)
+        public Policystatus addPurchasingPolicy(int storeId, string policy)
         {
             if (!loggedIn)
                 notLoggedInException();
@@ -318,7 +318,7 @@ namespace WorkshopProject.System_Service
 
         }
 
-        public bool removePurchasingPolicy(int storeId, int policyId)
+        public Policystatus removePurchasingPolicy(int storeId, int policyId)
         {
             if (!loggedIn)
                 notLoggedInException();
@@ -326,7 +326,7 @@ namespace WorkshopProject.System_Service
            
         }
 
-        public int addStorePolicy(int storeId, string policy)
+        public Policystatus addStorePolicy(int storeId, string policy)
         {
             if (!loggedIn)
                 notLoggedInException();
@@ -334,7 +334,7 @@ namespace WorkshopProject.System_Service
             return PolicyService.addStorePolicy(user, storeId, storePolicy);
         }
 
-        public bool removeStorePolicy(int storeId, int policyId)
+        public Policystatus removeStorePolicy(int storeId, int policyId)
         {
             if (!loggedIn)
                 notLoggedInException();

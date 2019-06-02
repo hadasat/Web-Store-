@@ -506,8 +506,8 @@ namespace WorkshopProject.System_Service
             try
             {
                 Discount dicountPolicy = JsonHandler.DeserializeObject<Discount>(policy);
-                int policyId = PolicyService.addDiscountPolicy(user, storeId, dicountPolicy);
-                return intJson(policyId);
+                Policystatus res = PolicyService.addDiscountPolicy(user, storeId, dicountPolicy);
+                return JsonHandler.SerializeObject(res);
             }
             catch (Exception e)
             {
@@ -522,8 +522,8 @@ namespace WorkshopProject.System_Service
                 return notLoggedInError();
             try
             {
-                bool res = PolicyService.removeDiscountPolicy(user, storeId, policyId);
-                return resultJson(res);
+                Policystatus res = PolicyService.removeDiscountPolicy(user, storeId, policyId);
+                return JsonHandler.SerializeObject(res);
             }
             catch (Exception e)
             {
@@ -539,8 +539,8 @@ namespace WorkshopProject.System_Service
             try
             {
                 IBooleanExpression purchasingPolicy = JsonHandler.DeserializeObject<IBooleanExpression>(policy);
-                int policyId = PolicyService.addPurchasingPolicy(user, storeId, purchasingPolicy);
-                return intJson(policyId);
+                Policystatus res = PolicyService.addPurchasingPolicy(user, storeId, purchasingPolicy);
+                return JsonHandler.SerializeObject(res);
             }
             catch (Exception e)
             {
@@ -554,8 +554,8 @@ namespace WorkshopProject.System_Service
                 return notLoggedInError();
             try
             {
-                bool res = PolicyService.removePurchasingPolicy(user, storeId, policyId);
-                return resultJson(res);
+                Policystatus res = PolicyService.removePurchasingPolicy(user, storeId, policyId);
+                return JsonHandler.SerializeObject(res);
             }
             catch (Exception e)
             {
@@ -570,8 +570,8 @@ namespace WorkshopProject.System_Service
             try
             {
                 IBooleanExpression storePolicy = JsonHandler.DeserializeObject<IBooleanExpression>(policy);
-                int policyId = PolicyService.addStorePolicy(user, storeId, storePolicy);
-                return intJson(policyId);
+                Policystatus res = PolicyService.addStorePolicy(user, storeId, storePolicy);
+                return JsonHandler.SerializeObject(res);
             }
             catch (Exception e)
             {
@@ -585,8 +585,8 @@ namespace WorkshopProject.System_Service
                 return notLoggedInError();
             try
             {
-                bool res = PolicyService.removeStorePolicy(user, storeId, policyId);
-                return resultJson(res);
+                Policystatus res = PolicyService.removeStorePolicy(user, storeId, policyId);
+                return JsonHandler.SerializeObject(res);
             }
             catch (Exception e)
             {
