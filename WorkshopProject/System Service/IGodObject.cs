@@ -96,7 +96,7 @@ namespace WorkshopProject.System_Service
             {
                 if (sm.GetStore().id == storeId)
                 {
-                    sm.SubManagers.AddFirst(newStoreManager);
+                    sm.subManagers.AddFirst(newStoreManager);
                     return true;
                 }
             }

@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject.Policies;
+using TansactionsNameSpace;
+using WorkshopProject.External_Services;
 
 namespace WorkshopProject.System_Service
 {
@@ -128,11 +130,14 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 return notLoggedInError();
-            bool ret;
+            int ret;
+            bool result = false;
             try
             {
                 ret = UserService.AddStoreOwner(user, storeId, userToAdd);
-                return resultJson(ret);
+                if (ret == -1)
+                    result = true;
+                return resultJson(result);
             }
             catch (Exception e)
             {
@@ -144,11 +149,15 @@ namespace WorkshopProject.System_Service
         {
             //if (!loggedIn)
             //    throw new Exception("Not logged in");
-            int ret;
+            Transaction ret;
             try
             {
-                ret = TransactionService.BuyShoppingBasket(user);
-                return intJson(ret);
+                int credit =1, csv = 1;
+                string expiry = "",target = "z";
+                int cardNumber = 0, ccv = 0, month = 10, year = 2050, id = 123456789;
+                string holder = "mosh moshe", city = "shit", country = "shit", zip = "12345", address = "";
+                ret = new Transaction(user, cardNumber, month, year, holder, ccv, id, holder, address, city, country, zip, new PaymentStub (true),new SupplyStub(true));
+                return JsonConvert.SerializeObject(ret);
             }
             catch (Exception e)
             {
@@ -204,7 +213,7 @@ namespace WorkshopProject.System_Service
 
         public string GetShoppingCart(int storeId)
         {
-            JsonShoppingCart ret;
+            ShoppingCart ret;
             try
             {
                 ret = TransactionService.GetShoppingCart(user, storeId);
@@ -218,7 +227,7 @@ namespace WorkshopProject.System_Service
 
         public string GetShoppingBasket()
         {
-            JsonShoppingBasket ret;
+            ShoppingBasket ret;
             try
             {
                 ret = TransactionService.GetShoppingBasket(user);
@@ -273,19 +282,19 @@ namespace WorkshopProject.System_Service
             return resultJson(ret);
         }
 
-        public string Register(string username, string password)
-        {
-            bool ret;
-            try
-            {
-                ret = UserService.Register(username, password);
-                return resultJson(ret);
-            }
-            catch (Exception e)
-            {
-                return generateMessageFormatJason(e.Message);
-            }
-        }
+        //public string Register(string username, string password)
+        //{
+        //    bool ret;
+        //    try
+        //    {
+        //        ret = UserService.Register(username, password);
+        //        return resultJson(ret);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return generateMessageFormatJason(e.Message);
+        //    }
+        //}
         public string Register(string username, string password, DateTime birthdate,string country)
         {
             bool ret;

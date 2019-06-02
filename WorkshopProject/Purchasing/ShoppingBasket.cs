@@ -1,74 +1,96 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 
 namespace Shopping
 {
-    public class ShoppingBasket
+    public class ShoppingBasket : IEntity
     {
-        public Dictionary<Store, ShoppingCart> carts;
+        [Key]
+        public int id { get; set; }
+        [Include]
+        public List<ShoppingCartAndStore> cartsList { get; set; }
         public static int idBasketCounter = 0;
-        public int id;
 
         public ShoppingBasket()
         {
             id = idBasketCounter++;
-            carts = new Dictionary<Store, ShoppingCart>();
+            cartsList = new List<ShoppingCartAndStore>();
         }
 
-        public ShoppingBasket(JsonShoppingBasket basket)
+        public List<ShoppingCartAndStore> getCarts() { return cartsList; }
+
+        public ShoppingCart getCart(int storeId)
         {
-            if (basket != null)
-            {
-                id = basket.id;
-                carts = new Dictionary<Store, ShoppingCart>();
-                foreach (JsonShoppingBasketValue c in basket.shoppingCarts)
-                {
-                    ShoppingCart cart = new ShoppingCart(c.shoppingCart);
-                    carts.Add(c.store, cart);
-                }
-            }
+            Predicate<ShoppingCartAndStore> cartPredicat = s => ((ShoppingCartAndStore)s).store.id == storeId;
+            return cartsList.Find(cartPredicat).cart;
+        }
+
+        public ShoppingCart getCart(Store store)
+        {
+            Predicate<ShoppingCartAndStore> cartPredicat = s => ((ShoppingCartAndStore)s).store.Equals(store);
+            return cartsList.Find(cartPredicat).cart;
+
+        }
+
+        public bool containStore(Predicate<ShoppingCartAndStore> p)
+        {
+            return cartsList.Find(p) != null;
         }
 
         public bool setProductAmount(Store store, Product product, int amount)
         {
+            Predicate<ShoppingCartAndStore> cartPredicat = s => ((ShoppingCartAndStore)s).store.Equals(store);
+            ShoppingCartAndStore cartAndStore = cartsList.Find(cartPredicat);
             //remove product from list
             if (amount == 0)
             {
                 //check if the storecart is empty now
-                if (carts.ContainsKey(store))
+                if (containStore(cartPredicat))
                 {
+                    ShoppingCart cart = cartAndStore.cart;
                     //set product amount to zero
-                    carts[store].setProductAmount(product, amount);
-                    int storeAmount = carts[store].getTotalAmount();
+                    cart.setProductAmount(product, amount);
+                    int storeAmount = cart.getTotalAmount();
                     if (storeAmount == 0)
-                        carts.Remove(store);
+                        cartsList.Remove(cartAndStore);
                 }
                 return true;
             }
             else if (amount > 0)
             {
-                if (carts.ContainsKey(store))
-                    return carts[store].setProductAmount(product, amount);
-                /*if (!carts.ContainsKey(store))
-                    carts.Add(store, new ShoppingCart());
-                return carts[store].setProductAmount(product, amount);*/
+                if (containStore(cartPredicat))
+                {
+                    ShoppingCart cart = cartAndStore.cart;
+                    return cart.setProductAmount(product, amount);
+                }
             }
             return false;
-
         }
 
         public bool addProduct(Store store, Product product, int amount)
         {
-            if (!carts.ContainsKey(store))
-                carts.Add(store, new ShoppingCart());
-            return carts[store].addProducts(product, amount);
+            Predicate<ShoppingCartAndStore> cartPredicat = s => ((ShoppingCartAndStore)s).store.Equals(store);
+            ShoppingCartAndStore cartAndStore = cartsList.Find(cartPredicat);
+            ShoppingCart cart;
+            if (!containStore(cartPredicat))
+            {
+                cart = new ShoppingCart();
+                cartsList.Add(new ShoppingCartAndStore(store, cart));
+            }
+            else
+                cart = cartsList.Find(cartPredicat).cart;
+            return cart.addProducts(product, amount);
         }
 
         public int getProductAmount(Product product)
         {
-            foreach (KeyValuePair<Store, ShoppingCart> c in carts)
+            foreach (ShoppingCartAndStore c in cartsList)
             {
-                ShoppingCart shopping = c.Value;
+                ShoppingCart shopping = c.cart;
                 int amount = shopping.getProductAmount(product);
                 if (amount > 0)
                     return amount;
@@ -78,75 +100,77 @@ namespace Shopping
 
         public bool isEmpty()
         {
-            return carts.Count == 0;
+            return cartsList.Count == 0;
         }
 
         public bool cleanBasket()
         {
-            carts.Clear();
+            cartsList.Clear();
             return true;
         }
 
-        
-
-    }
-
-    public class JsonShoppingBasketValue
-    {
-        public Store store { get; set; }
-        public JsonShoppingCart shoppingCart { get; set; }
-
-        public JsonShoppingBasketValue(Store store, JsonShoppingCart shoppingCart)
+        private Dictionary<Store, ShoppingCart> cartsListAsDictionary()
         {
-            this.store = store;
-            this.shoppingCart = shoppingCart;
-        }
-    }
-
-    public class JsonShoppingBasket
-    {
-        public List<JsonShoppingBasketValue> shoppingCarts { get; set; }
-        public int id { get; }
-
-        public JsonShoppingBasket(ShoppingBasket basket)
-        {
-            shoppingCarts = new List<JsonShoppingBasketValue>();
-            id = basket.id;
-            copyBasket(basket);
-        }
-
-        public JsonShoppingBasket()
-        {   
-        }
-        
-
-        private void copyBasket(ShoppingBasket basket)
-        {
-            Dictionary<Store, ShoppingCart> shoppingCartsForCopy = basket.carts;
-            foreach (KeyValuePair<Store, ShoppingCart> pair in shoppingCartsForCopy)
+            Dictionary<Store, ShoppingCart> ret = new Dictionary<Store, ShoppingCart>();
+            foreach (ShoppingCartAndStore cart in cartsList)
             {
-                Store store = pair.Key;
-                JsonShoppingCart shoppingCart =new JsonShoppingCart(pair.Value);
-                JsonShoppingBasketValue item = new JsonShoppingBasketValue(store, shoppingCart);
-                shoppingCarts.Add(item);
+                ret.Add(cart.store, cart.cart);
+            }
+            return ret;
+        }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is ShoppingBasket)
+            {
+                ShoppingBasket _other = ((ShoppingBasket)other);
+                cartsList = _other.cartsList;
             }
         }
 
+        public override void LoadMe()
+        {
+            foreach (IEntity obj in cartsList)
+            {
+                obj.LoadMe();
+            }
+        }
 
+    }
 
+    public class ShoppingCartAndStore : IEntity
+    {
+        [Key]
+        public int id { get; set; }
+        [Include]
+        public Store store { get; set; }
+        [Include]
+        public ShoppingCart cart { get; set; }
+
+        public ShoppingCartAndStore() { }
+
+        public ShoppingCartAndStore(Store store, ShoppingCart cart)
+        {
+            this.store = store;
+            this.cart = cart;
+        }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is ShoppingCartAndStore)
+            {
+                ShoppingCartAndStore _other = ((ShoppingCartAndStore)other);
+                store = _other.store;
+                cart = _other.cart;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            store.LoadMe();
+            cart.LoadMe();
+        }
     }
 }
-
-
-
-/*public ShoppingBasket(ShoppingBasket s)
-{
-    this.carts = new Dictionary<Store, ShoppingCart>();
-    Dictionary<Store, ShoppingCart> carts = s.carts;
-    foreach (KeyValuePair<Store, ShoppingCart> c in carts)
-    {
-        Store store = c.Key;
-        ShoppingCart shopping = new ShoppingCart(c.Value);
-        this.carts[store] = shopping;
-    }
-}*/

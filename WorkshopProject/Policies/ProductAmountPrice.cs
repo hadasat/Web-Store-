@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Shopping;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.Policies
 {
-    public class ProductAmountPrice
+    public class ProductAmountPrice : IEntity
     {
-        public Product product;
-        public int amount;
-        public double price;
+        [Key]
+        public int id { get; set; }
+        [Include]
+        public Product product { get; set; }
+        public int amount { get; set; }
+        public double price { get; set; }
 
         public ProductAmountPrice(Product product, int amount, double price)
         {
@@ -30,10 +35,10 @@ namespace WorkshopProject.Policies
         public static List<ProductAmountPrice> translateCart(ShoppingCart cart)
         {
             List<ProductAmountPrice> output = new List<ProductAmountPrice>();
-            Dictionary<Product, int> products = cart.products;
-            foreach(KeyValuePair<Product,int> p in products)
+            List<ProductAmount> products = cart.getProducts();
+            foreach(ProductAmount p in products)
             {
-                ProductAmountPrice newProduct = new ProductAmountPrice(p.Key, p.Value, p.Key.price);
+                ProductAmountPrice newProduct = new ProductAmountPrice(p.product, p.amount, p.product.price);
                 output.Add(newProduct);
             }
             return output;
@@ -57,6 +62,21 @@ namespace WorkshopProject.Policies
                     return true;
             }
             return false;
+        }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is ProductAmountPrice)
+            {
+                ProductAmountPrice _other = ((ProductAmountPrice)other);
+                product = _other.product;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            product.LoadMe();   
         }
     }
 }

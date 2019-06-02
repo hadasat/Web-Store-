@@ -1,27 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Log;
 
 namespace Managment
 {
 
 
-    public class Roles
+    public class Roles : IEntity
     {
-        private bool addRemoveProducts;
-        private bool addRemovePurchasing;
-        private bool addRemoveDiscountPolicy;
-        private bool addRemoveStorePolicy;
-        private bool addRemoveStoreManger;
-        private bool closeStore;
-        private bool customerCommunication;
-        private bool appointOwner;
-        private bool appointManager;
+        [Key]
+        public int id { get; set; }
+
+
+        public bool AddRemoveProducts { get; set; }
+        public bool AddRemovePurchasing { get; set; }
+        public bool AddRemoveDiscountPolicy { get; set; }
+        public bool AddRemoveStorePolicy { get; set; }
+        public bool AddRemoveStoreManger { get; set; }
+        public bool CloseStore { get; set; }
+        public bool CustomerCommunication { get; set; }
+        public bool AppointOwner { get; set; }
+        public bool AppointManager { get; set; }
 
         public Roles(bool addRemoveProducts, 
                      bool addRemovePurchasing, 
@@ -67,37 +73,49 @@ namespace Managment
             return true;
         }
 
+        /*
         public bool isStoreOwner()
         {
             return  this.AddRemoveProducts &&
-                    this.addRemovePurchasing &&
-                    this.addRemoveDiscountPolicy &&
-                    this.addRemoveStoreManger &&
-                    this.closeStore &&
-                    this.customerCommunication &&
+                    this.AddRemovePurchasing &&
+                    this.AddRemoveDiscountPolicy &&
+                    this.AddRemoveStoreManger &&
+                    this.CloseStore &&
+                    this.CustomerCommunication &&
                     this.AppointManager &&
                     this.AppointOwner;
+        }*/
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
         }
 
-        public bool AddRemoveProducts { get => addRemoveProducts; set => addRemoveProducts = value; }
-        public bool AddRemovePurchasing { get => addRemovePurchasing; set => addRemovePurchasing = value; }
-        public bool AddRemoveDiscountPolicy { get => addRemoveDiscountPolicy; set => addRemoveDiscountPolicy = value; }
-        public bool AddRemoveStorePolicy { get => addRemoveStorePolicy; set => addRemoveStorePolicy = value; }
-        public bool AddRemoveStoreManger { get => addRemoveStoreManger; set => addRemoveStoreManger = value; }
-        public bool CloseStore { get => closeStore; set => closeStore = value; }
-        public bool CustomerCommunication { get => customerCommunication; set => customerCommunication = value; }
-        public bool AppointOwner { get => appointOwner; set => appointOwner = value; }
-        public bool AppointManager { get => appointManager; set => appointManager = value; }
+        public override void LoadMe()
+        {
+
+        }
     }
 
-    public class StoreManager
+    public class StoreManager : IEntity
     {
-        private readonly Store store;
-        private Roles myRoles;
-        private LinkedList<StoreManager> subManagers;
-        private StoreManager father;
 
-        public LinkedList<StoreManager> SubManagers { get => subManagers; set => subManagers = value; }
+        [Key]
+        public int id { get; set; }
+        [Include]
+        public Store store { get; set; }
+        [Include]
+        public Roles myRoles { get; set; }
+        [Include]
+        public LinkedList<StoreManager> subManagers { get; set; }
+        [Include]
+        public StoreManager father { get; set; }
+        private bool storeOwner;
+
+
+        public StoreManager() {
+            subManagers = new LinkedList<StoreManager>();
+        }
 
         public StoreManager(Store store, Roles storeRoles)
         {
@@ -105,27 +123,31 @@ namespace Managment
             this.myRoles = storeRoles;
             this.subManagers = new LinkedList<StoreManager>();
             this.father = null; //change to super father
+            this.storeOwner = false;
         }
 
         /*about roles: the client will choose what roles he wants to give the new
           manager (needs to be like hes and below) */
         public bool CreateNewManager(Member member, Roles roles)
         {
-            if (myRoles.isStoreOwner() && myRoles.CompareRoles(roles) && checkNotAManager(member))
+            if (this.storeOwner && myRoles.CompareRoles(roles) && checkNotAManager(member))
             {
                 StoreManager newSubStoreManager = new StoreManager(this.store, roles);
                 newSubStoreManager.setFather(this);
                 subManagers.AddFirst(newSubStoreManager);
                 member.addStoreToMe(newSubStoreManager);
-                Logger.Log("file", logLevel.INFO, "store:" + store.id + " succesfully add new manager: "+ member.username);
+                Logger.Log("event", logLevel.INFO, "store:" + store.id + " succesfully add new manager: "+ member.username);
                 return true;
             }
             else
             {
-                Logger.Log("file", logLevel.INFO, "store:" + store.id + " failed add new manager: " + member.username);
+                Logger.Log("error", logLevel.INFO, "store:" + store.id + " failed add new manager: " + member.username);
                 throw new Exception("this manager try to give more roles than he can");
             }
         }
+
+
+
 
         private bool checkNotAManager(Member member)
         {
@@ -149,14 +171,16 @@ namespace Managment
 
         public bool removeManager(StoreManager managerToRemove)
         {
+            if (managerToRemove.storeOwner)
+                throw new Exception("Sorry, you can't remove a partner! this user is a an owner of your store");
             if (subManagers.Contains(managerToRemove))
             {
                 recursiveCleanManager(managerToRemove);
-                Logger.Log("file", logLevel.INFO, "success remove");
+                Logger.Log("event", logLevel.INFO, "success remove");
                 return subManagers.Remove(managerToRemove);
             } else
             {
-                Logger.Log("file", logLevel.INFO, "fail remove");
+                Logger.Log("error", logLevel.INFO, "fail remove");
                 throw new Exception("The manager to remove is not below to this manager");
             }
         }
@@ -197,6 +221,53 @@ namespace Managment
         public StoreManager GetFather()
         {
             return father;
+        }
+
+        public void SetStoreOwnerTrue()
+        {
+            this.storeOwner = true;
+        }
+
+
+        public void SetStoreOwnerFalse()
+        {
+            this.storeOwner = false;
+        }
+
+        public bool isStoreOwner()
+        {
+            return this.storeOwner;
+        }
+
+
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is StoreManager)
+            {
+                StoreManager _other = ((StoreManager)other);
+                store = _other.store;
+                myRoles = _other.myRoles;
+                subManagers = _other.subManagers;
+                father = _other.father;
+            }
+        }
+
+        public override void LoadMe()
+        {
+
+            store.LoadMe();
+
+            myRoles.LoadMe();
+
+            foreach (IEntity obj in subManagers)
+            {
+                obj.LoadMe();
+            }
+
+            father.LoadMe();
+
         }
     }
 }

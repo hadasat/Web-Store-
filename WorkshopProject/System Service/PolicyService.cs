@@ -71,7 +71,7 @@ namespace WorkshopProject.System_Service
                 removePolicyfailes(response);
             return true;
         }
-
+        
         //store
         public static int addStorePolicy(User user, int storeId, IBooleanExpression policies)
         {

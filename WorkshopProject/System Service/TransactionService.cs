@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tansactions;
+using TansactionsNameSpace;
 using Users;
 
 
@@ -15,7 +15,7 @@ namespace WorkshopProject.System_Service
     //Message Format: {message: String}
     //Search Format: {List<Product> products}
 
-public static class TransactionService
+    public static class TransactionService
     {
 
         public static bool AddProductToBasket(User user, int storeId, int productId, int amount)
@@ -38,39 +38,31 @@ public static class TransactionService
             return ret;
         }
 
-        public static int BuyShoppingBasket(User user)
+        public static Transaction BuyShoppingBasket(User user, int cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
         {
-            int transId = Transaction.purchase(user);
-            return transId;
-
-            //return JsonConvert.SerializeObject(new IdMessage(transId));
+            
+            Transaction transaction = new Transaction(user, cardNumber,month,year,holder,ccv,id,name,address,city,country,zip);
+            return transaction;
         }
         
-        public static JsonShoppingCart GetShoppingCart(User user, int storeId)
+        public static ShoppingCart GetShoppingCart(User user, int storeId)
         {
             //find the product store;
             Store store = WorkShop.getStore(storeId);
             if (store == null) { 
                 throw new Exception("Illegal store id");
             }
-            ShoppingCart shoppingCart;
-            user.shoppingBasket.carts.TryGetValue(store,out shoppingCart);
+            ShoppingCart shoppingCart = user.shoppingBasket.getCart(store);
             if(shoppingCart == null)
             {
                 throw new Exception("Illegal store id for this user");
             }
-            JsonShoppingCart jsc = new JsonShoppingCart(shoppingCart);
-            return jsc;
+            return shoppingCart;
         }
 
-        public static JsonShoppingBasket GetShoppingBasket(User user)
+        public static ShoppingBasket GetShoppingBasket(User user)
         {
-            JsonShoppingBasket jsb = new JsonShoppingBasket(user.shoppingBasket);
-            return jsb;
-
-            
-
-
+            return user.shoppingBasket;
         }
 
         public static bool SetProductAmountInBasket(User user, int storeId,int productId, int amount)
@@ -79,18 +71,9 @@ public static class TransactionService
             ShoppingBasket userShoppingBasket = user.shoppingBasket;
             Store store = WorkShop.getStore(storeId);
             Product product;
-            if (store != null && (product=store.findProduct(productId)) !=null)
+            if (store != null && (product = store.findProduct(productId)) != null)
             {
-                bool sucss;
-                //jonathan - this flow makes no sense
-                //if (product.amount <= amount)
-                    sucss = userShoppingBasket.setProductAmount(store, product, amount);
-               // else
-               //     sucss = false;
-                if (sucss)
-                    ret = true;
-                else
-                    ret = false;
+                ret = userShoppingBasket.setProductAmount(store, product, amount);
             }
             else
                 throw new Exception("Illegal Product id");

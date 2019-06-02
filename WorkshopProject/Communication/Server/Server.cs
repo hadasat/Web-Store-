@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -135,6 +136,8 @@ namespace WorkshopProject.Communication.Server
             return ans;
         }
 
+
+
         #endregion
 
         #region private methods
@@ -157,7 +160,7 @@ namespace WorkshopProject.Communication.Server
             catch (Exception ignore)
             {
                 //Console.WriteLine("test - problem in connecting \n");
-                Logger.Log("file", logLevel.WARN, "listener couldn't get end of context");
+                Logger.Log("event", logLevel.WARN, "listener couldn't get end of context");
                 return;
             }
             if (context.Request.IsWebSocketRequest)
@@ -198,13 +201,13 @@ namespace WorkshopProject.Communication.Server
                         }
                         else
                         {
-                            Logger.Log("file", logLevel.DEBUG, "error getting old id establishing new");
+                            Logger.Log("event", logLevel.DEBUG, "error getting old id establishing new");
                             newConnectionId = incermentCounter();
                         }
                     }
                     catch (Exception ignore)
                     {
-                        Logger.Log("file", logLevel.DEBUG, "error receiveing connection id for old connections");
+                        Logger.Log("event", logLevel.DEBUG, "error receiveing connection id for old connections");
                         return;
                     }
                 }
@@ -215,7 +218,7 @@ namespace WorkshopProject.Communication.Server
                 if (!ans)
                 {
                     //Console.WriteLine("couldn't add new web socket connection to connection dictionary");
-                    Logger.Log("file", logLevel.ERROR, "couldn't add new web socket connection to connection dictionary");
+                    Logger.Log("error", logLevel.ERROR, "couldn't add new web socket connection to connection dictionary");
                     return;
                 }
 
@@ -236,7 +239,7 @@ namespace WorkshopProject.Communication.Server
                 {
                     activeConections.TryRemove(newConnectionId, out ws);
                     //Console.WriteLine("unsuccessful creatio of new web socket handler");
-                    Logger.Log("file", logLevel.ERROR, "unsuccessful creation of new web socket handler, recievd null handler");
+                    Logger.Log("error", logLevel.ERROR, "unsuccessful creation of new web socket handler, recievd null handler");
                 }
             }
             else
@@ -271,7 +274,7 @@ namespace WorkshopProject.Communication.Server
                     catch (Exception ignore)
                     {
                         //Console.WriteLine("test 1");
-                        Logger.Log("file", logLevel.DEBUG, "closed the server while some websockets are open");
+                        Logger.Log("event", logLevel.DEBUG, "closed the server while some websockets are open");
                         wsHandler.onCloseError(myId);
                         return;
                     }
@@ -297,7 +300,7 @@ namespace WorkshopProject.Communication.Server
             if (removed == null || !removeAns)
             {
                 //Console.WriteLine("error removing form connection list, id:{0}", myId);
-                Logger.Log("file", logLevel.ERROR, "error removing form connection list, id: " + myId);
+                Logger.Log("error", logLevel.ERROR, "error removing form connection list, id: " + myId);
                 return;
             }
             removed.Dispose();

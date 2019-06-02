@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkshopProject.DataAccessLayer;
 using static WorkshopProject.Category;
 
 namespace WorkshopProject
 {
-    public class Product
+    public class Product : IEntity
     {
         public static int idGenerator = 0;
+        [Key]
         public int id { get; set; } 
-        public string name;
-        public double price;
-        public string category;
-        public int rank;
-        public string description;
-        public int amount;
-        public int storeId;
+        public string name { get; set; }
+        public double price { get; set; } 
+        public string category { get; set; } 
+        public int rank { get; set; } 
+        public string description { get; set; }
+        public int amount { get; set; }
+        public int storeId { get; set; }
 
         public Product(string name , double price, string desc, string category,int rank,int amount , int storeId)
         {
@@ -31,16 +34,12 @@ namespace WorkshopProject
             this.amount = amount;
         }
 
-
-
         public Product() { }
 
         public int getId()
         {
             return id;
-        }
-
-       
+        }   
 
         public double getPrice()
         {
@@ -60,7 +59,22 @@ namespace WorkshopProject
             return (id == p.id && storeId == p.storeId);
         }
 
+        public override int GetHashCode()
+        {
+            //return base.GetHashCode();
+            int result = id;
+            result = (result * 397) ^ storeId;
+            return result;
+        }
 
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+        }
 
+        public override void LoadMe()
+        {
+            
+        }
     }
 }

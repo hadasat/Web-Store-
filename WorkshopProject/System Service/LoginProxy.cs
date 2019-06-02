@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TansactionsNameSpace;
 using Users;
 using WorkshopProject.Communication;
+using WorkshopProject.Policies;
 
 namespace WorkshopProject.System_Service
 {
@@ -68,12 +70,41 @@ namespace WorkshopProject.System_Service
         {
             if (!loggedIn)
                 notLoggedInException();
-            return UserService.AddStoreOwner(user, storeId, userToAdd);
+            int ownerShipRequestID =  UserService.AddStoreOwner(user, storeId, userToAdd);
+            if(ownerShipRequestID == -1)
+            {
+                //this means there was only one user that was an owner so he approved himself the request,
+                //no need to de anything except for updating the memebr on succses
+                return true;
+            } else
+            {
+                //in this case:
+                //needs to save the request id and that the client side will be able to show
+                //the rigth request to the relevant user, and he will use the 
+                //ApproveOwnershipRequest or DisApproveOwnershipRequest
+
+            }
+
+            return true;
         }
 
-        public int BuyShoppingBasket()
+        public bool ApproveOwnershipRequest(int requestID)
         {
-            return TransactionService.BuyShoppingBasket(user);
+            if (!loggedIn)
+                notLoggedInException();
+            return UserService.ApproveOwnershipRequest(user, requestID);
+        }
+
+        public bool DisApproveOwnershipRequest(int requestID)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return UserService.DisApproveOwnershipRequest(user, requestID);
+        }
+
+        public Transaction BuyShoppingBasket(int cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
+        {
+            return TransactionService.BuyShoppingBasket(user,cardNumber,month,year,holder,ccv,id,name,address,city,country,zip);
         }
 
         public bool ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount)
@@ -95,7 +126,7 @@ namespace WorkshopProject.System_Service
             return JsonHandler.SerializeObject(StoreService.GetProductInfo(productId));
         }
 
-        public JsonShoppingCart GetShoppingCart(int storeId)
+        public ShoppingCart GetShoppingCart(int storeId)
         {
             return TransactionService.GetShoppingCart(user, storeId);
         }
@@ -151,19 +182,13 @@ namespace WorkshopProject.System_Service
             return ret;
         }
 
-        public bool Register(string username, string password)
-        {
-            return UserService.Register(username, password);
-        }
+        //public bool Register(string username, string password)
+        //{
+        //    return UserService.Register(username, password);
+        //}
         public bool Register(string username, string password,DateTime birthdath, string country)
         {
             return UserService.Register(username, password, birthdath,country);
-        }
-
-        public bool removeDiscountPolicy(int storeId)
-        {
-            //TODO
-            throw new NotImplementedException();
         }
 
         public bool RemoveProductFromStore(int storeId, int productId)
@@ -266,7 +291,55 @@ namespace WorkshopProject.System_Service
         }
 
 
-        //TODO: add policies to loginproxy
+        //**********POLICIES*********************
+
+        //policies
+        public int addDiscountPolicy(int storeId, string policy)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            Discount dicountPolicy = JsonHandler.DeserializeObject<Discount>(policy);
+            return PolicyService.addDiscountPolicy(user, storeId, dicountPolicy);
+        }
+
+        public bool removeDiscountPolicy(int storeId, int policyId)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return PolicyService.removeDiscountPolicy(user, storeId, policyId);            
+        }
+
+        public int addPurchasingPolicy(int storeId, string policy)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            IBooleanExpression purchasingPolicy = JsonHandler.DeserializeObject<IBooleanExpression>(policy);
+            return PolicyService.addPurchasingPolicy(user, storeId, purchasingPolicy);
+
+        }
+
+        public bool removePurchasingPolicy(int storeId, int policyId)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return PolicyService.removePurchasingPolicy(user, storeId, policyId);
+           
+        }
+
+        public int addStorePolicy(int storeId, string policy)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            IBooleanExpression storePolicy = JsonHandler.DeserializeObject<IBooleanExpression>(policy);
+            return PolicyService.addStorePolicy(user, storeId, storePolicy);
+        }
+
+        public bool removeStorePolicy(int storeId, int policyId)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return PolicyService.removeStorePolicy(user, storeId, policyId);
+        }
 
 
         private void notLoggedInException()

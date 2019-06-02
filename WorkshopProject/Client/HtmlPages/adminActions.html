@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WorkShop</title>
+    <script type="text/javascript" src="/wot/communication.js"></script>
+
+
+    <!-- BOOTSTRAP FILES -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+
+
+    <!-- NAVBAR -->
+    <div id="navbar_header"></div>
+    <script type="text/javascript" src="/wot/navbar.js"></script>
+</head>
+<body>
+ <div class="container">
+        <h5>Remove Members</h5>
+        <p> <label for="members">Select member (select one):</label>
+            <select class="form-control" id="members"></select></p>
+            <button id="removeMember_btn" type="button" class="btn btn-danger btn-sm">Remove</button>
+        <hr>
+
+ </div>   
+
+
+<script>
+
+ onStart(init);
+ function init(){
+     cleanList()
+    sendRequest('data','getAllMembers',null).then(function(res){
+        addMembersToSelectList(res.$values);
+    })
+ }
+
+ function cleanList(){
+    $('#members').html('');
+ }
+
+ function addMembersToSelectList(members){
+     members.map(member => $('#members').append(`<option>${member.username}</option>`));
+ }
+
+ $('#removeMember_btn').on('click',function(){
+     var username = $('#members').val();
+     sendRequest('action','removeUser', username)
+     .then(function(res){
+        init();
+     })
+ })
+
+</script>
+</body>
+</html>

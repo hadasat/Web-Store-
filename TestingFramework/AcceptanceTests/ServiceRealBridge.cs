@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using Microsoft.CSharp.RuntimeBinder;
 using System.Dynamic;
 using WorkshopProject;
+using Managment;
 
 namespace TestingFramework.AcceptanceTests
 {
@@ -52,16 +53,20 @@ namespace TestingFramework.AcceptanceTests
             return ret;
         }
 
-        private string createRolesJson(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore,bool addRemoveStorePolicy)
+        private string createRolesJson(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore, bool addRemoveStorePolicy)
         {
-            return JsonHandler.SerializeObject(
-                new ManagerRolesContainer(
-                    addRemovePurchasing,
-                    addRemoveDiscountPolicy,
-                    addRemoveStoreManger,
-                    closeStore,
-                    addRemoveStorePolicy)
+            Roles roles = new Roles(
+                true,
+                addRemovePurchasing,
+                addRemoveDiscountPolicy,
+                addRemoveStoreManger,
+                closeStore,
+                false,
+                true,
+                addRemoveStoreManger,
+                addRemoveStorePolicy
                 );
+            return JsonHandler.SerializeObjectDynamic(roles);
         }
 
         //{id : int , name :string , price : int , rank : int  , category : string  }
@@ -119,6 +124,7 @@ namespace TestingFramework.AcceptanceTests
 
         public bool BuyShoppingBasket()
         {
+            //TODO amsel fix this shit
             string msg = service.BuyShoppingBasket();
             JObject json = JObject.Parse(msg);
             return ((int)json["id"] > 0);
@@ -201,9 +207,9 @@ namespace TestingFramework.AcceptanceTests
             return wasSuccessful(json);
         }
 
-        public bool Register(string user, string password)
+        public bool Register(string user, string password,DateTime birthdate, string country)
         {
-            string msg = service.Register(user, password);
+            string msg = service.Register(user, password,birthdate,country);
             JObject json = JObject.Parse(msg);
             return wasSuccessful(json);
         }

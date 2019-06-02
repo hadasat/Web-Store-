@@ -14,78 +14,68 @@
 
     <!-- NAVBAR -->
     <div id="navbar_header"></div>
+    <div class="notification_modal">
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit Your Store Here! </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <h5>Change Product Info</h5>
+                    <form id="changeProductInfo_form"></form>
+                    <hr>
+                    <form id="addProductToStock_form">
+                        <div class="col">
+                            <label for="nAmount">Amount To Add</label> 
+                            <input id= "nAmount" type="number"  class="form-control" placeholder="Amount"  required>   
+                        </div>
+                        <button id="addToStock_btn" type="button" class="btn btn-primary">Add</button>
+                    </form>
+                    <hr>
+                    <h5>Remove Product</h5>
+                    <p>remove product from the store.</p>
+                    <button type="button" class="btn btn-danger" id="removeProduct_btn">Remove Now</button>
+                    <hr>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <!-- <button type="button"   data-dismiss="modal" class="btn btn-primary">Save changes</button> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+    </div>
     <script type="text/javascript" src="/wot/navbar.js"></script>
 </head>
 <body>
 
     
 <div class="container">
-
         <div class="pb-2 mt-4 mb-2 border-bottom">
-                <h1>Stores</h1>
-            </div>
-
-        <div class="grid row">
-                <div class="col-sm-3">
-                    <div class="card" style="margin-bottom: 10%;" >
-                        <div class="card-body" >
-                            <h5 class="card-title">Store name</h5>
-                            <p>Rank: 5 stars</p>
-                            <a href="#" class="btn btn-primary">Shop Now</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="card"  style="margin-bottom: 10%;" >
-                        <div class="card-body">
-                            <h5 class="card-title">Store name</h5>
-                            <p>Rank: 5 stars</p>
-                            <a href="#" class="btn btn-primary">Shop Now</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                        <div class="card"  style="margin-bottom: 10%;" >
-                            <div class="card-body">
-                                <h5 class="card-title">Store name</h5>
-                                <p>Rank: 5 stars</p>
-                                <a href="#" class="btn btn-primary">Shop Now</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                            <div class="card"  style="margin-bottom: 10%;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Store name</h5>
-                                    <p>Rank: 5 stars</p>
-                                    <a href="#" class="btn btn-primary">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-                       
-            </div>
-            <!-- <div class="row">
-                    <div class="col-sm-3">
-                            <div class="card"  style="margin-bottom: 10%;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Store name</h5>
-                                    <a href="#" class="btn btn-primary">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-            </div> -->
-        
+             <h1>Stores</h1>
+        </div>
+        <div class="grid row"> </div>      
 </div>
 
 <script>
-    sendRequest("data","getAllStores",null);
-    var handleMessage = (msg)=>{
-        msg.info=="success"?
-        displayStores(JSON.parse(msg.data)) :
-        alert(msg.data.msg);     
-    };
-    updateHandler(handleMessage);
+    //while(!connected){};
+    onStart(init);
+    function init(){
+    sendRequest("data","getAllStores",null).then(function (res){
+        var storesCollections = res;
+        displayStores(storesCollections.$values);
+    });
+}
 
+
+
+   
     function displayStores(stores){
         stores.map(store => $(".grid").append(createStoreCardHtml(store)));
     };

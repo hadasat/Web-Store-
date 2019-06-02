@@ -23,47 +23,46 @@ namespace WorkshopProject.System_Service
         public static bool AddStoreManager(User user, int storeId, string username, string roles)
         {
             Roles rolesOb = createRole(roles);
-            if(rolesOb == null)
+            return AddStoreManager(user, storeId, username, rolesOb);
+        }
+
+        public static bool AddStoreManager(User user, int storeId, string username, Roles roles)
+        {
+            if (roles == null)
                 throw new Exception("illegal roles was enterd");
-                ((Member)user).addManager(username, rolesOb, storeId);
+            ((Member)user).addManager(username, roles, storeId);
             return true;
         }
 
-        //private Roles createRole(string roles)
-        //{
-        //    bool b1, b2, b3, b4, b5, b6, b7, b8;
-        //    if (roles.Length != 8) return null; 
-        //    if (roles[0] == 't') b1 = true; else if (roles[0] == 'f') b1 = false; else return null;
-        //    if (roles[1] == 't') b2 = true; else if (roles[1] == 'f') b2 = false; else return null;
-        //    if (roles[2] == 't') b3 = true; else if (roles[2] == 'f') b3 = false; else return null;
-        //    if (roles[3] == 't') b4 = true; else if (roles[3] == 'f') b4 = false; else return null;
-        //    if (roles[4] == 't') b5 = true; else if (roles[4] == 'f') b5 = false; else return null;
-        //    if (roles[5] == 't') b6 = true; else if (roles[5] == 'f') b6 = false; else return null;
-        //    if (roles[6] == 't') b7 = true; else if (roles[6] == 'f') b7 = false; else return null;
-        //    if (roles[7] == 't') b8 = true; else if (roles[7] == 'f') b8 = false; else return null;
-        //    return new Roles(b1, b2, b3, b4, b5, b6, b7, b8);
-        //}
-    
+
         private static Roles createRole(string roles)
         {
-            JObject json = JObject.Parse(roles);
-            bool addRemovePurchasing = (bool)json["addRemovePurchasing"];
-            bool addRemoveDiscountPolicy = (bool)json["addRemoveDiscountPolicy"];
-            bool addRemoveStoreManger = (bool)json["addRemoveStoreManger"];
-            bool closeStore = (bool)json["closeStore"];
-
-            return new Roles(true, addRemoveDiscountPolicy, addRemoveDiscountPolicy, true, closeStore, true, true, true,true);
+            return JsonHandler.DeserializeObject<Roles>(roles);
         }
 
-        public static bool AddStoreOwner(User user, int storeId, string username)
+        public static int AddStoreOwner(User user, int storeId, string username)
         {
             Roles ownerRoles = new Roles(true, true, true, true, true, true, true, true,true);
             if(!(user is Member))
                 throw new Exception("user can't do this");
 
-            ((Member)user).addManager(username, ownerRoles, storeId);
+            int request = ((Member)user).addStoreOwner(username, ownerRoles, storeId);
 
-            return true;
+            return request;
+        }
+
+        public static bool ApproveOwnershipRequest(User user, int requestID)
+        {
+            if (!(user is Member))
+                throw new Exception("user can't do this");
+            return ((Member)user).approveOwnershipRequest(requestID);
+        }
+
+        public static bool DisApproveOwnershipRequest(User user, int requestID)
+        {
+            if (!(user is Member))
+                throw new Exception("user can't do this");
+            return ((Member)user).disapproveOwnershipRequest(requestID);
         }
 
         public static Member login(string username, string password,User user)
@@ -82,11 +81,11 @@ namespace WorkshopProject.System_Service
             return true;
         }
 
-        public static bool Register(string username, string password)
-        {
-            (new User()).registerNewUser(username, password);
-            return true;
-        }
+        //public static bool Register(string username, string password)
+        //{
+        //    (new User()).registerNewUser(username, password);
+        //    return true;
+        //}
 
         public static bool Register(string username, string password, DateTime birthdate, string country)
         {

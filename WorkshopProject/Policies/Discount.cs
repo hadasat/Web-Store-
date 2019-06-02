@@ -1,21 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.Policies
 {
-    public class Discount
+    public class Discount : IEntity
     {
-        public Discount successor;
-        public IOutcome outcome;
-        public IBooleanExpression condition;
-        public int id;
+        [Key]
+        public int id { get; set; }
+        [Include]
+        public Discount successor { get; set; }
+        [Include]
+        public IOutcome outcome { get; set; }
+        [Include]
+        public IBooleanExpression condition { get; set; }
 
         public static int DiscountCounter = 1;
 
+
+        public Discount() { }
         public Discount(IBooleanExpression condition, IOutcome outcome)
         {
             this.condition = condition;
@@ -65,6 +73,31 @@ namespace WorkshopProject.Policies
                 if (id == ((Discount)obj).id)
                     return true;
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            //return base.GetHashCode();
+            return id;
+        }
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is Discount)
+            {
+                Discount _other = ((Discount)other);
+                successor = _other.successor;
+                outcome = _other.outcome;
+                condition = _other.condition;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            successor.LoadMe();
+            outcome.LoadMe();
+            condition.LoadMe();
         }
     }
 }

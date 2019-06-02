@@ -50,14 +50,24 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ServiceModel.DomainServices.EntityFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\RIAServices.EntityFramework.4.2.0\lib\Net40\Microsoft.ServiceModel.DomainServices.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -75,9 +85,18 @@
     <Compile Include="Communication\Server\IWebSocketMessageSender.cs" />
     <Compile Include="Communication\Server\Server.cs" />
     <Compile Include="Communication\UserConnectionInfo.cs" />
+    <Compile Include="DataAccessLayer\Context\WorkshopDBContext.cs" />
+    <Compile Include="DataAccessLayer\DataAccessDriver.cs" />
+    <Compile Include="DataAccessLayer\ConcreteDataAccess.cs" />
+    <Compile Include="DataAccessLayer\Examples\DataAccessExamples.cs" />
+    <Compile Include="DataAccessLayer\IDataAccess.cs" />
+    <Compile Include="DataAccessLayer\IEntity.cs" />
     <Compile Include="Examples\ClassForTestExample.cs" />
     <Compile Include="Examples\LogExample.cs" />
     <Compile Include="External Services\ConsistencyStub.cs" />
+    <Compile Include="External Services\ExternalSystemConnection.cs" />
+    <Compile Include="External Services\IPayment.cs" />
+    <Compile Include="External Services\ISupply.cs" />
     <Compile Include="External Services\PaymentStub.cs" />
     <Compile Include="External Services\SupplyStub.cs" />
     <Compile Include="Communication\IObserver.cs" />
@@ -99,6 +118,7 @@
     <Compile Include="Store\Category.cs" />
     <Compile Include="Store\DiscountPolicy.cs" />
     <Compile Include="System Service\IGodObject.cs" />
+    <Compile Include="System Service\InitSystem.cs" />
     <Compile Include="System Service\LoginProxy.cs" />
     <Compile Include="System Service\PolicyService.cs" />
     <Compile Include="System Service\StoreService.cs" />
@@ -106,6 +126,7 @@
     <Compile Include="System Service\TransactionService.cs" />
     <Compile Include="System Service\UserInterface.cs" />
     <Compile Include="System Service\UserService.cs" />
+    <Compile Include="User\Member.cs" />
     <Compile Include="User\Password.cs" />
     <Compile Include="Store\Product.cs" />
     <Compile Include="Store\RegularDiscount.cs" />
@@ -114,10 +135,12 @@
     <Compile Include="Store\Store.cs" />
     <Compile Include="User\Managment.cs" />
     <Compile Include="Purchasing\Transaction.cs" />
+    <Compile Include="User\SystemAdmin.cs" />
     <Compile Include="User\Users.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Store\WorkShop.cs" />
+    <Compile Include="User\UsersManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -125,12 +148,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Client\HtmlPages\adminActions.html" />
     <Content Include="Client\HtmlPages\communication.js" />
     <Content Include="Client\HtmlPages\index.html" />
     <Content Include="Client\HtmlPages\navbar.js" />
     <None Include="Client\HtmlPages\product.html" />
     <None Include="Client\HtmlPages\newStore.html" />
     <None Include="Client\HtmlPages\shoppingBasket.html" />
+    <None Include="Client\HtmlPages\Search.html" />
+    <None Include="Client\HtmlPages\payment.html" />
     <Content Include="Client\HtmlPages\SignIn.css" />
     <Content Include="Client\HtmlPages\SignIn.html" />
     <Content Include="Client\HtmlPages\store.html" />
@@ -154,6 +180,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
