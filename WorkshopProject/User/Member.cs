@@ -47,17 +47,15 @@ namespace Users
             }
         }
 
-        public Member(string username, int ID) : this()//Register
+        public Member(string username) : this()//Register
         {
-            this.id = ID;
             this.username = username;
             this.country = "none";
             //purchasesHistory = new List<Transaction>();
         }
 
-        public Member(string username, int ID, DateTime birthdate, string country) : this()//Register
+        public Member(string username, DateTime birthdate, string country) : this()//Register
         {
-            this.id = ID;
             this.username = username;
             this.birthdate = birthdate;
             this.country = country;
@@ -449,7 +447,7 @@ namespace Users
 
         public static void sendMessageToAllOwners(int storeId, string msg)
         {
-            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            List<Member> members = ConnectionStubTemp.GetMembers();
             foreach (Member currMember in members)
             {
                 if (currMember.isStoresOwner(storeId))
@@ -461,7 +459,7 @@ namespace Users
 
         public static void sendMessageToAllManagers(int storeId, string msg)
         {
-            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            List<Member> members = ConnectionStubTemp.GetMembers();
             foreach (Member member in members)
             {
                 LinkedList<StoreManager> managers = member.storeManaging;
@@ -477,7 +475,7 @@ namespace Users
 
         public static void sendMessageToAdmin(string msg)
         {
-            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            List<Member> members = ConnectionStubTemp.GetMembers();
             foreach (Member member in members)
             {
                 if (member is SystemAdmin)

@@ -19,7 +19,7 @@ namespace WorkshopProject.Policies
         Product p;
         ProductAmountPrice pam;
 
-        Member user = new Member("hadas", 123, DateTime.Today.AddYears(-20), "A");
+        Member user = new Member("hadas", DateTime.Today.AddYears(-20), "A");
 
         [TestInitialize]
         public void Init()

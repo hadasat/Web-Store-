@@ -39,7 +39,7 @@ namespace WorkshopProject.Policies
 
         public static User getUser()
         {
-            return new Member("hadas", 12345, new DateTime(1994, 2, 27), "Isreal");
+            return new Member("hadas", new DateTime(1994, 2, 27), "Isreal");
         }
     }
 

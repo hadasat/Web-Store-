@@ -18,7 +18,7 @@ namespace IntegrationTests
         Store store;
         Discount discount;
         IBooleanExpression purchasingExp, storeExp;
-        Member storeOwner = new Member("hadas", 12, DateTime.Today.AddYears(-25), "A");
+        Member storeOwner = new Member("hadas", DateTime.Today.AddYears(-25), "A");
 
         [TestInitialize]
         public void Init()

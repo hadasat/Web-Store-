@@ -95,7 +95,14 @@ namespace TestingFramework.AcceptanceTests
             }
             finally
             {
-                storeId = godObject.addStore(storeName, storeRank, storeOwner1Id);
+                try
+                {
+                    storeId = godObject.addStore(storeName, storeRank, storeOwner1Id);
+                }
+                catch(Exception e)
+                {
+
+                }
             }
         }
 
@@ -112,7 +119,14 @@ namespace TestingFramework.AcceptanceTests
             }
             finally
             {
-                godObject.removeMember(storeOwner1);
+                try
+                {
+                    godObject.removeMember(storeOwner1);
+                }
+                catch (Exception e)
+                {
+
+                }
             }
         }
 
@@ -144,7 +158,14 @@ namespace TestingFramework.AcceptanceTests
             }
             finally
             {
-                godObject.removeMember(storeOwner2);
+                try
+                {
+                    godObject.removeMember(storeOwner2);
+                }
+                catch (Exception e)
+                {
+
+                }
             }
         }
         
@@ -235,7 +256,14 @@ namespace TestingFramework.AcceptanceTests
             }
             finally
             {
-                productId = godObject.addProductToStore(storeId, productName, productPrice, productCategory, productDesc, productKeyword, productAmount, productRank);
+                try
+                {
+                    productId = godObject.addProductToStore(storeId, productName, productPrice, productCategory, productDesc, productKeyword, productAmount, productRank);
+                }
+                catch (Exception e)
+                {
+
+                }
             }
         }
 
@@ -251,7 +279,14 @@ namespace TestingFramework.AcceptanceTests
             }
             finally
             {
-                removeTestStoreFromSystem();
+                try
+                {
+                    removeTestStoreFromSystem();
+                }
+                catch (Exception e)
+                {
+
+                }
             }
         }
     }

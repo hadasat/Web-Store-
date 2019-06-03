@@ -401,14 +401,14 @@ namespace Users.Tests
     public class TestSystemAdmin
     {
 
-        SystemAdmin admin = new SystemAdmin("admin", 1);
+        SystemAdmin admin = new SystemAdmin("admin");
         User user;
         Member member;
 
         //[TestInitialize]
         public void Init()
         {
-            admin = new SystemAdmin("admin", 1);
+            admin = new SystemAdmin("admin");
             user = new User();
             user.registerNewUser("username","password", DateTime.Now, "shit");
             member = user.loginMember("username", "password");
@@ -417,10 +417,10 @@ namespace Users.Tests
         //[TestCleanup]
         public void Cleanup()
         {
-            int id;
-            bool ret = ConnectionStubTemp.mapIDUsermane.TryGetValue("username", out id);
-            ConnectionStubTemp.mapIDUsermane.Remove("username");
-            ConnectionStubTemp.members.Remove(id);
+            //int id;
+            //bool ret = ConnectionStubTemp.mapIDUsermane.TryGetValue("username", out id);
+            //ConnectionStubTemp.mapIDUsermane.Remove("username");
+            //ConnectionStubTemp.members.Remove(id);
         }
 
         [TestMethod()]

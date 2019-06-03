@@ -15,7 +15,7 @@ namespace WorkshopProject.Tests
         int store1Id, store2Id;
         Product[] pro = new Product[4];
         User user = new User();
-        Member menager = new Member("TestMember", 1);
+        Member menager = new Member("TestMember");
 
         [TestInitialize]
         public void Init()

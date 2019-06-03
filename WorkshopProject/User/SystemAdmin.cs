@@ -16,9 +16,9 @@ namespace Users
     {
         public SystemAdmin() : base() { } /* added for DB */
 
-        public SystemAdmin(string username, int ID) : base(username, ID) { }
+        public SystemAdmin(string username) : base(username) { }
 
-        public SystemAdmin(string username, int ID, DateTime birthdate, string country) : base(username, ID, birthdate, country) { }
+        public SystemAdmin(string username, DateTime birthdate, string country) : base(username, birthdate, country) { }
 
         public bool RemoveUser(string userName)
         {

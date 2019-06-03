@@ -9,21 +9,22 @@ using WorkshopProject;
 using Shopping;
 using WorkshopProject.Log;
 using WorkshopProject.Communication;
+using WorkshopProject.DataAccessLayer;
 
 namespace Users
 {
     public static class ConnectionStubTemp
     {
-
+        public static Repo repo = new Repo();
         public static PasswordHandler pHandler = new PasswordHandler();
-        public static Dictionary<int, Member> members = new Dictionary<int, Member>();
+        //public static Dictionary<int, Member> members = new Dictionary<int, Member>();
         // <ID, MEMBER>
-        public static Dictionary<string, int> mapIDUsermane = new Dictionary<string, int>();
+        //public static Dictionary<string, int> mapIDUsermane = new Dictionary<string, int>();
         // <username, ID>
         public static Dictionary<int, OwnershipRequest> ownershipsRequestList = new Dictionary<int, OwnershipRequest>();
         // <ID, ownershipRequest>
 
-        public static int memberIDGenerator = 0;
+        //public static int memberIDGenerator = 0;
         public static int ownerShipRequestsIDGenerator = 0;
 
         public static void init()
@@ -43,8 +44,9 @@ namespace Users
                 throw new Exception("don't remove Admin!");
             try
             {
-                members.Remove(m.id);
-                mapIDUsermane.Remove(m.username);
+                Remove(m.id);
+                //members.Remove(m.id);
+                //mapIDUsermane.Remove(m.username);
             }
             catch (Exception ignore)
             {
@@ -56,7 +58,8 @@ namespace Users
         {
             try
             {
-                return members[id];
+                //return members[id];
+                return GetMemberById(id);
             }
             catch (Exception ignore)
             {
@@ -68,7 +71,8 @@ namespace Users
         {
             try
             {
-                return members[(mapIDUsermane[username])];
+                return GetMemberByName(username);
+                //return members[(mapIDUsermane[username])];
             }
             catch (Exception ignore)
             {
@@ -78,10 +82,10 @@ namespace Users
 
         /*** START - USER FUNCTIONS ***/
 
-        private static int getID()
-        {
-            return memberIDGenerator++;
-        }
+        //private static int getID()
+        //{
+        //    return memberIDGenerator++;
+        //}
         //sign in
         public static int identifyUser(string username, string password)
         {
@@ -91,7 +95,8 @@ namespace Users
                 registerNewUser(username, password, "all", 120);*/
             try
             {
-                int ID = mapIDUsermane[username];
+                //int ID = mapIDUsermane[username];
+                int ID = GetMemberByName(username).id;
                 if (pHandler.IdentifyPassword(password, ID))
                     return ID;
             }
@@ -102,34 +107,42 @@ namespace Users
             return -1;
         }
         //sign up
-        public static void registerNewUser(string username, string password, DateTime birthdate, string country)
+        public static Member registerNewUser(string username, string password, DateTime birthdate, string country)
         {
-
-
-
             //jonathan rewrite
             sanitizeInput(username, password);
-            int id;
-            if (mapIDUsermane.TryGetValue(username, out id))
+            if (GetMemberByName(username) != null)
             {
                 Logger.Log("event", logLevel.INFO, "user try to register with taken username:" + username);
                 throw new Exception("this username is already taken. try somthing else");
             }
-            id = getID();
-            pHandler.hashPassword(password, id);
+
+            //int id;
+            //if (mapIDUsermane.TryGetValue(username, out id))
+            //{
+            //    Logger.Log("event", logLevel.INFO, "user try to register with taken username:" + username);
+            //    throw new Exception("this username is already taken. try somthing else");
+            //}
+            //id = getID();
+            
             Member newMember;
             if (DateTime.Today < birthdate)
-                newMember = new Member(username, id);
+                newMember = new Member(username);
             else
-                newMember = new Member(username, id, birthdate, country);
+                newMember = new Member(username, birthdate, country);
             if (username == "Admin" && password == "Admin")
             {
-                newMember = new SystemAdmin(username, id, birthdate, country);
+                newMember = new SystemAdmin(username, birthdate, country);
                 Logger.Log("event", logLevel.INFO, "Admin has logged in");
             }
-            members[id] = newMember;
-            mapIDUsermane[username] = id;
+
+
+            //members[id] = newMember;
+            //mapIDUsermane[username] = id;
+            AddMember(newMember);
+            pHandler.hashPassword(password, newMember.id);
             Logger.Log("event", logLevel.INFO, "user:" + username + " succesfully registered");
+            return newMember;
         }
 
 
@@ -212,9 +225,10 @@ namespace Users
 
             int requestID = ownerShipRequestsIDGenerator++;
             OwnershipRequest newOwnership = new OwnershipRequest(requestID, store, candidate, memberThatOpenRequest);
-            foreach (KeyValuePair<int, Member> entry in members)
+            //foreach (KeyValuePair<int, Member> entry in members)
+            foreach (Member m in GetMembers())
             {
-                Member m = entry.Value;
+                //Member m = entry.Value;
                 if (m.isStoresOwner(store.id))
                 {
                     newOwnership.addOwner(m);
@@ -246,9 +260,10 @@ namespace Users
         public static int getNumOfOwners(Store store)
         {
             int ret = 0;
-            foreach (KeyValuePair<int, Member> entry in members)
+            //foreach (KeyValuePair<int, Member> entry in members)
+            foreach(Member m in GetMembers())
             {
-                Member m = entry.Value;
+                //Member m = entry.Value;
                 if (m.isStoresOwner(store.id))
                 {
                     ret++;
@@ -257,6 +272,43 @@ namespace Users
             return ret;
         }
 
+
+        public static List<Member> GetMembers()
+        {
+            return repo.GetList<Member>();
+        }
+
+        public static Member GetMemberByName(string username)
+        {
+            foreach (Member m in GetMembers())
+            {
+                if (m.username != null && m.username.Equals(username))
+                {
+                    return m;
+                }
+            }
+            return null;
+        }
+
+        public static void AddMember(Member member)
+        {
+            repo.Add<Member>(member);
+        }
+
+        public static Member GetMemberById(int id)
+        {
+            return (Member) repo.Get<Member>(id);
+        }
+
+        public static void Remove(int id)
+        {
+            repo.Remove<Member>(GetMemberById(id));
+        }
+
+        public static void Update(Member member)
+        {
+            repo.Update<Member>(member);
+        }
 
     }
 
