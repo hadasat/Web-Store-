@@ -103,7 +103,10 @@ namespace WorkshopProject.Communication
                 {"approveowenrshiprequest",approveOwnershipResponseHandler },
                 {"disapproveowenrshiprequest",disapproveOwnershipResponseHandler },
                 {"buyshoppingbasket",buyShoppingBasketHandler },
-                {"getallproductsforstore",getAllProductsForStore}
+                {"getallproductsforstore",getAllProductsForStore},
+                {"removestoremanager",removeStoreManagerHandler},
+                {"addstoremanager" ,addStoreManagerHandler},
+                {"addstoreowner" ,addStoreOwnerHandler}
 
             };
         }
@@ -651,6 +654,63 @@ namespace WorkshopProject.Communication
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
 
+        private void removeStoreManagerHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            string userName = (string)msgObj["data"]["username"];
+
+            try
+            {
+                user.RemoveStoreManager(storeId, userName);
+                response = JsonResponse.generateActionSucces(requestId);
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void addStoreManagerHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            string userName = (string)msgObj["data"]["username"];
+            string roles = (string)msgObj["data"]["roles"];
+
+            try
+            {
+                user.AddStoreManager(storeId, userName, roles);
+                response = JsonResponse.generateActionSucces(requestId);
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void addStoreOwnerHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            string userName = (string)msgObj["data"]["username"];
+
+            try
+            {
+                user.AddStoreOwner(storeId, userName);
+                response = JsonResponse.generateActionSucces(requestId);
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
 
         /*
                 private void --(JObject msgObj, string message)
