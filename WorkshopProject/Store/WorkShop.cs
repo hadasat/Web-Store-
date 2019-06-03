@@ -134,5 +134,10 @@ namespace WorkshopProject
         {
             repo.Remove<Store>(GetStoreById(id));
         }
+
+        public static void Update(Store store)
+        {
+            repo.Update<Store>(store);
+        }
     }
 }

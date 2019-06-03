@@ -196,6 +196,7 @@ namespace WorkshopProject
                 return -1;
 
             GetStock().Add(p.getId(), p);
+            WorkShop.Update(this);
             Logger.Log("file", logLevel.INFO, "product " + p.getId() + " added");
             return p.getId();
         }
