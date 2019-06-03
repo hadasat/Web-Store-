@@ -241,6 +241,19 @@ namespace WorkshopProject.System_Service
             }
         }
 
+        public List<Product> getAllProductsForStore (int storeId)
+        {
+            Store storeAns = StoreService.GetStore(storeId);
+            if (storeAns == null)
+            {
+                return new List<Product>();
+            }
+            else
+            {
+                return storeAns.getAllProducst();
+            }
+        }
+
         public string GetAllStores()
         {
             return JsonHandler.SerializeObject(StoreService.GetAllStores());

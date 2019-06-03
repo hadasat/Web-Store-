@@ -102,7 +102,8 @@ namespace WorkshopProject.Communication
                 {"getallmanagers",getAllManagersHandler },
                 {"approveowenrshiprequest",approveOwnershipResponseHandler },
                 {"disapproveowenrshiprequest",disapproveOwnershipResponseHandler },
-                {"buyshoppingbasket",buyShoppingBasketHandler }
+                {"buyshoppingbasket",buyShoppingBasketHandler },
+                {"getallproductsforstore",getAllProductsForStore}
 
             };
         }
@@ -630,20 +631,41 @@ namespace WorkshopProject.Communication
 
         }
 
-    /*
-            private void --(JObject msgObj, string message)
+        private void getAllProductsForStore(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"];
+
+            try
             {
-                JsonResponse response;
-                int requestId = (int)msgObj["id"];
-
-                sendMyselfAMessage(JsonHandler.SerializeObject(response));
-
+                String data_ans = JsonHandler.SerializeObject(user.getAllProductsForStore(storeId));
+                response = JsonResponse.generateDataSuccess(requestId, data_ans);
             }
-     */
+            catch (Exception e)
+            {
+                response = JsonResponse.generateDataFailure(requestId, e.Message);
+            }
+
+
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+
+        /*
+                private void --(JObject msgObj, string message)
+                {
+                    JsonResponse response;
+                    int requestId = (int)msgObj["id"];
+
+                    sendMyselfAMessage(JsonHandler.SerializeObject(response));
+
+                }
+         */
 
 
 
-    #endregion
+        #endregion
 
-}
+    }
 }

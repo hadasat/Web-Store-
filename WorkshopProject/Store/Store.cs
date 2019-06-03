@@ -456,6 +456,17 @@ namespace WorkshopProject
             return null;
         }
 
+        public List<Product> getAllProducst()
+        {
+            List<Product> ans = new List<Product>();
+            foreach(Stock curr in Stocks)
+            {
+                ans.Add(curr.product);
+            }
+
+            return ans;
+        }
+
 
         //private void addToStockListAsDictionary(int amount, Product product)
         //{
