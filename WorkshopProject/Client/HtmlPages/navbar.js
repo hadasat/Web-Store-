@@ -24,7 +24,7 @@ document.getElementById("navbar_header").innerHTML = `
 
                 <!-- end  -->
 
-                <li class="nav-item">
+                <li id="nav_shopping_basket" class="nav-item">
                     <a class="nav-link" href="/wot/shoppingbasket">Shopping Basket</a>
                 </li>
 
@@ -36,7 +36,7 @@ document.getElementById("navbar_header").innerHTML = `
                 <li id="nav_admin" class="nav-item">
                     <a class="nav-link" href="/wot/adminactions">Admin Actions</a>
                 </li>
-                <li class="nav-item">
+                <li id="nav_advanced_search"class="nav-item">
                     <a class="nav-link" href="/wot/search">Advance Search </a>
                 </li>
             </ul>
