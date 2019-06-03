@@ -93,7 +93,7 @@ namespace WorkshopProject.External_Services
 
             if (handshakeResposeString != "OK")
             {
-                Logger.Log("envent", logLevel.ERROR, "Can't handshake with external");
+                Logger.Log("event", logLevel.ERROR, "Can't handshake with external");
                 throw new Exception("can't connect to external services, please try again in few minutes");
             }
         }

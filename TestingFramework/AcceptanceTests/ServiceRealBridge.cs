@@ -33,6 +33,11 @@ namespace TestingFramework.AcceptanceTests
             return ret;
         }
 
+        private bool policyWasSuccessful(string msg)
+        {
+            return (msg.Equals("0"));
+        }
+
         private int getId(JObject msg)
         {
             if (msg["id"] == null)
@@ -272,29 +277,25 @@ namespace TestingFramework.AcceptanceTests
         public int addDiscountPolicy(int storeId, string policy)
         {
             string msg = service.addDiscountPolicy(storeId, policy);
-            JObject json = JObject.Parse(msg);
-            return getId(json);
+            return int.Parse(msg);
         }
 
         public bool removeDiscountPolicy(int storeId, int policyId)
         {
             string msg = service.removeDiscountPolicy(storeId, policyId);
-            JObject json = JObject.Parse(msg);
-            return wasSuccessful(json);
+            return policyWasSuccessful(msg);
         }
 
         public int addPurchasingPolicy(int storeId, string policy)
         {
             string msg = service.addPurchasingPolicy(storeId, policy);
-            JObject json = JObject.Parse(msg);
-            return getId(json);
+            return int.Parse(msg);
         }
 
         public bool removePurchasingPolicy(int storeId, int policyId)
         {
             string msg = service.removePurchasingPolicy(storeId, policyId);
-            JObject json = JObject.Parse(msg);
-            return wasSuccessful(json);
+            return policyWasSuccessful(msg);
         }
     }
 

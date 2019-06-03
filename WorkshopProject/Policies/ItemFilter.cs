@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.Policies
 {
-    public abstract class ItemFilter
+    public abstract class ItemFilter : IEntity
     {
         [Key]
         public int id { get; set; }
@@ -17,6 +18,16 @@ namespace WorkshopProject.Policies
 
         //bool addStuff(List<ProductAmountPrice> products);
         //bool removeStuff(List<ProductAmountPrice> products);
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+        }
+
+        public override void LoadMe()
+        {
+
+        }
     }
 
     public class AllProductsFilter : ItemFilter

@@ -23,7 +23,7 @@ namespace WorkshopProject.Policies
             this.id = Idcounter++;
         }
 
-        public override bool evaluate(List<ProductAmountPrice> products,User user)
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
             List<ProductAmountPrice> relevantProducts = filter.getFilteredItems(products);
             int sumProduct = ProductAmountPrice.sumProduct(relevantProducts);
@@ -35,12 +35,22 @@ namespace WorkshopProject.Policies
             //this exception is intended!
             throw new NotImplementedException();
         }
-        
+
+        public override bool checkConsistent(IBooleanExpression exp)
+        {
+            if (exp is MinAmount)
+            {
+                MinAmount min = (MinAmount)exp;
+                if (this.amount < min.amount)
+                    return false;
+            }
+            return true;
+        }
     }
 
     public class MinAmount : IBooleanExpression
     {
-       // public string name = "MinAmount";
+        // public string name = "MinAmount";
         public int amount { get; set; }
 
         public MinAmount() : base() {/*for json*/ }
@@ -52,7 +62,7 @@ namespace WorkshopProject.Policies
             this.id = Idcounter++;
         }
 
-        public override bool evaluate(List<ProductAmountPrice> products,User user)
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
             List<ProductAmountPrice> relevantProducts = filter.getFilteredItems(products);
             int sumProduct = ProductAmountPrice.sumProduct(relevantProducts);
@@ -64,7 +74,17 @@ namespace WorkshopProject.Policies
             //this exception is intended!
             throw new NotImplementedException();
         }
-        
+
+        public override bool checkConsistent(IBooleanExpression exp)
+        {
+            if (exp is MaxAmount)
+            {
+                MaxAmount max = (MaxAmount)exp;
+                if (this.amount > max.amount)
+                    return false;
+            }
+            return true;
+        }
     }
 
     public class UserAge : IBooleanExpression
@@ -83,11 +103,12 @@ namespace WorkshopProject.Policies
 
         public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
-            if(user is Member) {
+            if (user is Member)
+            {
                 List<ProductAmountPrice> filterProdact = filter.getFilteredItems(products);
                 DateTime userBirthDate = ((Member)user).birthdate;
                 DateTime minBirthDate = DateTime.Today.AddYears(-age);
-                if((filterProdact.Count > 0 && userBirthDate > minBirthDate) || (filterProdact.Count == 0))
+                if ((filterProdact.Count > 0 && userBirthDate > minBirthDate) || (filterProdact.Count == 0))
                 {
                     return true;
                 }
@@ -100,9 +121,12 @@ namespace WorkshopProject.Policies
             //this exception is intended!
             throw new NotImplementedException();
         }
-        
-    }
 
+        public override bool checkConsistent(IBooleanExpression exp)
+        {
+            return true;
+        }
+    }
     public class UserCountry : IBooleanExpression
     {
         public string country { get; set; }
@@ -137,7 +161,11 @@ namespace WorkshopProject.Policies
             throw new NotImplementedException();
         }
 
-        
+        public override bool checkConsistent(IBooleanExpression exp)
+        {
+            return true;
+        }
+
     }
 
     public class TrueCondition : IBooleanExpression
@@ -153,7 +181,7 @@ namespace WorkshopProject.Policies
             this.id = Idcounter++;
         }
 
-        public override bool evaluate( List<ProductAmountPrice> products, User user)
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
             return true;
         }
@@ -163,7 +191,12 @@ namespace WorkshopProject.Policies
             //this exception is intended!
             throw new NotImplementedException();
         }
-        
+        public override bool checkConsistent(IBooleanExpression exp)
+        {
+            if (exp is FalseCondition)
+                return false;
+            return true;
+        }
     }
 
     public class FalseCondition : IBooleanExpression
@@ -171,7 +204,7 @@ namespace WorkshopProject.Policies
         //public string name = "FalseCondition";
         public FalseCondition() : base()
         {
-            
+
         }
 
         public FalseCondition(bool value)
@@ -190,7 +223,13 @@ namespace WorkshopProject.Policies
             throw new NotImplementedException();
         }
 
-        
+        public override bool checkConsistent(IBooleanExpression exp)
+        {
+            if (exp is TrueCondition)
+                return false;
+            return true;
+        }
+
     }
 
     public class AndExpression : IBooleanExpression
@@ -201,12 +240,21 @@ namespace WorkshopProject.Policies
         {
         }
 
-        public override bool evaluate(List<ProductAmountPrice> products,User user)
+        public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
-            return (getFirstChild().evaluate(products,user) && getSecondChild().evaluate(products, user));
+            return (getFirstChild().evaluate(products, user) && getSecondChild().evaluate(products, user));
         }
 
 
+        public override bool checkConsistent(IBooleanExpression exp)
+        {
+            foreach (IBooleanExpression child in this.children)
+            {
+                if (!child.checkConsistent(exp))
+                    return false;
+            }
+            return true;
+        }
     }
 
     public class OrExpression : IBooleanExpression
@@ -222,10 +270,13 @@ namespace WorkshopProject.Policies
 
         public override bool evaluate(List<ProductAmountPrice> products, User user)
         {
-            return (getFirstChild().evaluate( products, user) || getSecondChild().evaluate( products, user));
+            return (getFirstChild().evaluate(products, user) || getSecondChild().evaluate(products, user));
         }
 
-        
+        public override bool checkConsistent(IBooleanExpression exp)
+        {
+            return true;
+        }
     }
 
     public class XorExpression : IBooleanExpression
@@ -246,6 +297,10 @@ namespace WorkshopProject.Policies
             bool firstExp = getFirstChild().evaluate(products, user);
             bool secondExp = getSecondChild().evaluate(products, user);
             return firstExp ^ secondExp;
+        }
+        public override bool checkConsistent(IBooleanExpression exp)
+        {
+            return true;
         }
     }
 }

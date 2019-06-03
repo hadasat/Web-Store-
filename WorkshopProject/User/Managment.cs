@@ -6,13 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Log;
 
 namespace Managment
 {
 
 
-    public class Roles
+    public class Roles : IEntity
     {
         [Key]
         public int id { get; set; }
@@ -85,10 +86,18 @@ namespace Managment
                     this.AppointOwner;
         }*/
 
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+        }
 
+        public override void LoadMe()
+        {
+
+        }
     }
 
-    public class StoreManager
+    public class StoreManager : IEntity
     {
 
         [Key]
@@ -127,12 +136,12 @@ namespace Managment
                 newSubStoreManager.setFather(this);
                 subManagers.AddFirst(newSubStoreManager);
                 member.addStoreToMe(newSubStoreManager);
-                Logger.Log("file", logLevel.INFO, "store:" + store.id + " succesfully add new manager: "+ member.username);
+                Logger.Log("event", logLevel.INFO, "store:" + store.id + " succesfully add new manager: "+ member.username);
                 return true;
             }
             else
             {
-                Logger.Log("file", logLevel.INFO, "store:" + store.id + " failed add new manager: " + member.username);
+                Logger.Log("error", logLevel.INFO, "store:" + store.id + " failed add new manager: " + member.username);
                 throw new Exception("this manager try to give more roles than he can");
             }
         }
@@ -167,11 +176,11 @@ namespace Managment
             if (subManagers.Contains(managerToRemove))
             {
                 recursiveCleanManager(managerToRemove);
-                Logger.Log("file", logLevel.INFO, "success remove");
+                Logger.Log("event", logLevel.INFO, "success remove");
                 return subManagers.Remove(managerToRemove);
             } else
             {
-                Logger.Log("file", logLevel.INFO, "fail remove");
+                Logger.Log("error", logLevel.INFO, "fail remove");
                 throw new Exception("The manager to remove is not below to this manager");
             }
         }
@@ -228,6 +237,37 @@ namespace Managment
         public bool isStoreOwner()
         {
             return this.storeOwner;
+        }
+
+
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is StoreManager)
+            {
+                StoreManager _other = ((StoreManager)other);
+                store = _other.store;
+                myRoles = _other.myRoles;
+                subManagers = _other.subManagers;
+                father = _other.father;
+            }
+        }
+
+        public override void LoadMe()
+        {
+
+            store.LoadMe();
+
+            myRoles.LoadMe();
+
+            foreach (IEntity obj in subManagers)
+            {
+                obj.LoadMe();
+            }
+
+            father.LoadMe();
+
         }
     }
 }

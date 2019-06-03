@@ -30,6 +30,7 @@ namespace WorkshopProject.System_Service
 
         public static void initSystem()
         {
+           
             string[] lines = System.IO.File.ReadAllLines(@filePath);
             if (lines == null)
                 return;

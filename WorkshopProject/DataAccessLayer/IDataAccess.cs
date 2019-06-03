@@ -13,9 +13,9 @@ namespace WorkshopProject.DataAccessLayer
         bool GetMode();
         Store GetStore(int key);
         Product GetProduct(int key);
-        bool RemoveEntity<T>(int key) where T : class;
-        bool SaveEntity<T>(T entity, int key) where T : class;
+        bool RemoveEntity<T>(int key) where T : IEntity;
+        bool SaveEntity<T>(T entity, int key) where T : IEntity;
         void SetMode(bool isProduction);
-        DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters) where T : class;
+        DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters) where T : IEntity;
     }
 }

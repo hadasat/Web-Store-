@@ -8,14 +8,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.Policies
 {
+    public enum Policystatus {Success, UnauthorizedUser, UnactiveStore, BadPolicy, InconsistPolicy};
     /// <summary>
     /// Implements the Composite design pattern.
     /// This is essentially the "Purchasing Policy"
     /// </summary>
-    public abstract class IBooleanExpression
+    public abstract class IBooleanExpression : IEntity
     {
         [Key]
         public int id { get; set; }
@@ -46,6 +48,8 @@ namespace WorkshopProject.Policies
 
 
         public abstract bool evaluate(List<ProductAmountPrice> products,User user);
+
+        public abstract bool checkConsistent(IBooleanExpression exp);
 
         public virtual void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
         {
@@ -94,6 +98,36 @@ namespace WorkshopProject.Policies
 
         //    return null;
         //}
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+            if (other is IBooleanExpression)
+            {
+                IBooleanExpression _other = ((IBooleanExpression)other);
+                filter = _other.filter;
+                children = _other.children;
+            }
+        }
+
+        public override void LoadMe()
+        {
+            foreach (IEntity obj in children)
+            {
+                obj.LoadMe();
+            }
+
+            filter.LoadMe();
+        }
+
+        public static bool confirmListConsist(IBooleanExpression signalExp,List<IBooleanExpression> exps)
+        {
+            foreach(IBooleanExpression exp in exps){
+                if (!signalExp.checkConsistent(exp))
+                    return false;
+            }
+            return true;
+        }
     }
 
 }

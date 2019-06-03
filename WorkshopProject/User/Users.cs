@@ -11,26 +11,22 @@ using WorkshopProject.Log;
 using WorkshopProject.Communication;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WorkshopProject.DataAccessLayer;
 
 namespace Users
 {
 
-    
-
-
-
-    public class User : Permissions
+    public class User : IEntity, Permissions
     {
         [Key]
         public int id { get; set; }
-
         public ShoppingBasket shoppingBasket;
 
 
         public User()
         {
             this.shoppingBasket = new ShoppingBasket();
-            Logger.Log("file", logLevel.INFO, "New user been created");
+            Logger.Log("event", logLevel.INFO, "New user been created");
         }
 
         public virtual bool hasAddRemoveDiscountPermission(Store store)
@@ -77,10 +73,10 @@ namespace Users
             if (ID == -1)
             {
                 //don't log password!
-                Logger.Log("file", logLevel.INFO, "user: " + username + "tried to log in and failed");
+                Logger.Log("event", logLevel.INFO, "user: " + username + "tried to log in and failed");
                 throw new Exception("incorrect username or password");
             }
-            Logger.Log("file", logLevel.INFO, "user: " + username + "log in and succses");
+            Logger.Log("event", logLevel.INFO, "user: " + username + "log in and succses");
             return ConnectionStubTemp.getMember(ID);
 
         }
@@ -101,6 +97,17 @@ namespace Users
         }
 
         /****************************************************************/
+
+
+        public override void Copy(IEntity other)
+        {
+            base.Copy(other);
+        }
+
+        public override void LoadMe()
+        {
+
+        }
 
     }
 
