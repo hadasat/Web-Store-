@@ -52,6 +52,20 @@ namespace Users
             }
         }
 
+        public static void addMemberJustForExternalUsage(Member m)
+        {
+
+            try
+            {
+                members.Add(m.id, m);
+                mapIDUsermane.Add(m.username, m.id);
+            }
+            catch (Exception ignore)
+            {
+                throw new Exception("this should not happen, member couldn't be added");
+            }
+        }
+
         public static Member getMember(int id)
         {
             try
