@@ -459,9 +459,10 @@ namespace WorkshopProject
         public List<Product> getAllProducst()
         {
             List<Product> ans = new List<Product>();
-            foreach(Stock curr in Stocks)
+            foreach(KeyValuePair<int,Product> curr in Stock)
             {
-                ans.Add(curr.product);
+
+                ans.Add(curr.Value);
             }
 
             return ans;
