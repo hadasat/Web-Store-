@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,11 +68,53 @@ namespace WorkshopProject.DataAccessLayer
         //    ctx.SaveChanges();
         //}
 
+        public void Delete()
+        {
+
+            //ctx.Dispose();
+            //ctx = new WorkshopTestDBContext();
+            MurderAllConnections(ctx);
+
+            ctx.Database.Delete();
+            ctx.SaveChanges();
+        }
 
         public void SaveChanges()
         {
             ctx.ChangeTracker.DetectChanges();
             ctx.SaveChanges();
+        }
+
+        //https://www.axian.com/2015/06/24/entity-framework-6-taming-the-open-connection-conundrum/
+        private void MurderAllConnections(WorkshopDBContext context)
+        {
+            try
+            {
+                // FIRST: Build a connection using the DB Context's current connection.
+                SqlConnectionStringBuilder sqlConnBuilder = new SqlConnectionStringBuilder(context.Database.Connection.ConnectionString);
+                // Set the catalog to master so that the DB can be dropped
+                sqlConnBuilder.InitialCatalog = "master";
+                using (SqlConnection sqlConnection = new SqlConnection(sqlConnBuilder.ConnectionString))
+                {
+                    sqlConnection.Open();
+                    string dbName = context.Database.Connection.Database;
+                    // Build up the SQL string necessary for dropping database connections. This statement is doing a couple of things:
+                    // 1) Tests to see if the DB exists in the first place.
+                    // 2) If it does, sets single user mode, which kills all connections.
+                    string sql = @"IF EXISTS(SELECT NULL FROM sys.databases WHERE name = '" + dbName + "') BEGIN ALTER DATABASE [" + dbName + "] SET SINGLE_USER WITH ROLLBACK IMMEDIATE END";
+                    using (SqlCommand sqlCmd = new SqlCommand(sql, sqlConnection))
+                    {
+                        // Run and done.
+                        sqlCmd.CommandType = System.Data.CommandType.Text;
+                        sqlCmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch
+            {
+                // Something bad happened.
+                throw new Exception("Hey, boss, the UnitTestInitializer failed. You want I should fix it?");
+            }
         }
 
     }
