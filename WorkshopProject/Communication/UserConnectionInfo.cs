@@ -144,7 +144,7 @@ namespace WorkshopProject.Communication
             bool ans = user.unSubscribeAsObserver(this);
             if (!ans)
             {
-                Logger.Log("file", logLevel.ERROR, "couldn't unsubscribe observer");
+                Logger.Log("error", logLevel.ERROR, "couldn't unsubscribe observer");
             }
         }
 
