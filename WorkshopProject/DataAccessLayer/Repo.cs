@@ -70,13 +70,21 @@ namespace WorkshopProject.DataAccessLayer
 
         public void Delete()
         {
-
+            ctx.SaveChanges();
             //ctx.Dispose();
             //ctx = new WorkshopTestDBContext();
             MurderAllConnections(ctx);
 
             ctx.Database.Delete();
-            ctx.SaveChanges();
+            try
+            {
+                ctx.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                //do nothing
+            }
+            
         }
 
         public void SaveChanges()
