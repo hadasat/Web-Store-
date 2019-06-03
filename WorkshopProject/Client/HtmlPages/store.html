@@ -177,7 +177,7 @@
                   </button>`);
         sendRequest('date','getAllProductsForStore', store.id).then(function(res){
             var products = res.$values;   
-            products.map(p=> (".grid").append(createProductCardHtml(p)));
+            products.map(p=> $(".grid").append(createProductCardHtml(p)));
             
         });
         
