@@ -15,7 +15,7 @@ namespace TestingFramework
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext context)
         {
-            new Repo().Delete();  
+            //write code here before all test code  
         
         }
     }
