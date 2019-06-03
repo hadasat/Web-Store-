@@ -34,7 +34,7 @@ namespace TestingFramework.UnitTests.DataAccessTests
             store.Stocks.Add(new Stock(10, product2));
             store.Stocks.Add(new Stock(10, product3));
 
-            store.purchasePolicy.Add(new TrueCondition());
+            store.purchasePolicies.Add(new TrueCondition());
 
 
             repo.Update(store);

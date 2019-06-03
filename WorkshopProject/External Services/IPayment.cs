@@ -18,7 +18,7 @@ namespace WorkshopProject.External_Services
         /// <param name="ccv"></param>
         /// <param name="id"></param>
         /// <returns> transaction id a number between [10000,100000] , -1 in case of failure</returns>
-        Task<int> payment(int cardNumber, int month, int year, string holder, int ccv, int id);
+        Task<int> payment(string cardNumber, int month, int year, string holder, int ccv, int id);
 
         /// <summary>
         /// cancels a payment made

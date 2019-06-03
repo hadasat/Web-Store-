@@ -159,5 +159,15 @@ namespace WorkshopProject.System_Service
             //return member.notifications;
             return null;
         }
+
+        //NOT FOR LOGIN PROXY!!
+        public static void MakeAdmin(int memberId)
+        {
+            Member member = ConnectionStubTemp.getMember(memberId);
+            SystemAdmin newsys = new SystemAdmin(member);
+            ConnectionStubTemp.removeMember(member);
+            ConnectionStubTemp.addMemberJustForExternalUsage(newsys);
+
+        }
     }
 }

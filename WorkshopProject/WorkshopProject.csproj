@@ -117,7 +117,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Store\Category.cs" />
-    <Compile Include="Store\DiscountPolicy.cs" />
     <Compile Include="System Service\IGodObject.cs" />
     <Compile Include="System Service\InitSystem.cs" />
     <Compile Include="System Service\LoginProxy.cs" />
@@ -130,7 +129,6 @@
     <Compile Include="User\Member.cs" />
     <Compile Include="User\Password.cs" />
     <Compile Include="Store\Product.cs" />
-    <Compile Include="Store\RegularDiscount.cs" />
     <Compile Include="Purchasing\ShoppingCart.cs" />
     <Compile Include="Purchasing\ShoppingBasket.cs" />
     <Compile Include="Store\Store.cs" />

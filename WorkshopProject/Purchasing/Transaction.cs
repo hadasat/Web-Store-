@@ -43,12 +43,12 @@ namespace TansactionsNameSpace
 
         public Transaction() { } //added for DB
 
-        public Transaction(User user, int cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip, IPayment payService,ISupply supplyService)
+        public Transaction(User user, string cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip, IPayment payService,ISupply supplyService)
         {
             constructorCommon(user, cardNumber, month, year, holder, ccv, id, name, address, city, country, zip, payService, supplyService);
         }
 
-        public Transaction(User user, int cardNumber, int month, int year, string holder, int ccv, int id,string name, string address, string city, string country, string zip)
+        public Transaction(User user, string cardNumber, int month, int year, string holder, int ccv, int id,string name, string address, string city, string country, string zip)
         {
             ExternalSystemConnection extSytem = new ExternalSystemConnection();
             constructorCommon(user, cardNumber, month, year, holder, ccv, id, name, address, city, country, zip, (IPayment)extSytem, (ISupply)extSytem);
@@ -59,7 +59,7 @@ namespace TansactionsNameSpace
             return id;
         }
 
-        private async void constructorCommon (User user, int cardNumber, int month, int year, string holder, int ccv, int userId, string name, string address, string city, string country, string zip, IPayment payService, ISupply supplyService)
+        private async void constructorCommon(User user, string cardNumber, int month, int year, string holder, int ccv, int userId, string name, string address, string city, string country, string zip, IPayment payService, ISupply supplyService)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace TansactionsNameSpace
                 call();
         }
 
-        public async Task<int> purchase(int cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
+        public async Task<int> purchase(string cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
         {
             int transactionId = -1;
             ShoppingBasket basket = user.shoppingBasket;
@@ -205,7 +205,7 @@ namespace TansactionsNameSpace
             return product * amount;
         }
 
-        private async Task<int> pay(int cardNumber, int month, int year, string holder, int ccv, int id)
+        private async Task<int> pay(string cardNumber, int month, int year, string holder, int ccv, int id)
         {
             return await paymentSystem.payment(cardNumber, month, year, holder, ccv, id);
 
@@ -213,9 +213,9 @@ namespace TansactionsNameSpace
 
         public static bool checkConsistency(User user, Store store, ShoppingCart cart)
         {
-            List<Discount> discount = store.discountPolicy;
-            List<IBooleanExpression> purchase = store.purchasePolicy;
-            List<IBooleanExpression> storePolicy = store.storePolicy;
+            List<Discount> discount = store.discountPolicies;
+            List<IBooleanExpression> purchase = store.purchasePolicies;
+            List<IBooleanExpression> storePolicy = store.storePolicies;
             return ConsistencyStub.checkConsistency(user, discount, purchase, storePolicy, cart);
         }
 

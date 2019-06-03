@@ -19,6 +19,14 @@ namespace Users
         public SystemAdmin(string username) : base(username) { }
 
         public SystemAdmin(string username, DateTime birthdate, string country) : base(username, birthdate, country) { }
+        
+        public SystemAdmin(Member member)
+        {
+            this.username = member.username;
+            this.birthdate = member.birthdate;
+            this.country = member.country;
+            this.id = member.id;
+        }
 
         public bool RemoveUser(string userName)
         {

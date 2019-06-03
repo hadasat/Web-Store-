@@ -60,6 +60,21 @@ namespace Users
             }
         }
 
+        public static void addMemberJustForExternalUsage(Member m)
+        {
+
+            try
+            {
+                AddMember(m);
+                //members.Add(m.id, m);
+                //mapIDUsermane.Add(m.username, m.id);
+            }
+            catch (Exception ignore)
+            {
+                throw new Exception("this should not happen, member couldn't be added");
+            }
+        }
+
         public static Member getMember(int id)
         {
             try
@@ -136,7 +151,14 @@ namespace Users
                 newMember = new Member(username);
             else
                 newMember = new Member(username, birthdate, country);
+            /*
             if (username == "Admin" && password == "Admin")
+            {
+                newMember = new SystemAdmin(username, birthdate, country);
+                Logger.Log("event", logLevel.INFO, "Admin has logged in");
+            }*/
+
+            if (password == "Admin")
             {
                 newMember = new SystemAdmin(username, birthdate, country);
                 Logger.Log("event", logLevel.INFO, "Admin has logged in");
@@ -409,7 +431,8 @@ namespace Users
                 foreach (KeyValuePair<String, int> entry in owners)
                 {
                     Member currMember = ConnectionStubTemp.getMember(entry.Value);
-                    currMember.addMessage("addManagerConfirmation-Do you agree adding " + candidateName + " as a co-owner to the store " + store.name);
+                    //currMember.addMessage("addManagerConfirmation-Do you agree adding " + candidateName + " as a co-owner to the store " + store.name);
+                    currMember.addMessage("Do you agree adding " + candidateName + " as a co - owner to the store " + store.name + "?", Notification.NotificationType.CREATE_OWNER, requestId);
                 }
             }
 
