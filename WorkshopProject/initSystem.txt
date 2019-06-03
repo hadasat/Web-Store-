@@ -1,9 +1,9 @@
-register(u1,
-register(u2,
-register(u3,
-register(u4,
-register(u5,
-make-admin(u1,
-open-store(u2,s1
-add-store-product(u2,s1,diapers,cost:30,quantity:20)
-add-store-manager(u2 appoints u3 permission to manage inventory)
+register(u1,ss,Israel,27/02/1994)
+register(u2,ss,Israel,27/02/1994)
+register(u3,ss,Israel,27/02/1994)
+register(u4,ss,Israel,27/02/1994)
+register(u5,ss,Israel,27/02/1994)
+make-admin(u1)
+open-store(u2,s1)
+add-store-product(u2,s1,diapers,A,funny bunny,30,20)
+add-store-manager(u2,s1,u3)
