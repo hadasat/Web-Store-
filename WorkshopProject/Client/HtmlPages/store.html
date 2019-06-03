@@ -169,18 +169,19 @@
     });
 
     function displayStore(store){
+
         //set header
         $("#page-header").html(`<h1>${store.name}</h1>
         <h5  style="color: rgb(0, 212, 0)">active</h5><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
                     edit <i class="far fa-edit"></i>
                   </button>`);
-        var products = store.Stock;
-       // Object.keys(products).forEach((key,index)=> $(".grid").append(createProductCardHtml(products[index])));
-        for (var property in products) {
-            if (!isNaN(property)) {
-                $(".grid").append(createProductCardHtml(products[property]));
-            }
-        }
+        sendRequest('date','getAllProductsForStore', store.id).then(function(res){
+            var products = res.$values;   
+            products.map(p=> (".grid").append(createProductCardHtml(p)));
+            
+        });
+        
+        
     };
 
     function createProductCardHtml(product){

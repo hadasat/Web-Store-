@@ -35,6 +35,16 @@
                         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                         <label for="inputPassword">Password</label>
                     </div>
+
+                    <div class="form-label-group">
+                        <input type="text" id="inputDate" class="form-control" placeholder="dd-mm-yyyy" required>
+                        <label for="inputDate">Date Of Birth</label>
+                    </div>
+
+                    <div class="form-label-group">
+                        <input type="text" id="inputCountry" class="form-control" placeholder="Country" required>
+                        <label for="inputCountry">Country</label>
+                    </div>
         
                     <button id="signin_btn" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
                     <hr class="my-4">
@@ -67,9 +77,11 @@
                 e.preventDefault();
                 var pass = $("#inputPassword").val();
                 var name = $("#inputUserame").val();
-                (pass && name) ?
-                 sendRequest("action","register",{name: $("#inputUserame").val(),
-                  password: $("#inputPassword").val()}).then(function(res){
+                var date = $("#inputDate").val();
+                var country = $("#inputCountry").val();
+                (pass && name && date && country) ?
+                 sendRequest("action","register",{name:name,
+                  password: pass,birthdate: date,country: country}).then(function(res){
                    if($('#autoLogIn').prop('checked'))
                         signin();
                     else
