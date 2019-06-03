@@ -14,7 +14,7 @@ namespace WorkshopProject
     {
         public static int idGenerator = 0;
         [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int id { get; set; } 
         public string name { get; set; }
         public double price { get; set; } 

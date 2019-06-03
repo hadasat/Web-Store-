@@ -16,7 +16,7 @@ namespace WorkshopProject
     public class Store : IEntity
     {
         [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public string name { get; set; }
         public int rank { get; set; }
@@ -196,6 +196,7 @@ namespace WorkshopProject
                 return -1;
 
             GetStock().Add(p.getId(), p);
+            WorkShop.Update(this);
             Logger.Log("file", logLevel.INFO, "product " + p.getId() + " added");
             return p.getId();
         }
@@ -476,7 +477,7 @@ namespace WorkshopProject
     public class Stock : IEntity
     {
         [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public int amount { get; set; }
         [Include]

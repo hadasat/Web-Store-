@@ -158,7 +158,7 @@ namespace WorkshopProject.System_Service
         //TODO: add unit test
         public static List<Store> GetAllStores()
         {
-            return WorkShop.stores.Values.ToList();
+            return WorkShop.GetStores();
         }
 
         //TODO: add unit test / delete

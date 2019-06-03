@@ -46,8 +46,8 @@ namespace WorkshopProject.Tests
         [TestCleanup]
         public void Cleanup()
         {
-            WorkShop.stores.Remove(store1.id);
-            WorkShop.stores.Remove(store2.id);
+            WorkShop.Remove(store1.id);
+            WorkShop.Remove(store2.id);
         }
 
         [TestMethod()]
