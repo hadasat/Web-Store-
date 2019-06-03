@@ -67,6 +67,7 @@ namespace WorkshopProject.System_Service
             Store store = WorkShop.getStore(storeId);
             Product p = new Product(name, price, desc, category, rank, amount, storeId);
             store.GetStock().Add(p.getId(), p);
+            WorkShop.Update(store);
             return p.getId();
         }
 

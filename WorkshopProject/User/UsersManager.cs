@@ -29,8 +29,14 @@ namespace Users
 
         public static void init()
         {
-            registerNewUser("Admin", "Admin", DateTime.Today.AddYears(-120), "all");
-
+            try
+            {
+                registerNewUser("Admin", "Admin", DateTime.Today.AddYears(-120), "all");
+            }
+            catch(Exception e)
+            {
+                //jonathan: i guess there already is an Admin
+            }
         }
 
         static ConnectionStubTemp()

@@ -52,7 +52,9 @@ namespace TestingFramework.AcceptanceTests
 
 
         [TestInitialize]
-        virtual public void Init() { }
+        virtual public void Init() {
+            //godObject.cleanUpAllData();
+        }
 
         [TestCleanup]
         virtual public void Cleanup() {
