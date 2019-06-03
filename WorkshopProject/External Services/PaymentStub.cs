@@ -27,22 +27,22 @@ namespace WorkshopProject.External_Services
             ret = newRet;
         }
 
-        public double Pay(double price, int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
-        {
-            return price;
-        }
+        //public double Pay(double price, int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
+        //{
+        //    return price;
+        //}
 
-        public double Refund(double amount, int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
-        {
-            return amount;
-        }
+        //public double Refund(double amount, int storeBankNum, int storeAccountNum, int userCredit, int userCsv, string userExpiryDate)
+        //{
+        //    return amount;
+        //}
 
         public bool connectionTest()
         {
             return ret;
         }
 
-        public Task<int> payment(int cardNumber, int month, int year, string holder, int ccv, int id)
+        public Task<int> payment(string cardNumber, int month, int year, string holder, int ccv, int id)
         {
             return ret ? Task.FromResult(10000) : Task.FromResult (- 1);
         }
