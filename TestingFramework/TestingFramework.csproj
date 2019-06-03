@@ -110,6 +110,7 @@
     <Compile Include="UnitTests\PoliciesTest\IBooleanExpressionTest.cs" />
     <Compile Include="UnitTests\PoliciesTest\ItemFilterTest.cs" />
     <Compile Include="UnitTests\PoliciesTest\ProductAmountPriceTest.cs" />
+    <Compile Include="UnitTests\Purchasing UnitTest\ExtranlSystemsImpTest.cs" />
     <Compile Include="UnitTests\Purchasing UnitTest\ShoppingBasketTest.cs" />
     <Compile Include="UnitTests\JsonTests\JsonTests.cs" />
     <Compile Include="UnitTests\Store UnitTests\StoreUnitTest.cs" />

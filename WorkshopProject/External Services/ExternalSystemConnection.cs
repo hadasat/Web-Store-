@@ -8,7 +8,7 @@ using WorkshopProject.Log;
 
 namespace WorkshopProject.External_Services
 {
-    class ExternalSystemConnection : ISupply, IPayment,IDisposable
+    public class ExternalSystemConnection : ISupply, IPayment,IDisposable
     {
         HttpClient client;
 
@@ -32,12 +32,12 @@ namespace WorkshopProject.External_Services
             return true;
         }
 
-        public async Task<int> payment(int cardNumber, int month, int year, string holder, int ccv, int id)
+        public async Task<int> payment(string cardNumber, int month, int year, string holder, int ccv, int id)
         {
             //create request info
             Dictionary<string, string> requestInfo = new Dictionary<string, string> {
                 {"action_type","pay" },
-                {"card_number",Convert.ToString(cardNumber) },
+                {"card_number",cardNumber },
                 {"month",Convert.ToString(month) },
                 {"year",Convert.ToString(year) },
                 {"holder",holder },
@@ -93,7 +93,7 @@ namespace WorkshopProject.External_Services
 
             if (handshakeResposeString != "OK")
             {
-                Logger.Log("envent", logLevel.ERROR, "Can't handshake with external");
+                Logger.Log("event", logLevel.ERROR, "Can't handshake with external");
                 throw new Exception("can't connect to external services, please try again in few minutes");
             }
         }

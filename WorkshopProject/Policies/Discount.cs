@@ -99,5 +99,15 @@ namespace WorkshopProject.Policies
             outcome.LoadMe();
             condition.LoadMe();
         }
+
+        public static bool confirmListConsist(Discount signalExp, List<Discount> exps)
+        {
+            foreach (Discount exp in exps)
+            {
+                if (!signalExp.condition.checkConsistent(exp.condition))
+                    return false;
+            }
+            return true;
+        }
     }
 }

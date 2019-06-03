@@ -144,7 +144,7 @@ namespace WorkshopProject.Communication
             bool ans = user.unSubscribeAsObserver(this);
             if (!ans)
             {
-                Logger.Log("file", logLevel.ERROR, "couldn't unsubscribe observer");
+                Logger.Log("error", logLevel.ERROR, "couldn't unsubscribe observer");
             }
         }
 
@@ -605,7 +605,7 @@ namespace WorkshopProject.Communication
             JsonResponse response;
             int requestId = (int)msgObj["id"];
             //{int cardNumber, int month,int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip}
-            int cardNumber = (int)msgObj["data"]["cardNumber"];
+            string cardNumber = (string)msgObj["data"]["cardNumber"];
             int month = (int)msgObj["data"]["month"];
             int year = (int)msgObj["data"]["year"];
             string holder = (string)msgObj["data"]["holder"];
