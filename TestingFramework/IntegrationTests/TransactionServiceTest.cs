@@ -27,7 +27,7 @@ namespace IntegrationTests
         public string successMsg = "success";
         SystemServiceImpl menager = new SystemServiceImpl();
         SystemServiceImpl user = new SystemServiceImpl();
-        int productAmount = 20, amountToBuy = 5;
+        int productAmount = 30, amountToBuy = 5;
         int[] storeId = new int[4], productId = new int[4];
         Store[] store = new Store[4];
         Product[] product = new Product[4];
@@ -75,13 +75,11 @@ namespace IntegrationTests
         [TestCleanup]
         public void Cealup()
         {   //remove p0
-            menager.RemoveProductFromStore(storeId[0], productId[0]);
-            menager.RemoveProductFromStore(storeId[0], productId[2]);
             menager.closeStore(storeId[0]);
+            WorkShop.stores.Remove(storeId[0]);
             //remove p1
-            menager.RemoveProductFromStore(storeId[1], productId[1]);
-            menager.RemoveProductFromStore(storeId[1], productId[3]);
             menager.closeStore(storeId[1]);
+            WorkShop.stores.Remove(storeId[1]);
         }
 
         private void addingProductToBasket(int amount,int index)
@@ -143,6 +141,51 @@ namespace IntegrationTests
             Assert.AreEqual(productAmount - (2 * amountToBuy), product[0].amount);
             Assert.AreEqual(productAmount - amountToBuy, product[1].amount);
             //try to purches bad amount
+        }
+
+        [TestMethod]
+        public void FailBuyShoppingBasketTest()
+        {
+        //    //bad payment
+        //    addingProductToBasket(amountToBuy, 0);
+            
+            
+        //    Assert.IsTrue(transId == -2, "1.1");
+        //    //chack the basket is empty
+        //    Assert.IsFalse(userShoppingBasket.isEmpty(), "2");
+        //    //check the product amount has reduced
+        //    Assert.AreNotEqual(productAmount - amountToBuy, product[0].amount);
+        //    Assert.AreNotEqual(productAmount - amountToBuy, product[1].amount);
+        //    //try to purches bad amount
+
+        //    //bad SupplyStub
+        //    addingProductToBasket(amountToBuy, 0);
+        //    PaymentStub.setRet(true);
+        //    SupplyStub.setRet(false);
+        //    ConsistencyStub.setRet(true);
+
+        //    transId = Transaction.purchase(user.user);
+        //    Assert.IsTrue(transId == -3, "1.2");
+        //    //chack the basket is empty
+        //    Assert.IsFalse(userShoppingBasket.isEmpty(), "2.2");
+        //    //check the product amount has reduced
+        //    Assert.AreNotEqual(productAmount - amountToBuy, product[0].amount);
+        //    Assert.AreNotEqual(productAmount - amountToBuy, product[1].amount);
+
+        //    //bad consistency
+        //    addingProductToBasket(amountToBuy, 0);
+        //    PaymentStub.setRet(true);
+        //    SupplyStub.setRet(true);
+        //    ConsistencyStub.setRet(false);
+
+        //    transId = Transaction.purchase(user.user);
+        //    Assert.AreEqual(-5,transId);
+        //    //chack the basket is empty
+        //    Assert.IsFalse(userShoppingBasket.isEmpty(), "2.3");
+        //    //check the product amount has reduced
+        //    Assert.AreNotEqual(productAmount - amountToBuy, product[0].amount);
+        //    Assert.AreNotEqual(productAmount - amountToBuy, product[1].amount);
+
         }
 
         [TestMethod()]

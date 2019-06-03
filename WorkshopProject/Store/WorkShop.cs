@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using static WorkshopProject.Category;
 using Users;
 using WorkshopProject.Log;
+using WorkshopProject.Policies;
 
 namespace WorkshopProject
 {
     public  static class  WorkShop
     {
+       public static List<IBooleanExpression> SystemPolicies = new List<IBooleanExpression>();
        public  static Dictionary<int,Store> stores = new Dictionary<int, Store>();
        public static  int id = 0;
        
@@ -116,6 +118,36 @@ namespace WorkshopProject
                 }
             }
             return null;
+        }
+
+        public static Policystatus addSystemPolicy(User user, IBooleanExpression policy)
+        {
+            if (user is SystemAdmin)
+            {
+                if(!IBooleanExpression.confirmListConsist(policy,SystemPolicies))
+                    return Policystatus.UnauthorizedUser;
+                int newPolicyId = IBooleanExpression.checkExpression(policy);
+                if (newPolicyId > 0)
+                {
+                    SystemPolicies.Add(policy);
+                    return Policystatus.Success;
+                }
+                return Policystatus.BadPolicy;
+            }
+            return Policystatus.UnauthorizedUser;
+        }
+
+        public static Policystatus removeSystemPolicy(User user, int policyid)
+        {
+            if (user is SystemAdmin)
+            {
+                IBooleanExpression temp = new TrueCondition();
+                temp.id = policyid;
+
+                if (SystemPolicies.Remove(temp))
+                    return Policystatus.Success;
+            }
+            return Policystatus.UnauthorizedUser;
         }
     }
 }
