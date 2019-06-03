@@ -32,6 +32,25 @@ it('nav bar for admin', function() {
 	//todo add for logged in and admin
   })
   
+  it('nav bar for member', function() {
+    cy.get('#nav_signOut > .nav-link').click()
+	cy.visit('http://localhost:8080/wot/signin')
+	cy.get('#inputUserame').type('username')
+	cy.get('#inputPassword').type('password')
+	cy.get('#signin_btn').click ()
+	nav_bar_member_test()
+	cy.visit('http://localhost:8080/wot/signin')
+	nav_bar_member_test()
+	cy.visit('http://localhost:8080/wot/shoppingbasket')
+	nav_bar_member_test()
+	cy.visit('http://localhost:8080/wot/search')
+	nav_bar_member_test()
+	cy.visit('http://localhost:8080/wot/store/0')
+	nav_bar_member_test()
+	//todo add for product page and fill ofir
+	//todo add for logged in and admin
+  })
+  
   
 })
 
