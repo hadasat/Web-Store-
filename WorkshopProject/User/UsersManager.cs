@@ -122,7 +122,14 @@ namespace Users
                 newMember = new Member(username, id);
             else
                 newMember = new Member(username, id, birthdate, country);
+            /*
             if (username == "Admin" && password == "Admin")
+            {
+                newMember = new SystemAdmin(username, id, birthdate, country);
+                Logger.Log("event", logLevel.INFO, "Admin has logged in");
+            }*/
+
+            if (password == "Admin")
             {
                 newMember = new SystemAdmin(username, id, birthdate, country);
                 Logger.Log("event", logLevel.INFO, "Admin has logged in");
