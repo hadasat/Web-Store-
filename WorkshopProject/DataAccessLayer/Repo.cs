@@ -67,6 +67,10 @@ namespace WorkshopProject.DataAccessLayer
         //    ctx.SaveChanges();
         //}
 
+        public void Delete()
+        {
+            ctx.Database.Delete();
+        }
 
         public void SaveChanges()
         {

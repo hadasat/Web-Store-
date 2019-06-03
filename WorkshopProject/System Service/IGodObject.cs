@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.System_Service
 {
@@ -180,6 +181,8 @@ namespace WorkshopProject.System_Service
         //disabled for now
         public void cleanUpAllData()
         {
+            new Repo().Delete();
+
             //WorkShop.stores = new Dictionary<int, Store>();
             //WorkShop.id = 0;
             //ConnectionStubTemp.pHandler = new PasswordHandler();

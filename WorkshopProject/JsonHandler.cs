@@ -26,7 +26,7 @@ namespace WorkshopProject
         }
 
         public static T DeserializeObject<T>(string json){
-            return JsonConvert.DeserializeObject<T>(json, settings);
+             return JsonConvert.DeserializeObject<T>(json, settings);
         }
 
     }
