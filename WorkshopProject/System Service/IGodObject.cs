@@ -182,7 +182,7 @@ namespace WorkshopProject.System_Service
         //disabled for now
         public void cleanUpAllData()
         {
-            new Repo().Delete();
+            //new Repo().Delete();
 
             //WorkShop.stores = new Dictionary<int, Store>();
             //WorkShop.id = 0;
