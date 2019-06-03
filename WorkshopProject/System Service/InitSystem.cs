@@ -11,7 +11,7 @@ namespace WorkshopProject.System_Service
 {
      public static class InitSystem
     {
-        private static string filePath = "../../../hadas.txt";
+        private static string filePath = "../../../initSysyem.txt";
         private static string word = @"\b[a-zA-Z1-9\-]+\b";
         private static string commandSyntax = @"^[a-zA-Z0-9\-]+\([a-zA-Z0-9]*(,[[a-zA-Z0-9]+)*\);";
 

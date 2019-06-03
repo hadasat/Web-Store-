@@ -523,6 +523,8 @@ namespace WorkshopProject.System_Service
                 return notLoggedInError();
             try
             {
+                Store store = WorkShop.getStore(storeId);
+                policyId = store.getDiscountPolicy(-2).id;
                 Policystatus res = PolicyService.removeDiscountPolicy(user, storeId, policyId);
                 return JsonHandler.SerializeObject(res);
             }
@@ -555,6 +557,8 @@ namespace WorkshopProject.System_Service
                 return notLoggedInError();
             try
             {
+                Store store = WorkShop.getStore(storeId);
+                policyId = store.getPolicy(-2).id;
                 Policystatus res = PolicyService.removePurchasingPolicy(user, storeId, policyId);
                 return JsonHandler.SerializeObject(res);
             }
@@ -586,6 +590,8 @@ namespace WorkshopProject.System_Service
                 return notLoggedInError();
             try
             {
+                Store store = WorkShop.getStore(storeId);
+                policyId = store.getPolicy(-1).id;
                 Policystatus res = PolicyService.removeStorePolicy(user, storeId, policyId);
                 return JsonHandler.SerializeObject(res);
             }
