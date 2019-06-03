@@ -358,7 +358,8 @@ namespace Users
                 foreach (KeyValuePair<String, int> entry in owners)
                 {
                     Member currMember = ConnectionStubTemp.getMember(entry.Value);
-                    currMember.addMessage("addManagerConfirmation-Do you agree adding " + candidateName + " as a co-owner to the store " + store.name);
+                    //currMember.addMessage("addManagerConfirmation-Do you agree adding " + candidateName + " as a co-owner to the store " + store.name);
+                    currMember.addMessage("Do you agree adding " + candidateName + " as a co - owner to the store " + store.name + "?", Notification.NotificationType.CREATE_OWNER, requestId);
                 }
             }
 
