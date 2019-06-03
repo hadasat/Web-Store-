@@ -259,19 +259,27 @@ namespace WorkshopProject.Communication
             string country = (string)msgObj["data"]["country"];
 
             DateTime birthDate = DateTime.MaxValue;
-            if (birthDateString != null)
-            {
-                birthDate = DateTime.ParseExact(birthDateString, "dd-mm-yyyy", null);
-            }
             try
             {
-                response = user.Register(userName, password, birthDate, country) ?
-                    JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "can't register due to an unknown reason");
+                if (birthDateString != null)
+                {
+                    birthDate = DateTime.ParseExact(birthDateString, "dd-mm-yyyy", null);
+                }
+                try
+                {
+                    response = user.Register(userName, password, birthDate, country) ?
+                        JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "can't register due to an unknown reason");
+                }
+                catch (Exception e)
+                {
+                    response = JsonResponse.generateActionError(requestId, e.Message);
+                }
             }
-            catch (Exception e)
+            catch
             {
-                response = JsonResponse.generateActionError(requestId, e.Message);
+                response = JsonResponse.generateActionError(requestId, "bad date");
             }
+            
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
