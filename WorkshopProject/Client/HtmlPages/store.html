@@ -176,13 +176,23 @@
                     edit <i class="far fa-edit"></i>
                   </button>`);
         sendRequest('date','getAllProductsForStore', store.id).then(function(res){
-            var products = res.$values;   
+            var products = res.$values;
+            products.length==0?   $(".grid").append(noProductsHtml()) :  
             products.map(p=> $(".grid").append(createProductCardHtml(p)));
             
         });
         
         
     };
+
+    function noProductsHtml(){
+        return `<div  class="text-center">
+                        <h1 class="display-4">
+                           Store is empty. please add products :)
+                        </h4>
+                    </div>`;
+        }
+    
 
     function createProductCardHtml(product){
         // Card Html Component String
