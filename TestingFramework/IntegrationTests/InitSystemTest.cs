@@ -15,8 +15,8 @@ namespace TestingFramework.IntegrationTests
     {
 
         public string file = "../../forTests.txt";
-        string storeName = "test store", userName = "funny user", userName2 = "wannabe funny user",
-            userPass = "funny password", productName = "funny product";
+
+        string userPass = "f";
 
         string register = "register", make_admin = "make-admin", add_store= "open-store",
             add_product = "add-store-product", add_manager = "add-store-manager";
@@ -84,7 +84,7 @@ namespace TestingFramework.IntegrationTests
             Assert.IsNotNull(user);
         }
 
-        private void addStore()
+        private void addStore(string storeName,string userName)
         {
             string command = $"{add_store}({userName},{storeName})";
             string[] splitedCommand = InitSystem.splitCommand(command);
@@ -93,7 +93,7 @@ namespace TestingFramework.IntegrationTests
             Assert.IsNotNull(store);
         }
 
-        private void addProduct()
+        private void addProduct(string userName, string storeName, string productName)
         {
             string command = $"{add_product}({userName},{storeName},{productName},A,funny bunny,{price},{amount})";
             string[] splitedCommand = InitSystem.splitCommand(command);
@@ -109,7 +109,7 @@ namespace TestingFramework.IntegrationTests
             ConnectionStubTemp.removeMember((Member)user);
         }
 
-        private void deleteStore()
+        private void deleteStore(string storeName)
         {
             Store store = InitSystem.getStore(storeName);
             WorkShop.deleteStore(store.id);
@@ -121,14 +121,15 @@ namespace TestingFramework.IntegrationTests
         [TestCategory("init System Test")]
         public void registerNewUserTest()
         {
-            addUser(userName);
-            deleteUser(userName);
+            addUser("A");
+            deleteUser("A");
         }
 
         [TestMethod]
         [TestCategory("init System Test")]
         public void makeAdminTest()
         {
+            string userName = "B";
             addUser(userName);
 
             string command = $"{make_admin}({userName})";
@@ -136,6 +137,7 @@ namespace TestingFramework.IntegrationTests
             InitSystem.makeAdmin(splitedCommand);
             User user = InitSystem.getUser(userName, userPass);
             Assert.IsTrue(user is SystemAdmin);
+
             ConnectionStubTemp.removeAdmin((SystemAdmin)user);
         }
 
@@ -143,10 +145,10 @@ namespace TestingFramework.IntegrationTests
         [TestCategory("init System Test")]
         public void openStoreTest()
         {
-            addUser(userName);
-            addStore();
-            deleteUser(userName);
-            deleteStore();
+            addUser("C");
+            addStore("S1", "C");
+            deleteUser("C");
+            deleteStore("S1");
         }
 
         [TestMethod]
@@ -160,20 +162,21 @@ namespace TestingFramework.IntegrationTests
         [TestCategory("init System Test")]
         public void addProductStoreTest()
         {
-            addUser(userName);
-            addStore();
-            addProduct();
-            deleteUser(userName);
-            deleteStore();
+            addUser("D");
+            addStore("S2","D");
+            addProduct("D", "S2", "P1");
+            deleteUser("D");
+            deleteStore("S2");
         }
 
         [TestMethod]
         [TestCategory("init System Test")]
         public void addStoreOwnerTest()
         {
+            string userName = "E", userName2 = "F", storeName = "S4";
             addUser(userName);
             addUser(userName2);
-            addStore();
+            addStore(storeName,userName);
 
             string command = $"{add_manager}({userName},{storeName},{userName2})";
             string[] splitedCommand = InitSystem.splitCommand(command);
@@ -186,7 +189,7 @@ namespace TestingFramework.IntegrationTests
 
             deleteUser(userName);
             deleteUser(userName2);
-            deleteStore();
+            deleteStore(storeName);
         }
 
     }
