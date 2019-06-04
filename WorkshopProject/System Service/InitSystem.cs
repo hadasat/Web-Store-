@@ -106,7 +106,7 @@ namespace WorkshopProject.System_Service
 
         public static void makeAdmin(string[] fullcommand)
         {
-
+            //just like register new user with 'Admin' as password
         }
 
         public static void openStore(string[] fullcommand)

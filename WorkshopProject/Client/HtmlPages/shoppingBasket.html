@@ -34,12 +34,12 @@
         
 
         function displayStores(shoppingBasket) {
-            var carts = shoppingBasket.shoppingCarts.$values;
+            var carts = shoppingBasket.cartsList.$values;
             if(carts.length===0)
              $(".grid").append(emptyBasketHtml());
              else{
             carts.map(cart =>$(".grid").append(
-                createStoreContainer(cart.store,cart.shoppingCart)));
+                createStoreContainer(cart.store,cart.cart)));
 
                 $(".grid").append( `<div  class="text-center">
                      <a href="/wot/payment" class="btn btn-success">Purchase Basket</a>    

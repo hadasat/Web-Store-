@@ -158,5 +158,22 @@ namespace WorkshopProject.System_Service
             //return member.notifications;
             return null;
         }
+
+
+        public static bool isManageStore(User user, int storeId)
+        {
+            return ((Member)user).isManageStore(storeId);
+        }
+
+
+        //NOT FOR LOGIN PROXY!!
+        public static void MakeAdmin(int memberId)
+        {
+            Member member = ConnectionStubTemp.getMember(memberId);
+            SystemAdmin newsys = new SystemAdmin(member);
+            ConnectionStubTemp.removeMember(member);
+            ConnectionStubTemp.addMemberJustForExternalUsage(newsys);
+
+        }
     }
 }

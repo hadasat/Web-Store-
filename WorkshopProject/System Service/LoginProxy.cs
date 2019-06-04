@@ -66,6 +66,14 @@ namespace WorkshopProject.System_Service
             return UserService.AddStoreManager(user, storeId, userToAdd, roles);
         }
 
+
+        public bool IsManageStore(int storeId)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return UserService.isManageStore(user, storeId);
+        }
+
         public bool AddStoreOwner(int storeId, string userToAdd)
         {
             if (!loggedIn)
@@ -102,7 +110,7 @@ namespace WorkshopProject.System_Service
             return UserService.DisApproveOwnershipRequest(user, requestID);
         }
 
-        public Transaction BuyShoppingBasket(int cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
+        public Transaction BuyShoppingBasket(string cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
         {
             return TransactionService.BuyShoppingBasket(user,cardNumber,month,year,holder,ccv,id,name,address,city,country,zip);
         }
@@ -371,6 +379,8 @@ namespace WorkshopProject.System_Service
             return WorkShop.removeSystemPolicy(user, policyId);
 
         }
+
+
 
     }
 }
