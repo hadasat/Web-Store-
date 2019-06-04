@@ -51,7 +51,7 @@ namespace WorkshopProject.Policies
 
         [TestMethod]
         [TestCategory("POLICIES")]
-        [TestCategory("RegretionTest")]
+        [TestCategory("Regression")]
         public void translateCartTest() {
             List<ProductAmountPrice> list = ProductAmountPrice.translateCart(shoppingCart);
             Assert.AreEqual(list.Count, shoppingCart.getProducts().Count);
