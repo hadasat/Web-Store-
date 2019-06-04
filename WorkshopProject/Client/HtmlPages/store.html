@@ -169,18 +169,24 @@
     });
 
     function displayStore(store){
-
-        //set header
+        sendRequest('data','IsManageStore',{storeId: store.id})
+        .then(function(isManager){
+             //set header
         $("#page-header").html(`<h1>${store.name}</h1>
-        <h5  style="color: rgb(0, 212, 0)">active</h5><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
+        <h5  style="color: rgb(0, 212, 0)">active</h5>`+
+         isManager ? 
+        `<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
                     edit <i class="far fa-edit"></i>
-                  </button>`);
+                  </button>`
+                  : ``);
         sendRequest('date','getAllProductsForStore', store.id).then(function(res){
             var products = res.$values;
             products.length==0?   $(".grid").append(noProductsHtml()) :  
             products.map(p=> $(".grid").append(createProductCardHtml(p)));
             
         });
+        })
+       
         
         
     };
