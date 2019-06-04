@@ -39,8 +39,22 @@ namespace Users
 
         public static void removeMember(Member m)
         {
-            if (m.id == 0)
+            if (m is SystemAdmin)
                 throw new Exception("don't remove Admin!");
+            try
+            {
+                members.Remove(m.id);
+                mapIDUsermane.Remove(m.username);
+            }
+            catch (Exception ignore)
+            {
+                throw new Exception("this should not happen, member doesn't exist");
+            }
+        }
+
+        public static void removeAdmin(SystemAdmin m)
+        {
+            
             try
             {
                 members.Remove(m.id);

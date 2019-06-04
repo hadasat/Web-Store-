@@ -186,6 +186,7 @@ namespace TansactionsNameSpace
                     purchasedProducts.Concat(currStoreProducts);
                     this.total += totalCart;
                     ShoppingCartDeal sucessCartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, totalCart, currStore.id, status.Sucess);
+                    WorkshopProject.Log.Logger.Log("event", logLevel.INFO, $"user {user.id} buy cart {currShoppingCart.id} sucessfully");
                     sucess.Add(sucessCartDeal);
                 }
             }
