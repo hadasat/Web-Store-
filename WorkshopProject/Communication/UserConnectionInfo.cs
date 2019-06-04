@@ -606,7 +606,7 @@ namespace WorkshopProject.Communication
 
         private void approveOwnershipResponseHandler(JObject msgObj, string message)
         {
-            int ownerRequestId = (int)msgObj["requestId"];
+            int ownerRequestId = (int)msgObj["data"];
             try
             {
                 user.ApproveOwnershipRequest(ownerRequestId);
@@ -620,7 +620,7 @@ namespace WorkshopProject.Communication
 
         private void disapproveOwnershipResponseHandler(JObject msgObj, string message)
         {
-            int ownerRequestId = (int)msgObj["requestId"];
+            int ownerRequestId = (int)msgObj["data"];
             try
             {
                 user.DisApproveOwnershipRequest(ownerRequestId);
