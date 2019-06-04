@@ -52,6 +52,20 @@ namespace Users
             }
         }
 
+        public static void removeAdmin(SystemAdmin m)
+        {
+            
+            try
+            {
+                members.Remove(m.id);
+                mapIDUsermane.Remove(m.username);
+            }
+            catch (Exception ignore)
+            {
+                throw new Exception("this should not happen, member doesn't exist");
+            }
+        }
+
         public static void addMemberJustForExternalUsage(Member m)
         {
 

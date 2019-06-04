@@ -136,7 +136,7 @@ namespace TestingFramework.IntegrationTests
             InitSystem.makeAdmin(splitedCommand);
             User user = InitSystem.getUser(userName, userPass);
             Assert.IsTrue(user is SystemAdmin);
-            
+            ConnectionStubTemp.removeAdmin((SystemAdmin)user);
         }
 
         [TestMethod]
