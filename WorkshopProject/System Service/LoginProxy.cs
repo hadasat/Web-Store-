@@ -70,7 +70,7 @@ namespace WorkshopProject.System_Service
         public bool IsManageStore(int storeId)
         {
             if (!loggedIn)
-                notLoggedInException();
+                return false;
             return UserService.isManageStore(user, storeId);
         }
 
@@ -246,6 +246,19 @@ namespace WorkshopProject.System_Service
             else
             {
                 return JsonHandler.SerializeObject(storeAnse);
+            }
+        }
+
+        public List<Product> getAllProductsForStore (int storeId)
+        {
+            Store storeAns = StoreService.GetStore(storeId);
+            if (storeAns == null)
+            {
+                return new List<Product>();
+            }
+            else
+            {
+                return storeAns.getAllProducst();
             }
         }
 

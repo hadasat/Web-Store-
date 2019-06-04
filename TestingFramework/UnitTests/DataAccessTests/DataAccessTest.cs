@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
 using WorkshopProject.DataAccessLayer;
-
+/*
 namespace TestingFramework.UnitTests.DataAccessTests
 {
     [TestClass]
@@ -161,3 +161,4 @@ namespace TestingFramework.UnitTests.DataAccessTests
         //}
     }
 }
+*/

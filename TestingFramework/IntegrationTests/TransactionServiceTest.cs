@@ -190,7 +190,7 @@ namespace IntegrationTests
 
         [TestMethod()]
         [TestCategory("TransactionServiceTest")]
-        [TestCategory("RegrationTest")]
+        [TestCategory("Regression")]
         public void GetShoppingCartTest()
         {
             //init
@@ -227,7 +227,7 @@ namespace IntegrationTests
 
         [TestMethod()]
         [TestCategory("TransactionServiceTest")]
-        [TestCategory("RegretionTest")]
+        [TestCategory("Regression")]
         public void GetShoppingBasketTest()
         {
             //init

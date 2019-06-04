@@ -102,10 +102,17 @@ namespace WorkshopProject.Communication
                 {"getallmanagers",getAllManagersHandler },
                 {"approveowenrshiprequest",approveOwnershipResponseHandler },
                 {"disapproveowenrshiprequest",disapproveOwnershipResponseHandler },
-                {"buyshoppingbasket",buyShoppingBasketHandler }
+                {"buyshoppingbasket",buyShoppingBasketHandler },
+                {"getallproductsforstore",getAllProductsForStore},
+                {"removestoremanager",removeStoreManagerHandler},
+                {"addstoremanager" ,addStoreManagerHandler},
+                {"ismanagestore" ,IsManageStoreHandler},
+                {"addstoreowner" ,addStoreOwnerHandler}
 
             };
         }
+
+        
 
         /// <summary>
         /// on message event activated when the user recieves message from server
@@ -185,6 +192,23 @@ namespace WorkshopProject.Communication
 
         // ***************** handlers ****************
 
+        private void IsManageStoreHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            try
+            {
+                bool jsonBoolean = user.IsManageStore(storeId);
+                response = JsonResponse.generateDataSuccess(requestId, JsonHandler.SerializeObject(jsonBoolean));
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateDataFailure(requestId, e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
         #region requests handlers
 
         private void signInHandler(JObject msgObj, string message)
@@ -255,19 +279,27 @@ namespace WorkshopProject.Communication
             string country = (string)msgObj["data"]["country"];
 
             DateTime birthDate = DateTime.MaxValue;
-            if (birthDateString != null)
-            {
-                birthDate = DateTime.ParseExact(birthDateString, "dd-mm-yyyy", null);
-            }
             try
             {
-                response = user.Register(userName, password, birthDate, country) ?
-                    JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "can't register due to an unknown reason");
+                if (birthDateString != null)
+                {
+                    birthDate = DateTime.ParseExact(birthDateString, "dd-mm-yyyy", null);
+                }
+                try
+                {
+                    response = user.Register(userName, password, birthDate, country) ?
+                        JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "can't register due to an unknown reason");
+                }
+                catch (Exception e)
+                {
+                    response = JsonResponse.generateActionError(requestId, e.Message);
+                }
             }
-            catch (Exception e)
+            catch
             {
-                response = JsonResponse.generateActionError(requestId, e.Message);
+                response = JsonResponse.generateActionError(requestId, "bad date");
             }
+            
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
@@ -574,7 +606,7 @@ namespace WorkshopProject.Communication
 
         private void approveOwnershipResponseHandler(JObject msgObj, string message)
         {
-            int ownerRequestId = (int)msgObj["requestId"];
+            int ownerRequestId = (int)msgObj["data"];
             try
             {
                 user.ApproveOwnershipRequest(ownerRequestId);
@@ -588,7 +620,7 @@ namespace WorkshopProject.Communication
 
         private void disapproveOwnershipResponseHandler(JObject msgObj, string message)
         {
-            int ownerRequestId = (int)msgObj["requestId"];
+            int ownerRequestId = (int)msgObj["data"];
             try
             {
                 user.DisApproveOwnershipRequest(ownerRequestId);
@@ -630,20 +662,98 @@ namespace WorkshopProject.Communication
 
         }
 
-    /*
-            private void --(JObject msgObj, string message)
+        private void getAllProductsForStore(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"];
+
+            try
             {
-                JsonResponse response;
-                int requestId = (int)msgObj["id"];
-
-                sendMyselfAMessage(JsonHandler.SerializeObject(response));
-
+                String data_ans = JsonHandler.SerializeObject(user.getAllProductsForStore(storeId));
+                response = JsonResponse.generateDataSuccess(requestId, data_ans);
             }
-     */
+            catch (Exception e)
+            {
+                response = JsonResponse.generateDataFailure(requestId, e.Message);
+            }
+
+
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void removeStoreManagerHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            string userName = (string)msgObj["data"]["username"];
+
+            try
+            {
+                user.RemoveStoreManager(storeId, userName);
+                response = JsonResponse.generateActionSucces(requestId);
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void addStoreManagerHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            string userName = (string)msgObj["data"]["username"];
+            string roles = (string)msgObj["data"]["roles"];
+
+            try
+            {
+                user.AddStoreManager(storeId, userName, roles);
+                response = JsonResponse.generateActionSucces(requestId);
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void addStoreOwnerHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            string userName = (string)msgObj["data"]["username"];
+
+            try
+            {
+                user.AddStoreOwner(storeId, userName);
+                response = JsonResponse.generateActionSucces(requestId);
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        /*
+                private void --(JObject msgObj, string message)
+                {
+                    JsonResponse response;
+                    int requestId = (int)msgObj["id"];
+
+                    sendMyselfAMessage(JsonHandler.SerializeObject(response));
+
+                }
+         */
 
 
 
-    #endregion
+        #endregion
 
-}
+    }
 }

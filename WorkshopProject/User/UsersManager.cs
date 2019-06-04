@@ -255,9 +255,9 @@ namespace Users
                     newOwnership.addOwner(m);
                 }
             }
+            newOwnership.sendRequestsToOwners(store, memberThatOpenRequest.id, candidate.username, requestID);//should handle notifications
             newOwnership.approveOrDisapprovedOwnership(1, memberThatOpenRequest);//first approval of asker
-            ownershipsRequestList[requestID] = (newOwnership);//add ownership request to list
-            newOwnership.sendRequestsToOwners(store,memberThatOpenRequest.id,candidate.username,requestID);//should handle notifications
+            ownershipsRequestList[requestID] = (newOwnership);//add ownership request to list  
             return requestID;
         }
 
@@ -386,8 +386,10 @@ namespace Users
                 foreach (KeyValuePair<String, int> entry in owners)
                 {
                     Member currMember = ConnectionStubTemp.getMember(entry.Value);
-                    //currMember.addMessage("addManagerConfirmation-Do you agree adding " + candidateName + " as a co-owner to the store " + store.name);
-                    currMember.addMessage("Do you agree adding " + candidateName + " as a co - owner to the store " + store.name + "?", Notification.NotificationType.CREATE_OWNER, requestId);
+                    if (currMember.id != creatorId && currMember.username!=candidateName)
+                    {
+                        currMember.addMessage("Do you agree adding " + candidateName + " as a co - owner to the store " + store.name + "?", Notification.NotificationType.CREATE_OWNER, requestId);
+                    }
                 }
             }
 

@@ -124,7 +124,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         //TODO: dependent test
         [TestMethod]
         [TestCategory("Req_4")]
-        [TestCategory("RegretionTest")]
+        [TestCategory("Regression")]
         public void UpdateProductSuccess()
         {
             try
