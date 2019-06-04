@@ -12,12 +12,20 @@ namespace WorkshopProject.System_Service
      public static class InitSystem
     {
         private static string filePath = "../../initSysyem.txt";
-        private static string word = @"\b[a-zA-Z1-9\-]+\b";
+        private static string word = @"\b[a-zA-Z0-9\-\/\ ]+\b";
         private static string commandSyntax = @"^[a-zA-Z0-9\-]+\([a-zA-Z0-9]*(,[[a-zA-Z0-9]+)*\);";
 
-        private static Dictionary<string, string> users;
+        private static Dictionary<string, string> users = new Dictionary<string, string>();
 
         public static void updatePath(string new_path) { filePath = new_path; }
+
+        public static string getUserPass(string username)
+        {
+            string pass;
+            if (users.TryGetValue(username, out pass))
+                return pass;
+            return null;
+        }
 
         public static string[] splitCommand(string sentence)
         {
@@ -93,11 +101,11 @@ namespace WorkshopProject.System_Service
 
         public static void registerNewUser(string[] fullcommand)
         {
-            if (fullcommand.Length == 4) {
-                string username = fullcommand[0];
-                string password = fullcommand[1];
-                string country = fullcommand[2];
-                string stringBirthdate = fullcommand[2];
+            if (fullcommand.Length == 5) {
+                string username = fullcommand[1];
+                string password = fullcommand[2];
+                string country = fullcommand[3];
+                string stringBirthdate = fullcommand[4];
                 DateTime birthdate = DateTime.Parse(stringBirthdate);
                 if (UserService.Register(username, password, birthdate, country))
                     users.Add(username, password);
@@ -106,15 +114,18 @@ namespace WorkshopProject.System_Service
 
         public static void makeAdmin(string[] fullcommand)
         {
-
+            if (fullcommand.Length == 2)
+            {
+               
+            }
         }
 
         public static void openStore(string[] fullcommand)
         {
-            if (fullcommand.Length == 2)
+            if (fullcommand.Length == 3)
             {
-                string username = fullcommand[0];
-                string storeName = fullcommand[1];
+                string username = fullcommand[1];
+                string storeName = fullcommand[2];
                 try
                 {
                     User user = getUser(username, users[username]);
@@ -132,13 +143,13 @@ namespace WorkshopProject.System_Service
         {
             if (fullcommand.Length == 7)
             {
-                string username = fullcommand[0];
-                string storeName = fullcommand[1];
-                string productName = fullcommand[2];
-                string category = fullcommand[3];
-                string desc = fullcommand[4];
-                int price = int.Parse(fullcommand[5]);
-                int amount = int.Parse(fullcommand[6]);
+                string username = fullcommand[1];
+                string storeName = fullcommand[2];
+                string productName = fullcommand[3];
+                string category = fullcommand[4];
+                string desc = fullcommand[5];
+                int price = int.Parse(fullcommand[6]);
+                int amount = int.Parse(fullcommand[7]);
                 try
                 {
                     User user = getUser(username, users[username]);
@@ -158,9 +169,9 @@ namespace WorkshopProject.System_Service
 
             if (fullcommand.Length == 3)
             {
-                string username = fullcommand[0];
-                string storeName = fullcommand[1];
-                string newManager = fullcommand[2];
+                string username = fullcommand[1];
+                string storeName = fullcommand[2];
+                string newManager = fullcommand[3];
                 
                 try
                 {
