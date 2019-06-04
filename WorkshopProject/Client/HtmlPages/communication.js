@@ -24,7 +24,10 @@ function onStart(initFunc) {
         webSocketClient = new WebSocket(urlAddress,"old");
     }else{
         isOldConnection = false;
-        localStorage.clear();
+        if (localStorage.length != 0) {
+            localStorage.clear();
+            location.reload(); 
+        }
         webSocketClient = new WebSocket(urlAddress,"new");
     }
 
