@@ -12,10 +12,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         //[TestInitialize]
         public override void Init()
         {
-            base.Init();
             addTestMemberToSystem();
             addTestProductToSystem();
-            bridge.Login(getUserName(), password);
+            bridge.Login(user, password);
         }
 
         [TestCleanup]

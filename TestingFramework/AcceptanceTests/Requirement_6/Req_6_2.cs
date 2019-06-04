@@ -10,7 +10,6 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
         //[TestInitialize]
         public override void Init()
         {
-            base.Init();
             addTestMemberToSystem();
             addTestStoreOwner1ToSystem();
             bool result = bridge.Login(adminUser, adminPass);
@@ -32,10 +31,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
             try
             {
                 Init();
-                bool result = bridge.RemoveUser(getUserName());
+                bool result = bridge.RemoveUser(user);
                 Assert.IsTrue(result);
 
-                result = bridge.Login(getUserName(), password);
+                result = bridge.Login(user, password);
                 Assert.IsFalse(result);
             }
             finally
@@ -53,7 +52,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
                 Init();
                 RemoveNormalMemberSuccess();
 
-                bool result = bridge.RemoveUser(getUserName());
+                bool result = bridge.RemoveUser(user);
                 Assert.IsFalse(result);
             }
             finally
@@ -86,10 +85,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
             try
             {
                 Init();
-                bool result = bridge.RemoveUser(getStoreOwner1());
+                bool result = bridge.RemoveUser(storeOwner1);
                 Assert.IsTrue(result);
 
-                result = bridge.Login(getStoreOwner1(), password);
+                result = bridge.Login(storeOwner1, password);
                 Assert.IsFalse(result);
             }
             finally

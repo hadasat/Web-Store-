@@ -16,7 +16,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             addTestMemberToSystem();
             addTestProductToSystem();
-            bridge.Login(getUserName(), password);
+            bridge.Login(user, password);
         }
 
         //[TestCleanup]

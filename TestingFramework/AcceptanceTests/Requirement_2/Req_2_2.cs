@@ -23,11 +23,11 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             try
             {
-                bool result = bridge.Register(getUserName(), password, DateTime.Now, "shit");
+                bool result = bridge.Register(user, password, DateTime.Now, "shit");
 
                 Assert.IsTrue(result);
 
-                result = bridge.Login(getUserName(), password);
+                result = bridge.Login(user, password);
                 Assert.IsTrue(result);
             }
             finally
@@ -45,9 +45,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             try
             {
-                bridge.Register(getUserName(), password,DateTime.Now,"shit");
+                bridge.Register(user, password,DateTime.Now,"shit");
 
-                bool result = bridge.Register(getUserName(), password, DateTime.Now, "shit");
+                bool result = bridge.Register(user, password, DateTime.Now, "shit");
 
                 Assert.IsFalse(result);
             }

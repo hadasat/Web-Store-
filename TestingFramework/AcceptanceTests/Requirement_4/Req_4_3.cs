@@ -10,10 +10,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         //[TestInitialize]
         public override void Init()
         {
-            base.Init();
             addTestStoreOwner1ToSystem();
             addTestStoreOwner2ToSystem();
-            bridge.Login(getStoreOwner1(), password);
+            bridge.Login(storeOwner1, password);
         }
 
         [TestCleanup]
@@ -42,7 +41,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
 
         private void AddStoreOwnerSuccessInner()
         {
-            bool result = bridge.AddStoreOwner(storeId, getStoreOwner2());
+            bool result = bridge.AddStoreOwner(storeId, storeOwner2);
             Assert.IsTrue(result);
         }
 
@@ -54,7 +53,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             {
                 Init();
                 AddStoreOwnerSuccessInner();
-                bool result = bridge.AddStoreOwner(storeId, getStoreOwner2());
+                bool result = bridge.AddStoreOwner(storeId, storeOwner2);
                 Assert.IsFalse(result);
             }
             finally
