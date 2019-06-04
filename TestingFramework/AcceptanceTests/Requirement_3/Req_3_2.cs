@@ -10,8 +10,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
         //[TestInitialize]
         public override void Init()
         {
+            base.Init();
             addTestStoreOwner1ToSystem();
-            bool result = bridge.Login(storeOwner1, password);
+            bool result = bridge.Login(getStoreOwner1(), password);
         }
 
         [TestCleanup]

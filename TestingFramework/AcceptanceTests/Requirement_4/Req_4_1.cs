@@ -8,10 +8,11 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
     public class Req_4_1 : AcceptanceTest
     {
         //[TestInitialize]
-        public override void Init()
+        public override void Init()  
         {
+            base.Init();
             addTestStoreOwner1ToSystem();
-            bridge.Login(storeOwner1, password);
+            bridge.Login(getStoreOwner1(), password);
         }
 
         //[TestCleanup]

@@ -12,6 +12,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         //[TestInitialize]
         public override void Init()
         {
+            base.Init();
             addTestProductToSystem();
         }
 

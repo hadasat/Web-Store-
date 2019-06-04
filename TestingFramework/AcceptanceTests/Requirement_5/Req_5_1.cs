@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using WorkshopProject;
@@ -26,6 +27,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
 
         public override void Init()
         {
+            base.Init();
             policyId = -1;
             addTestStoreOwner1ToSystem();
             addTestStoreManager1ToSystem();
@@ -44,15 +46,15 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
 
         private void createManagerWithRoles(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore,bool addRemoveStorePolicy)
         {
-            bridge.Login(storeOwner1, password);
-            bridge.AddStoreManager(storeId, storeManager1, addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore, addRemoveStorePolicy);
+            bridge.Login(getStoreOwner1(), password);
+            bridge.AddStoreManager(storeId, getStoreManager1(), addRemovePurchasing, addRemoveDiscountPolicy, addRemoveStoreManger, closeStore, addRemoveStorePolicy);
             bridge.Logout();
         }
 
         private void createOwner()
         {
-            bridge.Login(storeOwner1, password);
-            bridge.AddStoreManager(storeId, storeOwner1, true, true, true, true,true);
+            bridge.Login(getStoreOwner1(), password);
+            bridge.AddStoreManager(storeId, getStoreOwner1(), true, true, true, true,true);
 
         }
 
@@ -62,11 +64,14 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
         {
             try
             {
+                StackTrace stackTrace = new StackTrace();
+                testIdentifier = stackTrace.GetFrame(0).GetMethod().Name;
+                 
                 Init();
                 createManagerWithRoles(false, false, false, false,false);
 
-                bridge.Login(storeManager1, password);
-                bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, false, false,false);
+                bridge.Login(getStoreManager1(), password);
+                bool result = bridge.AddStoreManager(storeId, getStoreManager1(), false, false, false, false,false);
                 Assert.IsFalse(result);
 
                 result = bridge.CloseStore(storeId);
@@ -85,9 +90,11 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
         {
             try
             {
+                StackTrace stackTrace = new StackTrace();
+                testIdentifier = stackTrace.GetFrame(0).GetMethod().Name;
                 Init();
                 createManagerWithRoles(false, false, true, false,false);
-                bridge.Login(storeManager1, password);
+                bridge.Login(getStoreManager1(), password);
 
                 for (int i = 0; i < 2; i++)
                 {
@@ -103,7 +110,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
                                 continue;
                             }
 
-                            bool result = bridge.AddStoreManager(storeId, storeManager1, false, false, true, true,false);
+                            bool result = bridge.AddStoreManager(storeId, getStoreManager1(), false, false, true, true,false);
                             Assert.IsFalse(result);
                         }
                     }
@@ -121,10 +128,12 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
         {
             try
             {
+                StackTrace stackTrace = new StackTrace();
+                testIdentifier = stackTrace.GetFrame(0).GetMethod().Name;
                 Init();
                 createOwner();
 
-                bridge.Login(storeOwner1, password);
+                bridge.Login(getStoreOwner1(), password);
                 bool result = bridge.CloseStore(storeId);
                 bridge.Logout();
 
@@ -139,7 +148,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
 
         private void addPurchasingPolicyFalse()
         {
-            bridge.Login(storeOwner1, password);
+            bridge.Login(getStoreOwner1(), password);
             IBooleanExpression policy = new FalseCondition();
             string json = JsonHandler.SerializeObject(policy);
              bridge.addPurchasingPolicy(storeId, json);
@@ -150,7 +159,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
 
         private void addPurchasingPolicyTrue()
         {
-            bridge.Login(storeOwner1, password);
+            bridge.Login(getStoreOwner1(), password);
             IBooleanExpression policy = new TrueCondition();
             string json = JsonHandler.SerializeObject(policy);
             policyId = bridge.addPurchasingPolicy(storeId, json);
@@ -159,7 +168,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
 
         private void addDiscountPolicy()
         {
-            bridge.Login(storeOwner1, password);
+            bridge.Login(getStoreOwner1(), password);
             ItemFilter filter1 = new AllProductsFilter();
             IBooleanExpression leaf1 = new MinAmount(5, filter1);
             ItemFilter filter2 = new AllProductsFilter();
@@ -180,6 +189,8 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
         {
             try
             {
+                StackTrace stackTrace = new StackTrace();
+                testIdentifier = stackTrace.GetFrame(0).GetMethod().Name;
                 Init();
                 addPurchasingPolicyFalse();
 
@@ -200,6 +211,8 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
         {
             try
             {
+                StackTrace stackTrace = new StackTrace();
+                testIdentifier = stackTrace.GetFrame(0).GetMethod().Name;
                 Init();
                 addPurchasingPolicyTrue();
 
@@ -219,6 +232,8 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
         {
             try
             {
+                StackTrace stackTrace = new StackTrace();
+                testIdentifier = stackTrace.GetFrame(0).GetMethod().Name;
                 Init();
                 addPurchasingPolicyFalse();
                 bridge.removePurchasingPolicy(storeId, policyId);
@@ -239,6 +254,8 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
         {
             try
             {
+                StackTrace stackTrace = new StackTrace();
+                testIdentifier = stackTrace.GetFrame(0).GetMethod().Name;
                 Init();
                 addDiscountPolicy();
 
@@ -264,6 +281,8 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
         {
             try
             {
+                StackTrace stackTrace = new StackTrace();
+                testIdentifier = stackTrace.GetFrame(0).GetMethod().Name;
                 Init();
                 addDiscountPolicy();
                 bridge.removeDiscountPolicy(storeId, policyId);
