@@ -227,7 +227,7 @@ namespace IntegrationTests
 
         [TestMethod()]
         [TestCategory("TransactionServiceTest")]
-        [TestCategory("RegretionTest")]
+        [TestCategory("Regression")]
         public void GetShoppingBasketTest()
         {
             //init

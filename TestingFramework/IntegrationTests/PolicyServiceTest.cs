@@ -36,7 +36,7 @@ namespace IntegrationTests
         //discount
         [TestMethod]
         [TestCategory("Policy Test")]
-        [TestCategory("RegretionTest")]
+        [TestCategory("Regression")]
         public void addDiscountPolicyTestTest()
         {
             //new Discount
@@ -57,7 +57,7 @@ namespace IntegrationTests
 
         [TestMethod]
         [TestCategory("Policy Test")]
-        [TestCategory("RegretionTest")]
+        [TestCategory("Regression")]
         public void removeDiscountPolicyTest()
         {
             IOutcome outcome = new Percentage(20);
@@ -78,7 +78,7 @@ namespace IntegrationTests
         //purchasing
         [TestMethod]
         [TestCategory("Policy Test")]
-        [TestCategory("RegretionTest")]
+        [TestCategory("Regression")]
         public void addPurchasingPolicyTest()
         {
             purchasingExp = new FalseCondition();
@@ -96,7 +96,7 @@ namespace IntegrationTests
 
         [TestMethod]
         [TestCategory("Policy Test")]
-        [TestCategory("RegretionTest")]
+        [TestCategory("Regression")]
         public void removePurchasingPolicyTest()
         {
             purchasingExp = new FalseCondition();
@@ -116,7 +116,7 @@ namespace IntegrationTests
         //store
         [TestMethod]
         [TestCategory("Policy Test")]
-        [TestCategory("RegretionTest")]
+        [TestCategory("Regression")]
         public void addStorePolicyTest()
         {
             storeExp = new FalseCondition();
