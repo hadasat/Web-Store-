@@ -10,10 +10,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         //[TestInitialize]
         public override void Init()
         {
-            base.Init();
             addTestStoreOwner1ToSystem();
             addTestStoreManager2ToSystem();
-            bridge.Login(getStoreOwner1(), password);
+            bridge.Login(storeOwner1, password);
         }
 
         //[TestCleanup]

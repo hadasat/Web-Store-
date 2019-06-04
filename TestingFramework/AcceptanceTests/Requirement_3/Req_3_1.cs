@@ -10,7 +10,6 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
         [TestInitialize]
         public override void Init()
         {
-            base.Init();
             addTestMemberToSystem();
         }
 
@@ -28,7 +27,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_3
             try
             {
                 Init();
-                bool result = bridge.Login(getUserName(), password);
+                bool result = bridge.Login(user, password);
                 Assert.IsTrue(result);
 
                 result = bridge.Logout();

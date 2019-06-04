@@ -10,7 +10,6 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         //[TestInitialize]
         public override void Init()
         {
-            base.Init();
             addTestStoreOwner1ToSystem();
             addTestStoreManager1ToSystem();
             addTestStoreManager2ToSystem();
@@ -33,10 +32,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             try
             {
                 Init();
-                bridge.Login(getStoreOwner1(), password);
-                bridge.AddStoreManager(storeId, getStoreManager1());
+                bridge.Login(storeOwner1, password);
+                bridge.AddStoreManager(storeId, storeManager1);
 
-                bool result = bridge.RemoveStoreManager(storeId, getStoreManager1());
+                bool result = bridge.RemoveStoreManager(storeId, storeManager1);
                 Assert.IsTrue(result);
             }
             finally
@@ -52,11 +51,11 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             try
             {
                 Init();
-                bridge.Login(getStoreOwner1(), password);
-                bridge.AddStoreManager(storeId, getStoreManager1());
-                bridge.AddStoreManager(storeId, getStoreManager2());
+                bridge.Login(storeOwner1, password);
+                bridge.AddStoreManager(storeId, storeManager1);
+                bridge.AddStoreManager(storeId, storeManager2);
                 bridge.Logout();
-                bridge.Login(getStoreManager1(), password);
+                bridge.Login(storeManager1, password);
                 bool result = bridge.RemoveStoreManager(storeId, storeOwner1);
                 Assert.IsFalse(result);
             }
@@ -73,8 +72,8 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             try
             {
                 Init();
-                bridge.Login(getStoreOwner1(), password);
-                bridge.AddStoreManager(storeId, getStoreManager1());
+                bridge.Login(storeOwner1, password);
+                bridge.AddStoreManager(storeId, storeManager1);
 
                 bool result = bridge.RemoveStoreManager(storeId, ";");
                 Assert.IsFalse(result);

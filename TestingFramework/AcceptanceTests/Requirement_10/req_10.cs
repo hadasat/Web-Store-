@@ -51,7 +51,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
             //set store and owner
             ownerObserver = new testObserverAcceptence();
             storeOwnerUser = new LoginProxy();
-            string loginAns = storeOwnerUser.login(getStoreOwner1(), password);
+            string loginAns = storeOwnerUser.login(storeOwner1, password);
             bool loginError = loginAns == LoginProxy.successMsg;
             Assert.IsTrue(loginError, "can't log in");
             //set admin
@@ -246,7 +246,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
                 addTestStoreManager1ToSystem();
                 manager = new LoginProxy();
                 //sign in and subscribe observer
-                bool login = manager.login(getStoreManager1(), password) == LoginProxy.successMsg;
+                bool login = manager.login(storeManager1, password) == LoginProxy.successMsg;
                 Assert.IsTrue(login, "can't login manager");
                 managerObserver = new testObserverAcceptence();
                 bool subscribe2 = storeOwnerUser.subscribeAsObserver(managerObserver);
