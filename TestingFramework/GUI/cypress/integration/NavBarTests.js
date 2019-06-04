@@ -15,10 +15,10 @@ describe('The nav bar test', function() {
   })
 
 it('nav bar for admin', function() {
-    cy.visit('http://localhost:8080/wot/signin')
-	cy.get('#inputUserame').type('Admin')
-	cy.get('#inputPassword').type('Admin')
-	cy.get('#signin_btn').click ()
+  cy.visit('http://localhost:8080/wot/signin')    
+    cy.get('#inputUserame').type('Admin')
+    cy.get('#inputPassword').type('Admin')
+    cy.get('#signin_btn').click()
 	nav_bar_admin_test()
 	cy.visit('http://localhost:8080/wot/signin')
 	nav_bar_admin_test()
