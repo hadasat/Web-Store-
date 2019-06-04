@@ -186,7 +186,7 @@
     };
 
     function noProductsHtml(){
-        return `<div  class="text-center">
+        return `<div id="noProduct_title"  class="text-center">
                         <h1 class="display-4">
                            Store is empty. please add products :)
                         </h4>
@@ -196,7 +196,7 @@
 
     function createProductCardHtml(product){
         // Card Html Component String
-        return  `<div class="col-sm-3">`+
+        return  `<div id="product_card" class="col-sm-3">`+
                     `<div class="card" style="margin-bottom: 10%;" >`+
                         `<div class="card-header">${product.category} </div>`+
                         `<div class="card-body" >`+
