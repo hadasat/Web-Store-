@@ -15,10 +15,12 @@ namespace TestingFramework.IntegrationTests
     {
 
         public string file = "../../forTests.txt";
-        string storeName = "test store", userName = "funny user",
-            userPass = "funny password", product = "funny product";
+        string storeName = "test store", userName = "funny user", userName2 = "wannabe funny user",
+            userPass = "funny password", productName = "funny product";
+
         string register = "register", admin = "make-admin", add_store= "open-store",
             add_product = "add-store-product", add_manager = "add-store-manager";
+        int amount = 10, price = 20;
 
         [TestInitialize]
         public void Init()
@@ -73,7 +75,7 @@ namespace TestingFramework.IntegrationTests
             
         }
 
-        private void addUser()
+        private void addUser(string userName)
         {
             string command = $"{register}({userName},{userPass},A,27/02/1994)";
             string[] splitedCommand = InitSystem.splitCommand(command);
@@ -82,7 +84,27 @@ namespace TestingFramework.IntegrationTests
             Assert.IsNotNull(user);
         }
 
-        private void deleteUser()
+        private void addStore()
+        {
+            string command = $"{add_store}({userName},{storeName})";
+            string[] splitedCommand = InitSystem.splitCommand(command);
+            InitSystem.openStore(splitedCommand);
+            Store store = InitSystem.getStore(storeName);
+            Assert.IsNotNull(store);
+        }
+
+        private void addProduct()
+        {
+            
+            string command = $"{add_product}({userName},{storeName},{productName},A,funny bunny,{price},{amount})";
+            string[] splitedCommand = InitSystem.splitCommand(command);
+            InitSystem.addProductStore(splitedCommand);
+            Store store = InitSystem.getStore(storeName);
+            Product product = InitSystem.getProduct(store, productName);
+            Assert.IsNotNull(product);
+        }
+
+        private void deleteUser(String userName)
         {
             User user = InitSystem.getUser(userName, userPass);
             ConnectionStubTemp.removeMember((Member)user);
@@ -100,8 +122,8 @@ namespace TestingFramework.IntegrationTests
         [TestCategory("init System Test")]
         public void registerNewUserTest()
         {
-            addUser();
-            deleteUser();
+            addUser(userName);
+            deleteUser(userName);
         }
 
         [TestMethod]
@@ -115,13 +137,9 @@ namespace TestingFramework.IntegrationTests
         [TestCategory("init System Test")]
         public void openStoreTest()
         {
-            addUser();
-            string command = $"{add_store}({userName},{storeName})";
-            string[] splitedCommand = InitSystem.splitCommand(command);
-            InitSystem.openStore(splitedCommand);
-            Store store = InitSystem.getStore(storeName);
-            Assert.IsNotNull(store);
-            deleteUser();
+            addUser(userName);
+            addStore();
+            deleteUser(userName);
             deleteStore();
         }
 
@@ -136,14 +154,33 @@ namespace TestingFramework.IntegrationTests
         [TestCategory("init System Test")]
         public void addProductStoreTest()
         {
-            
+            addUser(userName);
+            addStore();
+            addProduct();
+            deleteUser(userName);
+            deleteStore();
         }
 
         [TestMethod]
         [TestCategory("init System Test")]
         public void addStoreOwnerTest()
         {
-            
+            addUser(userName);
+            addUser(userName2);
+            addStore();
+
+            string command = $"{add_manager}({userName},{storeName},{userName2})";
+            string[] splitedCommand = InitSystem.splitCommand(command);
+            InitSystem.addStoreOwner(splitedCommand);
+            Store store = InitSystem.getStore(storeName);
+            List<Member> managers =  StoreService.getAllManagers(store.id);
+            User user = InitSystem.getUser(userName2,userPass);
+            Assert.AreEqual(2, managers.Count);
+            Assert.IsTrue(managers.Contains((Member)user));
+
+            deleteUser(userName);
+            deleteUser(userName2);
+            deleteStore();
         }
 
     }

@@ -99,6 +99,17 @@ namespace WorkshopProject.System_Service
             return null;
         }
 
+        public static Product getProduct(Store store, string name)
+        {
+            foreach (KeyValuePair<int, Product> s in store.GetStock())
+            {
+                Product product = s.Value;
+                if (product.name.Equals(name))
+                    return product;
+            }
+            return null;
+        }
+
         public static void registerNewUser(string[] fullcommand)
         {
             if (fullcommand.Length == 5) {
@@ -116,7 +127,8 @@ namespace WorkshopProject.System_Service
         {
             if (fullcommand.Length == 2)
             {
-               
+                string userName = fullcommand[1];
+                
             }
         }
 
@@ -141,7 +153,7 @@ namespace WorkshopProject.System_Service
 
         public static void addProductStore(string[] fullcommand)
         {
-            if (fullcommand.Length == 7)
+            if (fullcommand.Length == 8)
             {
                 string username = fullcommand[1];
                 string storeName = fullcommand[2];
@@ -167,7 +179,7 @@ namespace WorkshopProject.System_Service
         public static void addStoreOwner(string[] fullcommand)
         {
 
-            if (fullcommand.Length == 3)
+            if (fullcommand.Length == 4)
             {
                 string username = fullcommand[1];
                 string storeName = fullcommand[2];
