@@ -70,7 +70,7 @@ namespace WorkshopProject.System_Service
         public bool IsManageStore(int storeId)
         {
             if (!loggedIn)
-                notLoggedInException();
+                return false;
             return UserService.isManageStore(user, storeId);
         }
 

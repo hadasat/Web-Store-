@@ -106,10 +106,13 @@ namespace WorkshopProject.Communication
                 {"getallproductsforstore",getAllProductsForStore},
                 {"removestoremanager",removeStoreManagerHandler},
                 {"addstoremanager" ,addStoreManagerHandler},
+                {"ismanagestore" ,IsManageStoreHandler},
                 {"addstoreowner" ,addStoreOwnerHandler}
 
             };
         }
+
+        
 
         /// <summary>
         /// on message event activated when the user recieves message from server
@@ -188,6 +191,23 @@ namespace WorkshopProject.Communication
         }
 
         // ***************** handlers ****************
+
+        private void IsManageStoreHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            try
+            {
+                bool jsonBoolean = user.IsManageStore(storeId);
+                response = JsonResponse.generateDataSuccess(requestId, JsonHandler.SerializeObject(jsonBoolean));
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateDataFailure(requestId, e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
 
         #region requests handlers
 
