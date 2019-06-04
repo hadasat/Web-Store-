@@ -18,7 +18,7 @@ namespace TestingFramework.IntegrationTests
         string storeName = "test store", userName = "funny user", userName2 = "wannabe funny user",
             userPass = "funny password", productName = "funny product";
 
-        string register = "register", admin = "make-admin", add_store= "open-store",
+        string register = "register", make_admin = "make-admin", add_store= "open-store",
             add_product = "add-store-product", add_manager = "add-store-manager";
         int amount = 10, price = 20;
 
@@ -95,7 +95,6 @@ namespace TestingFramework.IntegrationTests
 
         private void addProduct()
         {
-            
             string command = $"{add_product}({userName},{storeName},{productName},A,funny bunny,{price},{amount})";
             string[] splitedCommand = InitSystem.splitCommand(command);
             InitSystem.addProductStore(splitedCommand);
@@ -130,7 +129,14 @@ namespace TestingFramework.IntegrationTests
         [TestCategory("init System Test")]
         public void makeAdminTest()
         {
+            addUser(userName);
 
+            string command = $"{make_admin}({userName})";
+            string[] splitedCommand = InitSystem.splitCommand(command);
+            InitSystem.makeAdmin(splitedCommand);
+            User user = InitSystem.getUser(userName, userPass);
+            Assert.IsTrue(user is SystemAdmin);
+            
         }
 
         [TestMethod]

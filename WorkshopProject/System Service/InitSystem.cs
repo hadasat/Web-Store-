@@ -128,7 +128,8 @@ namespace WorkshopProject.System_Service
             if (fullcommand.Length == 2)
             {
                 string userName = fullcommand[1];
-                
+                User user = getUser(userName, users[userName]);
+                UserService.MakeAdmin(user.id);
             }
         }
 

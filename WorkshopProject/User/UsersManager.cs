@@ -39,7 +39,7 @@ namespace Users
 
         public static void removeMember(Member m)
         {
-            if (m.id == 0)
+            if (m is SystemAdmin)
                 throw new Exception("don't remove Admin!");
             try
             {
