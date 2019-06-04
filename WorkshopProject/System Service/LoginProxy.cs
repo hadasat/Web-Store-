@@ -66,6 +66,14 @@ namespace WorkshopProject.System_Service
             return UserService.AddStoreManager(user, storeId, userToAdd, roles);
         }
 
+
+        public bool IsManageStore(int storeId)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return UserService.isManageStore(user, storeId);
+        }
+
         public bool AddStoreOwner(int storeId, string userToAdd)
         {
             if (!loggedIn)
@@ -384,6 +392,8 @@ namespace WorkshopProject.System_Service
             return WorkShop.removeSystemPolicy(user, policyId);
 
         }
+
+
 
     }
 }
