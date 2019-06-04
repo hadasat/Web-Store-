@@ -80,7 +80,7 @@ function handleNotification(msg){
             alert(msg.data); 
             break;
         case 'addManagerConfirmation':
-            var ans = confirm(msg.data+'\n Press Ok to approve and Cancel to disapprove');
+            var ans = confirm(msg.data.message +'\n Press Ok to approve and Cancel to disapprove');
             var request= ans? 'approveOwenrshipRequest' : 'disApproveOwenrshipRequest';
             sendRequest('action',request,msg.data.requestId);
             break;
