@@ -48,7 +48,7 @@
         };
 
         function createStoreContainer(store,shoppingCart) {           
-            return `    <div class="pb-2 mt-4 mb-2 border-bottom">
+            return `    <div id="cartContainer" class="pb-2 mt-4 mb-2 border-bottom">
                             <h1>${store.name}</h1>
                         </div>
                         <div class="grid1 row">
@@ -80,7 +80,7 @@
         }
 
         function emptyBasketHtml (){
-            return `<div  class="text-center">
+            return `<div id="empty_title" class="text-center">
                         <h1 class="display-4">
                             Basket is empty. please add products to purchase :)
                         </h4>
