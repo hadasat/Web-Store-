@@ -129,7 +129,7 @@ namespace WorkshopProject.System_Service
             {
                 string userName = fullcommand[1];
                 User user = getUser(userName, users[userName]);
-                UserService.MakeAdmin(user.id);
+                UserService.MakeAdmin(((Member)user).id);
             }
         }
 
