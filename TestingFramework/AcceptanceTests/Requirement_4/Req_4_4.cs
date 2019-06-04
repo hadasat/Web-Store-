@@ -28,6 +28,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
 
         [TestMethod]
         [TestCategory("Req_4")]
+        [TestCategory("Regression")]
         public void RemoveStoreOwnerSuccess()
         {
             try

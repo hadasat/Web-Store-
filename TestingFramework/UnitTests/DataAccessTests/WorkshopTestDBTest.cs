@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Users;
 using WorkshopProject.DataAccessLayer.Context;
 
+/*
 namespace TestingFramework.UnitTests.DataAccessTests
 {
     [TestClass]
@@ -71,3 +72,4 @@ namespace TestingFramework.UnitTests.DataAccessTests
         }
     }
 }
+*/
