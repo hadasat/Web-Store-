@@ -134,7 +134,18 @@ namespace WorkshopProject.Communication
             string messageType = ((string)messageObj["info"]).ToLower();
             if (messageHandlers.ContainsKey(messageType))
             {
-                messageHandlers[messageType](messageObj, message);
+                try
+                {
+                    messageHandlers[messageType](messageObj, message);
+                }
+                catch
+                {
+                    Logger.Log("error", logLevel.ERROR, "can't parse info from server");
+                    JsonResponse response;
+                    int requestId = (int)messageObj["id"];
+                    response = JsonResponse.generateActionError(requestId, "can't parse the input please check the legality of your input");
+                    sendMyselfAMessage(JsonHandler.SerializeObject(response));
+                }
             }
             else
             {
