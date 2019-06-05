@@ -190,6 +190,14 @@ namespace WorkshopProject.Communication
             msgSender.sendMessageToUser(msg, id);
         }
 
+        public void resubscribeObserver()
+        {
+            if (user.loggedIn)
+            {
+                user.subscribeAsObserver(this);
+            }
+        }
+
         // ***************** handlers ****************
 
         private void IsManageStoreHandler(JObject msgObj, string message)
