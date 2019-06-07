@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -108,7 +109,7 @@ namespace Managment
         public Roles myRoles { get; set; }
         [Include]
         public LinkedList<StoreManager> subManagers { get; set; }
-        [Include]
+        [Include][JsonIgnore]
         public StoreManager father { get; set; }
         private bool storeOwner;
 

@@ -39,7 +39,7 @@ namespace Users
 
         public static void removeMember(Member m)
         {
-            if (m.id == 0)
+            if (m is SystemAdmin)
                 throw new Exception("don't remove Admin!");
             try
             {
@@ -49,6 +49,34 @@ namespace Users
             catch (Exception ignore)
             {
                 throw new Exception("this should not happen, member doesn't exist");
+            }
+        }
+
+        public static void removeAdmin(SystemAdmin m)
+        {
+            
+            try
+            {
+                members.Remove(m.id);
+                mapIDUsermane.Remove(m.username);
+            }
+            catch (Exception ignore)
+            {
+                throw new Exception("this should not happen, member doesn't exist");
+            }
+        }
+
+        public static void addMemberJustForExternalUsage(Member m)
+        {
+
+            try
+            {
+                members.Add(m.id, m);
+                mapIDUsermane.Add(m.username, m.id);
+            }
+            catch (Exception ignore)
+            {
+                throw new Exception("this should not happen, member couldn't be added");
             }
         }
 
@@ -122,7 +150,14 @@ namespace Users
                 newMember = new Member(username, id);
             else
                 newMember = new Member(username, id, birthdate, country);
+            /*
             if (username == "Admin" && password == "Admin")
+            {
+                newMember = new SystemAdmin(username, id, birthdate, country);
+                Logger.Log("event", logLevel.INFO, "Admin has logged in");
+            }*/
+
+            if (password == "Admin")
             {
                 newMember = new SystemAdmin(username, id, birthdate, country);
                 Logger.Log("event", logLevel.INFO, "Admin has logged in");
@@ -220,9 +255,9 @@ namespace Users
                     newOwnership.addOwner(m);
                 }
             }
+            newOwnership.sendRequestsToOwners(store, memberThatOpenRequest.id, candidate.username, requestID);//should handle notifications
             newOwnership.approveOrDisapprovedOwnership(1, memberThatOpenRequest);//first approval of asker
-            ownershipsRequestList[requestID] = (newOwnership);//add ownership request to list
-            newOwnership.sendRequestsToOwners(store,memberThatOpenRequest.id,candidate.username,requestID);//should handle notifications
+            ownershipsRequestList[requestID] = (newOwnership);//add ownership request to list  
             return requestID;
         }
 
@@ -351,7 +386,10 @@ namespace Users
                 foreach (KeyValuePair<String, int> entry in owners)
                 {
                     Member currMember = ConnectionStubTemp.getMember(entry.Value);
-                    currMember.addMessage("addManagerConfirmation-Do you agree adding " + candidateName + " as a co-owner to the store " + store.name);
+                    if (currMember.id != creatorId && currMember.username!=candidateName)
+                    {
+                        currMember.addMessage("Do you agree adding " + candidateName + " as a co - owner to the store " + store.name + "?", Notification.NotificationType.CREATE_OWNER, requestId);
+                    }
                 }
             }
 

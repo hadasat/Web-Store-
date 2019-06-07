@@ -139,6 +139,7 @@
 
     function init(){
         sendRequest("data","getStore",storeId).then(function(res){
+            $(".grid").html('');
             displayStore(res);
         });
 
@@ -149,7 +150,7 @@
     onStart(init);
 
     function addManagersToSelectList(managers){
-        managers.map(manager => $('#managers').append(`<option>${managers.username}</option>`));
+        managers.map(manager => $('#managers').append(`<option>${manager.username}</option>`));
     }
 
     $('#removeManager_btn').on('click',function(){
@@ -169,23 +170,39 @@
     });
 
     function displayStore(store){
-        //set header
-        $("#page-header").html(`<h1>${store.name}</h1>
-        <h5  style="color: rgb(0, 212, 0)">active</h5><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
+        sendRequest('data','IsManageStore',{storeId: store.id})
+        .then(function(isManager){
+             //set header
+             var buttonhtml = isManager? `<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
                     edit <i class="far fa-edit"></i>
-                  </button>`);
-        var products = store.Stock;
-       // Object.keys(products).forEach((key,index)=> $(".grid").append(createProductCardHtml(products[index])));
-        for (var property in products) {
-            if (!isNaN(property)) {
-                $(".grid").append(createProductCardHtml(products[property]));
-            }
-        }
+                  </button>` : ``;
+        $("#page-header").html(`<h1>${store.name}</h1>
+        <h5  style="color: rgb(0, 212, 0)">active</h5>`+
+         buttonhtml );
+        sendRequest('date','getAllProductsForStore', store.id).then(function(res){
+            var products = res.$values;
+            products.length==0?   $(".grid").append(noProductsHtml()) :  
+            products.map(p=> $(".grid").append(createProductCardHtml(p)));
+            
+        });
+        })
+       
+        
+        
     };
+
+    function noProductsHtml(){
+        return `<div id="noProduct_title"  class="text-center">
+                        <h1 class="display-4">
+                           Store is empty. please add products :)
+                        </h4>
+                    </div>`;
+        }
+    
 
     function createProductCardHtml(product){
         // Card Html Component String
-        return  `<div class="col-sm-3">`+
+        return  `<div id="product_card" class="col-sm-3">`+
                     `<div class="card" style="margin-bottom: 10%;" >`+
                         `<div class="card-header">${product.category} </div>`+
                         `<div class="card-body" >`+
@@ -237,19 +254,19 @@
         $('#addManager_btn').on('click',function(){
             var appointmanager_check = $('#appointmanager_check').prop('checked');
             var appointowners_check = false;
-            var close_check = $('#appointmanager_check').prop('checked');
-            var communication_check = $('#appointmanager_check').prop('checked');
-            var discounts_check = $('#appointmanager_check').prop('checked');
-            var managers_check = $('#appointmanager_check').prop('checked');
-            var policy_check = $('#appointmanager_check').prop('checked');
-            var products_check = $('#appointmanager_check').prop('checked');
-            var purchasing_check = $('#appointmanager_check').prop('checked');
+            var close_check = $('#close_check').prop('checked');
+            var communication_check = $('#communication_check').prop('checked');
+            var discounts_check = $('#discounts_check').prop('checked');
+            var managers_check = $('#managers_check').prop('checked');
+            var policy_check = $('#policy_check').prop('checked');
+            var products_check = $('#products_check').prop('checked');
+            var purchasing_check = $('#purchasing_check').prop('checked');
             var username = $('#managerName_input').val();
             
-            sendRequest('action','addStoreManager',{storeId: storeId, username: username, roles:`{AddRemoveProducts: products_check,AddRemovePurchasing: purchasing_check,
-                AddRemoveDiscountPolicy : discounts_check,AddRemoveStorePolicy: policy_check,AddRemoveStoreManger: managers_check,
-                CloseStore : close_check,CustomerCommunication: communication_check,AppointOwner:appointowners_check,
-                AppointManager: appointmanager_check}`}).then(function(){
+            sendRequest('action','addStoreManager',{storeId: storeId, username: username, roles:`{AddRemoveProducts: ${products_check},AddRemovePurchasing: ${purchasing_check},
+                AddRemoveDiscountPolicy : ${discounts_check},AddRemoveStorePolicy: ${policy_check},AddRemoveStoreManger: ${managers_check},
+                CloseStore : ${close_check},CustomerCommunication: ${communication_check},AppointOwner:${appointowners_check},
+                AppointManager: ${appointmanager_check}}`}).then(function(){
                    alert("manager added successfully"); 
                     init();
                 });

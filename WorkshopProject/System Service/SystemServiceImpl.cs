@@ -154,8 +154,8 @@ namespace WorkshopProject.System_Service
             {
                 int credit =1, csv = 1;
                 string expiry = "",target = "z";
-                int cardNumber = 0, ccv = 0, month = 10, year = 2050, id = 123456789;
-                string holder = "mosh moshe", city = "shit", country = "shit", zip = "12345", address = "";
+                int ccv = 0, month = 10, year = 2050, id = 123456789;
+                string holder = "mosh moshe", city = "shit", country = "shit", zip = "12345", address = "", cardNumber = "0";
                 ret = new Transaction(user, cardNumber, month, year, holder, ccv, id, holder, address, city, country, zip, new PaymentStub (true),new SupplyStub(true));
                 return JsonConvert.SerializeObject(ret);
             }
@@ -523,6 +523,8 @@ namespace WorkshopProject.System_Service
                 return notLoggedInError();
             try
             {
+                Store store = WorkShop.getStore(storeId);
+                policyId = store.getDiscountPolicy(-2).id;
                 Policystatus res = PolicyService.removeDiscountPolicy(user, storeId, policyId);
                 return JsonHandler.SerializeObject(res);
             }
@@ -555,6 +557,8 @@ namespace WorkshopProject.System_Service
                 return notLoggedInError();
             try
             {
+                Store store = WorkShop.getStore(storeId);
+                policyId = store.getPolicy(-2).id;
                 Policystatus res = PolicyService.removePurchasingPolicy(user, storeId, policyId);
                 return JsonHandler.SerializeObject(res);
             }
@@ -586,6 +590,8 @@ namespace WorkshopProject.System_Service
                 return notLoggedInError();
             try
             {
+                Store store = WorkShop.getStore(storeId);
+                policyId = store.getPolicy(-1).id;
                 Policystatus res = PolicyService.removeStorePolicy(user, storeId, policyId);
                 return JsonHandler.SerializeObject(res);
             }

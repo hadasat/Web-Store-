@@ -130,8 +130,8 @@ namespace IntegrationTests
             //SupplyStub.setRet(true);
             ConsistencyStub.setRet(true);
 
-            int cardNumber = 0, ccv = 0, month = 10, year = 2050, id = 123456789;
-            string holder = "mosh moshe", city = "shit", country = "shit", zip = "12345", address = "";
+            int ccv = 0, month = 10, year = 2050, id = 123456789;
+            string holder = "mosh moshe", city = "shit", country = "shit", zip = "12345", address = "", cardNumber = "0";
             Transaction transaction = new Transaction(user.user, cardNumber,month,year,holder,ccv,id,holder,address,city,country,zip,payStub,supplyStub);
             int transId = transaction.id;
             Assert.IsTrue(transId > 0,"1");
@@ -190,7 +190,7 @@ namespace IntegrationTests
 
         [TestMethod()]
         [TestCategory("TransactionServiceTest")]
-        [TestCategory("RegrationTest")]
+        [TestCategory("Regression")]
         public void GetShoppingCartTest()
         {
             //init
@@ -227,7 +227,7 @@ namespace IntegrationTests
 
         [TestMethod()]
         [TestCategory("TransactionServiceTest")]
-        [TestCategory("RegretionTest")]
+        [TestCategory("Regression")]
         public void GetShoppingBasketTest()
         {
             //init

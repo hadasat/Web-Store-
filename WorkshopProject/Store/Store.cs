@@ -187,7 +187,7 @@ namespace WorkshopProject
                 return -1;
 
             GetStock().Add(p.getId(), p);
-            Logger.Log("file", logLevel.INFO, "product " + p.getId() + " added");
+            Logger.Log("event", logLevel.INFO, "product " + p.getId() + " added");
             return p.getId();
         }
 
@@ -202,7 +202,7 @@ namespace WorkshopProject
                 return false;
 
             GetStock().Remove(product.getId());
-            Logger.Log("file", logLevel.INFO, "product " + product.getId() + " removed");
+            Logger.Log("event", logLevel.INFO, "product " + product.getId() + " removed");
             return true;
         }
 
@@ -260,7 +260,7 @@ namespace WorkshopProject
                 throw new Exception("Product not exist");
 
             product.amount += amountToAdd;
-            Logger.Log("file", logLevel.INFO, amountToAdd + " of product " + product.getId() + " was added");
+            Logger.Log("event", logLevel.INFO, amountToAdd + " of product " + product.getId() + " was added");
             return true;
         }
 
@@ -292,7 +292,7 @@ namespace WorkshopProject
             product.setPrice(price);
             product.category = category;
             product.amount = amount;
-            Logger.Log("file", logLevel.INFO, "product " + product.getId() + " info has changed");
+            Logger.Log("event", logLevel.INFO, "product " + product.getId() + " info has changed");
             return true;
         }
 
@@ -454,6 +454,21 @@ namespace WorkshopProject
                     return pol;
             }
             return null;
+        }
+
+        public List<Product> getAllProducst()
+        {
+            List<Product> ans = new List<Product>();
+            if (Stock == null || Stock.Count == 0){
+                return ans;
+            }
+            foreach(KeyValuePair<int,Product> curr in Stock)
+            {
+
+                ans.Add(curr.Value);
+            }
+
+            return ans;
         }
 
 

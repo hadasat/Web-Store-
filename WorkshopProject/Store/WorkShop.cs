@@ -59,7 +59,10 @@ namespace WorkshopProject
 
         }
 
-
+        public static bool deleteStore(int storeId)
+        {
+            return stores.Remove(storeId);
+        }
        
         public static int createNewStore(string name, int rank, Boolean isActive, Member owner)
         {
@@ -68,7 +71,7 @@ namespace WorkshopProject
             int currID = id;
             id++;
             owner.addStore(store);
-            Logger.Log("file", logLevel.INFO,"store " + currID + " has added");
+            Logger.Log("event", logLevel.INFO,"store " + currID + " has added");
             return currID;
         }
 
@@ -82,7 +85,7 @@ namespace WorkshopProject
             {
                 return false;
             }
-            Logger.Log("file", logLevel.INFO, "store " + storeId + " has closed");
+            Logger.Log("event", logLevel.INFO, "store " + storeId + " has closed");
             
             return true;
         }

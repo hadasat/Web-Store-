@@ -13,6 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TansactionsNameSpace;
 using WorkshopProject.DataAccessLayer;
+using Newtonsoft.Json;
 
 namespace Users
 {
@@ -21,7 +22,7 @@ namespace Users
         [Key]
         public int id { get; set; }
         public string username { get; set; }
-        [Include]
+        [Include][JsonIgnore]
         public LinkedList<StoreManager> storeManaging { get; set; }
         [Column(TypeName = "DateTime2")]
         public DateTime birthdate { get; set; }
@@ -296,13 +297,13 @@ namespace Users
         public override bool hasAddRemoveDiscountPermission(Store store)
         {
             Roles roles = getStoreManagerRoles(store);
-            return roles != null && roles.AddRemoveProducts;
+            return roles != null && roles.AddRemoveDiscountPolicy;
         }
 
         public override bool hasAddRemoveProductsPermission(Store store)
         {
             Roles roles = getStoreManagerRoles(store);
-            return roles != null && roles.AddRemoveDiscountPolicy;
+            return roles != null && roles.AddRemoveProducts;
         }
 
         public override bool hasAddRemovePurchasingPolicies(Store store)
@@ -359,7 +360,22 @@ namespace Users
             return acc;
         }
 
+        public bool isManageStore(int storeId)
+        {
+            
+            if (storeManaging.Count == 0) { return false; }
 
+            foreach (StoreManager currManger in storeManaging)
+            {
+                if (currManger.GetStore().id == storeId)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+            
+        }
 
 
 

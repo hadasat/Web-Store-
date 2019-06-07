@@ -35,7 +35,7 @@ namespace WorkshopProject.Tests
         
         [TestMethod()]
         [TestCategory("Unit test - ShoppingCartTest")]
-        [TestCategory("RegretionTest")]
+        [TestCategory("Regression")]
         public void SetProductAmountTest()
         {
             try

@@ -29,7 +29,7 @@ namespace WorkshopProject
             //Console.ReadLine();
             //WorkshopDBContext ctx = new WorkshopProductionDBContext();
             //ctx.Members.Add(new Member());
-
+            InitSystem.initSystem();
             Setup();
             CommunicationManager manager = new CommunicationManager();
         }

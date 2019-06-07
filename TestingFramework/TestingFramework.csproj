@@ -89,6 +89,7 @@
     <Compile Include="AcceptanceTests\Req_special\ExternalSystemsConnection.cs" />
     <Compile Include="AcceptanceTests\ServiceProxyBridge.cs" />
     <Compile Include="AcceptanceTests\ServiceRealBridge.cs" />
+    <Compile Include="IntegrationTests\InitSystemTest.cs" />
     <Compile Include="IntegrationTests\PolicyServiceTest.cs" />
     <Compile Include="IntegrationTests\StoreServiceTest.cs" />
     <Compile Include="IntegrationTests\TransactionServiceTest.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="UnitTests\PoliciesTest\IBooleanExpressionTest.cs" />
     <Compile Include="UnitTests\PoliciesTest\ItemFilterTest.cs" />
     <Compile Include="UnitTests\PoliciesTest\ProductAmountPriceTest.cs" />
+    <Compile Include="UnitTests\Purchasing UnitTest\ExtranlSystemsImpTest.cs" />
     <Compile Include="UnitTests\Purchasing UnitTest\ShoppingBasketTest.cs" />
     <Compile Include="UnitTests\JsonTests\JsonTests.cs" />
     <Compile Include="UnitTests\Store UnitTests\StoreUnitTest.cs" />
