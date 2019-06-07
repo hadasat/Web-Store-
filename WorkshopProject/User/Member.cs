@@ -306,13 +306,13 @@ namespace Users
         public override bool hasAddRemoveDiscountPermission(Store store)
         {
             Roles roles = getStoreManagerRoles(store);
-            return roles != null && roles.AddRemoveProducts;
+            return roles != null && roles.AddRemoveDiscountPolicy;
         }
 
         public override bool hasAddRemoveProductsPermission(Store store)
         {
             Roles roles = getStoreManagerRoles(store);
-            return roles != null && roles.AddRemoveDiscountPolicy;
+            return roles != null && roles.AddRemoveProducts;
         }
 
         public override bool hasAddRemovePurchasingPolicies(Store store)
