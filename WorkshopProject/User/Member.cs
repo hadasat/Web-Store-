@@ -13,6 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TansactionsNameSpace;
 using WorkshopProject.DataAccessLayer;
+using Newtonsoft.Json;
 
 namespace Users
 {
@@ -21,8 +22,8 @@ namespace Users
         [Key]
         public int id { get; set; }
         public string username { get; set; }
-        [Include]
-        public virtual LinkedList<StoreManager> storeManaging { get; set; }
+        [Include][JsonIgnore]
+        public LinkedList<StoreManager> storeManaging { get; set; }
         [Column(TypeName = "DateTime2")]
         public virtual DateTime birthdate { get; set; }
         public string country { get; set; }

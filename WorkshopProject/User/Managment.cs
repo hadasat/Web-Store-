@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -112,9 +113,9 @@ namespace Managment
         [Include]
         public virtual Roles myRoles { get; set; }
         [Include]
-        public virtual LinkedList<StoreManager> subManagers { get; set; }
-        [Include]
-        public virtual StoreManager father { get; set; }
+        public LinkedList<StoreManager> subManagers { get; set; }
+        [Include][JsonIgnore]
+        public StoreManager father { get; set; }
         private bool storeOwner;
 
 
