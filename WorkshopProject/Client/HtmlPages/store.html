@@ -139,6 +139,7 @@
 
     function init(){
         sendRequest("data","getStore",storeId).then(function(res){
+            $(".grid").html('');
             displayStore(res);
         });
 
