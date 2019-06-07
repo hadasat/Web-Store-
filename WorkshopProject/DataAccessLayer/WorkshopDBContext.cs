@@ -72,17 +72,18 @@ namespace WorkshopProject.DataAccessLayer
         //public DbSet<ProductAmountPrice> ProductAmountPrices { get; set; }
     }
 
-    public class WorkshopProductionDBContext : WorkshopDBContext
-    {
-        public WorkshopProductionDBContext() : base(DataAccessDriver.getConnectionString(true))
-        {
-            Database.SetInitializer<WorkshopProductionDBContext>(new CreateDatabaseIfNotExists<WorkshopProductionDBContext>());
-        }
-    }
+    //public class WorkshopProductionDBContext : WorkshopDBContext
+    //{
+    //    public WorkshopProductionDBContext() : base(DataAccessDriver.getConnectionString())
+    //    {
+    //        Database.SetInitializer<WorkshopProductionDBContext>(new CreateDatabaseIfNotExists<WorkshopProductionDBContext>());
+    //    }
+    //}
 
     public class WorkshopTestDBContext : WorkshopDBContext
     {
-        public WorkshopTestDBContext() : base(DataAccessDriver.getConnectionString(false))
+        //public WorkshopTestDBContext() : base(DataAccessDriver.getConnectionString(false))
+        public WorkshopTestDBContext(string connection) : base(connection)
         {
             Database.SetInitializer<WorkshopTestDBContext>(new CreateDatabaseIfNotExists<WorkshopTestDBContext>());
         }
