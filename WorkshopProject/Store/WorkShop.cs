@@ -60,7 +60,12 @@ namespace WorkshopProject
 
         }
 
-
+        public static bool deleteStore(int storeId)
+        {
+            bool ret = (GetStoreById(storeId) != null);
+            Remove(storeId);
+            return ret;
+        }
        
         public static int createNewStore(string name, int rank, Boolean isActive, Member owner)
         {

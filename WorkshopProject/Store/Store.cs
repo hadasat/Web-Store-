@@ -466,6 +466,21 @@ namespace WorkshopProject
             return null;
         }
 
+        public List<Product> getAllProducst()
+        {
+            List<Product> ans = new List<Product>();
+            if (Stock == null || Stock.Count == 0){
+                return ans;
+            }
+            foreach(KeyValuePair<int,Product> curr in Stock)
+            {
+
+                ans.Add(curr.Value);
+            }
+
+            return ans;
+        }
+
 
         //private void addToStockListAsDictionary(int amount, Product product)
         //{

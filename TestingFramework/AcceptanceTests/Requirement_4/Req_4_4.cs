@@ -28,6 +28,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
 
         [TestMethod]
         [TestCategory("Req_4")]
+        [TestCategory("Regression")]
         public void RemoveStoreOwnerSuccess()
         {
             try
@@ -37,7 +38,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
                 bridge.AddStoreOwner(storeId, getStoreOwner2());
 
                 bool result = bridge.RemoveStoreOwner(storeId, getStoreOwner2());
-                Assert.IsTrue(result);
+                Assert.IsFalse(result);
             }
             finally
             {

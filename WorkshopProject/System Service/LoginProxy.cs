@@ -66,6 +66,14 @@ namespace WorkshopProject.System_Service
             return UserService.AddStoreManager(user, storeId, userToAdd, roles);
         }
 
+
+        public bool IsManageStore(int storeId)
+        {
+            if (!loggedIn)
+                return false;
+            return UserService.isManageStore(user, storeId);
+        }
+
         public bool AddStoreOwner(int storeId, string userToAdd)
         {
             if (!loggedIn)
@@ -241,6 +249,19 @@ namespace WorkshopProject.System_Service
             }
         }
 
+        public List<Product> getAllProductsForStore (int storeId)
+        {
+            Store storeAns = StoreService.GetStore(storeId);
+            if (storeAns == null)
+            {
+                return new List<Product>();
+            }
+            else
+            {
+                return storeAns.getAllProducst();
+            }
+        }
+
         public string GetAllStores()
         {
             return JsonHandler.SerializeObject(StoreService.GetAllStores());
@@ -371,6 +392,8 @@ namespace WorkshopProject.System_Service
             return WorkShop.removeSystemPolicy(user, policyId);
 
         }
+
+
 
     }
 }

@@ -141,16 +141,19 @@
     }
 
     function displayProduct(product){
-        $('#mainBox').html(`
-        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
+        sendRequest('data','IsManageStore',{storeId: storeId})
+        .then(function(isManager){
+             //set header
+             var buttonhtml = isManager? `<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
                 edit <i class="far fa-edit"></i>
-              </button>
-        <h1 class="display-4">${product.name}</h1>
+              </button>` : ``;
+        $('#mainBox').html(buttonhtml+
+        `<h1 class="display-4">${product.name}</h1>
             <p class="lead">${product.description}</p>`+ getStarsHtml(product.rank) + 
             `<hr class="my-4">
             <p class="lead">Price: <strong> ${product.price}$</strong> </p>
             <p class="lead">
-                Amount: (only ${product.amount} available) <input type="number" id="amountToBuy" value="0" min="0" max="${product.amount}" step="1"/>
+                Amount: (only ${product.amount} available) <input type="number" id="amountToBuy" value="1" min="1" max="${product.amount}" step="1"/>
             </p>
             <p class="lead">
               <button id="addToBasket" class="btn btn-success btn-lg" >Add To Basket</button>
@@ -163,7 +166,8 @@
             <p class="lead">
               <a class="btn btn-secondary btn-lg" href="/wot/store/${storeId}" role="button">Back To Store</a>
             </p>`);
-    }
+    });
+}
 
     function setChangeProductInfoForm(product){
         $('#changeProductInfo_form').html(`

@@ -357,7 +357,22 @@ namespace Users
             return acc;
         }
 
+        public bool isManageStore(int storeId)
+        {
+            
+            if (storeManaging.Count == 0) { return false; }
 
+            foreach (StoreManager currManger in storeManaging)
+            {
+                if (currManger.GetStore().id == storeId)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+            
+        }
 
 
 
