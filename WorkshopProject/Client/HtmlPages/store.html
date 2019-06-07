@@ -139,6 +139,7 @@
 
     function init(){
         sendRequest("data","getStore",storeId).then(function(res){
+            $(".grid").html('');
             displayStore(res);
         });
 
@@ -149,7 +150,7 @@
     onStart(init);
 
     function addManagersToSelectList(managers){
-        managers.map(manager => $('#managers').append(`<option>${managers.username}</option>`));
+        managers.map(manager => $('#managers').append(`<option>${manager.username}</option>`));
     }
 
     $('#removeManager_btn').on('click',function(){
@@ -253,19 +254,19 @@
         $('#addManager_btn').on('click',function(){
             var appointmanager_check = $('#appointmanager_check').prop('checked');
             var appointowners_check = false;
-            var close_check = $('#appointmanager_check').prop('checked');
-            var communication_check = $('#appointmanager_check').prop('checked');
-            var discounts_check = $('#appointmanager_check').prop('checked');
-            var managers_check = $('#appointmanager_check').prop('checked');
-            var policy_check = $('#appointmanager_check').prop('checked');
-            var products_check = $('#appointmanager_check').prop('checked');
-            var purchasing_check = $('#appointmanager_check').prop('checked');
+            var close_check = $('#close_check').prop('checked');
+            var communication_check = $('#communication_check').prop('checked');
+            var discounts_check = $('#discounts_check').prop('checked');
+            var managers_check = $('#managers_check').prop('checked');
+            var policy_check = $('#policy_check').prop('checked');
+            var products_check = $('#products_check').prop('checked');
+            var purchasing_check = $('#purchasing_check').prop('checked');
             var username = $('#managerName_input').val();
             
-            sendRequest('action','addStoreManager',{storeId: storeId, username: username, roles:`{AddRemoveProducts: products_check,AddRemovePurchasing: purchasing_check,
-                AddRemoveDiscountPolicy : discounts_check,AddRemoveStorePolicy: policy_check,AddRemoveStoreManger: managers_check,
-                CloseStore : close_check,CustomerCommunication: communication_check,AppointOwner:appointowners_check,
-                AppointManager: appointmanager_check}`}).then(function(){
+            sendRequest('action','addStoreManager',{storeId: storeId, username: username, roles:`{AddRemoveProducts: ${products_check},AddRemovePurchasing: ${purchasing_check},
+                AddRemoveDiscountPolicy : ${discounts_check},AddRemoveStorePolicy: ${policy_check},AddRemoveStoreManger: ${managers_check},
+                CloseStore : ${close_check},CustomerCommunication: ${communication_check},AppointOwner:${appointowners_check},
+                AppointManager: ${appointmanager_check}}`}).then(function(){
                    alert("manager added successfully"); 
                     init();
                 });
