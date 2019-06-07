@@ -30,6 +30,10 @@ namespace Shopping
             return id;
         }
 
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public ShoppingCart getCart(int storeId)
         {
             Predicate<ShoppingCartAndStore> cartPredicat = s => ((ShoppingCartAndStore)s).store.id == storeId;
@@ -172,6 +176,11 @@ namespace Shopping
         public override int GetKey()
         {
             return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
         }
 
         public override void Copy(IEntity other)

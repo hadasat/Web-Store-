@@ -14,6 +14,8 @@ namespace WorkshopProject.DataAccessLayer
         //    return (int) this.GetType().GetProperty(propName).GetValue(this, null);
         //}
 
+        public abstract void SetKey(int key);
+
         public virtual void Copy(IEntity other)
         {
             var myProperties = this.GetType().GetProperties();

@@ -85,6 +85,7 @@
     <Compile Include="Communication\Server\IWebSocketMessageSender.cs" />
     <Compile Include="Communication\Server\Server.cs" />
     <Compile Include="Communication\UserConnectionInfo.cs" />
+    <Compile Include="DataAccessLayer\DbListStub.cs" />
     <Compile Include="DataAccessLayer\Repo.cs" />
     <Compile Include="DataAccessLayer\WorkshopDBContext.cs" />
     <Compile Include="DataAccessLayer\DataAccessDriver.cs" />

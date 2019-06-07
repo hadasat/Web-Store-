@@ -59,6 +59,11 @@ namespace TansactionsNameSpace
             return id;
         }
 
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         private async void constructorCommon (User user, string cardNumber, int month, int year, string holder, int ccv, int userId, string name, string address, string city, string country, string zip, IPayment payService, ISupply supplyService)
         {
             try
@@ -307,6 +312,11 @@ namespace TansactionsNameSpace
         public override int GetKey()
         {
             return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
         }
         public override void Copy(IEntity other)
         {

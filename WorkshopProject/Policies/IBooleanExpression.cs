@@ -50,6 +50,12 @@ namespace WorkshopProject.Policies
         {
             return id;
         }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
+
         public abstract bool evaluate(List<ProductAmountPrice> products,User user);
 
         public abstract bool checkConsistent(IBooleanExpression exp);

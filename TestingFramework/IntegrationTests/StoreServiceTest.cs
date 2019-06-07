@@ -37,6 +37,7 @@ namespace IntegrationTests
         public void init()
         {
             god = new GodObject();
+            
             service = new SystemServiceImpl();
             //service.Register("user", "123");
             owner_id = god.addMember("owner", "123");
