@@ -10,8 +10,8 @@ namespace Password
     public class PasswordHandler
     {
         // Dictionary<ID, Tuple <salt, pepper>
-        private Dictionary<int, Tuple<byte[], byte[]>> saltesAndPepper = new Dictionary<int, Tuple<byte[], byte[]>>();
-
+        //private Dictionary<int, Tuple<byte[], byte[]>> saltesAndPepper = new Dictionary<int, Tuple<byte[], byte[]>>();
+        private LinkedList<Password> passwordObjList = new LinkedList<Password>();
         //CREATING
         
         /** this is the byte[] that need to be stored **/
@@ -22,17 +22,20 @@ namespace Password
             byte[] bytesPass = Encoding.ASCII.GetBytes(password);
             byte[] currSalt = CreateSalt(bytesPass.Length);
             byte[] pepper = GenerateSaltedHash(bytesPass, currSalt);
-            saltesAndPepper.Add(ID,new Tuple<byte[], byte[]>(currSalt, pepper));
-            return saltesAndPepper[ID] != null;
+            //saltesAndPepper.Add(ID,new Tuple<byte[], byte[]>(currSalt, pepper));
+            Password passwordEntry = new Password(ID, currSalt, pepper);
+            passwordObjList.AddFirst(passwordEntry);
+            return true;
         }
 
         //when sign in
         public bool IdentifyPassword(string password, int ID)
         {
             byte[] bytesPass = Encoding.ASCII.GetBytes(password);
-            Tuple<byte[], byte[]> sAndP = saltesAndPepper[ID];
-            byte[] salt = sAndP.Item1;
-            byte[] pepper = sAndP.Item2;
+            //Tuple<byte[], byte[]> sAndP = saltesAndPepper[ID];
+            Password sAndP = GetEntry(ID);
+            byte[] salt = sAndP.salt;
+            byte[] pepper = sAndP.pepper;
             byte[] userPepper = GenerateSaltedHash(bytesPass, salt);
             return CompareByteArrays(pepper, userPepper);
         }
@@ -93,14 +96,39 @@ namespace Password
         }
 
 
-        public Tuple<byte[], byte[]> GetEntry(int ID)
+        public Password GetEntry(int ID)
         {
-            return saltesAndPepper[ID];
+            foreach(Password p in passwordObjList)
+            {
+                if (p.id == ID)
+                {
+                    return p;
+                }
+            }
+            return null;
         }
 
         public void RemoveEntry(int ID)
         {
-            saltesAndPepper.Remove(ID);
+            Password toRemove = GetEntry(ID);
+            passwordObjList.Remove(toRemove);
+        }
+
+
+
+    }
+
+    public class Password
+    {
+        public int id;
+        public byte[] salt;
+        public byte[] pepper;
+
+        public Password(int id, byte[] salt, byte[] pepper)
+        {
+            this.id = id;
+            this.salt = salt;
+            this.pepper = pepper;
         }
     }
 }
