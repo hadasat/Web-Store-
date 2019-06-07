@@ -4,31 +4,39 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users;
 
 namespace WorkshopProject.DataAccessLayer
 {
     //https://blog.goyello.com/2011/11/23/entity-framework-invalid-operation/
     public class Repo
     {
-        private static WorkshopDBContext ctx;
+        //private static WorkshopDBContext ctx;
+
 
         public Repo()
         {
-            if (ctx == null) { ctx = new WorkshopTestDBContext(); }
+            //if (ctx == null) { ctx = new WorkshopDBContext(); }
         }
 
-        public IEntity Get<T>(int key) where T : IEntity
+        private WorkshopDBContext getContext()
         {
-            return ctx.Set<T>().Find(key);
+            return DataAccessDriver.getContext();
         }
 
-        public List<T> GetList<T>() where T : IEntity
+        public virtual IEntity Get<T>(int key) where T : IEntity
         {
-            return ctx.Set<T>().ToList<T>();
+            return getContext().Set<T>().Find(key);
         }
 
-        public void Update<T>(T entity) where T : IEntity
+        public virtual List<T> GetList<T>() where T : IEntity
         {
+            return getContext().Set<T>().ToList<T>();
+        }
+
+        public virtual void Update<T>(T entity) where T : IEntity
+        {
+            WorkshopDBContext ctx = getContext();
             ctx.Entry(entity).State = System.Data.Entity.EntityState.Modified;
             SaveChanges();
         }
@@ -39,26 +47,30 @@ namespace WorkshopProject.DataAccessLayer
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
-        public void Add<T>(List<T> entity) where T : IEntity
+        public virtual void Add<T>(List<T> entity) where T : IEntity
         {
+            WorkshopDBContext ctx = getContext();
             ctx.Set<T>().AddRange(entity);
             SaveChanges();
         }
 
-        public void Add<T>(T entity) where T : IEntity
+        public virtual void Add<T>(T entity) where T : IEntity
         {
+            WorkshopDBContext ctx = getContext();
             ctx.Set<T>().Add(entity);
             SaveChanges();
         }
 
-        public void Remove<T>(T entity) where T : IEntity
+        public virtual void Remove<T>(T entity) where T : IEntity
         {
-            //ctx.Set<T>().Remove(entity);
+            WorkshopDBContext ctx = getContext();
+            ctx.Set<T>().Remove(entity);
         }
 
-        public void Remove<T>(List<T> entity) where T : IEntity
+        public virtual void Remove<T>(List<T> entity) where T : IEntity
         {
-            //ctx.Set<T>().RemoveRange(entity);
+            WorkshopDBContext ctx = getContext();
+            ctx.Set<T>().RemoveRange(entity);
         }
 
         //public void Clear<T>() where T : IEntity
@@ -68,8 +80,9 @@ namespace WorkshopProject.DataAccessLayer
         //    ctx.SaveChanges();
         //}
 
-        public void Delete()
+        public virtual void Delete()
         {
+            WorkshopDBContext ctx = getContext();
             try
             {
                 ctx.SaveChanges();
@@ -94,8 +107,9 @@ namespace WorkshopProject.DataAccessLayer
             
         }
 
-        public void SaveChanges()
+        public virtual void SaveChanges()
         {
+            WorkshopDBContext ctx = getContext();
             ctx.ChangeTracker.DetectChanges();
             ctx.SaveChanges();
         }
@@ -131,6 +145,6 @@ namespace WorkshopProject.DataAccessLayer
                 throw new Exception("Hey, boss, the UnitTestInitializer failed. You want I should fix it?");
             }
         }
-
     }
+
 }

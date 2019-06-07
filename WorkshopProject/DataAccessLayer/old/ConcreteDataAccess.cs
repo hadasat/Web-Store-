@@ -17,359 +17,360 @@ using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Policies;
 using System.ServiceModel.DomainServices.Server;
 
-namespace WorkshopProject.DataAccessLayer
-{
-    public class DataAccessNonPersistent //: IDataAccess
-    {
-        protected bool isProduction;
-        protected bool local;
 
-        public DataAccessNonPersistent() : this(false)
-        {
-        }
+//namespace WorkshopProject.DataAccessLayer
+//{
+//    public class DataAccessNonPersistent //: IDataAccess
+//    {
+//        protected bool isProduction;
+//        protected bool local;
 
-        public DataAccessNonPersistent(bool isProduction)
-        {
-            this.isProduction = isProduction;
-        }
+//        public DataAccessNonPersistent() : this(false)
+//        {
+//        }
 
-        public virtual WorkshopDBContext getContext()
-        {
-            if (isProduction)
-            {
-                return new WorkshopProductionDBContext();
-            }
-            else
-            {
-                return new WorkshopTestDBContext();
-            }
-        }
+//        public DataAccessNonPersistent(bool isProduction)
+//        {
+//            this.isProduction = isProduction;
+//        }
 
-        //not working currently
-        public bool CheckConnection()
-        {
-            return getContext().CheckConnection();
-        }
+//        public virtual WorkshopDBContext getContext()
+//        {
+//            if (isProduction)
+//            {
+//                return new WorkshopProductionDBContext();
+//            }
+//            else
+//            {
+//                return new WorkshopTestDBContext();
+//            }
+//        }
 
-
-        public virtual void SetMode(bool isProduction)
-        {
-            this.isProduction = isProduction;
-        }
-
-        public virtual bool GetMode()
-        {
-            return isProduction;
-        }
-
-        public virtual Member GetMember(int key)
-        {
-            Member ret = null;
-            using (WorkshopDBContext ctx = getContext())
-            {
-                ret = GetMember(key, ctx);
-            }
-            return ret;
-        }
-
-        protected virtual Member GetMember(int key, WorkshopDBContext ctx)
-        {
-            Member ret = null;
-            IQueryable<Member> q = getQueryableWithIncludes(ctx.Set<Member>());
-            ret = q
-                .Where(e => e.id == key).FirstOrDefault();
-
-            if (ret != null)
-            {
-                ret.LoadMe();
-            }
-            return ret;
-        }
-
-        public virtual Store GetStore(int key)
-        {
-            Store ret = null;
-            using (WorkshopDBContext ctx = getContext())
-            {
-                ret = GetStore(key, ctx);
-            }
-            return ret;
-        }
-
-        protected virtual Store GetStore(int key, WorkshopDBContext ctx)
-        {
-            Store ret = null;
-
-            IQueryable<Store> q = getQueryableWithIncludes(ctx.Set<Store>());
-            ret = q
-                //.Include(s => s.Stocks)
-                //.Include(s => s.purchasePolicy)
-                //.Include(s => s.discountPolicy)
-                //.Include(s => s.storePolicy)
-                .Where(e => e.id == key).FirstOrDefault();
-            if (ret != null)
-            {
-                ret.LoadMe();
-            }
-
-            return ret;
-        }
-
-        public virtual Product GetProduct(int key)
-        {
-            Product ret = null;
-            using (WorkshopDBContext ctx = getContext())
-            {
-                ret = GetProduct(key, ctx);
-            }
-            return ret;
-        }
-
-        protected virtual Product GetProduct(int key, WorkshopDBContext ctx)
-        {
-            Product ret = null;
-
-            IQueryable<Product> q = getQueryableWithIncludes(ctx.Set<Product>());
-            ret = q
-                .Where(e => e.id == key).FirstOrDefault();
-            if (ret != null)
-            {
-                ret.LoadMe();
-            }
-            return ret;
-        }
-
-        public virtual DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters) where T : IEntity
-        {
-            return getContext().Database.SqlQuery<T>(sql, paramaters);
-        }
-
-        public virtual bool SaveEntity<T>(T entity, int key) where T : IEntity
-        {
-            using (WorkshopDBContext ctx = getContext())
-            {
-                SaveEntity<T>(entity,  key, ctx);
-            }
-            return true;
-        }
-
-        protected virtual bool SaveEntity<T>(T entity, int key, WorkshopDBContext ctx) where T : IEntity
-        {
-            DbSet set = ctx.Set<T>();
-            IEntity existingEntity = (IEntity)set.Find(entity.GetKey());
-            if (existingEntity == null)
-            {
-                set.Add(entity);
-            }
-            else
-            {
-                DbEntityEntry<IEntity> attachedEntry = ctx.Entry(existingEntity);
-                attachedEntry.CurrentValues.SetValues(entity);
-                attachedEntry.Entity.Copy(entity);
-                //ctx.SaveChanges();
-            }
-            ctx.SaveChanges();
-
-            return true;
-        }
-
-        public virtual bool RemoveEntity<T>(int key) where T : IEntity
-        {
-            using (WorkshopDBContext ctx = getContext())
-            {
-                return RemoveEntity<T>(key, ctx);
-            }
-        }
-
-        protected virtual bool RemoveEntity<T>(int key, WorkshopDBContext ctx) where T : IEntity
-        {
-            if (key <= 0)
-            {
-                key = -1;
-            }
-
-            DbSet<T> set = ctx.Set<T>();
-
-            T entity = set.Find(key);
-            if (entity == null)
-            {
-                return false;
-            }
-            else
-            {
-                set.Remove(entity);
-            }
-            ctx.SaveChanges();
-
-            return true;
-        }
+//        //not working currently
+//        public bool CheckConnection()
+//        {
+//            return getContext().CheckConnection();
+//        }
 
 
-        public virtual bool Delete()
-        {
-            return getContext().Database.Delete();
-        }
+//        public virtual void SetMode(bool isProduction)
+//        {
+//            this.isProduction = isProduction;
+//        }
+
+//        public virtual bool GetMode()
+//        {
+//            return isProduction;
+//        }
+
+//        public virtual Member GetMember(int key)
+//        {
+//            Member ret = null;
+//            using (WorkshopDBContext ctx = getContext())
+//            {
+//                ret = GetMember(key, ctx);
+//            }
+//            return ret;
+//        }
+
+//        protected virtual Member GetMember(int key, WorkshopDBContext ctx)
+//        {
+//            Member ret = null;
+//            IQueryable<Member> q = getQueryableWithIncludes(ctx.Set<Member>());
+//            ret = q
+//                .Where(e => e.id == key).FirstOrDefault();
+
+//            if (ret != null)
+//            {
+//                ret.LoadMe();
+//            }
+//            return ret;
+//        }
+
+//        public virtual Store GetStore(int key)
+//        {
+//            Store ret = null;
+//            using (WorkshopDBContext ctx = getContext())
+//            {
+//                ret = GetStore(key, ctx);
+//            }
+//            return ret;
+//        }
+
+//        protected virtual Store GetStore(int key, WorkshopDBContext ctx)
+//        {
+//            Store ret = null;
+
+//            IQueryable<Store> q = getQueryableWithIncludes(ctx.Set<Store>());
+//            ret = q
+//                //.Include(s => s.Stocks)
+//                //.Include(s => s.purchasePolicy)
+//                //.Include(s => s.discountPolicy)
+//                //.Include(s => s.storePolicy)
+//                .Where(e => e.id == key).FirstOrDefault();
+//            if (ret != null)
+//            {
+//                ret.LoadMe();
+//            }
+
+//            return ret;
+//        }
+
+//        public virtual Product GetProduct(int key)
+//        {
+//            Product ret = null;
+//            using (WorkshopDBContext ctx = getContext())
+//            {
+//                ret = GetProduct(key, ctx);
+//            }
+//            return ret;
+//        }
+
+//        protected virtual Product GetProduct(int key, WorkshopDBContext ctx)
+//        {
+//            Product ret = null;
+
+//            IQueryable<Product> q = getQueryableWithIncludes(ctx.Set<Product>());
+//            ret = q
+//                .Where(e => e.id == key).FirstOrDefault();
+//            if (ret != null)
+//            {
+//                ret.LoadMe();
+//            }
+//            return ret;
+//        }
+
+//        public virtual DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters) where T : IEntity
+//        {
+//            return getContext().Database.SqlQuery<T>(sql, paramaters);
+//        }
+
+//        public virtual bool SaveEntity<T>(T entity, int key) where T : IEntity
+//        {
+//            using (WorkshopDBContext ctx = getContext())
+//            {
+//                SaveEntity<T>(entity,  key, ctx);
+//            }
+//            return true;
+//        }
+
+//        protected virtual bool SaveEntity<T>(T entity, int key, WorkshopDBContext ctx) where T : IEntity
+//        {
+//            DbSet set = ctx.Set<T>();
+//            IEntity existingEntity = (IEntity)set.Find(entity.GetKey());
+//            if (existingEntity == null)
+//            {
+//                set.Add(entity);
+//            }
+//            else
+//            {
+//                DbEntityEntry<IEntity> attachedEntry = ctx.Entry(existingEntity);
+//                attachedEntry.CurrentValues.SetValues(entity);
+//                attachedEntry.Entity.Copy(entity);
+//                //ctx.SaveChanges();
+//            }
+//            ctx.SaveChanges();
+
+//            return true;
+//        }
+
+//        public virtual bool RemoveEntity<T>(int key) where T : IEntity
+//        {
+//            using (WorkshopDBContext ctx = getContext())
+//            {
+//                return RemoveEntity<T>(key, ctx);
+//            }
+//        }
+
+//        protected virtual bool RemoveEntity<T>(int key, WorkshopDBContext ctx) where T : IEntity
+//        {
+//            if (key <= 0)
+//            {
+//                key = -1;
+//            }
+
+//            DbSet<T> set = ctx.Set<T>();
+
+//            T entity = set.Find(key);
+//            if (entity == null)
+//            {
+//                return false;
+//            }
+//            else
+//            {
+//                set.Remove(entity);
+//            }
+//            ctx.SaveChanges();
+
+//            return true;
+//        }
 
 
-        protected string getTableNameFromDbSet<T>(DbContext context) where T : class
-        {
-            Type type = typeof(T);
-            var metadata = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace;
-
-            // Get the part of the model that contains info about the actual CLR types
-            var objectItemCollection = ((ObjectItemCollection)metadata.GetItemCollection(DataSpace.OSpace));
-
-            // Get the entity type from the model that maps to the CLR type
-            var entityType = metadata
-                    .GetItems<EntityType>(DataSpace.OSpace)
-                    .Single(e => objectItemCollection.GetClrType(e) == type);
-
-            // Get the entity set that uses this entity type
-            var entitySet = metadata
-                .GetItems<EntityContainer>(DataSpace.CSpace)
-                .Single()
-                .EntitySets
-                .Single(s => s.ElementType.Name == entityType.Name);
-
-            // Find the mapping between conceptual and storage model for this entity set
-            var mapping = metadata.GetItems<EntityContainerMapping>(DataSpace.CSSpace)
-                    .Single()
-                    .EntitySetMappings
-                    .Single(s => s.EntitySet == entitySet);
-
-            // Find the storage entity set (table) that the entity is mapped
-            var table = mapping
-                .EntityTypeMappings.FirstOrDefault()
-                .Fragments.FirstOrDefault()
-                .StoreEntitySet;
-
-            // Return the table name from the storage entity set
-            string ret = (string)table.MetadataProperties["Table"].Value ?? table.Name;
-
-            return ret;
-        }
-
-        protected IQueryable<T> getQueryableWithIncludes<T>(DbSet<T> set) where T : class
-        {
-            IQueryable<T> ret = set;
-            var propsToLoad = GetPropsToLoad(typeof(T));
-            foreach (var prop in propsToLoad)
-            {
-                ret = ret.Include(prop);
-            }
-            return ret;
-        }
+//        public virtual bool Delete()
+//        {
+//            return getContext().Database.Delete();
+//        }
 
 
-        protected IEnumerable<string> GetPropsToLoad(Type type)
-        {
-            HashSet<Type> _visitedTypes = new HashSet<Type>();
-            _visitedTypes.Add(type);
-            var propsToLoad = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                              .Where(p => p.GetCustomAttributes(typeof(IncludeAttribute), true).Any());
+//        protected string getTableNameFromDbSet<T>(DbContext context) where T : class
+//        {
+//            Type type = typeof(T);
+//            var metadata = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace;
 
-            foreach (var prop in propsToLoad)
-            {
-                yield return prop.Name;
+//            // Get the part of the model that contains info about the actual CLR types
+//            var objectItemCollection = ((ObjectItemCollection)metadata.GetItemCollection(DataSpace.OSpace));
 
-                if (_visitedTypes.Contains(prop.PropertyType))
-                    continue;
+//            // Get the entity type from the model that maps to the CLR type
+//            var entityType = metadata
+//                    .GetItems<EntityType>(DataSpace.OSpace)
+//                    .Single(e => objectItemCollection.GetClrType(e) == type);
 
-                foreach (var subProp in GetPropsToLoad(prop.PropertyType))
-                {
-                    yield return prop.Name + "." + subProp;
-                }
-            }
-        }
-    }
+//            // Get the entity set that uses this entity type
+//            var entitySet = metadata
+//                .GetItems<EntityContainer>(DataSpace.CSpace)
+//                .Single()
+//                .EntitySets
+//                .Single(s => s.ElementType.Name == entityType.Name);
+
+//            // Find the mapping between conceptual and storage model for this entity set
+//            var mapping = metadata.GetItems<EntityContainerMapping>(DataSpace.CSSpace)
+//                    .Single()
+//                    .EntitySetMappings
+//                    .Single(s => s.EntitySet == entitySet);
+
+//            // Find the storage entity set (table) that the entity is mapped
+//            var table = mapping
+//                .EntityTypeMappings.FirstOrDefault()
+//                .Fragments.FirstOrDefault()
+//                .StoreEntitySet;
+
+//            // Return the table name from the storage entity set
+//            string ret = (string)table.MetadataProperties["Table"].Value ?? table.Name;
+
+//            return ret;
+//        }
+
+//        protected IQueryable<T> getQueryableWithIncludes<T>(DbSet<T> set) where T : class
+//        {
+//            IQueryable<T> ret = set;
+//            var propsToLoad = GetPropsToLoad(typeof(T));
+//            foreach (var prop in propsToLoad)
+//            {
+//                ret = ret.Include(prop);
+//            }
+//            return ret;
+//        }
+
+
+//        protected IEnumerable<string> GetPropsToLoad(Type type)
+//        {
+//            HashSet<Type> _visitedTypes = new HashSet<Type>();
+//            _visitedTypes.Add(type);
+//            var propsToLoad = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+//                                              .Where(p => p.GetCustomAttributes(typeof(IncludeAttribute), true).Any());
+
+//            foreach (var prop in propsToLoad)
+//            {
+//                yield return prop.Name;
+
+//                if (_visitedTypes.Contains(prop.PropertyType))
+//                    continue;
+
+//                foreach (var subProp in GetPropsToLoad(prop.PropertyType))
+//                {
+//                    yield return prop.Name + "." + subProp;
+//                }
+//            }
+//        }
+//    }
 
 
 
 
-    public class DataAccessStatic : DataAccessNonPersistent
-    {
-        protected static WorkshopProductionDBContext productionContext; //= new WorkshopProductionDBContext();
-        protected static WorkshopTestDBContext testContext; //= new WorkshopProductionDBContext();
+//    public class DataAccessStatic : DataAccessNonPersistent
+//    {
+//        protected static WorkshopProductionDBContext productionContext; //= new WorkshopProductionDBContext();
+//        protected static WorkshopTestDBContext testContext; //= new WorkshopProductionDBContext();
 
-        public DataAccessStatic() : base(false)
-        {
-        }
+//        public DataAccessStatic() : base(false)
+//        {
+//        }
 
-        public DataAccessStatic(bool isProduction) : base(isProduction)
-        {
-        }
+//        public DataAccessStatic(bool isProduction) : base(isProduction)
+//        {
+//        }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public override bool Delete()
-        {
-            return base.Delete();
-        }
+//        [MethodImpl(MethodImplOptions.Synchronized)]
+//        public override bool Delete()
+//        {
+//            return base.Delete();
+//        }
         
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public override Member GetMember(int key)
-        {
-            return GetMember(key, getContext());
-        }
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public override bool GetMode()
-        {
-            return base.GetMode();
-        }
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public override Store GetStore(int key)
-        {
-            return GetStore(key, getContext());
-        }
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public override Product GetProduct(int key)
-        {
-            return GetProduct(key, getContext());
-        }
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public override bool RemoveEntity<T>(int key) 
-        {
-            return RemoveEntity<T>(key, getContext());
-        }
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public override bool SaveEntity<T>(T entity, int key)
-        {
-            SaveEntity<T>(entity, key, getContext());
-            return true;
-        }
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public override void SetMode(bool isProduction)
-        {
-            base.SetMode(isProduction);
-        }
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public override DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters)
-        {
-            return base.SqlQuery<T>(sql, paramaters);
-        }
+//        [MethodImpl(MethodImplOptions.Synchronized)]
+//        public override Member GetMember(int key)
+//        {
+//            return GetMember(key, getContext());
+//        }
+//        [MethodImpl(MethodImplOptions.Synchronized)]
+//        public override bool GetMode()
+//        {
+//            return base.GetMode();
+//        }
+//        [MethodImpl(MethodImplOptions.Synchronized)]
+//        public override Store GetStore(int key)
+//        {
+//            return GetStore(key, getContext());
+//        }
+//        [MethodImpl(MethodImplOptions.Synchronized)]
+//        public override Product GetProduct(int key)
+//        {
+//            return GetProduct(key, getContext());
+//        }
+//        [MethodImpl(MethodImplOptions.Synchronized)]
+//        public override bool RemoveEntity<T>(int key) 
+//        {
+//            return RemoveEntity<T>(key, getContext());
+//        }
+//        [MethodImpl(MethodImplOptions.Synchronized)]
+//        public override bool SaveEntity<T>(T entity, int key)
+//        {
+//            SaveEntity<T>(entity, key, getContext());
+//            return true;
+//        }
+//        [MethodImpl(MethodImplOptions.Synchronized)]
+//        public override void SetMode(bool isProduction)
+//        {
+//            base.SetMode(isProduction);
+//        }
+//        [MethodImpl(MethodImplOptions.Synchronized)]
+//        public override DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] paramaters)
+//        {
+//            return base.SqlQuery<T>(sql, paramaters);
+//        }
 
 
 
-        public override WorkshopDBContext getContext()
-        {
-            if (isProduction)
-            {
-                if(productionContext == null)
-                {
-                    productionContext = new WorkshopProductionDBContext();
-                }
-                return productionContext;
-            }
-            else
-            {
-                if (testContext == null)
-                {
-                    testContext = new WorkshopTestDBContext();
-                }
-                return testContext;
-            }
-        }
-    }
-}
+//        public override WorkshopDBContext getContext()
+//        {
+//            if (isProduction)
+//            {
+//                if(productionContext == null)
+//                {
+//                    productionContext = new WorkshopProductionDBContext();
+//                }
+//                return productionContext;
+//            }
+//            else
+//            {
+//                if (testContext == null)
+//                {
+//                    testContext = new WorkshopTestDBContext();
+//                }
+//                return testContext;
+//            }
+//        }
+//    }
+//}
 
 
 
