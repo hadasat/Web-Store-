@@ -303,7 +303,7 @@ namespace Users
         private Store store;
         private Member initiate;
         private Member candidate;
-        public static Dictionary<String, int> owners = new Dictionary<String, int>();
+        public Dictionary<String, int> owners = new Dictionary<String, int>();
         //<ownerNames, approved>
         private readonly object OwnersLock = new object();
         private int counter = 0;
@@ -385,10 +385,10 @@ namespace Users
             {
                 foreach (KeyValuePair<String, int> entry in owners)
                 {
-                    Member currMember = ConnectionStubTemp.getMember(entry.Value);
+                    Member currMember = ConnectionStubTemp.getMember(entry.Key);
                     if (currMember.id != creatorId && currMember.username!=candidateName)
                     {
-                        currMember.addMessage("Do you agree adding " + candidateName + " as a co - owner to the store " + store.name + "?", Notification.NotificationType.CREATE_OWNER, requestId);
+                        currMember.addMessage("Do you agree adding " + candidateName + " as a co-owner to the store " + store.name + "?", Notification.NotificationType.CREATE_OWNER, requestId);
                     }
                 }
             }
