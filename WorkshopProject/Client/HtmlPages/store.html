@@ -254,13 +254,13 @@
         $('#addManager_btn').on('click',function(){
             var appointmanager_check = $('#appointmanager_check').prop('checked');
             var appointowners_check = false;
-            var close_check = $('#appointmanager_check').prop('checked');
-            var communication_check = $('#appointmanager_check').prop('checked');
-            var discounts_check = $('#appointmanager_check').prop('checked');
-            var managers_check = $('#appointmanager_check').prop('checked');
-            var policy_check = $('#appointmanager_check').prop('checked');
-            var products_check = $('#appointmanager_check').prop('checked');
-            var purchasing_check = $('#appointmanager_check').prop('checked');
+            var close_check = $('#close_check').prop('checked');
+            var communication_check = $('#communication_check').prop('checked');
+            var discounts_check = $('#discounts_check').prop('checked');
+            var managers_check = $('#managers_check').prop('checked');
+            var policy_check = $('#policy_check').prop('checked');
+            var products_check = $('#products_check').prop('checked');
+            var purchasing_check = $('#purchasing_check').prop('checked');
             var username = $('#managerName_input').val();
             
             sendRequest('action','addStoreManager',{storeId: storeId, username: username, roles:`{AddRemoveProducts: ${products_check},AddRemovePurchasing: ${purchasing_check},
