@@ -1,9 +1,11 @@
-﻿using System;
+﻿using log4net.Repository.Hierarchy;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WorkshopProject;
 using WorkshopProject.DataAccessLayer;
+using WorkshopProject.Log;
 
 namespace Shopping
 {
@@ -62,6 +64,7 @@ namespace Shopping
                     int storeAmount = cart.getTotalAmount();
                     if (storeAmount == 0)
                         cartsList.Remove(cartAndStore);
+                    WorkshopProject.Log.Logger.Log("event", logLevel.INFO, $"set product {product.getId()} amount {amount} to basket {id}");
                 }
                 return true;
             }
@@ -70,7 +73,9 @@ namespace Shopping
                 if (containStore(cartPredicat))
                 {
                     ShoppingCart cart = cartAndStore.cart;
+                    WorkshopProject.Log.Logger.Log("event", logLevel.INFO, $"set product {product.getId()} amount {amount} to basket {id}");
                     return cart.setProductAmount(product, amount);
+
                 }
             }
             return false;
@@ -85,9 +90,13 @@ namespace Shopping
             {
                 cart = new ShoppingCart();
                 cartsList.Add(new ShoppingCartAndStore(store, cart));
+                WorkshopProject.Log.Logger.Log("event", logLevel.INFO, $"add product {product.getId()} amount {amount} to basket {id}");
             }
             else
+            {
                 cart = cartsList.Find(cartPredicat).cart;
+                WorkshopProject.Log.Logger.Log("event", logLevel.INFO, $"set product {product.getId()} amount {amount} to basket {id}");
+            }
             return cart.addProducts(product, amount);
         }
 

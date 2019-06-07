@@ -35,70 +35,100 @@ namespace IntegrationTests
 
         //discount
         [TestMethod]
+        [TestCategory("Policy Test")]
+        [TestCategory("Regression")]
         public void addDiscountPolicyTestTest()
         {
+            //new Discount
             IOutcome outcome = new Percentage(20);
             IBooleanExpression exp = new FalseCondition();
             discount = new Discount(exp, outcome);
-            int oldNumPolicies = store.discountPolicy.Count;
+            int oldNumPolicies = store.discountPolicies.Count;
 
-            idDiscount = PolicyService.addDiscountPolicy(storeOwner, idStore, discount);
-            Assert.IsTrue(idDiscount > 0);
-            int newNumPolicies = store.discountPolicy.Count;
+            Policystatus status = PolicyService.addDiscountPolicy(storeOwner, idStore, discount);
+            Assert.IsTrue(status == Policystatus.Success);
+            int newNumPolicies = store.discountPolicies.Count;
             Assert.AreNotEqual(oldNumPolicies, newNumPolicies);
+            Discount theNewDiscount = store.getDiscountPolicy(-1);
+            Assert.IsNotNull(theNewDiscount);
+            idDiscount = theNewDiscount.id;
+            Assert.IsTrue(idDiscount > 0);
         }
 
         [TestMethod]
+        [TestCategory("Policy Test")]
+        [TestCategory("Regression")]
         public void removeDiscountPolicyTest()
         {
             IOutcome outcome = new Percentage(20);
             IBooleanExpression exp = new FalseCondition();
             discount = new Discount(exp, outcome);
-            idDiscount = PolicyService.addDiscountPolicy(storeOwner, idStore, discount);
+            Policystatus status = PolicyService.addDiscountPolicy(storeOwner, idStore, discount);
+            Assert.IsTrue(status == Policystatus.Success);
+            Discount theNewDiscount = store.getDiscountPolicy(-1);
+            idDiscount = theNewDiscount.id;
 
-            int oldNumPolicies = store.discountPolicy.Count;
-            bool sucsess = PolicyService.removeDiscountPolicy(storeOwner, idStore, idDiscount);
-            Assert.IsTrue(sucsess);
-            int newNumPolicies = store.discountPolicy.Count;
+            int oldNumPolicies = store.discountPolicies.Count;
+            status = PolicyService.removeDiscountPolicy(storeOwner, idStore, idDiscount);
+            Assert.IsTrue(status == Policystatus.Success);
+            int newNumPolicies = store.discountPolicies.Count;
             Assert.AreNotEqual(oldNumPolicies, newNumPolicies);
         }
 
         //purchasing
         [TestMethod]
+        [TestCategory("Policy Test")]
+        [TestCategory("Regression")]
         public void addPurchasingPolicyTest()
         {
             purchasingExp = new FalseCondition();
-            int oldNumPolicies = store.purchasePolicy.Count;
+            int oldNumPolicies = store.purchasePolicies.Count;
 
-            idpurchasingExp = PolicyService.addPurchasingPolicy(storeOwner, idStore, purchasingExp);
+            Policystatus status = PolicyService.addPurchasingPolicy(storeOwner, idStore, purchasingExp);
+            Assert.IsTrue(status == Policystatus.Success);
+            IBooleanExpression policy = store.getPolicy(-2);
+            Assert.IsNotNull(policy);
+            idpurchasingExp = policy.id;
             Assert.IsTrue(idpurchasingExp > 0);
-            int newNumPolicies = store.purchasePolicy.Count;
+            int newNumPolicies = store.purchasePolicies.Count;
             Assert.AreNotEqual(oldNumPolicies, newNumPolicies);
         }
 
         [TestMethod]
+        [TestCategory("Policy Test")]
+        [TestCategory("Regression")]
         public void removePurchasingPolicyTest()
         {
             purchasingExp = new FalseCondition();
-            idpurchasingExp = PolicyService.addPurchasingPolicy(storeOwner, idStore, purchasingExp);
+            Policystatus status = PolicyService.addPurchasingPolicy(storeOwner, idStore, purchasingExp);
+            Assert.IsTrue(status == Policystatus.Success);
+            int oldNumPolicies = store.purchasePolicies.Count;
 
-            int oldNumPolicies = store.purchasePolicy.Count;
-            bool sucsess = PolicyService.removePurchasingPolicy(storeOwner, idStore, idpurchasingExp);
-            Assert.IsTrue(sucsess);
-            int newNumPolicies = store.purchasePolicy.Count;
+            IBooleanExpression policy = store.getPolicy(-2);
+            idpurchasingExp = policy.id;
+            status = PolicyService.removePurchasingPolicy(storeOwner, idStore, idpurchasingExp);
+            Assert.IsTrue(status == Policystatus.Success);
+            
+            int newNumPolicies = store.purchasePolicies.Count;
             Assert.AreNotEqual(oldNumPolicies, newNumPolicies);
         }
 
         //store
         [TestMethod]
+        [TestCategory("Policy Test")]
+        [TestCategory("Regression")]
         public void addStorePolicyTest()
         {
             storeExp = new FalseCondition();
-            int oldNumPolicies = store.storePolicy.Count;
+            int oldNumPolicies = store.storePolicies.Count;
 
-            idstoreExp = PolicyService.addStorePolicy(storeOwner, idStore, storeExp);
+            Policystatus status = PolicyService.addStorePolicy(storeOwner, idStore, storeExp);
+            Assert.IsTrue(status == Policystatus.Success);
+
+            IBooleanExpression policy = store.getPolicy(-1);
+            idstoreExp = policy.id;
             Assert.IsTrue(idstoreExp >= 0,idstoreExp+"");
-            int newNumPolicies = store.storePolicy.Count;
+            int newNumPolicies = store.storePolicies.Count;
             Assert.AreNotEqual(oldNumPolicies, newNumPolicies);
         }
 
@@ -106,12 +136,16 @@ namespace IntegrationTests
         public void removeStorePolicyTest()
         {
             storeExp = new FalseCondition();
-            idstoreExp = PolicyService.addStorePolicy(storeOwner, idStore, storeExp);
+            Policystatus status = PolicyService.addStorePolicy(storeOwner, idStore, storeExp);
+            Assert.IsTrue(status == Policystatus.Success);
 
-            int oldNumPolicies = store.storePolicy.Count;
-            bool sucsess = PolicyService.removeStorePolicy(storeOwner, idStore, idstoreExp);
-            Assert.IsTrue(sucsess);
-            int newNumPolicies = store.storePolicy.Count;
+            IBooleanExpression policy = store.getPolicy(-1);
+            idstoreExp = policy.id;
+
+            int oldNumPolicies = store.storePolicies.Count;
+            status = PolicyService.removeStorePolicy(storeOwner, idStore, idstoreExp);
+            Assert.IsTrue(status == Policystatus.Success);
+            int newNumPolicies = store.storePolicies.Count;
             Assert.AreNotEqual(oldNumPolicies, newNumPolicies);
         }
 

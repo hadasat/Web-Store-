@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using static WorkshopProject.Category;
 using Users;
 using WorkshopProject.Log;
+using WorkshopProject.Policies;
 
 namespace WorkshopProject
 {
     public  static class  WorkShop
     {
+       public static List<IBooleanExpression> SystemPolicies = new List<IBooleanExpression>();
        public  static Dictionary<int,Store> stores = new Dictionary<int, Store>();
        public static  int id = 0;
        
@@ -57,7 +59,10 @@ namespace WorkshopProject
 
         }
 
-
+        public static bool deleteStore(int storeId)
+        {
+            return stores.Remove(storeId);
+        }
        
         public static int createNewStore(string name, int rank, Boolean isActive, Member owner)
         {
@@ -66,7 +71,7 @@ namespace WorkshopProject
             int currID = id;
             id++;
             owner.addStore(store);
-            Logger.Log("file", logLevel.INFO,"store " + currID + " has added");
+            Logger.Log("event", logLevel.INFO,"store " + currID + " has added");
             return currID;
         }
 
@@ -80,7 +85,7 @@ namespace WorkshopProject
             {
                 return false;
             }
-            Logger.Log("file", logLevel.INFO, "store " + storeId + " has closed");
+            Logger.Log("event", logLevel.INFO, "store " + storeId + " has closed");
             
             return true;
         }
@@ -116,6 +121,36 @@ namespace WorkshopProject
                 }
             }
             return null;
+        }
+
+        public static Policystatus addSystemPolicy(User user, IBooleanExpression policy)
+        {
+            if (user is SystemAdmin)
+            {
+                if(!IBooleanExpression.confirmListConsist(policy,SystemPolicies))
+                    return Policystatus.UnauthorizedUser;
+                int newPolicyId = IBooleanExpression.checkExpression(policy);
+                if (newPolicyId > 0)
+                {
+                    SystemPolicies.Add(policy);
+                    return Policystatus.Success;
+                }
+                return Policystatus.BadPolicy;
+            }
+            return Policystatus.UnauthorizedUser;
+        }
+
+        public static Policystatus removeSystemPolicy(User user, int policyid)
+        {
+            if (user is SystemAdmin)
+            {
+                IBooleanExpression temp = new TrueCondition();
+                temp.id = policyid;
+
+                if (SystemPolicies.Remove(temp))
+                    return Policystatus.Success;
+            }
+            return Policystatus.UnauthorizedUser;
         }
     }
 }

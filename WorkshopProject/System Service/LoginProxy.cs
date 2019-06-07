@@ -66,6 +66,14 @@ namespace WorkshopProject.System_Service
             return UserService.AddStoreManager(user, storeId, userToAdd, roles);
         }
 
+
+        public bool IsManageStore(int storeId)
+        {
+            if (!loggedIn)
+                return false;
+            return UserService.isManageStore(user, storeId);
+        }
+
         public bool AddStoreOwner(int storeId, string userToAdd)
         {
             if (!loggedIn)
@@ -102,7 +110,7 @@ namespace WorkshopProject.System_Service
             return UserService.DisApproveOwnershipRequest(user, requestID);
         }
 
-        public Transaction BuyShoppingBasket(int cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
+        public Transaction BuyShoppingBasket(string cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
         {
             return TransactionService.BuyShoppingBasket(user,cardNumber,month,year,holder,ccv,id,name,address,city,country,zip);
         }
@@ -241,6 +249,19 @@ namespace WorkshopProject.System_Service
             }
         }
 
+        public List<Product> getAllProductsForStore (int storeId)
+        {
+            Store storeAns = StoreService.GetStore(storeId);
+            if (storeAns == null)
+            {
+                return new List<Product>();
+            }
+            else
+            {
+                return storeAns.getAllProducst();
+            }
+        }
+
         public string GetAllStores()
         {
             return JsonHandler.SerializeObject(StoreService.GetAllStores());
@@ -294,7 +315,7 @@ namespace WorkshopProject.System_Service
         //**********POLICIES*********************
 
         //policies
-        public int addDiscountPolicy(int storeId, string policy)
+        public Policystatus addDiscountPolicy(int storeId, string policy)
         {
             if (!loggedIn)
                 notLoggedInException();
@@ -302,14 +323,14 @@ namespace WorkshopProject.System_Service
             return PolicyService.addDiscountPolicy(user, storeId, dicountPolicy);
         }
 
-        public bool removeDiscountPolicy(int storeId, int policyId)
+        public Policystatus removeDiscountPolicy(int storeId, int policyId)
         {
             if (!loggedIn)
                 notLoggedInException();
             return PolicyService.removeDiscountPolicy(user, storeId, policyId);            
         }
 
-        public int addPurchasingPolicy(int storeId, string policy)
+        public Policystatus addPurchasingPolicy(int storeId, string policy)
         {
             if (!loggedIn)
                 notLoggedInException();
@@ -318,7 +339,7 @@ namespace WorkshopProject.System_Service
 
         }
 
-        public bool removePurchasingPolicy(int storeId, int policyId)
+        public Policystatus removePurchasingPolicy(int storeId, int policyId)
         {
             if (!loggedIn)
                 notLoggedInException();
@@ -326,7 +347,7 @@ namespace WorkshopProject.System_Service
            
         }
 
-        public int addStorePolicy(int storeId, string policy)
+        public Policystatus addStorePolicy(int storeId, string policy)
         {
             if (!loggedIn)
                 notLoggedInException();
@@ -334,7 +355,7 @@ namespace WorkshopProject.System_Service
             return PolicyService.addStorePolicy(user, storeId, storePolicy);
         }
 
-        public bool removeStorePolicy(int storeId, int policyId)
+        public Policystatus removeStorePolicy(int storeId, int policyId)
         {
             if (!loggedIn)
                 notLoggedInException();
@@ -356,6 +377,23 @@ namespace WorkshopProject.System_Service
             }
             return UserService.getRoleForStore(user,storeId);
         }
+
+        public Policystatus addSystemPolicy(User user, IBooleanExpression policies)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return PolicyService.addSystemPolicy(user, policies);
+        }
+
+        public Policystatus removeSystemPolicy(User user, int policyId)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return WorkShop.removeSystemPolicy(user, policyId);
+
+        }
+
+
 
     }
 }
