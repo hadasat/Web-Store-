@@ -47,6 +47,17 @@ namespace Users
             }
         }
 
+        
+        public override int GetKey()
+        {
+            return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
+
         public Member(string username, int ID) : this()//Register
         {
             this.id = ID;
