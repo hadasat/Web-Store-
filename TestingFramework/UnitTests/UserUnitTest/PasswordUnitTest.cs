@@ -16,7 +16,7 @@ namespace Password.Tests
         int ID = 11111;
         const int PASS_LENGTH = 8;
         string password;
-        Tuple<byte[], byte[]> SaltesAndPepperEntry;
+        Password SaltesAndPepperEntry;
         PasswordHandler passwordHandler = new PasswordHandler();
 
         //[TestInitialize]
@@ -41,8 +41,8 @@ namespace Password.Tests
                 Init();
                 bool res = passwordHandler.hashPassword(password, ID);
                 SaltesAndPepperEntry = passwordHandler.GetEntry(ID);
-                byte[] salt = SaltesAndPepperEntry.Item1;
-                byte[] pepper = SaltesAndPepperEntry.Item2;
+                byte[] salt = SaltesAndPepperEntry.salt;
+                byte[] pepper = SaltesAndPepperEntry.pepper;
                 Assert.IsTrue(res);
             }
             finally
