@@ -55,6 +55,10 @@ namespace Managment
             return id;
         }
 
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public bool CompareRoles(Roles otherRoles)
         {
             if (!this.AddRemoveProducts && otherRoles.AddRemoveProducts)
@@ -134,6 +138,11 @@ namespace Managment
         public override int GetKey()
         {
             return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
         }
 
         /*about roles: the client will choose what roles he wants to give the new

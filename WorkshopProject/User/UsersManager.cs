@@ -15,8 +15,14 @@ namespace Users
 {
     public static class ConnectionStubTemp
     {
+        public static bool useStub = false;
         public static Repo repo = new Repo();
+        public static DbListStub<Member> DbStub = new DbListStub<Member>();
         public static PasswordHandler pHandler = new PasswordHandler();
+
+
+
+
         //public static Dictionary<int, Member> members = new Dictionary<int, Member>();
         // <ID, MEMBER>
         //public static Dictionary<string, int> mapIDUsermane = new Dictionary<string, int>();
@@ -317,6 +323,10 @@ namespace Users
 
         public static List<Member> GetMembers()
         {
+            if (useStub)
+            {
+                return DbStub.GetList();
+            }
             return repo.GetList<Member>();
         }
 
@@ -334,21 +344,39 @@ namespace Users
 
         public static void AddMember(Member member)
         {
+            if (useStub)
+            {
+                DbStub.Add(member);
+                return;
+            }
             repo.Add<Member>(member);
         }
 
         public static Member GetMemberById(int id)
         {
+            if (useStub)
+            {
+                return DbStub.Get(id);
+            }
             return (Member) repo.Get<Member>(id);
         }
 
         public static void Remove(int id)
         {
+            if (useStub)
+            {
+                DbStub.Remove(id);
+                return;
+            }
             repo.Remove<Member>(GetMemberById(id));
         }
 
         public static void Update(Member member)
         {
+            if (useStub)
+            {
+                return;
+            }
             repo.Update<Member>(member);
         }
 

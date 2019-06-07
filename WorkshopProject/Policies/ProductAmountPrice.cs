@@ -37,6 +37,10 @@ namespace WorkshopProject.Policies
             return id;
         }
 
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public static List<ProductAmountPrice> translateCart(ShoppingCart cart)
         {
             List<ProductAmountPrice> output = new List<ProductAmountPrice>();

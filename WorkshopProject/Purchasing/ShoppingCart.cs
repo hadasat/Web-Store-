@@ -33,6 +33,11 @@ namespace Shopping
         {
             return id;
         }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public bool containProduct(Product product)
         {
             Predicate<ProductAmount> p = s => ((ProductAmount)s).product.Equals(product);
@@ -154,6 +159,11 @@ namespace Shopping
         public override int GetKey()
         {
             return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
         }
         public override void Copy(IEntity other)
         {

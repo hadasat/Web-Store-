@@ -28,6 +28,11 @@ namespace WorkshopProject.Policies
             return id;
         }
 
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
+
         public override void LoadMe()
         {
 
