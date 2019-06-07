@@ -56,8 +56,10 @@ namespace WorkshopProject.Policies
 
         public virtual void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
         {
-            children[0] = firstChild;
-            children[1] = (secondChild);
+            if(firstChild.checkConsistent(this))
+                children[0] = firstChild;
+            if(secondChild.checkConsistent(this))
+                children[1] = (secondChild);
         }
 
         public virtual IBooleanExpression getFirstChild()
