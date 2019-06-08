@@ -15,9 +15,9 @@ namespace Users
 {
     public static class ConnectionStubTemp
     {
-        public static bool useStub = false;
+        //public static bool useStub = false;
         public static Repo repo = new Repo();
-        public static DbListStub<Member> DbStub = new DbListStub<Member>();
+        
         public static PasswordHandler pHandler = new PasswordHandler();
 
 
@@ -323,9 +323,9 @@ namespace Users
 
         public static List<Member> GetMembers()
         {
-            if (useStub)
+            if (useStub())
             {
-                return DbStub.GetList();
+                return getDbStub().GetList();
             }
             return repo.GetList<Member>();
         }
@@ -344,9 +344,9 @@ namespace Users
 
         public static void AddMember(Member member)
         {
-            if (useStub)
+            if (useStub())
             {
-                DbStub.Add(member);
+                getDbStub().Add(member);
                 return;
             }
             repo.Add<Member>(member);
@@ -354,18 +354,18 @@ namespace Users
 
         public static Member GetMemberById(int id)
         {
-            if (useStub)
+            if (useStub())
             {
-                return DbStub.Get(id);
+                return getDbStub().Get(id);
             }
             return (Member) repo.Get<Member>(id);
         }
 
         public static void Remove(int id)
         {
-            if (useStub)
+            if (useStub())
             {
-                DbStub.Remove(id);
+                getDbStub().Remove(id);
                 return;
             }
             repo.Remove<Member>(GetMemberById(id));
@@ -373,13 +373,31 @@ namespace Users
 
         public static void Update(Member member)
         {
-            if (useStub)
+            if (useStub())
             {
                 return;
             }
             repo.Update<Member>(member);
         }
 
+        public static void Clear()
+        {
+            if (useStub())
+            {
+                getDbStub().Delete();
+            }
+            //TODO: repo in the future
+        }
+
+        private static bool useStub()
+        {
+            return DataAccessDriver.UseStub;
+        }
+
+        private static DbListStub<Member> getDbStub()
+        {
+            return DataAccessDriver.Members;
+        }
     }
 
 

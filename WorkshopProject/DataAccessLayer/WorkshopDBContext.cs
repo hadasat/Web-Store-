@@ -65,6 +65,7 @@ namespace WorkshopProject.DataAccessLayer
 
         public DbSet<IOutcome> PolicyOutcomes { get; set; }
         public DbSet<ItemFilter> PolicyFilters { get; set; }
+        public DbSet<Password.Password> Passwords { get; set; }
 
 
         
