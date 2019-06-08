@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using TansactionsNameSpace;
 using Users;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.External_Services;
 using WorkshopProject.System_Service;
 
@@ -51,6 +52,7 @@ namespace IntegrationTests
         [TestInitialize]
         public void Init()
         {
+            DataAccessDriver.UseStub = true;
             user.Register("user-hadas", "user-atiya", DateTime.Now.AddYears(-25), "shit");
             user.login("user-hadas", "user-atiya");
             userShoppingBasket = user.user.shoppingBasket;
@@ -80,6 +82,7 @@ namespace IntegrationTests
             //remove p1
             menager.closeStore(storeId[1]);
             WorkShop.Remove(storeId[1]);
+            DataAccessDriver.UseStub = false;
         }
 
         private void addingProductToBasket(int amount,int index)

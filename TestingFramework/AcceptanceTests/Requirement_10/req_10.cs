@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject.Communication;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.System_Service;
 
 namespace TestingFramework.AcceptanceTests.Requirement_10
@@ -43,10 +44,12 @@ namespace TestingFramework.AcceptanceTests.Requirement_10
             storeOwnerUser.unSubscribeAsObserver(ownerObserver);
             adminUserL.unSubscribeAsObserver(adminObserver);
             Cleanup();
+            DataAccessDriver.UseStub = false;
         }
 
         private void myInit()
         {
+            DataAccessDriver.UseStub = true;
             addTestStoreOwner1ToSystem();
             //set store and owner
             ownerObserver = new testObserverAcceptence();

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.System_Service;
 
 namespace WorkshopProject.Tests
@@ -22,6 +23,7 @@ namespace WorkshopProject.Tests
         //[TestInitialize]
         public void Init()
         {
+            DataAccessDriver.UseStub = true;
             memberId = god.addMember("username", "password");
             member = ConnectionStubTemp.getMember(memberId);
            
@@ -31,6 +33,7 @@ namespace WorkshopProject.Tests
         public void Cealup()
         {
             god.removeMember("username");
+            DataAccessDriver.UseStub = false;
         }
 
         [TestMethod()]

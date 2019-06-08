@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WorkshopProject.DataAccessLayer;
 
 namespace TestingFramework.AcceptanceTests.Requirement_4
 {
@@ -15,13 +16,15 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             bridge.Login(getStoreOwner1(), password);
         }
 
+
         //[TestCleanup]
         public override void Cleanup()
         {
             bridge.Logout();
             removeTestStoreOwner1FromSystem();
-            godObject.cleanUpAllData();
+            godObject.clearDb();
         }
+
 
         [TestMethod]
         [TestCategory("Req_4")]
@@ -29,6 +32,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 Init();
                 int result = bridge.AddProductToStore(storeId, productName, productDesc, productPrice, productCategory);
                 Assert.AreNotEqual(result, -1);
@@ -36,6 +40,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 
@@ -77,6 +82,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 Init();
                 int productId = bridge.AddProductToStore(storeId, productName, productDesc, productPrice, productCategory);
                 bool result2 = bridge.RemoveProductFromStore(storeId, productId);
@@ -85,6 +91,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 
@@ -130,6 +137,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 Init();
 
                 int productId = bridge.AddProductToStore(storeId, productName, productDesc, productPrice, productCategory);
@@ -140,6 +148,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 
@@ -149,6 +158,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 Init();
                 RemoveNewProductSuccess();
                 bool result = bridge.ChangeProductInfo(storeId, productId, "", "", 50.0, "", -1);
@@ -157,6 +167,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 

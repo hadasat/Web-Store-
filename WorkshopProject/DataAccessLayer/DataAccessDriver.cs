@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Users;
 
 namespace WorkshopProject.DataAccessLayer
 {
@@ -85,9 +86,10 @@ namespace WorkshopProject.DataAccessLayer
 
         public static void clearStub()
         {
-            Members.Delete();
             Stores.Delete();
             Passwords.Delete();
+            Members.Delete();
+            ConnectionStubTemp.init();  
         }
         
         public static DbListStub<Users.Member> Members = new DbListStub<Users.Member>();

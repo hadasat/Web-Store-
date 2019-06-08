@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject.System_Service;
+using WorkshopProject.DataAccessLayer;
 
 namespace Managment.Tests
 {
@@ -29,6 +30,7 @@ namespace Managment.Tests
         //[TestInitialize]
         public void Init()
         {
+            DataAccessDriver.UseStub = true;
             ownerId = god.addMember("username1", "password1");
             ownerId2 = god.addMember("username2", "password2");
             managerId = god.addMember("username3", "password3");
@@ -63,6 +65,7 @@ namespace Managment.Tests
             {
 
             }
+            DataAccessDriver.UseStub = true;
         }
 
         [TestMethod()]

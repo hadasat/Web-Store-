@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.System_Service;
 
 namespace TestingFramework.IntegrationTests
@@ -24,13 +25,14 @@ namespace TestingFramework.IntegrationTests
 
         [TestInitialize]
         public void Init()
-        {  
+        {
+            DataAccessDriver.UseStub = true;
         }
 
         [TestCleanup]
         public void Cealup()
         {
-
+            DataAccessDriver.UseStub = false;
         }
 
         //discount

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.System_Service;
 
 namespace WorkshopProject.Tests
@@ -22,6 +23,7 @@ namespace WorkshopProject.Tests
         //[TestInitialize]
         public void Init()
         {
+            DataAccessDriver.UseStub = true;
             ownerId = god.addMember("username", "password");
             storeId = god.addStore("store name", 1, ownerId);
             store = WorkShop.getStore(storeId);
@@ -38,6 +40,7 @@ namespace WorkshopProject.Tests
             god.removeStore(storeId, ownerId);
             god.removeMember("username");
             god.removeMember("some member");
+            DataAccessDriver.UseStub = false;
         }
 
         [TestMethod()]
