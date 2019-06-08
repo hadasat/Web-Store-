@@ -19,7 +19,7 @@ namespace Users
     public class User : IEntity, Permissions
     {
         [Key]
-        public int id { get; set; }
+        public int idUser { get; set; }
         public ShoppingBasket shoppingBasket;
 
 

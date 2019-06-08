@@ -117,6 +117,7 @@
     <Compile Include="UnitTests\Store UnitTests\StoreUnitTest.cs" />
     <Compile Include="UnitTests\Store UnitTests\WorkShopUnitTest.cs" />
     <Compile Include="UnitTests\SystemServiceImplTests.cs" />
+    <Compile Include="UnitTests\UserUnitTest\OwnershipRequest.cs" />
     <Compile Include="UnitTests\UserUnitTest\UserUnitTest.cs" />
     <Compile Include="UnitTests\UserUnitTest\ManUnitTest.cs" />
     <Compile Include="UnitTests\UserUnitTest\PasswordUnitTest.cs" />
