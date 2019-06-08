@@ -144,7 +144,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
             string json = JsonHandler.SerializeObject(policy);
              bridge.addPurchasingPolicy(storeId, json);
             //TODO: not a number may couse prolems in the future
-            policyId = 1;
+            policyId = 0;
             Assert.IsTrue(policyId >= 0);
         }
 
