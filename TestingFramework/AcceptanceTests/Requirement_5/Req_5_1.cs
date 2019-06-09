@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Policies;
 
 namespace TestingFramework.AcceptanceTests.Requirement_5
@@ -27,6 +28,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
 
         public override void Init()
         {
+            DataAccessDriver.UseStub = true;
             base.Init();
             policyId = -1;
             addTestStoreOwner1ToSystem();
@@ -42,6 +44,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
             removeTestStoreManager1FromSystem();
             removeTestStoreOwner1FromSystem();
             godObject.cleanUpAllData();
+            DataAccessDriver.UseStub = false;
         }
 
         private void createManagerWithRoles(bool addRemovePurchasing, bool addRemoveDiscountPolicy, bool addRemoveStoreManger, bool closeStore,bool addRemoveStorePolicy)

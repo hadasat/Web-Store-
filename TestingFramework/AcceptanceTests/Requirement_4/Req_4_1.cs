@@ -194,6 +194,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 Init();
                 string tmp_name;
                 string tmp_desc;
@@ -213,6 +214,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
     }

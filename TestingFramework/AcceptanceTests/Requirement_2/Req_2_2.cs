@@ -24,6 +24,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 bool result = bridge.Register(getUserName(), password, DateTime.Now, "shit");
 
                 Assert.IsTrue(result);
@@ -34,6 +35,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 
