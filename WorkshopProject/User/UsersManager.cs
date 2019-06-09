@@ -117,7 +117,7 @@ namespace Users
             }
             catch (Exception ignore)
             {
-                throw new Exception("this should noy happen, member doesn't exist");
+                throw new Exception("this should not happen, member doesn't exist");
             }
         }
 
@@ -490,7 +490,7 @@ namespace Users
             {
                 foreach (KeyValuePair<String, int> entry in owners)
                 {
-                    Member currMember = ConnectionStubTemp.getMember(entry.Value);
+                    Member currMember = ConnectionStubTemp.getMember(entry.Key);
                     if (currMember.id != creatorId && currMember.username!=candidateName)
                     {
                         currMember.addMessage("Do you agree adding " + candidateName + " as a co - owner to the store " + store.name + "?", Notification.NotificationType.CREATE_OWNER, requestId);

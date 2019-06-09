@@ -150,7 +150,12 @@ namespace Managment
           manager (needs to be like hes and below) */
         public bool CreateNewManager(Member member, Roles roles)
         {
-            if (this.storeOwner && myRoles.CompareRoles(roles) && checkNotAManager(member))
+            if (!checkNotAManager(member))
+            {
+                Logger.Log("error", logLevel.INFO, "store:" + store.id + " failed add new manager beacuae he is already a manager: " + member.username);
+                throw new Exception("this member is already manager of this store");
+            }
+            else if (this.storeOwner && myRoles.CompareRoles(roles))
             {
                 StoreManager newSubStoreManager = new StoreManager(this.store, roles);
                 newSubStoreManager.setFather(this);

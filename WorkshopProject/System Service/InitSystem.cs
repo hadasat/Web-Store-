@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.Log;
 
 namespace WorkshopProject.System_Service
 {
@@ -114,24 +115,42 @@ namespace WorkshopProject.System_Service
         public static void registerNewUser(string[] fullcommand)
         {
             if (fullcommand.Length == 5) {
-                string username = fullcommand[1];
-                string password = fullcommand[2];
-                string country = fullcommand[3];
-                string stringBirthdate = fullcommand[4];
-                DateTime birthdate = DateTime.Parse(stringBirthdate);
-                if (UserService.Register(username, password, birthdate, country))
-                    users.Add(username, password);
+                try
+                {
+                    string username = fullcommand[1];
+                    string password = fullcommand[2];
+                    string country = fullcommand[3];
+                    string stringBirthdate = fullcommand[4];
+                    DateTime birthdate = DateTime.Parse(stringBirthdate);
+                    if (UserService.Register(username, password, birthdate, country))
+                        users.Add(username, password);
+                }
+                catch (Exception e)
+                {
+                    Logger.Log("error", logLevel.ERROR,$"Init system: register user {e.Data}");
+                }
             }
+            else
+                Logger.Log("error", logLevel.ERROR, "Init system: register user bad input");
         }
 
         public static void makeAdmin(string[] fullcommand)
         {
             if (fullcommand.Length == 2)
             {
-                string userName = fullcommand[1];
-                User user = getUser(userName, users[userName]);
-                UserService.MakeAdmin(((Member)user).id);
+                try
+                {
+                    string userName = fullcommand[1];
+                    User user = getUser(userName, users[userName]);
+                    UserService.MakeAdmin(((Member)user).id);
+                }
+                catch (Exception e)
+                {
+                    Logger.Log("error", logLevel.ERROR,$"Init system: make admin {e.Data}");
+                }
             }
+            else
+                Logger.Log("error", logLevel.ERROR, "Init system: make admin bad input");
         }
 
         public static void openStore(string[] fullcommand)
@@ -145,8 +164,13 @@ namespace WorkshopProject.System_Service
                     User user = getUser(username, users[username]);
                     StoreService.AddStore(user, storeName);
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    Logger.Log("error", logLevel.ERROR,$"Init system: open store {e.Data}");
+                }
             }
+            else
+                Logger.Log("error", logLevel.ERROR, "Init system: open store bad input");
         }
         public static void addProductBasket(string[] fullcommand)
         {
@@ -173,9 +197,13 @@ namespace WorkshopProject.System_Service
 
                     StoreService.AddProductToStock(user, storeId, productId, amount);
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    Logger.Log("error", logLevel.ERROR,$"Init system: add Product to Store {e.Data}");
+                }
             }
-            
+            else
+                Logger.Log("error", logLevel.ERROR, "Init system: add Product to Store bad input");
         }
 
         public static void addStoreOwner(string[] fullcommand)
@@ -198,8 +226,12 @@ namespace WorkshopProject.System_Service
 
                     UserService.AddStoreManager(user, storeId, newManager, sushiRole);
                 }
-                catch { }
+                catch(Exception e) {
+                    Logger.Log("error", logLevel.ERROR,$"Init system: add store owner {e.Data}");
+                }
             }
+            else
+                Logger.Log("error", logLevel.ERROR, "Init system: add store owner bad input");
         }
         
         public static void loginuser(string[] fullcommand)
