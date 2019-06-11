@@ -77,7 +77,7 @@
 
    
     function displayStores(stores){
-        stores.map(store => $(".grid").append(createStoreCardHtml(store)));
+        stores.map(store => store.isActive && $(".grid").append(createStoreCardHtml(store)));
     };
 
     function createStoreCardHtml(store){
