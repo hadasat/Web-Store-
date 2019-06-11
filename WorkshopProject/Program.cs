@@ -24,14 +24,14 @@ namespace WorkshopProject
             try
             {
                 DataAccessSetup();
-                //InitSystem.initSystem();
+                InitSystem.initSystem();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
             
-            Setup();
+            //Setup();
             CommunicationManager manager = new CommunicationManager();
         }
 
