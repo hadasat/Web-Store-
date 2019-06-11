@@ -28,7 +28,7 @@ namespace WorkshopProject.DataAccessLayer
         {
             if(Persistent != val)
             {
-                resetContextINeeded();
+                resetContextIfNeeded();
                 Persistent = val;
             } 
         }
@@ -37,7 +37,7 @@ namespace WorkshopProject.DataAccessLayer
         {
             if (Local != val)
             {
-                resetContextINeeded();
+                resetContextIfNeeded();
                 Local = val;
             }
         }
@@ -46,7 +46,7 @@ namespace WorkshopProject.DataAccessLayer
         {
             if (Production != val)
             {
-                resetContextINeeded();
+                resetContextIfNeeded();
                 Production = val;
             }
         }
@@ -75,16 +75,21 @@ namespace WorkshopProject.DataAccessLayer
             return String.Concat(address, db, connectionString);
         }
 
-        private static void resetContextINeeded()
+        private static void resetContextIfNeeded()
         {
             if (ctx != null)
             {
-                ctx.SaveChanges();
-                ctx.Dispose();
-                ctx = null;
+                resetContext();
             }
         }
 
+
+        public static void resetContext()
+        {
+            ctx.SaveChanges();
+            ctx.Dispose();
+            ctx = null;
+        }
 
         /**STUB**/
 
@@ -92,13 +97,15 @@ namespace WorkshopProject.DataAccessLayer
         {
             Stores.Delete();
             Passwords.Delete();
+            OwnershipRequests.Delete();
             Members.Delete();
             ConnectionStubTemp.init();  
         }
         
-        public static DbListStub<Users.Member> Members = new DbListStub<Users.Member>();
+        public static DbListStub<Member> Members = new DbListStub<Member>();
         public static DbListStub<Store> Stores = new DbListStub<Store>();
         public static DbListStub<Password.Password> Passwords = new DbListStub<Password.Password>();
+        public static DbListStub<OwnershipRequest> OwnershipRequests = new DbListStub<OwnershipRequest>();
 
 
     }

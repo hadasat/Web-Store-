@@ -25,10 +25,10 @@ namespace OwnershipRequest.Test
         //[TestInitialize]
         public void Init()
         {
-            ownerId1 = god.addMember("username1", "password1");
-            ownerId2 = god.addMember("username2", "password2");
-            ownerId3 = god.addMember("username3", "password3");
-            ownerId4 = god.addMember("username4", "password4");
+            ownerId1 = god.addMember("username1_TestStoreManager", "password1");
+            ownerId2 = god.addMember("username2_TestStoreManager", "password2");
+            ownerId3 = god.addMember("username3_TestStoreManager", "password3");
+            ownerId4 = god.addMember("username4_TestStoreManager", "password4");
             firstStoreOwner = ConnectionStubTemp.getMember(ownerId1);
             SecondStoreOwner = ConnectionStubTemp.getMember(ownerId2);
             ThirdStoreOwner = ConnectionStubTemp.getMember(ownerId3);
@@ -56,6 +56,7 @@ namespace OwnershipRequest.Test
             {
 
             }
+            god.cleanUpAllData();
         }
 
         [TestMethod()]
