@@ -21,6 +21,7 @@ namespace WorkshopProject
     {
         static void Main(string[] args)
         {
+            DataAccessSetup();
 
             //LogExample.RunMe();
 
@@ -34,6 +35,14 @@ namespace WorkshopProject
             CommunicationManager manager = new CommunicationManager();
         }
 
+
+        static void DataAccessSetup()
+        {
+            DataAccessDriver.setProduction(true);
+            DataAccessDriver.setLocal(true);
+            //DataAccessDriver.setPersistent();
+            DataAccessDriver.UseStub = false;
+        }
 
         static void Setup()
         {

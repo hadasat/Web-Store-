@@ -28,9 +28,7 @@ namespace WorkshopProject.DataAccessLayer
         {
             if(Persistent != val)
             {
-                ctx.SaveChanges();
-                ctx.Dispose();
-                ctx = null;
+                resetContextINeeded();
                 Persistent = val;
             } 
         }
@@ -39,9 +37,7 @@ namespace WorkshopProject.DataAccessLayer
         {
             if (Local != val)
             {
-                ctx.SaveChanges();
-                ctx.Dispose();
-                ctx = null;
+                resetContextINeeded();
                 Local = val;
             }
         }
@@ -50,9 +46,7 @@ namespace WorkshopProject.DataAccessLayer
         {
             if (Production != val)
             {
-                ctx.SaveChanges();
-                ctx.Dispose();
-                ctx = null;
+                resetContextINeeded();
                 Production = val;
             }
         }
@@ -79,6 +73,16 @@ namespace WorkshopProject.DataAccessLayer
             string address = Local ? localAdress : remoteAdress;
             string db = Production ? ProductionDB : TestDB;
             return String.Concat(address, db, connectionString);
+        }
+
+        private static void resetContextINeeded()
+        {
+            if (ctx != null)
+            {
+                ctx.SaveChanges();
+                ctx.Dispose();
+                ctx = null;
+            }
         }
 
 
