@@ -150,6 +150,7 @@
     onStart(init);
 
     function addManagersToSelectList(managers){
+        $('#managers').html('');
         managers.map(manager => $('#managers').append(`<option>${manager.username}</option>`));
     }
 
@@ -157,6 +158,7 @@
      var username = $('#managers').val();
      sendRequest('action','removeStoreManager', {storeId: storeId ,username: username})
      .then(function(res){
+         alert(username+" no longer manager");
         init();
      })
  })
