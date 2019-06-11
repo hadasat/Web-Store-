@@ -21,19 +21,27 @@ namespace WorkshopProject
     {
         static void Main(string[] args)
         {
-
-            //LogExample.RunMe();
-
-            //DataAccessExamples.main();
-
-            //Console.ReadLine();
-            //WorkshopDBContext ctx = new WorkshopProductionDBContext();
-            //ctx.Members.Add(new Member());
-            InitSystem.initSystem();
+            try
+            {
+                DataAccessSetup();
+                //InitSystem.initSystem();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
             Setup();
             CommunicationManager manager = new CommunicationManager();
         }
 
+
+        static void DataAccessSetup()
+        {
+            DataAccessDriver.setProduction(true);
+            DataAccessDriver.setLocal(true);
+            DataAccessDriver.UseStub = false;
+        }
 
         static void Setup()
         {

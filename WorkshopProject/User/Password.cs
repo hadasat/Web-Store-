@@ -11,11 +11,12 @@ namespace Password
 {
     public class PasswordHandler
     {
+        public static Repo repo = new Repo();
         // Dictionary<ID, Tuple <salt, pepper>
         //private Dictionary<int, Tuple<byte[], byte[]>> saltesAndPepper = new Dictionary<int, Tuple<byte[], byte[]>>();
-        private List<Password> passwordObjList = new List<Password>();
+        //private List<Password> passwordObjList = new List<Password>();
         //CREATING
-        
+
         /** this is the byte[] that need to be stored **/
 
         //when register
@@ -26,7 +27,7 @@ namespace Password
             byte[] pepper = GenerateSaltedHash(bytesPass, currSalt);
             //saltesAndPepper.Add(ID,new Tuple<byte[], byte[]>(currSalt, pepper));
             Password passwordEntry = new Password(ID, currSalt, pepper);
-            GetList().Add(passwordEntry);
+            Add(passwordEntry);
             return true;
         }
 
@@ -98,6 +99,19 @@ namespace Password
         }
 
 
+        public void Add(Password entity)
+        {
+            if (useStub())
+            {
+                DataAccessDriver.Passwords.GetList().Add(entity);
+            }
+            else
+            {
+                repo.Add<Password>(entity);
+                //return passwordObjList;
+            }
+        }
+
         public Password GetEntry(int ID)
         {
             foreach(Password p in GetList())
@@ -125,7 +139,8 @@ namespace Password
             }
             else
             {
-                return passwordObjList;
+                return repo.GetList<Password>();
+                //return passwordObjList;
             }
         }
 
@@ -143,6 +158,12 @@ namespace Password
         public byte[] salt { get; set; }
         [MaxLength(128)]
         public byte[] pepper { get; set; }
+
+        public Password()
+        {
+
+        }
+
 
         public Password(int id, byte[] salt, byte[] pepper)
         {

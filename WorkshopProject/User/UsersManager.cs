@@ -10,6 +10,7 @@ using Shopping;
 using WorkshopProject.Log;
 using WorkshopProject.Communication;
 using WorkshopProject.DataAccessLayer;
+using System.ComponentModel.DataAnnotations;
 
 namespace Users
 {
@@ -402,21 +403,29 @@ namespace Users
 
 
 
-    public class OwnershipRequest
+    public class OwnershipRequest : IEntity
     {
-        private int ID;
-        private Store store;
-        private Member initiate;
-        private Member candidate;
-        public static Dictionary<String, int> owners = new Dictionary<String, int>();
+        [Key]
+        public int ID { get; set; }
+        public Store store { get; set; }
+        public Member initiate { get; set; }
+        public Member candidate { get; set; }
+        private static Dictionary<String, int> owners = new Dictionary<String, int>();
         //<ownerNames, approved>
-        private readonly object OwnersLock = new object();
-        private int counter = 0;
-        private readonly object CounterLock = new object();
-        private bool done;
-        private readonly object doneLock = new object();
+        public readonly object OwnersLock;
+        public int counter = 0;
+        public readonly object CounterLock;
+        public bool done;
+        public readonly object doneLock;
 
-        public OwnershipRequest(int id, Store store, Member candidate, Member initiate)
+        public OwnershipRequest()
+        {
+            OwnersLock = new object();
+            CounterLock = new object();
+            doneLock = new object();
+        }
+
+         public OwnershipRequest(int id, Store store, Member candidate, Member initiate)
         {
             this.ID = id;
             this.store = store;
@@ -424,6 +433,9 @@ namespace Users
             this.initiate = initiate;
             this.counter = 0;
             this.done = false;
+            OwnersLock = new object();
+            CounterLock = new object();
+            doneLock = new object();
         }
 
         public void addOwner(Member member)
@@ -537,5 +549,21 @@ namespace Users
             return ID;
         }
 
+        public override int GetKey()
+        {
+            return getID();
+        }
+
+        public override void SetKey(int key)
+        {
+            ID = key;
+        }
+
+        public override void LoadMe()
+        {
+            store.LoadMe();
+            initiate.LoadMe();
+            candidate.LoadMe();
+        }
     }
 }
