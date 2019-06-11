@@ -303,8 +303,10 @@ namespace Users
         private Store store;
         private Member initiate;
         private Member candidate;
-        public static Dictionary<String, int> owners = new Dictionary<String, int>();
+        //public static Dictionary<String, int> owners = new Dictionary<String, int>();
         //<ownerNames, approved>
+        public LinkedList<Decision> owners = new LinkedList<Decision>();
+
         private readonly object OwnersLock = new object();
         private int counter = 0;
         private readonly object CounterLock = new object();
@@ -323,7 +325,7 @@ namespace Users
 
         public void addOwner(Member member)
         {
-            owners[member.username] = 0;
+            owners.AddFirst(new Decision(member.username));
             lock (CounterLock)
             {
                 counter++;
@@ -336,7 +338,14 @@ namespace Users
         {
             lock(OwnersLock)
             {
-                owners[member.username] = decition;
+                foreach(Decision d in owners)
+                {
+                    if (d.username == member.username)
+                    {
+                        d.setDecition(decition);
+                        break;
+                    }
+                }
             }
             lock(CounterLock)
             {
@@ -371,9 +380,9 @@ namespace Users
         private bool checkIfApproved()
         {
             bool ans = true;
-            foreach (KeyValuePair<String, int> entry in owners)
+            foreach (Decision d in owners)
             {
-                ans = ans & (entry.Value == 1);
+                ans = ans & (d.getDecition() == 1);
             }
             return ans;
         }
@@ -383,9 +392,9 @@ namespace Users
 
             lock (OwnersLock)
             {
-                foreach (KeyValuePair<String, int> entry in owners)
+                foreach (Decision d in owners)
                 {
-                    Member currMember = ConnectionStubTemp.getMember(entry.Key);
+                    Member currMember = ConnectionStubTemp.getMember(d.username);
                     if (currMember.id != creatorId && currMember.username!=candidateName)
                     {
                         currMember.addMessage("Do you agree adding " + candidateName + " as a co - owner to the store " + store.name + "?", Notification.NotificationType.CREATE_OWNER, requestId);
@@ -393,31 +402,6 @@ namespace Users
                 }
             }
 
-            /*
-            List<Member> members = ConnectionStubTemp.members.Values.ToList();
-            foreach (Member currMember in members)
-            {
-                if (currMember.isStoresOwner(store.id) && currMember.id != creatorId)
-                {
-                    currMember.addMessage("Do you agree adding " + candidateName+ " as a co-owner to the store "+store.name ,
-                        Notification.NotificationType.CREATE_OWNER,requestId);
-                }
-            }*/
-
-            //if (owners.Count != 0)
-            //{
-            //    // message:
-            //    //store <name / id>
-            //    //owner that made the qequest <username>
-            //    //member candidate <username>
-
-
-
-            //    //send to all members in owners.
-            //    //I SAVED USERNAMES - U CAN GET THE MEMBER ITSELF WITH THIS LINE
-            //    ////ConnectionStubTemp.getMember(username);
-
-            //}
         }
 
         public void makeOwner()
@@ -432,5 +416,27 @@ namespace Users
             return ID;
         }
 
+    }
+
+    public class Decision
+    {
+        public String username;
+        private int desicion;
+
+        public Decision(string username)
+        {
+            this.desicion = 0; ;
+            this.username = username;
+        }
+
+        public void setDecition(int dec)
+        {
+            this.desicion = dec;
+        }
+
+        public int getDecition()
+        {
+            return this.desicion;
+        }
     }
 }
