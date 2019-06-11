@@ -88,11 +88,6 @@
                 </div>
                 <div>
                     <label class="checkbox">
-                        <input type="checkbox" value="" id="close_check">Close store
-                    </label>
-                </div>
-                <div>
-                    <label class="checkbox">
                         <input type="checkbox" value="" id="communication_check">Customer communication
                     </label>
                 </div>
@@ -150,6 +145,7 @@
     onStart(init);
 
     function addManagersToSelectList(managers){
+        $('#managers').html('');
         managers.map(manager => $('#managers').append(`<option>${manager.username}</option>`));
     }
 
@@ -157,6 +153,7 @@
      var username = $('#managers').val();
      sendRequest('action','removeStoreManager', {storeId: storeId ,username: username})
      .then(function(res){
+         alert(username+" no longer manager");
         init();
      })
  })
@@ -254,7 +251,7 @@
         $('#addManager_btn').on('click',function(){
             var appointmanager_check = $('#appointmanager_check').prop('checked');
             var appointowners_check = false;
-            var close_check = $('#close_check').prop('checked');
+            var close_check = false;
             var communication_check = $('#communication_check').prop('checked');
             var discounts_check = $('#discounts_check').prop('checked');
             var managers_check = $('#managers_check').prop('checked');

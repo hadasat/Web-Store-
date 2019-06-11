@@ -142,7 +142,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
 
                 int productId = bridge.AddProductToStore(storeId, productName, productDesc, productPrice, productCategory);
 
-                bool result2 = bridge.ChangeProductInfo(storeId, productId, "", "", 50.0, "", -1);
+                bool result2 = bridge.ChangeProductInfo(storeId, productId, "", "", 50.0, "", 0);
                 Assert.IsTrue(result2);
             }
             finally
