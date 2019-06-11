@@ -98,20 +98,20 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
             //TODO: verify that store doesnt exist when this feature is added
         }
 
-        [TestMethod]
-        [TestCategory("Req_6")]
-        public void CloseStoreSuccess()
-        {
-            try
-            {
-                Init();
-                bool result = bridge.CloseStore(storeId);
-                Assert.IsTrue(result);
-            }
-            finally
-            {
-                Cleanup();
-            }
-        }
+        //[TestMethod]
+        //[TestCategory("Req_6")]
+        //public void CloseStoreSuccess()
+        //{
+        //    try
+        //    {
+        //        Init();
+        //        bool result = bridge.CloseStore(storeId);
+        //        Assert.IsTrue(result);
+        //    }
+        //    finally
+        //    {
+        //        Cleanup();
+        //    }
+        //}
     }
 }
