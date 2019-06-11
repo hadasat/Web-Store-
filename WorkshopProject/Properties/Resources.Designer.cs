@@ -277,16 +277,17 @@ namespace WorkshopProject.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to :root {
-        ///    --input-padding-x: 1.5rem;
-        ///    --input-padding-y: .75rem;
-        ///  }
-        ///  
+        ///   Looks up a localized string similar to 
         ///  body {
         ///    background: #007bff;
         ///    background: linear-gradient(to right, #0062E6, #33AEFF);
         ///  }
         ///
+        ///  :root {
+        ///    --input-padding-x: 1.5rem;
+        ///    --input-padding-y: .75rem;
+        ///  }
+        ///  
         ///  /* background: linear-gradient(to right, #c8f0ff40, #2ba3f1); */
         ///  
         ///  .card-signin {
@@ -301,7 +302,7 @@ namespace WorkshopProject.Properties {
         ///    font-size: 1.5rem;
         ///  }
         ///  
-        ///  .card-signin .car [rest of string was truncated]&quot;;.
+        ///  .card-signin  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SignIn1 {
             get {
