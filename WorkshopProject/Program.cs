@@ -21,16 +21,16 @@ namespace WorkshopProject
     {
         static void Main(string[] args)
         {
-            DataAccessSetup();
-
-            //LogExample.RunMe();
-
-            //DataAccessExamples.main();
-
-            //Console.ReadLine();
-            //WorkshopDBContext ctx = new WorkshopProductionDBContext();
-            //ctx.Members.Add(new Member());
-            InitSystem.initSystem();
+            try
+            {
+                DataAccessSetup();
+                //InitSystem.initSystem();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
             Setup();
             CommunicationManager manager = new CommunicationManager();
         }
@@ -40,7 +40,6 @@ namespace WorkshopProject
         {
             DataAccessDriver.setProduction(true);
             DataAccessDriver.setLocal(true);
-            //DataAccessDriver.setPersistent();
             DataAccessDriver.UseStub = false;
         }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkshopProject.DataAccessLayer;
 
 namespace Password.Tests
 {
@@ -22,6 +23,7 @@ namespace Password.Tests
         //[TestInitialize]
         public void Init()
         {
+            DataAccessDriver.UseStub = true;
             password = CreatePassword(PASS_LENGTH);
 
         }
@@ -30,6 +32,7 @@ namespace Password.Tests
         public void Cealup()
         {
             passwordHandler.RemoveEntry(ID);
+            DataAccessDriver.UseStub = false;
         }
 
         [TestMethod()]
