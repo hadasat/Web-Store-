@@ -4,6 +4,7 @@ using Users;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TansactionsNameSpace;
 using WorkshopProject.External_Services;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.Tests
 {
@@ -20,6 +21,7 @@ namespace WorkshopProject.Tests
         [TestInitialize]
         public void Init()
         {
+            DataAccessDriver.UseStub = true;
             store1Id = WorkShop.createNewStore("TestStore1", 1, true, menager);
             store2Id = WorkShop.createNewStore("TestStore2", 2, true, menager);
             store1 = WorkShop.getStore(store1Id);
@@ -48,6 +50,7 @@ namespace WorkshopProject.Tests
         {
             WorkShop.Remove(store1.id);
             WorkShop.Remove(store2.id);
+            DataAccessDriver.UseStub = false;
         }
 
         [TestMethod()]

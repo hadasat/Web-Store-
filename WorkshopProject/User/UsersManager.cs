@@ -15,8 +15,14 @@ namespace Users
 {
     public static class ConnectionStubTemp
     {
+        //public static bool useStub = false;
         public static Repo repo = new Repo();
+        
         public static PasswordHandler pHandler = new PasswordHandler();
+
+
+
+
         //public static Dictionary<int, Member> members = new Dictionary<int, Member>();
         // <ID, MEMBER>
         //public static Dictionary<string, int> mapIDUsermane = new Dictionary<string, int>();
@@ -111,7 +117,7 @@ namespace Users
             }
             catch (Exception ignore)
             {
-                throw new Exception("this should noy happen, member doesn't exist");
+                throw new Exception("this should not happen, member doesn't exist");
             }
         }
 
@@ -317,6 +323,10 @@ namespace Users
 
         public static List<Member> GetMembers()
         {
+            if (useStub())
+            {
+                return getDbStub().GetList();
+            }
             return repo.GetList<Member>();
         }
 
@@ -334,24 +344,60 @@ namespace Users
 
         public static void AddMember(Member member)
         {
+            if (useStub())
+            {
+                getDbStub().Add(member);
+                return;
+            }
             repo.Add<Member>(member);
         }
 
         public static Member GetMemberById(int id)
         {
+            if (useStub())
+            {
+                return getDbStub().Get(id);
+            }
             return (Member) repo.Get<Member>(id);
         }
 
         public static void Remove(int id)
         {
+            if (useStub())
+            {
+                getDbStub().Remove(id);
+                return;
+            }
             repo.Remove<Member>(GetMemberById(id));
         }
 
         public static void Update(Member member)
         {
+            if (useStub())
+            {
+                return;
+            }
             repo.Update<Member>(member);
         }
 
+        public static void Clear()
+        {
+            if (useStub())
+            {
+                getDbStub().Delete();
+            }
+            //TODO: repo in the future
+        }
+
+        private static bool useStub()
+        {
+            return DataAccessDriver.UseStub;
+        }
+
+        private static DbListStub<Member> getDbStub()
+        {
+            return DataAccessDriver.Members;
+        }
     }
 
 
@@ -444,7 +490,7 @@ namespace Users
             {
                 foreach (KeyValuePair<String, int> entry in owners)
                 {
-                    Member currMember = ConnectionStubTemp.getMember(entry.Value);
+                    Member currMember = ConnectionStubTemp.getMember(entry.Key);
                     if (currMember.id != creatorId && currMember.username!=candidateName)
                     {
                         currMember.addMessage("Do you agree adding " + candidateName + " as a co - owner to the store " + store.name + "?", Notification.NotificationType.CREATE_OWNER, requestId);

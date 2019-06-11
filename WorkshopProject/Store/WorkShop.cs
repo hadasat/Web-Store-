@@ -70,7 +70,7 @@ namespace WorkshopProject
         public static int createNewStore(string name, int rank, Boolean isActive, Member owner)
         {
             Store store = new Store(0,name, rank, isActive);
-            repo.Add<Store>(store);
+            AddStore(store);
             int currID = store.id;
             //id++;
             owner.addStore(store);
@@ -159,22 +159,59 @@ namespace WorkshopProject
 
         public static List<Store> GetStores()
         {
+            if (useStub())
+            {
+                return getDbStub().GetList();
+            }
             return repo.GetList<Store>();
         }
 
         public static Store GetStoreById(int id)
         {
+            if (useStub())
+            {
+                return getDbStub().Get(id);
+            }
             return (Store) repo.Get<Store>(id);
         }
 
         public static void Remove(int id)
         {
+            if (useStub())
+            {
+                getDbStub().Remove(id);
+                return;
+            }
             repo.Remove<Store>(GetStoreById(id));
+        }
+
+        public static void AddStore(Store e)
+        {
+            if (useStub())
+            {
+                getDbStub().Add(e);
+                return;
+            }
+            repo.Add<Store>(e);
         }
 
         public static void Update(Store store)
         {
+            if (useStub())
+            {
+                
+                return;
+            }
             repo.Update<Store>(store);
+        }
+
+        private static bool useStub()
+        {
+            return DataAccessDriver.UseStub;
+        }
+        private static DbListStub<Store> getDbStub()
+        {
+            return DataAccessDriver.Stores;
         }
     }
 }

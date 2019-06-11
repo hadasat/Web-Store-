@@ -34,6 +34,11 @@ namespace WorkshopProject.Policies
         {
             return id;
         }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
         {
             if (condition.evaluate(products, user)){

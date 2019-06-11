@@ -43,6 +43,8 @@ namespace WorkshopProject.System_Service
         bool removeProductFromStock(int storeId, int ProductId, int amountToRemove);
         void cleanUpAllData();
 
+        void clearDb();
+
     }
 
     public class GodObject : IGodObject
@@ -182,6 +184,7 @@ namespace WorkshopProject.System_Service
         //disabled for now
         public void cleanUpAllData()
         {
+            clearDb();
             //new Repo().Delete();
 
             //WorkShop.stores = new Dictionary<int, Store>();
@@ -197,6 +200,19 @@ namespace WorkshopProject.System_Service
         {
 
         }
-        
+
+        public void clearDb()
+        {
+            if (DataAccessDriver.UseStub)
+            {
+                DataAccessDriver.clearStub();
+            }
+
+            else
+            {
+                new Repo().Delete();    
+            }
+            
+        }
     }
 }

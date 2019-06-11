@@ -16,7 +16,7 @@ namespace WorkshopProject
     public class Store : IEntity
     {
         [Key]
-        //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public string name { get; set; }
         public int rank { get; set; }
@@ -36,7 +36,8 @@ namespace WorkshopProject
         public int storeAccountNum;
         public string storeAddress;
 
-        public Store() {
+        public Store()
+        {
             Stocks = new List<Stock>();
             this.purchasePolicies = new List<IBooleanExpression>();
             this.storePolicies = new List<IBooleanExpression>();
@@ -81,6 +82,11 @@ namespace WorkshopProject
         public override int GetKey()
         {
             return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
         }
         public override void Copy(IEntity other)
         {
@@ -196,7 +202,6 @@ namespace WorkshopProject
                 return -1;
 
             GetStock().Add(p.getId(), p);
-            WorkShop.Update(this);
             Logger.Log("event", logLevel.INFO, "product " + p.getId() + " added");
             return p.getId();
         }
@@ -360,7 +365,7 @@ namespace WorkshopProject
             //check consistency
             if (!IBooleanExpression.confirmListConsist(purchasPolicy, purchasePolicies))
                 return Policystatus.InconsistPolicy;
-                if (newPolicyId < 0)
+            if (newPolicyId < 0)
                 return Policystatus.BadPolicy;
             purchasPolicy.id = newPolicyId;
             this.purchasePolicies.Add(purchasPolicy);
@@ -469,10 +474,11 @@ namespace WorkshopProject
         public List<Product> getAllProducst()
         {
             List<Product> ans = new List<Product>();
-            if (Stock == null || Stock.Count == 0){
+            if (Stock == null || Stock.Count == 0)
+            {
                 return ans;
             }
-            foreach(KeyValuePair<int,Product> curr in Stock)
+            foreach (KeyValuePair<int, Product> curr in Stock)
             {
 
                 ans.Add(curr.Value);
@@ -501,7 +507,7 @@ namespace WorkshopProject
     public class Stock : IEntity
     {
         [Key]
-        //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public int amount { get; set; }
         [Include]
@@ -520,6 +526,10 @@ namespace WorkshopProject
             return id;
         }
 
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public override void Copy(IEntity other)
         {
             base.Copy(other);

@@ -14,6 +14,8 @@ namespace TestingFramework.UnitTests.DataAccessTests
     [TestClass]
     public class ContextUsesTests
     {
+        /*
+
         [TestMethod()]
         [TestCategory("DAL - Repo")]
         public void StoreTest()
@@ -86,5 +88,6 @@ namespace TestingFramework.UnitTests.DataAccessTests
             //repo.Clear<Store>();
             // Assert.IsNull(repo.Get<Store>(store.GetKey()));
         }
+        */
     }
 }

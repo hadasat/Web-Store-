@@ -33,6 +33,11 @@ namespace Users
         {
             return id;
         }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public virtual bool hasAddRemoveDiscountPermission(Store store)
         {
             return false;

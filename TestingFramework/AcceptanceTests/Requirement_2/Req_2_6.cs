@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using WorkshopProject.DataAccessLayer;
 
 namespace TestingFramework.AcceptanceTests.Requirement_2
 {
@@ -34,6 +35,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 Init();
                 bool result = bridge.AddProductToBasket(storeId,productId, 1);
                 Assert.IsTrue(result);
@@ -47,6 +49,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 

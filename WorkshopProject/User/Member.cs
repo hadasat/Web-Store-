@@ -48,6 +48,17 @@ namespace Users
             }
         }
 
+        public override int GetKey()
+        {
+            return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
+
+
         public Member(string username) : this()//Register
         {
             this.username = username;
@@ -545,6 +556,11 @@ namespace Users
         public override int GetKey()
         {
             return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
         }
         public override void Copy(IEntity other)
         {

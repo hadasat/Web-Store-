@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WorkshopProject;
 using Users;
 using Managment;
+using WorkshopProject.DataAccessLayer;
 
 namespace TestingFramework.UnitTests
 {
@@ -24,9 +25,15 @@ namespace TestingFramework.UnitTests
         [TestInitialize]
         public void Init()
         {
-            storeOwner1Id = godObject.addMember(userName, password);
-            storeId = godObject.addStore("store", 5, storeOwner1Id);
-            service.login(userName, password);
+            DataAccessDriver.UseStub = true;
+            try
+            {
+                storeOwner1Id = godObject.addMember(userName, password);
+                storeId = godObject.addStore("store", 5, storeOwner1Id);
+                service.login(userName, password);
+            }
+            catch { };
+           
         }
 
         [TestCleanup]
@@ -34,43 +41,89 @@ namespace TestingFramework.UnitTests
         {
             godObject.cleanUpAllData();
             service.logout();
+            DataAccessDriver.UseStub = false;
         }
 
         [TestMethod]
         public void GetStoreTest()
         {
-            string result = service.GetStore(storeId);
-            Store store = JsonHandler.DeserializeObject<Store>(result);
-            Assert.AreEqual(store.id, storeId);
+            try
+            {
+                Init();
+                string result = service.GetStore(storeId);
+                Store store = JsonHandler.DeserializeObject<Store>(result);
+                Assert.AreEqual(store.id, storeId);
+            }
+            finally
+            {
+                Cleanup();
+            }
+
         }
 
         [TestMethod]
         public void GetAllStoresTest()
         {
-            string result = service.GetAllStores();
-            List<Store> stores = JsonHandler.DeserializeObject<List<Store>>(result);
-            Assert.AreEqual(stores.Count, 1);
+            try
+            {
+                Init();
+                string result = service.GetAllStores();
+                List<Store> stores = JsonHandler.DeserializeObject<List<Store>>(result);
+                Assert.AreEqual(stores.Count, 1);
+            }
+            finally
+            {
+                Cleanup();
+            }
+
         }
 
         [TestMethod]
         public void GetAllManagersTest()
         {
-            string result = service.GetAllManagers(storeId);
-            List<Member> managers = JsonHandler.DeserializeObject<List<Member>>(result);
+            try
+            {
+                Init();
+                string result = service.GetAllManagers(storeId);
+                List<Member> managers = JsonHandler.DeserializeObject<List<Member>>(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
+
         }
 
         [TestMethod]
         public void GetRolesTest()
-        {         
-            string result = service.GetRoles();
-            List<StoreManager> managers = JsonHandler.DeserializeObject<List<StoreManager>>(result);
+        {
+            try
+            {
+                Init();
+                string result = service.GetRoles();
+                List<StoreManager> managers = JsonHandler.DeserializeObject<List<StoreManager>>(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
+            
         }
 
         [TestMethod]
         public void GetAllMembersTest()
         {
-            string result = service.GetAllMembers();
-            List<Member> managers = JsonHandler.DeserializeObject<List<Member>>(result);
+            try
+            {
+                Init();
+                string result = service.GetAllMembers();
+                List<Member> managers = JsonHandler.DeserializeObject<List<Member>>(result);
+            }
+            finally
+            {
+                Cleanup();
+            }
+
         }
 
         //[TestMethod]

@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using WorkshopProject.DataAccessLayer;
 
 namespace TestingFramework.AcceptanceTests.Requirement_1
 {
@@ -10,6 +10,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
         //[TestInitialize]
         public override void Init()
         {
+            DataAccessDriver.UseStub = true;
             base.Init();
             addTestMemberToSystem();
             addTestStoreOwner1ToSystem();
@@ -22,7 +23,8 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
             bool result = bridge.Logout();
             removeTestStoreOwner1FromSystem();
             removeTestMemberFromSystem();
-            godObject.cleanUpAllData();
+            godObject.clearDb();
+            DataAccessDriver.UseStub = true;
         }
 
         [TestMethod]
@@ -105,6 +107,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 Init();
                 bool result = bridge.CloseStore(storeId);
                 Assert.IsTrue(result);
@@ -112,6 +115,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_1
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
     }

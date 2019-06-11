@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Users;
 using WorkshopProject;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.System_Service;
 
 namespace IntegrationTests
@@ -16,7 +17,6 @@ namespace IntegrationTests
     {
         public int id;
         public string message;
-     
     }
 
 
@@ -33,22 +33,25 @@ namespace IntegrationTests
         //Member member;
 
 
-        [TestInitialize]
+        //[TestInitialize]
         public void init()
         {
             god = new GodObject();
+            god.clearDb();
+            DataAccessDriver.UseStub = true;
             service = new SystemServiceImpl();
             //service.Register("user", "123");
-            owner_id = god.addMember("owner", "123");
+            try { owner_id = god.addMember("owner", "123"); } catch { };
             service.login("owner", "123");
-            store_id = god.addStore("store_test", 1, owner_id);
-            pid = god.addProductToStore(store_id, name, price, cat, desc, keyword, amount, rank);
+            try { store_id = god.addStore("store_test", 1, owner_id); } catch { };
+            try { pid = god.addProductToStore(store_id, name, price, cat, desc, keyword, amount, rank); } catch { };
         }
 
-        [TestCleanup]
+        //[TestCleanup]
         public void Cealup()
         {
             god.cleanUpAllData();
+            DataAccessDriver.UseStub = false;
         }
 
         [TestMethod()]
@@ -81,11 +84,20 @@ namespace IntegrationTests
         [TestCategory("StoreServiceTest")]
         public void AddProductToStockTest()
         {
-            
-            string res = service.AddProductToStock(store_id, pid, amountToAdd);
-            Assert.IsTrue(getMsg(res) == successMsg);
-            Product p = WorkShop.getStore(store_id).getProduct(pid);
-            Assert.IsTrue(p.amount == amount + amountToAdd);
+
+            try
+            {
+                init();
+                string res = service.AddProductToStock(store_id, pid, amountToAdd);
+                Assert.IsTrue(getMsg(res) == successMsg);
+                Product p = WorkShop.getStore(store_id).getProduct(pid);
+                Assert.IsTrue(p.amount == amount + amountToAdd);
+            }
+            finally
+            {
+                Cealup();
+            }
+
 
 
         }
@@ -94,27 +106,45 @@ namespace IntegrationTests
         [TestCategory("StoreServiceTest")]
         public void AddProductToStoreTest()
         {
-            string name = "p", desc = "d", cat = "c";
-            int price = 1;
-            string res = service.AddProductToStore(store_id, name, desc, price, cat);
-            Response mes = JsonConvert.DeserializeObject<Response>(res);
-            Assert.IsTrue(mes.id >= 0);
+            try
+            {
+                init();
+                string name = "p", desc = "d", cat = "c";
+                int price = 1;
+                string res = service.AddProductToStore(store_id, name, desc, price, cat);
+                Response mes = JsonConvert.DeserializeObject<Response>(res);
+                Assert.IsTrue(mes.id >= 0);
 
 
-            Product p = WorkShop.getStore(store_id).getProduct(mes.id);
-            Assert.IsTrue(p != null);
-            Assert.IsTrue(p.name == name && p.description == desc && p.price == price && p.category == cat);
+                Product p = WorkShop.getStore(store_id).getProduct(mes.id);
+                Assert.IsTrue(p != null);
+                Assert.IsTrue(p.name == name && p.description == desc && p.price == price && p.category == cat);
+            }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
         [TestMethod()]
         [TestCategory("StoreServiceTest")]
         public void AddStoreTest()
         {
-            string name = "name";
-            string res = service.AddStore(name);
-            Response mes = JsonConvert.DeserializeObject<Response>(res);
-            Assert.IsTrue(mes.id >= 0);
-            Assert.IsTrue(WorkShop.getStore(mes.id) != null);
+            try
+            {
+                init();
+                string name = "name";
+                string res = service.AddStore(name);
+                Response mes = JsonConvert.DeserializeObject<Response>(res);
+                Assert.IsTrue(mes.id >= 0);
+                Assert.IsTrue(WorkShop.getStore(mes.id) != null);
+            }
+            finally
+            {
+                Cealup();
+            }
+
 
         }
 
@@ -122,14 +152,23 @@ namespace IntegrationTests
         [TestCategory("StoreServiceTest")]
         public void ChangeProductInfoTest()
         {
-            string nName = "new name",nDesc="new D",nCat="nCat";
-            int nPrice = 11, nAmount = 100;
-            string res = service.ChangeProductInfo(store_id, pid, nName, nDesc, nPrice, nCat, nAmount);
-            Assert.IsTrue(getMsg(res) == successMsg);
+            try
+            {
+                init();
+                string nName = "new name", nDesc = "new D", nCat = "nCat";
+                int nPrice = 11, nAmount = 100;
+                string res = service.ChangeProductInfo(store_id, pid, nName, nDesc, nPrice, nCat, nAmount);
+                Assert.IsTrue(getMsg(res) == successMsg);
 
-            Product p = WorkShop.getStore(store_id).getProduct(pid);
-            Assert.IsTrue(p != null);
-            Assert.IsTrue(p.name == nName && p.description == nDesc && p.price == nPrice && p.category == nCat && p.amount==nAmount,"updtae  didnt happend");
+                Product p = WorkShop.getStore(store_id).getProduct(pid);
+                Assert.IsTrue(p != null);
+                Assert.IsTrue(p.name == nName && p.description == nDesc && p.price == nPrice && p.category == nCat && p.amount == nAmount, "updtae  didnt happend");
+
+            }
+            finally
+            {
+                Cealup();
+            }
 
         }
 
@@ -137,21 +176,39 @@ namespace IntegrationTests
         [TestCategory("StoreServiceTest")]
         public void CloseStoreTest()
         {
-            string res = service.closeStore(store_id);
-            Assert.IsTrue(getMsg(res) == successMsg);
+            try
+            {
+                init();
+                string res = service.closeStore(store_id);
+                Assert.IsTrue(getMsg(res) == successMsg);
 
-            Assert.IsTrue(WorkShop.getStore(store_id).isActive==false, "store still exist");
+                Assert.IsTrue(WorkShop.getStore(store_id).isActive == false, "store still exist");
+            }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
         [TestMethod()]
         [TestCategory("StoreServiceTest")]
         public void GetProductInfoTest()
         {
-            string res = service.GetProductInfo(pid);
-            Product p  = JsonConvert.DeserializeObject<Product>(res);
+            try
+            {
+                init();
+                string res = service.GetProductInfo(pid);
+                Product p = JsonConvert.DeserializeObject<Product>(res);
 
-            Assert.IsTrue(p != null);
-            Assert.IsTrue(p.name == name && p.description == desc && p.price == price && p.category == cat);
+                Assert.IsTrue(p != null);
+                Assert.IsTrue(p.name == name && p.description == desc && p.price == price && p.category == cat);
+            }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
         //[TestMethod()]
@@ -165,10 +222,19 @@ namespace IntegrationTests
         [TestCategory("StoreServiceTest")]
         public void RemoveProductFromStoreTest()
         {
-            string res = service.RemoveProductFromStore(store_id, pid);
-            Assert.IsTrue(getMsg(res) == successMsg);
-            Assert.IsTrue(WorkShop.getStore(store_id).getProduct(pid) == null,
-                "product didnt removed");
+            try
+            {
+                init();
+                string res = service.RemoveProductFromStore(store_id, pid);
+                Assert.IsTrue(getMsg(res) == successMsg);
+                Assert.IsTrue(WorkShop.getStore(store_id).getProduct(pid) == null,
+                    "product didnt removed");
+            }
+            finally
+            {
+                Cealup();
+            }
+
         }
 
   

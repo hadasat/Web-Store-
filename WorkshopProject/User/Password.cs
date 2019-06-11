@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using WorkshopProject.DataAccessLayer;
 
 namespace Password
 {
@@ -11,7 +13,7 @@ namespace Password
     {
         // Dictionary<ID, Tuple <salt, pepper>
         //private Dictionary<int, Tuple<byte[], byte[]>> saltesAndPepper = new Dictionary<int, Tuple<byte[], byte[]>>();
-        private LinkedList<Password> passwordObjList = new LinkedList<Password>();
+        private List<Password> passwordObjList = new List<Password>();
         //CREATING
         
         /** this is the byte[] that need to be stored **/
@@ -24,7 +26,7 @@ namespace Password
             byte[] pepper = GenerateSaltedHash(bytesPass, currSalt);
             //saltesAndPepper.Add(ID,new Tuple<byte[], byte[]>(currSalt, pepper));
             Password passwordEntry = new Password(ID, currSalt, pepper);
-            passwordObjList.AddFirst(passwordEntry);
+            GetList().Add(passwordEntry);
             return true;
         }
 
@@ -98,7 +100,7 @@ namespace Password
 
         public Password GetEntry(int ID)
         {
-            foreach(Password p in passwordObjList)
+            foreach(Password p in GetList())
             {
                 if (p.id == ID)
                 {
@@ -111,24 +113,57 @@ namespace Password
         public void RemoveEntry(int ID)
         {
             Password toRemove = GetEntry(ID);
-            passwordObjList.Remove(toRemove);
+            GetList().Remove(toRemove);
         }
 
 
+        private ICollection<Password> GetList()
+        {
+            if (useStub())
+            {
+                return DataAccessDriver.Passwords.GetList();
+            }
+            else
+            {
+                return passwordObjList;
+            }
+        }
 
+        private static bool useStub()
+        {
+            return DataAccessDriver.UseStub;
+        }
     }
 
-    public class Password
+    public class Password : IEntity
     {
-        public int id;
-        public byte[] salt;
-        public byte[] pepper;
+        [Key]
+        public int id { get; set; }
+        [MaxLength(128)]
+        public byte[] salt { get; set; }
+        [MaxLength(128)]
+        public byte[] pepper { get; set; }
 
         public Password(int id, byte[] salt, byte[] pepper)
         {
             this.id = id;
             this.salt = salt;
             this.pepper = pepper;
+        }
+
+        public override int GetKey()
+        {
+            return id;
+        }
+
+        public override void LoadMe()
+        {
+            //do nothing
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
         }
     }
 }
