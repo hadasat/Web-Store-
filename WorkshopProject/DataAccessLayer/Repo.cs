@@ -112,7 +112,9 @@ namespace WorkshopProject.DataAccessLayer
             {
                 //do nothing
             }
-            
+
+            DataAccessDriver.resetContext();
+
         }
 
         public virtual void SaveChanges()

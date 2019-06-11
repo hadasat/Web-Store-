@@ -223,7 +223,7 @@ namespace Users
                 throw new Exception("You dont own this store! should not happen!!");
             }
             requestId = ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
-            ConnectionStubTemp.deleteOwnershipRequest(ConnectionStubTemp.getOwnershipRequest(requestId));
+            ConnectionStubTemp.deleteOwnershipRequest(ConnectionStubTemp.GetOwnershipRequest(requestId));
             return -1;
         }
 
@@ -259,7 +259,7 @@ namespace Users
         //true on succsess exception if somthing went wrong
         public bool approveOwnershipRequest(int requestId)
         {
-            OwnershipRequest ownershipRequest = ConnectionStubTemp.getOwnershipRequest(requestId);
+            OwnershipRequest ownershipRequest = ConnectionStubTemp.GetOwnershipRequest(requestId);
             ownershipRequest.approveOrDisapprovedOwnership(1, this);
             return true;
         }
@@ -267,7 +267,7 @@ namespace Users
         //true on succsess exception if somthing went wrong
         public bool disapproveOwnershipRequest(int requestId)
         {
-            OwnershipRequest ownershipRequest = ConnectionStubTemp.getOwnershipRequest(requestId);
+            OwnershipRequest ownershipRequest = ConnectionStubTemp.GetOwnershipRequest(requestId);
             ownershipRequest.approveOrDisapprovedOwnership(-1, this);
             return true;
         }
