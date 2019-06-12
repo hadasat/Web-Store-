@@ -91,9 +91,10 @@ namespace WorkshopProject.System_Service
 
         public static Store getStore(string name)
         {
-            foreach(KeyValuePair<int,Store> s in WorkShop.stores)
+            foreach(Store store in WorkShop.GetStores())
             {
-                Store store = s.Value;
+                //Store = s.Value;
+                
                 if (store.name.Equals(name))
                     return store;
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WorkshopProject.DataAccessLayer;
 
 namespace TestingFramework.AcceptanceTests.Requirement_2
 {
@@ -23,16 +24,18 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             try
             {
-                bool result = bridge.Register(user, password, DateTime.Now, "shit");
+                DataAccessDriver.UseStub = true;
+                bool result = bridge.Register(getUserName(), password, DateTime.Now, "shit");
 
                 Assert.IsTrue(result);
 
-                result = bridge.Login(user, password);
+                result = bridge.Login(getUserName(), password);
                 Assert.IsTrue(result);
             }
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 
@@ -45,15 +48,17 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             try
             {
-                bridge.Register(user, password,DateTime.Now,"shit");
+                DataAccessDriver.UseStub = true;
+                bridge.Register(getUserName(), password,DateTime.Now,"shit");
 
-                bool result = bridge.Register(user, password, DateTime.Now, "shit");
+                bool result = bridge.Register(getUserName(), password, DateTime.Now, "shit");
 
                 Assert.IsFalse(result);
             }
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 

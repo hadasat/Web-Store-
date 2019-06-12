@@ -14,7 +14,7 @@ namespace Shopping
         [Key]
         public int id { get; set; }
         [Include]
-        public List<ShoppingCartAndStore> cartsList { get; set; }
+        public virtual List<ShoppingCartAndStore> cartsList { get; set; }
         public static int idBasketCounter = 0;
 
         public ShoppingBasket()
@@ -25,6 +25,15 @@ namespace Shopping
 
         public List<ShoppingCartAndStore> getCarts() { return cartsList; }
 
+        public override int GetKey()
+        {
+            return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public ShoppingCart getCart(int storeId)
         {
             Predicate<ShoppingCartAndStore> cartPredicat = s => ((ShoppingCartAndStore)s).store.id == storeId;
@@ -153,9 +162,9 @@ namespace Shopping
         [Key]
         public int id { get; set; }
         [Include]
-        public Store store { get; set; }
+        public virtual Store store { get; set; }
         [Include]
-        public ShoppingCart cart { get; set; }
+        public virtual ShoppingCart cart { get; set; }
 
         public ShoppingCartAndStore() { }
 
@@ -163,6 +172,15 @@ namespace Shopping
         {
             this.store = store;
             this.cart = cart;
+        }
+        public override int GetKey()
+        {
+            return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
         }
 
         public override void Copy(IEntity other)

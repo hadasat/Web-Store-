@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.Policies
 {
@@ -21,6 +22,7 @@ namespace WorkshopProject.Policies
         [TestInitialize]
         public void Init()
         {
+            DataAccessDriver.UseStub = true;
             storeId = WorkShop.createNewStore("testStore", 10, true, member);
             store = WorkShop.getStore(storeId);
             productId = store.addProduct(member, "testproduct", "A", 10, "B");
@@ -31,7 +33,8 @@ namespace WorkshopProject.Policies
         [TestCleanup]
         public void Cleanup()
         {
-            WorkShop.stores.Remove(storeId);
+            WorkShop.Remove(storeId);
+            DataAccessDriver.UseStub = false;
         }
 
         [TestMethod]

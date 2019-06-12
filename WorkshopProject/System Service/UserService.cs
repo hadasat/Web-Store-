@@ -143,7 +143,8 @@ namespace WorkshopProject.System_Service
 
         public static List<Member> GetAllMembers()
         {
-            return ConnectionStubTemp.members.Values.ToList();
+            //return ConnectionStubTemp.members.Values.ToList();
+            return ConnectionStubTemp.GetMembers();
         }
 
         public static void SendMessage(int memberId, string message)

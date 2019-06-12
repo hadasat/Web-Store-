@@ -51,6 +51,15 @@ namespace Managment
             this.AddRemoveStorePolicy = addRemoveStorePolicy;
         }
 
+        public override int GetKey()
+        {
+            return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public bool CompareRoles(Roles otherRoles)
         {
             if (!this.AddRemoveProducts && otherRoles.AddRemoveProducts)
@@ -104,9 +113,9 @@ namespace Managment
         [Key]
         public int id { get; set; }
         [Include]
-        public Store store { get; set; }
+        public virtual Store store { get; set; }
         [Include]
-        public Roles myRoles { get; set; }
+        public virtual Roles myRoles { get; set; }
         [Include]
         public LinkedList<StoreManager> subManagers { get; set; }
         [Include][JsonIgnore]
@@ -125,6 +134,16 @@ namespace Managment
             this.subManagers = new LinkedList<StoreManager>();
             this.father = null; //change to super father
             this.storeOwner = false;
+        }
+
+        public override int GetKey()
+        {
+            return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
         }
 
         /*about roles: the client will choose what roles he wants to give the new

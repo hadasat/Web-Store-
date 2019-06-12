@@ -15,9 +15,9 @@ namespace WorkshopProject.Policies
         [Key]
         public int id { get; set; }
         [Include]
-        public Product product { get; set; }
-        public int amount { get; set; }
-        public double price { get; set; }
+        public virtual Product product { get; set; }
+        public virtual int amount { get; set; }
+        public virtual double price { get; set; }
 
         public ProductAmountPrice(Product product, int amount, double price)
         {
@@ -32,6 +32,15 @@ namespace WorkshopProject.Policies
         //    return JsonConvert.DeserializeObject<Product>(json);
         //}
 
+        public override int GetKey()
+        {
+            return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public static List<ProductAmountPrice> translateCart(ShoppingCart cart)
         {
             List<ProductAmountPrice> output = new List<ProductAmountPrice>();

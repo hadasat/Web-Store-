@@ -25,10 +25,10 @@ namespace Users
         [Include][JsonIgnore]
         public LinkedList<StoreManager> storeManaging { get; set; }
         [Column(TypeName = "DateTime2")]
-        public DateTime birthdate { get; set; }
+        public virtual DateTime birthdate { get; set; }
         public string country { get; set; }
         [Include]
-        public List<Notification> notifications { get; set; }
+        public virtual List<Notification> notifications { get; set; }
         [NotMapped]
         public HashSet<IObserver> observers { get; set; }
         [NotMapped]
@@ -48,17 +48,26 @@ namespace Users
             }
         }
 
-        public Member(string username, int ID) : this()//Register
+        public override int GetKey()
         {
-            this.id = ID;
+            return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
+
+
+        public Member(string username) : this()//Register
+        {
             this.username = username;
             this.country = "none";
             //purchasesHistory = new List<Transaction>();
         }
 
-        public Member(string username, int ID, DateTime birthdate, string country) : this()//Register
+        public Member(string username, DateTime birthdate, string country) : this()//Register
         {
-            this.id = ID;
             this.username = username;
             this.birthdate = birthdate;
             this.country = country;
@@ -214,7 +223,7 @@ namespace Users
                 throw new Exception("You dont own this store! should not happen!!");
             }
             requestId = ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
-            ConnectionStubTemp.deleteOwnershipRequest(ConnectionStubTemp.getOwnershipRequest(requestId));
+            ConnectionStubTemp.deleteOwnershipRequest(ConnectionStubTemp.GetOwnershipRequest(requestId));
             return -1;
         }
 
@@ -250,7 +259,7 @@ namespace Users
         //true on succsess exception if somthing went wrong
         public bool approveOwnershipRequest(int requestId)
         {
-            OwnershipRequest ownershipRequest = ConnectionStubTemp.getOwnershipRequest(requestId);
+            OwnershipRequest ownershipRequest = ConnectionStubTemp.GetOwnershipRequest(requestId);
             ownershipRequest.approveOrDisapprovedOwnership(1, this);
             return true;
         }
@@ -258,7 +267,7 @@ namespace Users
         //true on succsess exception if somthing went wrong
         public bool disapproveOwnershipRequest(int requestId)
         {
-            OwnershipRequest ownershipRequest = ConnectionStubTemp.getOwnershipRequest(requestId);
+            OwnershipRequest ownershipRequest = ConnectionStubTemp.GetOwnershipRequest(requestId);
             ownershipRequest.approveOrDisapprovedOwnership(-1, this);
             return true;
         }
@@ -465,7 +474,7 @@ namespace Users
 
         public static void sendMessageToAllOwners(int storeId, string msg)
         {
-            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            List<Member> members = ConnectionStubTemp.GetMembers();
             foreach (Member currMember in members)
             {
                 if (currMember.isStoresOwner(storeId))
@@ -477,7 +486,7 @@ namespace Users
 
         public static void sendMessageToAllManagers(int storeId, string msg)
         {
-            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            List<Member> members = ConnectionStubTemp.GetMembers();
             foreach (Member member in members)
             {
                 LinkedList<StoreManager> managers = member.storeManaging;
@@ -493,7 +502,7 @@ namespace Users
 
         public static void sendMessageToAdmin(string msg)
         {
-            List<Member> members = ConnectionStubTemp.members.Values.ToList();
+            List<Member> members = ConnectionStubTemp.GetMembers();
             foreach (Member member in members)
             {
                 if (member is SystemAdmin)
@@ -544,6 +553,15 @@ namespace Users
             this.createOwnerReqeustId = createOwnerRequestId;
         }
 
+        public override int GetKey()
+        {
+            return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public override void Copy(IEntity other)
         {
             base.Copy(other);

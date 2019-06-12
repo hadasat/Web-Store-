@@ -10,6 +10,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         //[TestInitialize]
         public override void Init()
         {
+            base.Init();
             addTestStoreOwner1ToSystem();
             addTestStoreOwner2ToSystem();
             //addTestStoreOwner3ToSystem();
@@ -33,10 +34,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             try
             {
                 Init();
-                bridge.Login(storeOwner1, password);
-                bridge.AddStoreOwner(storeId, storeOwner2);
+                bridge.Login(getStoreOwner1(), password);
+                bridge.AddStoreOwner(storeId, getStoreOwner2());
 
-                bool result = bridge.RemoveStoreOwner(storeId, storeOwner2);
+                bool result = bridge.RemoveStoreOwner(storeId, getStoreOwner2());
                 Assert.IsFalse(result);
             }
             finally
@@ -52,11 +53,11 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             try
             {
                 Init();
-                bridge.Login(storeOwner1, password);
-                bridge.AddStoreOwner(storeId, storeOwner2);
+                bridge.Login(getStoreOwner1(), password);
+                bridge.AddStoreOwner(storeId, getStoreOwner2());
                 bridge.Logout();
-                bridge.Login(storeOwner2, password);
-                bool result = bridge.RemoveStoreOwner(storeId, storeOwner1);
+                bridge.Login(getStoreOwner2(), password);
+                bool result = bridge.RemoveStoreOwner(storeId, getStoreOwner1());
                 Assert.IsFalse(result);
             }
             finally
@@ -72,8 +73,8 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             try
             {
                 Init();
-                bridge.Login(storeOwner1, password);
-                bridge.AddStoreOwner(storeId, storeOwner2);
+                bridge.Login(getStoreOwner1(), password);
+                bridge.AddStoreOwner(storeId, getStoreOwner2());
 
                 bool result = bridge.RemoveStoreOwner(storeId, ";");
                 Assert.IsFalse(result);

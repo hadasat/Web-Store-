@@ -19,7 +19,7 @@ namespace Users
     public class User : IEntity, Permissions
     {
         [Key]
-        public int idUser { get; set; }
+        public int id { get; set; }
         public ShoppingBasket shoppingBasket;
 
 
@@ -29,6 +29,15 @@ namespace Users
             Logger.Log("event", logLevel.INFO, "New user been created");
         }
 
+        public override int GetKey()
+        {
+            return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public virtual bool hasAddRemoveDiscountPermission(Store store)
         {
             return false;

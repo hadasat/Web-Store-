@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WorkshopProject.System_Service;
 using WorkshopProject.Log;
+using System.Diagnostics;
 
 namespace TestingFramework.AcceptanceTests
 {
@@ -10,6 +11,8 @@ namespace TestingFramework.AcceptanceTests
     {
         protected IServiceBridge bridge  = Driver.getBridge();
         protected IGodObject godObject = new GodObject();
+
+        protected string testIdentifier = "";
 
         protected string adminUser = "Admin";
         protected string adminPass = "Admin";
@@ -51,8 +54,11 @@ namespace TestingFramework.AcceptanceTests
         protected string illegalProductName = ";";
 
 
-        [TestInitialize]
-        virtual public void Init() { }
+        //[TestInitialize]
+        public virtual void Init() {
+            setTestIdentifer(3);
+            //godObject.cleanUpAllData();
+        }
 
         [TestCleanup]
         virtual public void Cleanup() {
@@ -62,7 +68,7 @@ namespace TestingFramework.AcceptanceTests
         virtual protected void addTestMemberToSystem()
         {
             try { 
-                userId = godObject.addMember(user, password);
+                userId = godObject.addMember(getUserName(), password);
             }
             catch(Exception e)
             {
@@ -74,7 +80,7 @@ namespace TestingFramework.AcceptanceTests
         {
             try
             {
-                godObject.removeMember(user);
+                godObject.removeMember(getUserName());
             }
             catch (Exception e)
             {
@@ -86,7 +92,7 @@ namespace TestingFramework.AcceptanceTests
         {
             try
             {
-                storeOwner1Id = godObject.addMember(storeOwner1, password);
+                storeOwner1Id = godObject.addMember(getStoreOwner1(), password);
                 
             }
             catch (Exception e)
@@ -95,7 +101,14 @@ namespace TestingFramework.AcceptanceTests
             }
             finally
             {
-                storeId = godObject.addStore(storeName, storeRank, storeOwner1Id);
+                try
+                {
+                    storeId = godObject.addStore(storeName, storeRank, storeOwner1Id);
+                }
+                catch(Exception e)
+                {
+
+                }
             }
         }
 
@@ -112,7 +125,14 @@ namespace TestingFramework.AcceptanceTests
             }
             finally
             {
-                godObject.removeMember(storeOwner1);
+                try
+                {
+                    godObject.removeMember(getStoreOwner1());
+                }
+                catch (Exception e)
+                {
+
+                }
             }
         }
 
@@ -120,7 +140,7 @@ namespace TestingFramework.AcceptanceTests
         {
             try
             {
-                storeOwner2Id = godObject.addMember(storeOwner2, password);
+                storeOwner2Id = godObject.addMember(getStoreOwner2(), password);
             }
             catch (Exception e)
             {
@@ -144,7 +164,14 @@ namespace TestingFramework.AcceptanceTests
             }
             finally
             {
-                godObject.removeMember(storeOwner2);
+                try
+                {
+                    godObject.removeMember(getStoreOwner2());
+                }
+                catch (Exception e)
+                {
+
+                }
             }
         }
         
@@ -153,7 +180,7 @@ namespace TestingFramework.AcceptanceTests
         {
             try
             {
-                storeManager1Id = godObject.addMember(storeManager1, password);
+                storeManager1Id = godObject.addMember(getStoreManager1(), password);
                 //godObject.makeUserManager(storeId, storeOwner1Id, storeManager1Id, );
             }
             catch (Exception e)
@@ -235,7 +262,14 @@ namespace TestingFramework.AcceptanceTests
             }
             finally
             {
-                productId = godObject.addProductToStore(storeId, productName, productPrice, productCategory, productDesc, productKeyword, productAmount, productRank);
+                try
+                {
+                    productId = godObject.addProductToStore(storeId, productName, productPrice, productCategory, productDesc, productKeyword, productAmount, productRank);
+                }
+                catch (Exception e)
+                {
+
+                }
             }
         }
 
@@ -251,8 +285,53 @@ namespace TestingFramework.AcceptanceTests
             }
             finally
             {
-                removeTestStoreFromSystem();
+                try
+                {
+                    removeTestStoreFromSystem();
+                }
+                catch (Exception e)
+                {
+
+                }
             }
         }
+
+
+        protected virtual string TestIdentifier()
+        {
+            return testIdentifier;
+        }
+
+        protected virtual void setTestIdentifer(int level)
+        {
+            StackTrace stackTrace = new StackTrace();
+            testIdentifier = stackTrace.GetFrame(level).GetMethod().Name;
+        }
+
+        protected virtual string getUserName()
+        {
+            return String.Concat(user, TestIdentifier());
+        }
+
+        protected virtual string getStoreOwner1()
+        {
+            return String.Concat(storeOwner1, "_", TestIdentifier());
+        }
+
+        protected virtual string getStoreManager1()
+        {
+            return String.Concat(storeManager1, TestIdentifier());
+        }
+
+        protected virtual string getStoreOwner2()
+        {
+            return String.Concat(storeOwner2, TestIdentifier());
+        }
+
+        protected virtual string getStoreManager2()
+        {
+            return String.Concat(storeManager2, TestIdentifier());
+        }
+
     }
 }

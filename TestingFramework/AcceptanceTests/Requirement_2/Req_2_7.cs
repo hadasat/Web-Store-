@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using WorkshopProject.DataAccessLayer;
 
 namespace TestingFramework.AcceptanceTests.Requirement_2
 {
@@ -16,7 +17,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             addTestMemberToSystem();
             addTestProductToSystem();
-            bridge.Login(user, password);
+            bridge.Login(getUserName(), password);
         }
 
         //[TestCleanup]
@@ -35,6 +36,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 Init();
                 bridge.AddProductToBasket(storeId,productId, 1);
                 int result = bridge.GetShoppingCart(storeId);
@@ -44,6 +46,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 
@@ -56,6 +59,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             {
 
                 //GetShoppingCart();
+                DataAccessDriver.UseStub = true;
                 Init();
                 bool result = bridge.AddProductToBasket(storeId,productId, 1);
                 Assert.IsTrue(result);
@@ -69,6 +73,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 
@@ -78,6 +83,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 Init();
                 RemoveProductFromCart();
 
@@ -87,6 +93,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 
@@ -113,6 +120,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 //GetShoppingCart();
                 Init();
                 bool result = bridge.SetProductAmountInBasket(storeId,productId, 5);
@@ -130,6 +138,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 

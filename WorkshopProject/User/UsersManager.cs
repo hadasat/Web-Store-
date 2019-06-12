@@ -9,27 +9,41 @@ using WorkshopProject;
 using Shopping;
 using WorkshopProject.Log;
 using WorkshopProject.Communication;
+using WorkshopProject.DataAccessLayer;
+using System.ComponentModel.DataAnnotations;
 
 namespace Users
 {
     public static class ConnectionStubTemp
     {
-
+        //public static bool useStub = false;
+        public static Repo repo = new Repo();
+        
         public static PasswordHandler pHandler = new PasswordHandler();
-        public static Dictionary<int, Member> members = new Dictionary<int, Member>();
+
+
+
+
+        //public static Dictionary<int, Member> members = new Dictionary<int, Member>();
         // <ID, MEMBER>
-        public static Dictionary<string, int> mapIDUsermane = new Dictionary<string, int>();
+        //public static Dictionary<string, int> mapIDUsermane = new Dictionary<string, int>();
         // <username, ID>
-        public static Dictionary<int, OwnershipRequest> ownershipsRequestList = new Dictionary<int, OwnershipRequest>();
+        //public static Dictionary<int, OwnershipRequest> ownershipsRequestList = new Dictionary<int, OwnershipRequest>();
         // <ID, ownershipRequest>
 
-        public static int memberIDGenerator = 0;
-        public static int ownerShipRequestsIDGenerator = 0;
+        //public static int memberIDGenerator = 0;
+        //public static int ownerShipRequestsIDGenerator = 0;
 
         public static void init()
         {
-            registerNewUser("Admin", "Admin", DateTime.Today.AddYears(-120), "all");
-
+            try
+            {
+                registerNewUser("Admin", "Admin", DateTime.Today.AddYears(-120), "all");
+            }
+            catch(Exception e)
+            {
+                //jonathan: i guess there already is an Admin
+            }
         }
 
         static ConnectionStubTemp()
@@ -43,8 +57,9 @@ namespace Users
                 throw new Exception("don't remove Admin!");
             try
             {
-                members.Remove(m.id);
-                mapIDUsermane.Remove(m.username);
+                Remove(m.id);
+                //members.Remove(m.id);
+                //mapIDUsermane.Remove(m.username);
             }
             catch (Exception ignore)
             {
@@ -57,8 +72,8 @@ namespace Users
             
             try
             {
-                members.Remove(m.id);
-                mapIDUsermane.Remove(m.username);
+                Remove(m.id);
+                //mapIDUsermane.Remove(m.username);
             }
             catch (Exception ignore)
             {
@@ -71,8 +86,9 @@ namespace Users
 
             try
             {
-                members.Add(m.id, m);
-                mapIDUsermane.Add(m.username, m.id);
+                AddMember(m);
+                //members.Add(m.id, m);
+                //mapIDUsermane.Add(m.username, m.id);
             }
             catch (Exception ignore)
             {
@@ -84,7 +100,8 @@ namespace Users
         {
             try
             {
-                return members[id];
+                //return members[id];
+                return GetMemberById(id);
             }
             catch (Exception ignore)
             {
@@ -96,7 +113,8 @@ namespace Users
         {
             try
             {
-                return members[(mapIDUsermane[username])];
+                return GetMemberByName(username);
+                //return members[(mapIDUsermane[username])];
             }
             catch (Exception ignore)
             {
@@ -106,10 +124,10 @@ namespace Users
 
         /*** START - USER FUNCTIONS ***/
 
-        private static int getID()
-        {
-            return memberIDGenerator++;
-        }
+        //private static int getID()
+        //{
+        //    return memberIDGenerator++;
+        //}
         //sign in
         public static int identifyUser(string username, string password)
         {
@@ -119,7 +137,8 @@ namespace Users
                 registerNewUser(username, password, "all", 120);*/
             try
             {
-                int ID = mapIDUsermane[username];
+                //int ID = mapIDUsermane[username];
+                int ID = GetMemberByName(username).id;
                 if (pHandler.IdentifyPassword(password, ID))
                     return ID;
             }
@@ -130,41 +149,49 @@ namespace Users
             return -1;
         }
         //sign up
-        public static void registerNewUser(string username, string password, DateTime birthdate, string country)
+        public static Member registerNewUser(string username, string password, DateTime birthdate, string country)
         {
-
-
-
             //jonathan rewrite
             sanitizeInput(username, password);
-            int id;
-            if (mapIDUsermane.TryGetValue(username, out id))
+            if (GetMemberByName(username) != null)
             {
                 Logger.Log("event", logLevel.INFO, "user try to register with taken username:" + username);
                 throw new Exception("this username is already taken. try somthing else");
             }
-            id = getID();
-            pHandler.hashPassword(password, id);
+
+            //int id;
+            //if (mapIDUsermane.TryGetValue(username, out id))
+            //{
+            //    Logger.Log("event", logLevel.INFO, "user try to register with taken username:" + username);
+            //    throw new Exception("this username is already taken. try somthing else");
+            //}
+            //id = getID();
+            
             Member newMember;
             if (DateTime.Today < birthdate)
-                newMember = new Member(username, id);
+                newMember = new Member(username);
             else
-                newMember = new Member(username, id, birthdate, country);
+                newMember = new Member(username, birthdate, country);
             /*
             if (username == "Admin" && password == "Admin")
             {
-                newMember = new SystemAdmin(username, id, birthdate, country);
+                newMember = new SystemAdmin(username, birthdate, country);
                 Logger.Log("event", logLevel.INFO, "Admin has logged in");
             }*/
 
             if (password == "Admin")
             {
-                newMember = new SystemAdmin(username, id, birthdate, country);
+                newMember = new SystemAdmin(username, birthdate, country);
                 Logger.Log("event", logLevel.INFO, "Admin has logged in");
             }
-            members[id] = newMember;
-            mapIDUsermane[username] = id;
+
+
+            //members[id] = newMember;
+            //mapIDUsermane[username] = id;
+            AddMember(newMember);
+            pHandler.hashPassword(password, newMember.id);
             Logger.Log("event", logLevel.INFO, "user:" + username + " succesfully registered");
+            return newMember;
         }
 
 
@@ -244,46 +271,44 @@ namespace Users
 
         public static int createOwnershipRequest(Store store, Member memberThatOpenRequest, Member candidate)
         {
-
-            int requestID = ownerShipRequestsIDGenerator++;
-            OwnershipRequest newOwnership = new OwnershipRequest(requestID, store, candidate, memberThatOpenRequest);
-            foreach (KeyValuePair<int, Member> entry in members)
+            OwnershipRequest newOwnership = new OwnershipRequest(store, candidate, memberThatOpenRequest);
+            //foreach (KeyValuePair<int, Member> entry in members)
+            foreach (Member m in GetMembers())
             {
-                Member m = entry.Value;
+                //Member m = entry.Value;
                 if (m.isStoresOwner(store.id))
                 {
                     newOwnership.addOwner(m);
                 }
             }
-            newOwnership.sendRequestsToOwners(store, memberThatOpenRequest.id, candidate.username, requestID);//should handle notifications
+            AddOwnershipRequest(newOwnership);//add ownership request to list 
+            newOwnership.sendRequestsToOwners(store, memberThatOpenRequest.id, candidate.username, newOwnership.getID());//should handle notifications
             newOwnership.approveOrDisapprovedOwnership(1, memberThatOpenRequest);//first approval of asker
-            ownershipsRequestList[requestID] = (newOwnership);//add ownership request to list  
-            return requestID;
+            return newOwnership.getID();
         }
 
         public static void deleteOwnershipRequest(OwnershipRequest ownership)
         {
-            ownershipsRequestList.Remove(ownership.getID());
+            RemoveOwnershipRequest(ownership.ID);
         }
 
-        public static OwnershipRequest getOwnershipRequest(int id)
+        public static OwnershipRequest GetOwnershipRequest(int id)
         {
-            try
+            if (useStub())
             {
-                return ownershipsRequestList[id];
-            } catch (Exception ex)
-            {
-                ///somtihng went wrong with id's
-                throw ex;
+                return getOwnershipRequestDbStub().Get(id);
             }
+
+            return (OwnershipRequest)repo.Get<OwnershipRequest>(id);
         }
 
         public static int getNumOfOwners(Store store)
         {
             int ret = 0;
-            foreach (KeyValuePair<int, Member> entry in members)
+            //foreach (KeyValuePair<int, Member> entry in members)
+            foreach(Member m in GetMembers())
             {
-                Member m = entry.Value;
+                //Member m = entry.Value;
                 if (m.isStoresOwner(store.id))
                 {
                     ret++;
@@ -293,37 +318,161 @@ namespace Users
         }
 
 
+        public static List<Member> GetMembers()
+        {
+            if (useStub())
+            {
+                return getMemberDbStub().GetList();
+            }
+            return repo.GetList<Member>();
+        }
+
+        public static Member GetMemberByName(string username)
+        {
+            foreach (Member m in GetMembers())
+            {
+                if (m.username != null && m.username.Equals(username))
+                {
+                    return m;
+                }
+            }
+            return null;
+        }
+
+        public static void AddMember(Member member)
+        {
+            if (useStub())
+            {
+                getMemberDbStub().Add(member);
+                return;
+            }
+            repo.Add<Member>(member);
+        }
+
+        public static Member GetMemberById(int id)
+        {
+            if (useStub())
+            {
+                return getMemberDbStub().Get(id);
+            }
+            return (Member) repo.Get<Member>(id);
+        }
+
+        public static void Remove(int id)
+        {
+            if (useStub())
+            {
+                getMemberDbStub().Remove(id);
+                return;
+            }
+            repo.Remove<Member>(GetMemberById(id));
+        }
+
+        public static void Update(Member member)
+        {
+            if (useStub())
+            {
+                return;
+            }
+            repo.Update<Member>(member);
+        }
+
+        public static void Clear()
+        {
+            if (useStub())
+            {
+                getMemberDbStub().Delete();
+                getOwnershipRequestDbStub().Delete();
+            }
+            //TODO: repo in the future
+        }
+
+        private static bool useStub()
+        {
+            return DataAccessDriver.UseStub;
+        }
+
+        private static DbListStub<Member> getMemberDbStub()
+        {
+            return DataAccessDriver.Members;
+        }
+
+        private static DbListStub<OwnershipRequest> getOwnershipRequestDbStub()
+        {
+            return DataAccessDriver.OwnershipRequests;
+        }
+
+        public static void AddOwnershipRequest(OwnershipRequest entity)
+        {
+            if (useStub())
+            {
+                getOwnershipRequestDbStub().Add(entity);
+                return;
+            }
+            repo.Add<OwnershipRequest>(entity);
+        }
+
+        public static void RemoveOwnershipRequest(int id)
+        {
+            if (useStub())
+            {
+                getOwnershipRequestDbStub().Remove(id);
+                return;
+            }
+            repo.Remove<OwnershipRequest>(GetOwnershipRequest(id));
+        }
+
+        public static void UpdateOwnershipRequest(OwnershipRequest entity)
+        {
+            if (useStub())
+            {
+                return;
+            }
+            repo.Update<OwnershipRequest>(entity);
+        }
+
     }
 
 
 
-    public class OwnershipRequest
+    public class OwnershipRequest : IEntity
     {
-        private int ID;
-        private Store store;
-        private Member initiate;
-        private Member candidate;
-        public static Dictionary<String, int> owners = new Dictionary<String, int>();
+        [Key]
+        public int ID { get; set; }
+        public Store store { get; set; }
+        public Member initiate { get; set; }
+        public Member candidate { get; set; }
+        //public static Dictionary<String, int> owners = new Dictionary<String, int>();
         //<ownerNames, approved>
-        private readonly object OwnersLock = new object();
-        private int counter = 0;
-        private readonly object CounterLock = new object();
-        private bool done;
-        private readonly object doneLock = new object();
+        public LinkedList<Decision> owners = new LinkedList<Decision>();
+        public readonly object OwnersLock;
+        public int counter = 0;
+        public readonly object CounterLock;
+        public bool done;
+        public readonly object doneLock;
 
-        public OwnershipRequest(int id, Store store, Member candidate, Member initiate)
+        public OwnershipRequest()
         {
-            this.ID = id;
+            OwnersLock = new object();
+            CounterLock = new object();
+            doneLock = new object();
+        }
+
+         public OwnershipRequest(Store store, Member candidate, Member initiate)
+        {
             this.store = store;
             this.candidate = candidate;
             this.initiate = initiate;
             this.counter = 0;
             this.done = false;
+            OwnersLock = new object();
+            CounterLock = new object();
+            doneLock = new object();
         }
 
         public void addOwner(Member member)
         {
-            owners[member.username] = 0;
+            owners.AddFirst(new Decision(member.username));
             lock (CounterLock)
             {
                 counter++;
@@ -336,7 +485,14 @@ namespace Users
         {
             lock(OwnersLock)
             {
-                owners[member.username] = decition;
+                foreach(Decision d in owners)
+                {
+                    if (d.username == member.username)
+                    {
+                        d.setDecition(decition);
+                        break;
+                    }
+                }
             }
             lock(CounterLock)
             {
@@ -371,9 +527,9 @@ namespace Users
         private bool checkIfApproved()
         {
             bool ans = true;
-            foreach (KeyValuePair<String, int> entry in owners)
+            foreach (Decision d in owners)
             {
-                ans = ans & (entry.Value == 1);
+                ans = ans & (d.getDecition() == 1);
             }
             return ans;
         }
@@ -383,9 +539,9 @@ namespace Users
 
             lock (OwnersLock)
             {
-                foreach (KeyValuePair<String, int> entry in owners)
+                foreach (Decision d in owners)
                 {
-                    Member currMember = ConnectionStubTemp.getMember(entry.Key);
+                    Member currMember = ConnectionStubTemp.getMember(d.username);
                     if (currMember.id != creatorId && currMember.username!=candidateName)
                     {
                         currMember.addMessage("Do you agree adding " + candidateName + " as a co - owner to the store " + store.name + "?", Notification.NotificationType.CREATE_OWNER, requestId);
@@ -393,31 +549,6 @@ namespace Users
                 }
             }
 
-            /*
-            List<Member> members = ConnectionStubTemp.members.Values.ToList();
-            foreach (Member currMember in members)
-            {
-                if (currMember.isStoresOwner(store.id) && currMember.id != creatorId)
-                {
-                    currMember.addMessage("Do you agree adding " + candidateName+ " as a co-owner to the store "+store.name ,
-                        Notification.NotificationType.CREATE_OWNER,requestId);
-                }
-            }*/
-
-            //if (owners.Count != 0)
-            //{
-            //    // message:
-            //    //store <name / id>
-            //    //owner that made the qequest <username>
-            //    //member candidate <username>
-
-
-
-            //    //send to all members in owners.
-            //    //I SAVED USERNAMES - U CAN GET THE MEMBER ITSELF WITH THIS LINE
-            //    ////ConnectionStubTemp.getMember(username);
-
-            //}
         }
 
         public void makeOwner()
@@ -432,5 +563,63 @@ namespace Users
             return ID;
         }
 
+        public override int GetKey()
+        {
+            return getID();
+        }
+
+        public override void SetKey(int key)
+        {
+            ID = key;
+        }
+
+        public override void LoadMe()
+        {
+            store.LoadMe();
+            initiate.LoadMe();
+            candidate.LoadMe();
+        }
+    }
+
+    public class Decision : IEntity
+    {
+        [Key]
+        public int id { get; set; }
+        public String username { get; set; }
+        public int desicion { get; set; }
+
+        public Decision() {
+        }
+
+        public Decision(string username)
+        {
+            this.desicion = 0; ;
+            this.username = username;
+        }
+
+        public void setDecition(int dec)
+        {
+            this.desicion = dec;
+        }
+
+        public int getDecition()
+        {
+            return this.desicion;
+        }
+
+        public override int GetKey()
+        {
+            return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
+
+        public override void LoadMe()
+        {
+            //do nothing
+        }
     }
 }

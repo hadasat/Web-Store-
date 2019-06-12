@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Users;
+using WorkshopProject.DataAccessLayer;
 
 namespace TestingFramework.AcceptanceTests.Requirement_4
 {
@@ -11,9 +12,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         //[TestInitialize]
         public override void Init()
         {
+            base.Init();
             addTestStoreOwner1ToSystem();
             addTestStoreOwner2ToSystem();
-            bridge.Login(storeOwner1, password);
+            bridge.Login(getStoreOwner1(), password);
         }
 
         //[TestCleanup]
@@ -31,12 +33,14 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 Init();
                 AddStoreOwnerSuccessInner();
             }
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 
@@ -44,7 +48,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         {
             try
             {
-                bool result = bridge.AddStoreOwner(storeId, storeOwner2);
+                bool result = bridge.AddStoreOwner(storeId, getStoreOwner2());
                 Assert.IsTrue(result);
             } catch(Exception e)
             {
@@ -59,12 +63,13 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 Init();
 
                 AddStoreOwnerSuccessInner();
                 try
                 {
-                    bool result = bridge.AddStoreOwner(storeId, storeOwner2);
+                    bool result = bridge.AddStoreOwner(storeId, getStoreOwner2());
                     Assert.IsFalse(true);
 
                 } catch(Exception ex)
@@ -76,6 +81,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 

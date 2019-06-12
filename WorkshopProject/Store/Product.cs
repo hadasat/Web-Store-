@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace WorkshopProject
     {
         public static int idGenerator = 0;
         [Key]
+        //[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int id { get; set; } 
         public string name { get; set; }
         public double price { get; set; } 
@@ -36,10 +38,20 @@ namespace WorkshopProject
 
         public Product() { }
 
+        public override int GetKey()
+        {
+            return id;
+        }
+
         public int getId()
         {
             return id;
-        }   
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
 
         public double getPrice()
         {

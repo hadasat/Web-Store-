@@ -28,22 +28,18 @@ namespace TansactionsNameSpace
         [NotMapped]
         public User user { get; set; }
         [Include]
-        public Member member { get { return (user is Member) ? (Member)user : null; } set => member = value; }
+        public virtual Member member { get { return (user is Member) ? (Member)user : null; } set => member = value; }
         [Include]
-        public List<ShoppingCartDeal> sucess { get; set; }
+        public virtual List<ShoppingCartDeal> sucess { get; set; }
         [Include]
-        public List<ShoppingCartDeal> fail { get; set; }
+        public virtual List<ShoppingCartDeal> fail { get; set; }
         public double total { get; set; }
         [Include]
-        public status transactionSatus { get; set; }
+        public virtual status transactionSatus { get; set; }
         [NotMapped]
         private IPayment paymentSystem;
         [NotMapped]
         private ISupply supplySystem;
-
-
-
-
 
         public Transaction() { } //added for DB
 
@@ -58,7 +54,17 @@ namespace TansactionsNameSpace
             constructorCommon(user, cardNumber, month, year, holder, ccv, id, name, address, city, country, zip, (IPayment)extSytem, (ISupply)extSytem);
         }
 
-        private async void constructorCommon (User user, string cardNumber, int month, int year, string holder, int ccv, int userId, string name, string address, string city, string country, string zip, IPayment payService, ISupply supplyService)
+        public override int GetKey()
+        {
+            return id;
+        }
+
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
+        private async void constructorCommon(User user, string cardNumber, int month, int year, string holder, int ccv, int userId, string name, string address, string city, string country, string zip, IPayment payService, ISupply supplyService)
         {
             try
             {
@@ -186,7 +192,7 @@ namespace TansactionsNameSpace
                     purchasedProducts.Concat(currStoreProducts);
                     this.total += totalCart;
                     ShoppingCartDeal sucessCartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, totalCart, currStore.id, status.Sucess);
-                    WorkshopProject.Log.Logger.Log("event", logLevel.INFO, $"user {user.idUser} buy cart {currShoppingCart.id} sucessfully");
+                    WorkshopProject.Log.Logger.Log("event", logLevel.INFO, $"user {user.id} buy cart {currShoppingCart.id} sucessfully");
                     sucess.Add(sucessCartDeal);
                 }
             }
@@ -228,11 +234,11 @@ namespace TansactionsNameSpace
             if(user is Member)
             {
                 Member member = (Member)user;
-                IDataAccess dal = DataAccessDriver.GetDataAccess();
+                //IDataAccess dal = DataAccessDriver.GetDataAccess(); //TODO: old dal
                 while(tryAgain && counter < maxTries)
                 try
                 {
-                    dal.SaveEntity(member, member.id);
+                        //dal.SaveEntity(member, member.id); //TODO: old dal
                         sucess = true;
                         tryAgain = false;
                     }
@@ -287,12 +293,12 @@ namespace TansactionsNameSpace
         [Key]
         public int id { get; set; }
         [Include]
-        public List<ProductAmountPrice> products { get; set; }
+        public virtual List<ProductAmountPrice> products { get; set; }
         public String storeName { get; set; }
         public int storId { get; set; }
         public double totalPrice { get; set; }
         [Include]
-        public status transStatus { get; set; }
+        public virtual status transStatus { get; set; }
 
         public ShoppingCartDeal(List<ProductAmountPrice> products, String storeName, double totalPrice,int storId, status transStatus)
         {
@@ -303,7 +309,15 @@ namespace TansactionsNameSpace
             this.transStatus = transStatus;
         }
 
+        public override int GetKey()
+        {
+            return id;
+        }
 
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public override void Copy(IEntity other)
         {
             base.Copy(other);

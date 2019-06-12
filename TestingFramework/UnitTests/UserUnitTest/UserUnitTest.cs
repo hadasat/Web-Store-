@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Managment;
 using WorkshopProject.Communication;
+using WorkshopProject.System_Service;
+using WorkshopProject.DataAccessLayer;
 
 namespace Users.Tests
 {
@@ -14,7 +16,7 @@ namespace Users.Tests
     public class TestUser
     {
 
-
+        protected IGodObject godObject = new GodObject();
         string username;
         string password;
         User user;
@@ -23,6 +25,8 @@ namespace Users.Tests
 
         public void Init()
         {
+            DataAccessDriver.UseStub = true;
+            godObject.clearDb();
             username = "username";
             password = "password";
             user = new User();
@@ -39,6 +43,7 @@ namespace Users.Tests
             {
 
             }
+            DataAccessDriver.UseStub = false;
         }
 
         [TestMethod()]
@@ -127,6 +132,7 @@ namespace Users.Tests
     [TestClass()]
     public class TestMember
     {
+        protected IGodObject godObject = new GodObject();
         string username;
         string password;
         User user1;
@@ -140,6 +146,8 @@ namespace Users.Tests
         //[TestInitialize]
         public void Init()
         {
+            DataAccessDriver.UseStub = true;
+            godObject.clearDb();
             username = "username";
             password = "password";
             user1 = new User();
@@ -167,6 +175,7 @@ namespace Users.Tests
             {
 
             }
+            DataAccessDriver.UseStub = false;
         }
 
         [TestMethod()]
@@ -400,15 +409,17 @@ namespace Users.Tests
     [TestClass()]
     public class TestSystemAdmin
     {
-
-        SystemAdmin admin = new SystemAdmin("admin", 1);
+        protected IGodObject godObject = new GodObject();
+        SystemAdmin admin = new SystemAdmin("admin");
         User user;
         Member member;
 
         //[TestInitialize]
         public void Init()
         {
-            admin = new SystemAdmin("admin", 1);
+            DataAccessDriver.UseStub = true;
+            godObject.clearDb();
+            admin = new SystemAdmin("admin");
             user = new User();
             user.registerNewUser("username","password", DateTime.Now, "shit");
             member = user.loginMember("username", "password");
@@ -417,10 +428,13 @@ namespace Users.Tests
         //[TestCleanup]
         public void Cleanup()
         {
-            int id;
-            bool ret = ConnectionStubTemp.mapIDUsermane.TryGetValue("username", out id);
-            ConnectionStubTemp.mapIDUsermane.Remove("username");
-            ConnectionStubTemp.members.Remove(id);
+
+            //int id;
+            //bool ret = ConnectionStubTemp.mapIDUsermane.TryGetValue("username", out id);
+            //ConnectionStubTemp.mapIDUsermane.Remove("username");
+            //ConnectionStubTemp.members.Remove(id);
+
+            DataAccessDriver.UseStub = false;
         }
 
         [TestMethod()]

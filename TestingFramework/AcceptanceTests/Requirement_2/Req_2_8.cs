@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using WorkshopProject.DataAccessLayer;
 
 namespace TestingFramework.AcceptanceTests.Requirement_2
 {
@@ -12,6 +13,9 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         //[TestInitialize]
         public override void Init()
         {
+            DataAccessDriver.UseStub = true;
+            base.Init();
+            godObject.cleanUpAllData();
             addTestProductToSystem();
         }
 
@@ -20,6 +24,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_2
         {
             removeTestProductFromSystem();
             godObject.cleanUpAllData();
+            DataAccessDriver.UseStub = true;
         }
 
         [TestMethod]

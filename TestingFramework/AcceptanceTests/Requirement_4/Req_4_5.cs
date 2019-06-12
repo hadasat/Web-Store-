@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WorkshopProject.DataAccessLayer;
 
 namespace TestingFramework.AcceptanceTests.Requirement_4
 {
@@ -10,9 +11,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         //[TestInitialize]
         public override void Init()
         {
+            base.Init();
             addTestStoreOwner1ToSystem();
             addTestStoreManager2ToSystem();
-            bridge.Login(storeOwner1, password);
+            bridge.Login(getStoreOwner1(), password);
         }
 
         //[TestCleanup]
@@ -30,12 +32,14 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 Init();
                 AddStoreManagerSuccessInner();
             }
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 
@@ -52,6 +56,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
         {
             try
             {
+                DataAccessDriver.UseStub = true;
                 Init();
                 AddStoreManagerSuccessInner();
                 bool result = bridge.AddStoreManager(storeId, storeManager2);
@@ -60,6 +65,7 @@ namespace TestingFramework.AcceptanceTests.Requirement_4
             finally
             {
                 Cleanup();
+                DataAccessDriver.UseStub = false;
             }
         }
 

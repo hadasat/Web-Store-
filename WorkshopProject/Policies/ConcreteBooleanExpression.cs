@@ -46,6 +46,12 @@ namespace WorkshopProject.Policies
             }
             return true;
         }
+
+        public override int GetKey()
+        {
+            return id;
+        }
+
     }
 
     public class MinAmount : IBooleanExpression

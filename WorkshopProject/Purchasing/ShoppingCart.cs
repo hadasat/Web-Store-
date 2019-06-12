@@ -17,7 +17,7 @@ namespace Shopping
         [Key]
         public int id { get; set; }
         [Include]
-        public List<ProductAmount> products { get; set; }
+        public virtual List<ProductAmount> products { get; set; }
         public static int idCartCounter = 0;
 
         public ShoppingCart()
@@ -29,6 +29,15 @@ namespace Shopping
             }
         }
 
+        public override int GetKey()
+        {
+            return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public bool containProduct(Product product)
         {
             Predicate<ProductAmount> p = s => ((ProductAmount)s).product.Equals(product);
@@ -138,7 +147,7 @@ namespace Shopping
         [Key]
         public int id { get; set; }
         [Include]
-        public Product product { get; set; }
+        public virtual Product product { get; set; }
         public int amount { get; set; }
 
         public ProductAmount(Product product, int amount)
@@ -147,6 +156,15 @@ namespace Shopping
             this.amount = amount;
         }
 
+        public override int GetKey()
+        {
+            return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public override void Copy(IEntity other)
         {
             base.Copy(other);

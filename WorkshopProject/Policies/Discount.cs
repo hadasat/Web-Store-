@@ -14,11 +14,11 @@ namespace WorkshopProject.Policies
         [Key]
         public int id { get; set; }
         [Include]
-        public Discount successor { get; set; }
+        public virtual Discount successor { get; set; }
         [Include]
-        public IOutcome outcome { get; set; }
+        public virtual IOutcome outcome { get; set; }
         [Include]
-        public IBooleanExpression condition { get; set; }
+        public virtual IBooleanExpression condition { get; set; }
 
         public static int DiscountCounter = 1;
 
@@ -30,6 +30,15 @@ namespace WorkshopProject.Policies
             this.outcome = outcome;
         }
 
+        public override int GetKey()
+        {
+            return id;
+        }
+
+        public override void SetKey(int key)
+        {
+            id = key;
+        }
         public List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
         {
             if (condition.evaluate(products, user)){

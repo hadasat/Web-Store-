@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using TansactionsNameSpace;
 using Users;
 using WorkshopProject.Communication;
-using WorkshopProject.DataAccessLayer.Context;
+using WorkshopProject.DataAccessLayer;
 //using WorkshopProject.DataAccessLayer.Examples;
 using WorkshopProject.Examples;
 using WorkshopProject.System_Service;
@@ -21,19 +21,27 @@ namespace WorkshopProject
     {
         static void Main(string[] args)
         {
-
-            //LogExample.RunMe();
-
-            //DataAccessExamples.main();
-
-            //Console.ReadLine();
-            //WorkshopDBContext ctx = new WorkshopProductionDBContext();
-            //ctx.Members.Add(new Member());
-            InitSystem.initSystem();
-            Setup();
+            try
+            {
+                DataAccessSetup();
+                InitSystem.initSystem();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
+            //Setup();
             CommunicationManager manager = new CommunicationManager();
         }
 
+
+        static void DataAccessSetup()
+        {
+            DataAccessDriver.setProduction(true);
+            DataAccessDriver.setLocal(true);
+            DataAccessDriver.UseStub = false;
+        }
 
         static void Setup()
         {
