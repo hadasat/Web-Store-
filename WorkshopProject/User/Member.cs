@@ -339,6 +339,11 @@ namespace Users
             return roles != null && roles.AddRemoveDiscountPolicy;
         }
 
+        public override bool isAdmin()
+        {
+            return false;
+        }
+
         public string getCountry()
         {
             return this.country;

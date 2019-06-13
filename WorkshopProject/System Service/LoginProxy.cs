@@ -74,6 +74,13 @@ namespace WorkshopProject.System_Service
             return UserService.isManageStore(user, storeId);
         }
 
+        public bool IsAdmin()
+        {
+            if (!loggedIn)
+                return false;
+            return UserService.isAdmin(user);
+        }
+
         public bool AddStoreOwner(int storeId, string userToAdd)
         {
             if (!loggedIn)

@@ -67,6 +67,11 @@ namespace Users
             }
 
         }
+
+        public override bool isAdmin()
+        {
+            return true;
+        }
     }
 
 
