@@ -176,5 +176,10 @@ namespace WorkshopProject.System_Service
             ConnectionStubTemp.addMemberJustForExternalUsage(newsys);
 
         }
+
+        public static bool isAdmin(User user)
+        {
+            return user.isAdmin();
+        }
     }
 }

@@ -70,6 +70,10 @@ namespace Users
             return false;
         }
 
+        public virtual bool isAdmin()
+        {
+            return false;
+        }
 
         /*** SERVICE LAYER FUNCTIONS***/
 
@@ -132,6 +136,8 @@ namespace Users
         bool hasAddRemoveStoreManagerPermission(Store store);
 
         bool hasAddRemoveProductsPermission(Store store);
+
+        bool isAdmin();
     }
 }
 
