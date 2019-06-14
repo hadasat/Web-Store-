@@ -38,10 +38,10 @@ namespace WorkshopProject.System_Service
             return ret;
         }
 
-        public static Transaction BuyShoppingBasket(User user, string cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
+        public static async Task<Transaction> BuyShoppingBasket(User user, string cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
         {
-            
-            Transaction transaction = new Transaction(user, cardNumber,month,year,holder,ccv,id,name,address,city,country,zip);
+            Transaction transaction = new Transaction();
+            await transaction.doTransaction(user, cardNumber,month,year,holder,ccv,id,name,address,city,country,zip);
             return transaction;
         }
         
