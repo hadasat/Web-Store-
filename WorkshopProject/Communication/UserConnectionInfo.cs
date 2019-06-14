@@ -791,62 +791,59 @@ namespace WorkshopProject.Communication
 
 
         #region stress
-        public UserConnectionInfo()
+        public string stresshelp(string parameters, string commands)
         {
-        }
-
-        public string stresshelp(string info)
-        {
-            info = info.Substring(1);
-            int idxComm = info.IndexOf("/");
-            info = info.Substring(idxComm + 1);
-            idxComm = info.IndexOf("/");
-            while (idxComm != -1)
+            //create dictionary for parametres 
+            Dictionary<string, string> paramDic = new Dictionary<string, string>();
+            string[] rawParams = parameters.Split('&');
+            foreach (string param in rawParams)
             {
-                string command = info.Substring(0, idxComm);
-                string commandInfo = null;
-                info = info.Substring(idxComm + 1);
-                switch (command)
+                string[] kvPair = param.Split('=');
+                paramDic.Add(kvPair[0], kvPair[1]);
+            }
+
+            //remove wot
+            commands = commands.Substring(1);
+            int sIdx = commands.IndexOf("/");
+            string currCommand;
+            commands = commands.Substring(sIdx + 1);
+            while (sIdx > -1)
+            {
+                //get command to run
+                sIdx = commands.IndexOf("/");
+                currCommand = (sIdx > -1) ? commands.Substring(0, sIdx) : commands;
+                commands = commands.Substring(sIdx + 1);
+                switch (currCommand)
                 {
                     case "signin":
-                        idxComm = info.IndexOf("/");
-                        commandInfo = (idxComm != -1) ? info.Substring(0, idxComm) : info;
-                        info = info.Substring(idxComm + 1);
-                        signinStress(commandInfo);
+                        signinStress(paramDic);
                         break;
                     case "register":
-                        idxComm = info.IndexOf("/");
-                        commandInfo = (idxComm != -1) ? info.Substring(0, idxComm) : info;
-                        info = info.Substring(idxComm + 1);
-                        registerStress(info);
+                        registerStress(paramDic);
                         break;
                     case "addToBasket":
                         break;
-                    case "addStore":
+                    case "addNewStore":
                         break;
                     case "purchase":
                         break;
                 }
             }
 
+            
+
             return "";
         }
 
-        private void signinStress(string info)
+        private void signinStress(Dictionary<string,string> parameters)
         {
-            int sep = info.IndexOf("+");
-            string username = info.Substring(0, sep);
-            string password = info.Substring(sep + 1);
-            var reqInfo = new { name = username, password = password };
+            var reqInfo = new { name = parameters["sname"], password = parameters["spass"] };
             var dataObj = new { id = -10, data = reqInfo};
             signInHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
         }
 
-        private void registerStress(string info) {
-            int sep = info.IndexOf("+");
-            string username = info.Substring(0, sep);
-            string password = info.Substring(sep + 1);
-            var reqInfo = new { name = username, password = password ,birthdate="11-11-1999",country="asd"};
+        private void registerStress(Dictionary<string, string> parameters) {
+            var reqInfo = new { name = parameters["rname"], password = parameters["rpass"] ,birthdate="11-11-1999",country="asd"};
             var dataObj = new { id = -10, data = reqInfo };
             registerHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
         }

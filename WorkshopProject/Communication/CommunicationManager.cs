@@ -45,8 +45,12 @@ namespace WorkshopProject.Communication
 
         private string handlePostRequest(HttpListenerRequest request)
         {
-            UserConnectionInfo curr = new UserConnectionInfo(false,0,null);
-            return curr.stresshelp(request.RawUrl);
+            using (var reader = new System.IO.StreamReader(request.InputStream))
+            {
+                string content = reader.ReadToEnd();
+                UserConnectionInfo curr = new UserConnectionInfo(false, 0, null);
+                return curr.stresshelp(content,request.RawUrl);
+            }
         }
 
         #region interfaces implementation
