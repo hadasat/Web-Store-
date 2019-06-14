@@ -117,9 +117,9 @@ namespace WorkshopProject.System_Service
             return UserService.DisApproveOwnershipRequest(user, requestID);
         }
 
-        public Transaction BuyShoppingBasket(string cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
+        public async Task<Transaction> BuyShoppingBasket(string cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
         {
-            return TransactionService.BuyShoppingBasket(user,cardNumber,month,year,holder,ccv,id,name,address,city,country,zip);
+            return await TransactionService.BuyShoppingBasket(user,cardNumber,month,year,holder,ccv,id,name,address,city,country,zip);
         }
 
         public bool ChangeProductInfo(int storeId, int productId, string name, string desc, double price, string category, int amount)

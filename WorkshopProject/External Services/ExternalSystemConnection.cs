@@ -15,7 +15,6 @@ namespace WorkshopProject.External_Services
         public ExternalSystemConnection()
         {
             client = new HttpClient();
-            handshake();
         }
 
         public async Task<bool> cancelSupply(int transactionId)
@@ -81,14 +80,14 @@ namespace WorkshopProject.External_Services
         /// creates handshake with external system
         /// throws excetion if can't create connection
         /// </summary>
-        private async void handshake()
+        private async Task handshake()
         {
             Dictionary<string, string> handshakedDictionary = new Dictionary<string, string> {
                 {"action_type","handshake" }
             };
 
             var handSahekecontent = new FormUrlEncodedContent(handshakedDictionary);
-            HttpResponseMessage handShakeResponse = await client.PostAsync("https://cs-bgu-wsep.herokuapp.com", handSahekecontent);
+            HttpResponseMessage handShakeResponse = await client.PostAsync("https://c-bgu-wsep.herokuapp.com", handSahekecontent);
             string handshakeResposeString = await handShakeResponse.Content.ReadAsStringAsync();
 
             if (handshakeResposeString != "OK")
@@ -100,6 +99,7 @@ namespace WorkshopProject.External_Services
 
         private async Task<int> request(Dictionary<string, string> requestInfo)
         {
+            await handshake();
             var content = new FormUrlEncodedContent(requestInfo);
             HttpResponseMessage response = await client.PostAsync("https://cs-bgu-wsep.herokuapp.com", content);
             string responseString = await response.Content.ReadAsStringAsync();

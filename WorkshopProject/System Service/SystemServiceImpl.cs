@@ -156,7 +156,8 @@ namespace WorkshopProject.System_Service
                 string expiry = "",target = "z";
                 int ccv = 0, month = 10, year = 2050, id = 123456789;
                 string holder = "mosh moshe", city = "shit", country = "shit", zip = "12345", address = "", cardNumber = "0";
-                ret = new Transaction(user, cardNumber, month, year, holder, ccv, id, holder, address, city, country, zip, new PaymentStub (true),new SupplyStub(true));
+                ret = new Transaction();
+                ret.doTransaction(user, cardNumber, month, year, holder, ccv, id, holder, address, city, country, zip, new PaymentStub (true),new SupplyStub(true));
                 return JsonConvert.SerializeObject(ret);
             }
             catch (Exception e)

@@ -134,7 +134,19 @@ namespace WorkshopProject.Communication
             string messageType = ((string)messageObj["info"]).ToLower();
             if (messageHandlers.ContainsKey(messageType))
             {
-                messageHandlers[messageType](messageObj, message);
+                
+                try
+                {
+                    messageHandlers[messageType](messageObj, message);
+                }
+                catch
+                {
+                    Logger.Log("error", logLevel.ERROR, "can't parse info from server");
+                    JsonResponse response;
+                    int requestId = (int)messageObj["id"];
+                    response = JsonResponse.generateActionError(requestId, "can't parse the input please check the legality of your input");
+                    sendMyselfAMessage(JsonHandler.SerializeObject(response));
+                }
             }
             else
             {
@@ -639,9 +651,10 @@ namespace WorkshopProject.Communication
         }
 
 
-        private void buyShoppingBasketHandler(JObject msgObj, string message)
+        private async void buyShoppingBasketHandler(JObject msgObj, string message)
         {
             JsonResponse response;
+
             int requestId = (int)msgObj["id"];
             //{int cardNumber, int month,int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip}
             string cardNumber = (string)msgObj["data"]["cardNumber"];
@@ -658,7 +671,7 @@ namespace WorkshopProject.Communication
 
             try
             {
-                user.BuyShoppingBasket(cardNumber, month, year, holder, ccv, id, name, address, city, country, zip);
+                await user.BuyShoppingBasket(cardNumber, month, year, holder, ccv, id, name, address, city, country, zip);
                 response = JsonResponse.generateActionSucces(requestId);
             }catch (Exception e)
             {
