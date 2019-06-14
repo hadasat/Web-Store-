@@ -797,7 +797,6 @@ namespace WorkshopProject.Communication
 
         public string stresshelp(string info)
         {
-            LoginProxy cu = new LoginProxy();
             info = info.Substring(1);
             int idxComm = info.IndexOf("/");
             info = info.Substring(idxComm + 1);
@@ -813,13 +812,13 @@ namespace WorkshopProject.Communication
                         idxComm = info.IndexOf("/");
                         commandInfo = (idxComm != -1) ? info.Substring(0, idxComm) : info;
                         info = info.Substring(idxComm + 1);
-                        signinStress(cu, commandInfo);
+                        signinStress(commandInfo);
                         break;
                     case "register":
                         idxComm = info.IndexOf("/");
                         commandInfo = (idxComm != -1) ? info.Substring(0, idxComm) : info;
                         info = info.Substring(idxComm + 1);
-                        registerStress(cu, info);
+                        registerStress(info);
                         break;
                     case "addToBasket":
                         break;
@@ -833,7 +832,7 @@ namespace WorkshopProject.Communication
             return "";
         }
 
-        private void signinStress(LoginProxy cu,string info)
+        private void signinStress(string info)
         {
             int sep = info.IndexOf("+");
             string username = info.Substring(0, sep);
@@ -843,7 +842,7 @@ namespace WorkshopProject.Communication
             signInHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
         }
 
-        private void registerStress(LoginProxy cu, string info) {
+        private void registerStress(string info) {
             int sep = info.IndexOf("+");
             string username = info.Substring(0, sep);
             string password = info.Substring(sep + 1);
