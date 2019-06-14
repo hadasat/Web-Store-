@@ -57,7 +57,10 @@ namespace Users
                 throw new Exception("don't remove Admin!");
             try
             {
+                pHandler.RemovePasswordFromMember(m.id);
                 Remove(m.id);
+                
+
                 //members.Remove(m.id);
                 //mapIDUsermane.Remove(m.username);
             }

@@ -71,6 +71,7 @@ namespace WorkshopProject.DataAccessLayer
         {
             WorkshopDBContext ctx = getContext();
             ctx.Set<T>().Remove(entity);
+            SaveChanges();
         }
 
         /*
