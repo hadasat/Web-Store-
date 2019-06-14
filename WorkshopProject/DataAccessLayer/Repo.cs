@@ -70,8 +70,12 @@ namespace WorkshopProject.DataAccessLayer
         public virtual void Remove<T>(T entity) where T : IEntity
         {
             WorkshopDBContext ctx = getContext();
-            ctx.Set<T>().Remove(entity);
-            SaveChanges();
+            if(entity != null)
+            {
+                ctx.Set<T>().Remove(entity);
+                SaveChanges();
+            }
+            
         }
 
         /*
