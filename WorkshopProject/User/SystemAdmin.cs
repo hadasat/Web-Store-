@@ -26,6 +26,10 @@ namespace Users
             this.birthdate = member.birthdate;
             this.country = member.country;
             this.id = member.id;
+            this.storeManaging = member.storeManaging;
+            this.notifications = member.notifications;
+            this.observers = member.observers;
+            this.notificationLock = member.notificationLock;
         }
 
         public bool RemoveUser(string userName)
