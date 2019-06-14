@@ -104,12 +104,16 @@ namespace WorkshopProject.DataAccessLayer
             try
             {
                 WorkshopDBContext ctx = getContext();
-                ctx.Set<T>().Remove(entity);
+                if(entity != null)
+                {
+                    ctx.Set<T>().Remove(entity);
+                }
             }
             catch (Exception e)
             {
                 throw new WorkShopDbException(e.Message);
             }
+
 
         }
 
