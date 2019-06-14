@@ -144,8 +144,15 @@ namespace Password
 
         public void RemovePasswordFromMember(int memberId)
         {
-            Password toRemove = GetPasswordForMember(memberId);
-            repo.Remove<Password>(toRemove);
+            try
+            {
+                Password toRemove = GetPasswordForMember(memberId);
+                repo.Remove<Password>(toRemove);
+            }
+            catch
+            {
+
+            }
         }
 
         private ICollection<Password> GetList()
