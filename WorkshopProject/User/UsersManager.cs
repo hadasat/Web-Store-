@@ -334,7 +334,10 @@ namespace Users
         {
             foreach (Member m in GetMembers())
             {
-                if (m.username != null && m.username.Equals(username))
+                //if (m.username != null && m.username.Equals(username))
+
+                if (m.username != null && string.Compare(m.username, username) == 0)
+                    
                 {
                     return m;
                 }
