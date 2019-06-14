@@ -36,7 +36,7 @@ namespace Password
         {
             byte[] bytesPass = Encoding.ASCII.GetBytes(password);
             //Tuple<byte[], byte[]> sAndP = saltesAndPepper[ID];
-            Password sAndP = GetEntry(ID);
+            Password sAndP = GetPasswordForMember(ID);
             byte[] salt = sAndP.salt;
             byte[] pepper = sAndP.pepper;
             byte[] userPepper = GenerateSaltedHash(bytesPass, salt);
@@ -124,12 +124,36 @@ namespace Password
             return null;
         }
 
+        public Password GetPasswordForMember(int memberId)
+        {
+            foreach (Password p in GetList())
+            {
+                if (p.memberId == memberId)
+                {
+                    return p;
+                }
+            }
+            return null;
+        }
+
         public void RemoveEntry(int ID)
         {
             Password toRemove = GetEntry(ID);
-            GetList().Remove(toRemove);
+            repo.Remove<Password>(toRemove);
         }
 
+        public void RemovePasswordFromMember(int memberId)
+        {
+            try
+            {
+                Password toRemove = GetPasswordForMember(memberId);
+                repo.Remove<Password>(toRemove);
+            }
+            catch
+            {
+
+            }
+        }
 
         private ICollection<Password> GetList()
         {
@@ -158,6 +182,7 @@ namespace Password
         public byte[] salt { get; set; }
         [MaxLength(128)]
         public byte[] pepper { get; set; }
+        public int memberId { get; set; }
 
         public Password()
         {
@@ -165,9 +190,9 @@ namespace Password
         }
 
 
-        public Password(int id, byte[] salt, byte[] pepper)
+        public Password(int memberId, byte[] salt, byte[] pepper)
         {
-            this.id = id;
+            this.memberId = memberId;
             this.salt = salt;
             this.pepper = pepper;
         }

@@ -47,7 +47,7 @@ namespace Password.Tests
             {
                 Init();
                 bool res = passwordHandler.hashPassword(password, ID);
-                SaltesAndPepperEntry = passwordHandler.GetEntry(ID);
+                SaltesAndPepperEntry = passwordHandler.GetPasswordForMember(ID);
                 byte[] salt = SaltesAndPepperEntry.salt;
                 byte[] pepper = SaltesAndPepperEntry.pepper;
                 Assert.IsTrue(res);
