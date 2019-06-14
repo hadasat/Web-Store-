@@ -43,15 +43,29 @@ namespace WorkshopProject.Communication
             }
         }
 
+        private string handlePostRequest(HttpListenerRequest request)
+        {
+            UserConnectionInfo curr = new UserConnectionInfo(false,0,null);
+            return curr.stresshelp(request.RawUrl);
+        }
+
         #region interfaces implementation
         public string httpNewConnectionHandler(HttpListenerContext context)
         {
             HttpListenerRequest request = context.Request;
-            bool isSecureConnection = request.IsSecureConnection; //get if connection is secured or not
+            //bool isSecureConnection = request.IsSecureConnection; //get if connection is secured or not
             //get relevant html pgae code
-            string requestedPage = request.RawUrl;
+            if (request.HttpMethod == "GET")
+            {
+                string requestedPage = request.RawUrl;
 
-            return HtmlPageManager.findPageByName(requestedPage);
+                return HtmlPageManager.findPageByName(requestedPage);
+            }
+            else
+            {
+                return handlePostRequest(request);
+            }
+
         }
 
         public IWebScoketHandler webSocketNewConnectionHandler(WebSocketContext context, uint id)

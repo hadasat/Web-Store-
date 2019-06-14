@@ -74,7 +74,7 @@ namespace WorkshopProject.Communication
 
         private Dictionary<string, Action<JObject, string>> messageHandlers;
 
-        public UserConnectionInfo(bool isSecureConnection, uint id, IWebSocketMessageSender msgSender)
+              public UserConnectionInfo(bool isSecureConnection, uint id, IWebSocketMessageSender msgSender)
         {
             this.isSecureConnection = isSecureConnection;
             this.id = id;
@@ -199,7 +199,10 @@ namespace WorkshopProject.Communication
 
         private void sendMyselfAMessage(string msg)
         {
-            msgSender.sendMessageToUser(msg, id);
+            if (msgSender != null)
+            {
+                msgSender.sendMessageToUser(msg, id);
+            }
         }
         public void resubscribeObserver()
         {
@@ -786,5 +789,69 @@ namespace WorkshopProject.Communication
 
         #endregion
 
+
+        #region stress
+        public UserConnectionInfo()
+        {
+        }
+
+        public string stresshelp(string info)
+        {
+            LoginProxy cu = new LoginProxy();
+            info = info.Substring(1);
+            int idxComm = info.IndexOf("/");
+            info = info.Substring(idxComm + 1);
+            idxComm = info.IndexOf("/");
+            while (idxComm != -1)
+            {
+                string command = info.Substring(0, idxComm);
+                string commandInfo = null;
+                info = info.Substring(idxComm + 1);
+                switch (command)
+                {
+                    case "signin":
+                        idxComm = info.IndexOf("/");
+                        commandInfo = (idxComm != -1) ? info.Substring(0, idxComm) : info;
+                        info = info.Substring(idxComm + 1);
+                        signinStress(cu, commandInfo);
+                        break;
+                    case "register":
+                        idxComm = info.IndexOf("/");
+                        commandInfo = (idxComm != -1) ? info.Substring(0, idxComm) : info;
+                        info = info.Substring(idxComm + 1);
+                        registerStress(cu, info);
+                        break;
+                    case "addToBasket":
+                        break;
+                    case "addStore":
+                        break;
+                    case "purchase":
+                        break;
+                }
+            }
+
+            return "";
+        }
+
+        private void signinStress(LoginProxy cu,string info)
+        {
+            int sep = info.IndexOf("+");
+            string username = info.Substring(0, sep);
+            string password = info.Substring(sep + 1);
+            var reqInfo = new { name = username, password = password };
+            var dataObj = new { id = -10, data = reqInfo};
+            signInHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
+        }
+
+        private void registerStress(LoginProxy cu, string info) {
+            int sep = info.IndexOf("+");
+            string username = info.Substring(0, sep);
+            string password = info.Substring(sep + 1);
+            var reqInfo = new { name = username, password = password ,birthdate="11-11-1999",country="asd"};
+            var dataObj = new { id = -10, data = reqInfo };
+            registerHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
+        }
+
+        #endregion
     }
 }
