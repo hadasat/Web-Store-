@@ -14,7 +14,7 @@ namespace WorkshopProject.System_Service
 {
     public class LoginProxy
     {
-        bool loggedIn;
+        public bool loggedIn { get; set; }
         public User user { get; set; }
 
         public static readonly string successMsg  = "success";
