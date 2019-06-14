@@ -53,10 +53,10 @@ namespace WorkshopProject.Tests
             DataAccessDriver.UseStub = false;
         }
 
-        [TestMethod()]
+        [TestMethod]
         [TestCategory("Unit test - TransactionTest")]
         [TestCategory("Regression")]
-        public void purchaseTest()
+        public async void purchaseTest()
          {
             try
             {
@@ -64,7 +64,8 @@ namespace WorkshopProject.Tests
                 //chack if the purchase sucesess
                 int  ccv = 0, month =10,  year = 2050, id=123456789 ;
                 string holder = "mosh moshe",city = "shit",country="shit",zip="12345",address = "",cardNumber = "0";
-                Transaction transaction = new Transaction(user, cardNumber,month,year, holder, ccv,id, holder, address,city,country,zip,new PaymentStub (true),new SupplyStub(true));
+                Transaction transaction = new Transaction();
+                await transaction.doTransaction(user, cardNumber,month,year, holder, ccv,id, holder, address,city,country,zip,new PaymentStub (true),new SupplyStub(true));
                 int transactionId = transaction.id;
                 Assert.IsTrue(transactionId > 0, "fail to purchase legal transaction trans id:" + transactionId);
 
@@ -75,7 +76,8 @@ namespace WorkshopProject.Tests
                 //check purchase fail becouse basket empty
                 try
                 {
-                    transaction = new Transaction(user, cardNumber, month, year, holder, ccv, id, holder, address, city, country, zip, new PaymentStub(true), new SupplyStub(true));
+                    transaction = new Transaction();
+                    await transaction.doTransaction(user, cardNumber, month, year, holder, ccv, id, holder, address, city, country, zip, new PaymentStub(true), new SupplyStub(true));
                     Assert.IsTrue(false, "didn't fail on empty basket");
                 }catch
                 {   

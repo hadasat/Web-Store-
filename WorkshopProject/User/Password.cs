@@ -68,7 +68,7 @@ namespace Password
                 plainTextWithSaltBytes[i] = plainText[i];
             }
             for (int i = 0; i < salt.Length; i++)
-            { 
+            {
                 plainTextWithSaltBytes[plainText.Length + i] = salt[i];
             }
 
@@ -114,7 +114,7 @@ namespace Password
 
         public Password GetEntry(int ID)
         {
-            foreach(Password p in GetList())
+            foreach (Password p in GetList())
             {
                 if (p.id == ID)
                 {
