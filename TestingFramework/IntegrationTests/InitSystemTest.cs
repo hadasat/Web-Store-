@@ -131,6 +131,7 @@ namespace TestingFramework.IntegrationTests
         [TestCategory("init System Test")]
         public void makeAdminTest()
         {
+            DataAccessDriver.UseStub = false;
             string userName = "B";
             addUser(userName);
 
