@@ -87,7 +87,7 @@ namespace WorkshopProject.External_Services
             };
 
             var handSahekecontent = new FormUrlEncodedContent(handshakedDictionary);
-            HttpResponseMessage handShakeResponse = await client.PostAsync("https://c-bgu-wsep.herokuapp.com", handSahekecontent);
+            HttpResponseMessage handShakeResponse = await client.PostAsync("https://cs-bgu-wsep.herokuapp.com", handSahekecontent);
             string handshakeResposeString = await handShakeResponse.Content.ReadAsStringAsync();
 
             if (handshakeResposeString != "OK")

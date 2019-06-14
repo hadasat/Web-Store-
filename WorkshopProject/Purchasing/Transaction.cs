@@ -233,7 +233,11 @@ namespace TansactionsNameSpace
             {
                 Store store;
                 if ((store = WorkShop.getStore(p.product.storeId)) != null)
+                {
                     basket.setProductAmount(store, p.product, 0);
+                    string buyMessage = String.Format("the product {0}, was bought from the store {1}", p.product.name, store.name);
+                    Member.sendMessageToAllOwners(store.id, buyMessage);
+                }
             }
             return transactionId;
         }
