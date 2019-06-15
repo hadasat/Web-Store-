@@ -166,15 +166,15 @@ namespace WorkshopProject.System_Service
             return ((Member)user).isManageStore(storeId);
         }
 
-
         //NOT FOR LOGIN PROXY!!
         public static void MakeAdmin(int memberId)
         {
             Member member = ConnectionStubTemp.getMember(memberId);
+            Password.Password passOrig = ConnectionStubTemp.pHandler.GetPasswordForMember(memberId);
+            Password.Password passCopy = new Password.Password(passOrig);
             SystemAdmin newsys = new SystemAdmin(member);
             ConnectionStubTemp.removeMember(member);
-            ConnectionStubTemp.addMemberJustForExternalUsage(newsys);
-
+            ConnectionStubTemp.addMemberJustForExternalUsage(newsys, new Password.Password(passCopy));
         }
 
         public static bool isAdmin(User user)
