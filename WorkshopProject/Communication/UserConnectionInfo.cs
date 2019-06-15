@@ -822,10 +822,16 @@ namespace WorkshopProject.Communication
                         registerStress(paramDic);
                         break;
                     case "addToBasket":
+                        addToBasketStress(paramDic);
                         break;
                     case "addNewStore":
+                        addNewStoreStress(paramDic);
                         break;
-                    case "purchase":
+                    case "purchaseSuccess":
+                        purchaseSuccessStress();
+                        break;
+                    case "purchaseFail":
+                        purchaseFailureStress();
                         break;
                 }
             }
@@ -848,6 +854,32 @@ namespace WorkshopProject.Communication
             registerHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
         }
 
-        #endregion
+        private void addToBasketStress(Dictionary<string, string> parameters)
+        {
+            var reqInfo = new { storeId = parameters["abStoreId"], productId =parameters["abProductId"], amount =parameters["abAmount"]};
+            var dataObj = new { id = -10, data = reqInfo };
+            addProductToBaksetHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
+        }
+
+        private void addNewStoreStress(Dictionary<string, string> parameters)
+        {
+            var dataObj = new { id = -10, data = parameters["nsName"] };
+            addStoreHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
+        }
+
+        private void purchaseSuccessStress()
+        {
+            var reqInfo = new { cardNumber = "1",month="1",year="2020",holder="1",cvv="1",id="1",name="1",address="a",city="c",country="3",zip="1"};
+            var dataObj = new { id = -10, data = reqInfo };
+            buyShoppingBasketHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
+        }
+        private void purchaseFailureStress()
+        {
+            var reqInfo = new { cardNumber = "1", month = "1", year = "2020", holder = "1", ccv = "1" };
+            var dataObj = new { id = -10, data = reqInfo };
+            buyShoppingBasketHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
+        }
+
+            #endregion
     }
 }
