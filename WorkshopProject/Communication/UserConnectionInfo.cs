@@ -109,12 +109,13 @@ namespace WorkshopProject.Communication
                 {"removestoremanager",removeStoreManagerHandler},
                 {"addstoremanager" ,addStoreManagerHandler},
                 {"ismanagestore" ,IsManageStoreHandler},
-                {"addstoreowner" ,addStoreOwnerHandler}
+                {"addstoreowner" ,addStoreOwnerHandler},
+                {"isadmin" ,isAdminHandler}
 
             };
         }
 
-        
+      
 
         /// <summary>
         /// on message event activated when the user recieves message from server
@@ -220,6 +221,33 @@ namespace WorkshopProject.Communication
 
         // ***************** handlers ****************
 
+
+        #region requests handlers
+
+        private void isAdminHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+
+            try
+            {
+                bool jsonBoolean = user.IsAdmin();
+                response = JsonResponse.generateDataSuccess(requestId, JsonHandler.SerializeObject(jsonBoolean));
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateDataFailure(requestId, e.Message);
+            }
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+
+        }
+
+
+
         private void IsManageStoreHandler(JObject msgObj, string message)
         {
             JsonResponse response;
@@ -241,7 +269,6 @@ namespace WorkshopProject.Communication
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
 
-        #region requests handlers
 
         private void signInHandler(JObject msgObj, string message)
         {

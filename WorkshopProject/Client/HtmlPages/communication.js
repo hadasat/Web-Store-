@@ -41,6 +41,7 @@ function onStart(initFunc) {
         }
         console.log("connected \n");
         initFunc();
+        updateAdmin();
     }
         
 
