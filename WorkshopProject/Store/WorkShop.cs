@@ -195,6 +195,16 @@ namespace WorkshopProject
             repo.Add<Store>(e);
         }
 
+        public static void AddProductToDB(Product e)
+        {
+            if (useStub())
+            {
+               // getDbStub().Add(e);
+                return;
+            }
+            repo.Add<Product>(e);
+        }
+
         public static void Update(Store store)
         {
             if (useStub())
