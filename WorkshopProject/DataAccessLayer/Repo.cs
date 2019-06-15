@@ -52,6 +52,30 @@ namespace WorkshopProject.DataAccessLayer
                 throw new WorkShopDbException(e.Message);
             }
 
+            /*
+            try
+            {
+                List<T> ls = getContext().Set<T>().ToList<T>();
+
+                List<int> ids = new List<int>();
+                foreach (T e in ls)
+                {
+                    ids.Add(e.GetKey());
+                }
+                List<T> ret = new List<T>();
+                foreach(int id in ids)
+                {
+                    ret.Add((T) Get<T>(id));
+                }
+                return ret;
+
+            }
+            catch (Exception e)
+            {
+                throw new WorkShopDbException(e.Message);
+            }
+            */
+
         }
 
         public virtual void Update<T>(T entity) where T : IEntity
@@ -187,7 +211,7 @@ namespace WorkshopProject.DataAccessLayer
                     {
                         ctx.SaveChanges();
                     }
-                    catch (DbUpdateConcurrencyException ex)
+                    catch (DbUpdateException ex)
                     {
                         counter++;
                         if (counter >= maxTries)
@@ -198,7 +222,12 @@ namespace WorkshopProject.DataAccessLayer
                         saveFailed = true;
 
                         // Update the values of the entity that failed to save from the store
-                        ex.Entries.Single().Reload();
+                        //ex.Entries.Single().Reload();
+
+
+                        // Update original values from the database
+                        var entry = ex.Entries.Single();
+                        entry.OriginalValues.SetValues(entry.GetDatabaseValues());
                     }
 
                 } while (saveFailed);

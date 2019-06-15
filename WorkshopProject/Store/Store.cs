@@ -21,20 +21,21 @@ namespace WorkshopProject
         public string name { get; set; }
         public int rank { get; set; }
         public Boolean isActive { get; set; }
-        [NotMapped]
+        //[NotMapped]
        // private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD
         [Include]
         public virtual List<Stock> Stocks { get; set; } //added for DB. Through "getStock" translates it to dictionary for backwards compatibility
         [Include]
-        public List<IBooleanExpression> purchasePolicies { get; set; }
+        public virtual List<IBooleanExpression> purchasePolicies { get; set; }
         [Include]
-        public List<Discount> discountPolicies { get; set; }
+        public virtual List<Discount> discountPolicies { get; set; }
         [Include]
-        public List<IBooleanExpression> storePolicies { get; set; }
+        public virtual List<IBooleanExpression> storePolicies { get; set; }
 
         public int storeBankNum;
         public int storeAccountNum;
         public string storeAddress;
+
 
         public Store()
         {
@@ -42,6 +43,7 @@ namespace WorkshopProject
             this.purchasePolicies = new List<IBooleanExpression>();
             this.storePolicies = new List<IBooleanExpression>();
             this.discountPolicies = new List<Discount>();
+            
         }
 
         public Store(int id, string name, int rank, Boolean isActive)
@@ -131,7 +133,7 @@ namespace WorkshopProject
            
         }
 
-        public List<Stock> getStock()
+        public ICollection<Stock> getStock()
         {
             return Stocks;
         }
@@ -529,7 +531,7 @@ namespace WorkshopProject
         public int id { get; set; }
         //public int amount { get; set; }
         [Include]
-        public Product product { get; set; }
+        public virtual Product product { get; set; }
 
 
         public Stock() { }

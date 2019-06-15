@@ -443,9 +443,9 @@ namespace Users
     {
         [Key]
         public int ID { get; set; }
-        public Store store { get; set; }
-        public Member initiate { get; set; }
-        public Member candidate { get; set; }
+        public virtual Store store { get; set; }
+        public virtual Member initiate { get; set; }
+        public virtual Member candidate { get; set; }
         //public static Dictionary<String, int> owners = new Dictionary<String, int>();
         //<ownerNames, approved>
         public LinkedList<Decision> owners = new LinkedList<Decision>();

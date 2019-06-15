@@ -67,8 +67,8 @@ namespace WorkshopProject.System_Service
             //IdMessage idMsg = new IdMessage(id);
             //return JsonConvert.SerializeObject(idMsg);
 
-            WorkShop.repo.Add<Product>(store.getStockFromProductId(id).product);
-            WorkShop.repo.Add<Stock>(store.getStockFromProductId(id));
+            //WorkShop.repo.Add<Product>(store.getStockFromProductId(id).product);
+            //WorkShop.repo.Add<Stock>(store.getStockFromProductId(id));
             WorkShop.Update(store);
             Store s2 = WorkShop.getStore(storeId);
 
