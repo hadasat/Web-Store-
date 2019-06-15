@@ -68,7 +68,8 @@ namespace WorkshopProject.System_Service
         {
             Store store = WorkShop.getStore(storeId);
             Product p = new Product(name, price, desc, category, rank, amount, storeId);
-            store.GetStock().Add(p.getId(), p);
+            //store.GetStock().Add(p.getId(), p);
+            store.getStock().Add(new Stock(p));
             WorkShop.Update(store);
             return p.getId();
         }
@@ -162,7 +163,7 @@ namespace WorkshopProject.System_Service
         public bool removeProductFromStock(int storeId, int ProductId, int amountToRemove)
         {
             Store store = WorkShop.getStore(storeId);
-            store.GetStock()[ProductId].amount -= amountToRemove;
+            store.GetStockAsDictionary()[ProductId].amount -= amountToRemove;
             return true;
 
         }
@@ -170,7 +171,7 @@ namespace WorkshopProject.System_Service
         public bool removeProductFromStore(int storeId, int productID)
         {
             Store store = WorkShop.getStore(storeId);
-            return store.GetStock().Remove(productID);
+            return store.GetStockAsDictionary().Remove(productID);
         }
 
         public bool removeStore(int storeId, int ownerId)

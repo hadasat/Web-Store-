@@ -22,7 +22,7 @@ namespace WorkshopProject
         public int rank { get; set; }
         public Boolean isActive { get; set; }
         [NotMapped]
-        private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD
+       // private Dictionary<int, Product> Stock; //USE ONLY GETTER FOR THIS FIELD
         [Include]
         public virtual List<Stock> Stocks { get; set; } //added for DB. Through "getStock" translates it to dictionary for backwards compatibility
         [Include]
@@ -120,13 +120,20 @@ namespace WorkshopProject
                 obj.LoadMe();
             }
         }
-        public Dictionary<int, Product> GetStock()
+        public Dictionary<int, Product> GetStockAsDictionary()
         {
-            if (Stock == null)
+            Dictionary<int, Product> dicStock = new Dictionary<int, Product>();
+            foreach(Stock s in Stocks)
             {
-                Stock = getStockListAsDictionary();
+                dicStock.Add(s.id, s.product);
             }
-            return Stock;
+            return dicStock;
+           
+        }
+
+        public List<Stock> getStock()
+        {
+            return Stocks;
         }
 
         public List<ProductAmountPrice> afterDiscount(List<ProductAmountPrice> products, User user)
@@ -160,7 +167,7 @@ namespace WorkshopProject
         {
 
             List<Product> matched_products = new List<Product>();
-            Dictionary<int, Product> products = GetStock();
+            Dictionary<int, Product> products = GetStockAsDictionary();
             foreach (Product item in products.Values)
             {
                 if ((name == "" || name == item.name) && (category == "" || category == item.category)
@@ -182,9 +189,9 @@ namespace WorkshopProject
         public Product getProduct(int productId)
         {
 
-            if (!GetStock().ContainsKey(productId))
+            if (!GetStockAsDictionary().ContainsKey(productId))
                 return null;
-            return GetStock()[productId];
+            return GetStockAsDictionary()[productId];
 
         }
 
@@ -201,7 +208,7 @@ namespace WorkshopProject
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return -1;
 
-            GetStock().Add(p.getId(), p);
+            getStock().Add(new Stock(p));
             Logger.Log("event", logLevel.INFO, "product " + p.getId() + " added");
             return p.getId();
         }
@@ -215,8 +222,8 @@ namespace WorkshopProject
 
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
-
-            GetStock().Remove(product.getId());
+            
+            getStock().Remove(getStockFromProductId(product.getId()));
             Logger.Log("event", logLevel.INFO, "product " + product.getId() + " removed");
             return true;
         }
@@ -233,11 +240,11 @@ namespace WorkshopProject
         {
             callback callback = delegate ()
             {
-                if (GetStock().ContainsKey(p.getId()))
-                    GetStock()[p.getId()].amount += amountToBuy;
+                if (GetStockAsDictionary().ContainsKey(p.getId()))
+                    GetStockAsDictionary()[p.getId()].amount += amountToBuy;
             };
 
-            if (!GetStock().ContainsKey(p.getId()) || removeFromStock(GetStock()[p.getId()], amountToBuy) == -1)
+            if (!GetStockAsDictionary().ContainsKey(p.getId()) || removeFromStock(GetStockAsDictionary()[p.getId()], amountToBuy) == -1)
                 return null;
             return callback;
 
@@ -268,7 +275,7 @@ namespace WorkshopProject
             if (!user.hasAddRemoveProductsPermission(this))   //Verify Premission
                 return false;
 
-            if (!GetStock().ContainsKey(product.getId()))
+            if (!GetStockAsDictionary().ContainsKey(product.getId()))
                 throw new Exception("Product not exist");
 
             product.amount += amountToAdd;
@@ -285,20 +292,24 @@ namespace WorkshopProject
 
         public bool checkAvailability(Product product, int amount)
         {
-            if (GetStock().ContainsKey(product.getId()))
+            if (GetStockAsDictionary().ContainsKey(product.getId()))
             {
-                return GetStock()[product.getId()].amount >= amount;
+                return GetStockAsDictionary()[product.getId()].amount >= amount;
             }
             return false;
         }
 
         public bool changeProductInfo(User user, int productId, string name, string desc, double price, string category, int amount)
         {
-            if (!GetStock().ContainsKey(productId) || !user.hasAddRemoveProductsPermission(this))
+            if (!GetStockAsDictionary().ContainsKey(productId) || !user.hasAddRemoveProductsPermission(this))
                 return false;
             if (!amountIsLegal(amount))
                 throw new Exception("new amount is illegal");
-            Product product = Stock[productId];
+
+            Stock s = getStockFromProductId(productId);
+            if (s == null)
+                return false;
+            Product product = s.product;
             product.name = name;
             product.description = desc;
             product.setPrice(price);
@@ -311,7 +322,7 @@ namespace WorkshopProject
         public Product findProduct(int productId)
         {
             Product output;
-            GetStock().TryGetValue(productId, out output);
+            GetStockAsDictionary().TryGetValue(productId, out output);
             return output;
         }
 
@@ -424,15 +435,15 @@ namespace WorkshopProject
         }
 
 
-        private Dictionary<int, Product> getStockListAsDictionary()
-        {
-            Dictionary<int, Product> ret = new Dictionary<int, Product>();
-            foreach (Stock stock in this.Stocks)
-            {
-                ret.Add(stock.amount, stock.product);
-            }
-            return ret;
-        }
+        //private Dictionary<int, Product> getStockListAsDictionary()
+        //{
+        //    Dictionary<int, Product> ret = new Dictionary<int, Product>();
+        //    foreach (Stock stock in this.Stocks)
+        //    {
+        //        ret.Add(stock.amount, stock.product);
+        //    }
+        //    return ret;
+        //}
 
         public Discount getDiscountPolicy(int id)
         {
@@ -471,14 +482,14 @@ namespace WorkshopProject
         public List<Product> getAllProducst()
         {
             List<Product> ans = new List<Product>();
-            if (Stock == null || Stock.Count == 0)
+            if (Stocks == null || Stocks.Count == 0)
             {
                 return ans;
             }
-            foreach (KeyValuePair<int, Product> curr in Stock)
+            foreach (Stock s in Stocks)
             {
 
-                ans.Add(curr.Value);
+                ans.Add(s.product);
             }
 
             return ans;
@@ -498,7 +509,17 @@ namespace WorkshopProject
         //    }
         //    return Stock;
         //}
+
+        public Stock getStockFromProductId(int pid)
+        {
+            foreach (Stock s in Stocks)
+                if (s.id == pid)
+                    return s;
+            return null;
+        }
     }
+
+   
 
 
     public class Stock : IEntity
@@ -506,17 +527,18 @@ namespace WorkshopProject
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
-        public int amount { get; set; }
+        //public int amount { get; set; }
         [Include]
         public Product product { get; set; }
 
 
         public Stock() { }
 
-        public Stock(int amount, Product product)
+        public Stock( Product product)
         {
-            this.amount = amount;
+            //this.amount = amount;
             this.product = product;
+            this.id = product.id;
         }
         public override int GetKey()
         {

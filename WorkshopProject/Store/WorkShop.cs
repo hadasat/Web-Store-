@@ -103,8 +103,8 @@ namespace WorkshopProject
         {
             foreach(Store store in GetStores())
             {
-                if (store.GetStock().ContainsKey(productId))
-                    return store.GetStock()[productId];
+                if (store.GetStockAsDictionary().ContainsKey(productId))
+                    return store.GetStockAsDictionary()[productId];
             }
             return null;
         }
