@@ -6,7 +6,9 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.Client;
 using WorkshopProject.Communication.Server;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Log;
 using WorkshopProject.System_Service;
 
@@ -74,7 +76,7 @@ namespace WorkshopProject.Communication
 
         private Dictionary<string, Action<JObject, string>> messageHandlers;
 
-        public UserConnectionInfo(bool isSecureConnection, uint id, IWebSocketMessageSender msgSender)
+              public UserConnectionInfo(bool isSecureConnection, uint id, IWebSocketMessageSender msgSender)
         {
             this.isSecureConnection = isSecureConnection;
             this.id = id;
@@ -139,6 +141,10 @@ namespace WorkshopProject.Communication
                 {
                     messageHandlers[messageType](messageObj, message);
                 }
+                catch (WorkShopDbException dbExc)
+                {
+                    throw dbExc;
+                }
                 catch
                 {
                     Logger.Log("error", logLevel.ERROR, "can't parse info from server");
@@ -199,7 +205,10 @@ namespace WorkshopProject.Communication
 
         private void sendMyselfAMessage(string msg)
         {
-            msgSender.sendMessageToUser(msg, id);
+            if (msgSender != null)
+            {
+                msgSender.sendMessageToUser(msg, id);
+            }
         }
         public void resubscribeObserver()
         {
@@ -221,6 +230,10 @@ namespace WorkshopProject.Communication
                 bool jsonBoolean = user.IsManageStore(storeId);
                 response = JsonResponse.generateDataSuccess(requestId, JsonHandler.SerializeObject(jsonBoolean));
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateDataFailure(requestId, e.Message);
@@ -232,6 +245,11 @@ namespace WorkshopProject.Communication
 
         private void signInHandler(JObject msgObj, string message)
         {
+            bool ans;
+            signInHandler(msgObj, message, out ans);
+        }
+        private void signInHandler(JObject msgObj, string message, out bool outAns)
+        {
             JsonResponse responseObj;
             string userName = (string)msgObj["data"]["name"];
             string password = (string)msgObj["data"]["password"];
@@ -241,10 +259,12 @@ namespace WorkshopProject.Communication
             {
                 responseObj = JsonResponse.generateActionSucces(requestId);
                 user.subscribeAsObserver(this);
+                outAns = true;
             }
             else
             {
                 responseObj = JsonResponse.generateActionError(requestId, ans);
+                outAns = false;
             }
             sendMyselfAMessage(JsonHandler.SerializeObject(responseObj));
         }
@@ -257,6 +277,10 @@ namespace WorkshopProject.Communication
             {
                 string jsonShoppingBasket = user.GetShoppingBasket();
                 response = JsonResponse.generateDataSuccess(requestId, jsonShoppingBasket);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -281,16 +305,24 @@ namespace WorkshopProject.Communication
                 }
                 response = JsonResponse.generateActionSucces(requestId);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
             }
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
-
-        private void registerHandler(JObject msgObj, string message)
+        private void registerHandler(JObject msgObj, string message) {
+            bool ans;
+            registerHandler(msgObj, message, out ans);
+        }
+        private void registerHandler(JObject msgObj, string message,out bool outAns)
         {
             JsonResponse response;
+            outAns = false;
             int requestId = (int)msgObj["id"];
             string userName = (string)msgObj["data"]["name"];
             string password = (string)msgObj["data"]["password"];
@@ -306,13 +338,22 @@ namespace WorkshopProject.Communication
                 }
                 try
                 {
-                    response = user.Register(userName, password, birthDate, country) ?
+                    outAns = user.Register(userName, password, birthDate, country);
+                    response =  outAns ?
                         JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "can't register due to an unknown reason");
+                }
+                catch (WorkShopDbException dbExc)
+                {
+                    throw dbExc;
                 }
                 catch (Exception e)
                 {
                     response = JsonResponse.generateActionError(requestId, e.Message);
                 }
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch
             {
@@ -322,9 +363,14 @@ namespace WorkshopProject.Communication
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
-
         private void addStoreHandler(JObject msgObj, string message)
         {
+            bool ans;
+            addStoreHandler(msgObj, message, out ans);
+        }
+        private void addStoreHandler(JObject msgObj, string message,out bool outAns)
+        {
+            outAns = false;
             JsonResponse response;
             int requestId = (int)msgObj["id"];
             string storeName = (string)msgObj["data"];
@@ -332,6 +378,11 @@ namespace WorkshopProject.Communication
             {
                 int ans = user.AddStore(storeName);
                 response = JsonResponse.generateActionSucces(requestId, ans.ToString());
+                outAns = true;
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -350,6 +401,10 @@ namespace WorkshopProject.Communication
                 string jsonStore = user.GetStore(storeId);
                 response = JsonResponse.generateDataSuccess(requestId, jsonStore);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateDataFailure(requestId, e.Message);
@@ -366,6 +421,10 @@ namespace WorkshopProject.Communication
             {
                 string jsonProduct = user.GetProductInfo(productId);
                 response = JsonResponse.generateDataSuccess(requestId, jsonProduct);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -387,6 +446,10 @@ namespace WorkshopProject.Communication
             {
                 int ans = user.AddProductToStore(storeId, productName, description, price, category);
                 response = JsonResponse.generateActionSucces(requestId, ans.ToString());
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -414,6 +477,10 @@ namespace WorkshopProject.Communication
                     response = JsonResponse.generateActionError(requestId, "can't add product to stock");
                 }
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
@@ -430,6 +497,10 @@ namespace WorkshopProject.Communication
                 string allStoreJson = user.GetAllStores();
                 response = JsonResponse.generateDataSuccess(requestId, allStoreJson);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateDataFailure(requestId, e.Message);
@@ -438,9 +509,15 @@ namespace WorkshopProject.Communication
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
-
         private void addProductToBaksetHandler(JObject msgObj, string message)
         {
+            bool ans;
+            addProductToBaksetHandler(msgObj, message, out ans);
+        }
+
+        private void addProductToBaksetHandler(JObject msgObj, string message,out bool outAns)
+        {
+            outAns = false;
             JsonResponse response;
             int requestId = (int)msgObj["id"];
             int storeId = (int)msgObj["data"]["storeId"];
@@ -452,12 +529,17 @@ namespace WorkshopProject.Communication
                 if (addAns)
                 {
                     response = JsonResponse.generateActionSucces(requestId);
+                    outAns = true;
                 }
                 else
                 {
                     response = JsonResponse.generateActionError(requestId, "unknow error occured while adding product to basket");
                 }
 
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -479,7 +561,12 @@ namespace WorkshopProject.Communication
             {
                 response = user.RemoveProductFromStore(storeId, productId) ?
                     JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "failed to remove product");
-            }catch (Exception e)
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
+            catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
             }
@@ -505,6 +592,10 @@ namespace WorkshopProject.Communication
                 response = user.ChangeProductInfo(storeId, productId, name, desc, price, category, amount) ?
                     JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "failed to change product info");
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
@@ -524,6 +615,10 @@ namespace WorkshopProject.Communication
             {
                 response = user.closeStore(storeId) ?
                     JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "failed to close store");
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -557,7 +652,12 @@ namespace WorkshopProject.Communication
             {
                 String data_ans = JsonHandler.SerializeObject(user.SearchProducts(name, category, keyword, startPrice, endPrice, productRank, storeRank));
                 response = JsonResponse.generateDataSuccess(requestId, data_ans);
-            }catch (Exception e)
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
+            catch (Exception e)
             {
                 response = JsonResponse.generateDataFailure(requestId, e.Message);
             }
@@ -574,6 +674,10 @@ namespace WorkshopProject.Communication
             {    
                 String data_ans = JsonHandler.SerializeObject(user.GetAllMembers());
                 response = JsonResponse.generateDataSuccess(requestId, data_ans);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -593,6 +697,10 @@ namespace WorkshopProject.Communication
             {
                 response = user.RemoveUser(userName) ?
                     JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId,"can't remove user");
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -614,6 +722,10 @@ namespace WorkshopProject.Communication
                 String data_ans = JsonHandler.SerializeObject(user.GetAllManagers(storeId));
                 response = JsonResponse.generateDataSuccess(requestId, data_ans);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateDataFailure(requestId, e.Message);
@@ -630,6 +742,10 @@ namespace WorkshopProject.Communication
             {
                 user.ApproveOwnershipRequest(ownerRequestId);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 Logger.Log("error", logLevel.ERROR, "from approve response " + e.Message);
@@ -644,12 +760,15 @@ namespace WorkshopProject.Communication
             {
                 user.DisApproveOwnershipRequest(ownerRequestId);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 Logger.Log("error", logLevel.ERROR, "from disapprove response " + e.Message);
             }
         }
-
 
         private async void buyShoppingBasketHandler(JObject msgObj, string message)
         {
@@ -672,6 +791,10 @@ namespace WorkshopProject.Communication
                 country = (string)msgObj["data"]["country"];
                 zip = (string)msgObj["data"]["zip"];
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch
             {
                 Logger.Log("error", logLevel.ERROR, "can't parse info from server");
@@ -684,7 +807,12 @@ namespace WorkshopProject.Communication
             {
                 await user.BuyShoppingBasket(cardNumber, month, year, holder, ccv, id, name, address, city, country, zip);
                 response = JsonResponse.generateActionSucces(requestId);
-            }catch (Exception e)
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
+            catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
             }
@@ -703,6 +831,10 @@ namespace WorkshopProject.Communication
             {
                 String data_ans = JsonHandler.SerializeObject(user.getAllProductsForStore(storeId));
                 response = JsonResponse.generateDataSuccess(requestId, data_ans);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -725,6 +857,10 @@ namespace WorkshopProject.Communication
                 user.RemoveStoreManager(storeId, userName);
                 response = JsonResponse.generateActionSucces(requestId);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
@@ -745,6 +881,10 @@ namespace WorkshopProject.Communication
                 user.AddStoreManager(storeId, userName, roles);
                 response = JsonResponse.generateActionSucces(requestId);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
@@ -763,6 +903,10 @@ namespace WorkshopProject.Communication
             {
                 user.AddStoreOwner(storeId, userName);
                 response = JsonResponse.generateActionSucces(requestId);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -786,5 +930,108 @@ namespace WorkshopProject.Communication
 
         #endregion
 
+
+        #region stress
+        public string stresshelp(string parameters, string commands)
+        {
+            string ans ="";
+            //create dictionary for parametres 
+            Dictionary<string, string> paramDic = new Dictionary<string, string>();
+            string[] rawParams = parameters.Split('&');
+            foreach (string param in rawParams)
+            {
+                string[] kvPair = param.Split('=');
+                paramDic.Add(kvPair[0], kvPair[1]);
+            }
+
+            //remove wot
+            commands = commands.Substring(1);
+            int sIdx = commands.IndexOf("/");
+            string currCommand;
+            commands = commands.Substring(sIdx + 1);
+            while (sIdx > -1)
+            {
+                //get command to run
+                sIdx = commands.IndexOf("/");
+                currCommand = (sIdx > -1) ? commands.Substring(0, sIdx) : commands;
+                commands = commands.Substring(sIdx + 1);
+                switch (currCommand)
+                {
+                    case "signin":
+                        ans = signinStress(paramDic);
+                        break;
+                    case "register":
+                        ans = registerStress(paramDic);
+                        break;
+                    case "addToBasket":
+                        ans = addToBasketStress(paramDic);
+                        break;
+                    case "addNewStore":
+                        ans = addNewStoreStress(paramDic);
+                        break;
+                    case "purchaseSuccess":
+                        ans = purchaseStress(paramDic);
+                        break;
+                }
+            }
+
+            
+
+            return ans;
+        }
+
+        private string signinStress(Dictionary<string,string> parameters)
+        {
+            var reqInfo = new { name = parameters["sname"], password = parameters["spass"] };
+            var dataObj = new { id = -10, data = reqInfo};
+            bool ans;
+            signInHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "", out ans);
+            return ans ? "true" : "false signin";
+        }
+
+        private string registerStress(Dictionary<string, string> parameters) {
+            var reqInfo = new { name = parameters["rname"], password = parameters["rpass"] ,birthdate="11-11-1999",country="asd"};
+            var dataObj = new { id = -10, data = reqInfo };
+            bool ans;
+            registerHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "",out ans);
+            return ans ? "true" : "false register";
+        }
+
+        private string addToBasketStress(Dictionary<string, string> parameters)
+        {
+            var reqInfo = new { storeId = parameters["abStoreId"], productId =parameters["abProductId"], amount =parameters["abAmount"]};
+            var dataObj = new { id = -10, data = reqInfo };
+            bool ans;
+            addProductToBaksetHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "",out ans);
+            return ans ? "true" : "false add to bakset";
+        }
+
+        private string addNewStoreStress(Dictionary<string, string> parameters)
+        {
+            var dataObj = new { id = -10, data = parameters["nsName"] };
+            bool ans;
+            addStoreHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "",out ans);
+            return ans ? "true" : "false add new store";
+        }
+
+        private string purchaseStress(Dictionary<string, string> parameters)
+        {
+            var reqInfoBad = new { cardNumber = "1", month = "1", year = "2020", holder = "1", ccv = "1" };
+            var dataObjBad = new { id = -10, data = reqInfoBad };
+            var reqInfoGood = new { cardNumber = "1",month="1",year="2020",holder="1",cvv="1",id="1",name="1",address="a",city="c",country="3",zip="1"};
+            var dataObjGood = new { id = -10, data = reqInfoGood };
+            if (parameters["purchaseType"] == "good")
+            {
+                buyShoppingBasketHandler(JObject.Parse(JsonHandler.SerializeObject(dataObjBad)), "");
+            }
+            else
+            {
+                buyShoppingBasketHandler(JObject.Parse(JsonHandler.SerializeObject(dataObjBad)), "");
+            }
+
+            return HtmlPageManager.findPageByName("/wot/shoppingbasket");
+        } 
+
+            #endregion
     }
 }

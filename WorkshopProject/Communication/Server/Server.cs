@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Log;
 
 namespace WorkshopProject.Communication.Server
@@ -157,6 +158,10 @@ namespace WorkshopProject.Communication.Server
             {
                 context = listener.EndGetContext(ar);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception ignore)
             {
                 //Console.WriteLine("test - problem in connecting \n");
@@ -181,6 +186,10 @@ namespace WorkshopProject.Communication.Server
                     //add connection to dictionary
  
                 }
+                catch (WorkShopDbException dbExc)
+                {
+                    throw dbExc;
+                }
                 catch (WebSocketException ignoreWSE)
                 {
                     //get old connection
@@ -204,6 +213,10 @@ namespace WorkshopProject.Communication.Server
                             Logger.Log("event", logLevel.DEBUG, "error getting old id establishing new");
                             newConnectionId = incermentCounter();
                         }
+                    }
+                    catch (WorkShopDbException dbExc)
+                    {
+                        throw dbExc;
                     }
                     catch (Exception ignore)
                     {
@@ -271,6 +284,10 @@ namespace WorkshopProject.Communication.Server
                     try
                     {
                         receiveResult = await ws.ReceiveAsync(new ArraySegment<byte>(recvBuffer), CancellationToken.None);
+                    }
+                    catch (WorkShopDbException dbExc)
+                    {
+                        throw dbExc;
                     }
                     catch (Exception ignore)
                     {

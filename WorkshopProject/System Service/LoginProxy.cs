@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TansactionsNameSpace;
 using Users;
 using WorkshopProject.Communication;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Policies;
 
 namespace WorkshopProject.System_Service
@@ -155,6 +156,10 @@ namespace WorkshopProject.System_Service
         {
             Member ret;
             try { ret = UserService.login(username, password,user); }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e) { return e.Message; }
             if (ret != null)
             {
