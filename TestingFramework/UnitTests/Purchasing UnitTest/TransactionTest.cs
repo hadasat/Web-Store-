@@ -53,7 +53,7 @@ namespace WorkshopProject.Tests
             DataAccessDriver.UseStub = false;
         }
 
-        [TestMethod()]
+        [TestMethod]
         [TestCategory("Unit test - TransactionTest")]
         [TestCategory("Regression")]
         public async void purchaseTest()

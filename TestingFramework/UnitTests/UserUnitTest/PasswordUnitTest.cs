@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkshopProject.DataAccessLayer;
+using WorkshopProject.System_Service;
 
 namespace Password.Tests
 {
@@ -19,11 +20,13 @@ namespace Password.Tests
         string password;
         Password SaltesAndPepperEntry;
         PasswordHandler passwordHandler = new PasswordHandler();
+        GodObject god = new GodObject();
 
         //[TestInitialize]
         public void Init()
         {
             DataAccessDriver.UseStub = true;
+            god.clearDb();
             password = CreatePassword(PASS_LENGTH);
 
         }
@@ -32,6 +35,7 @@ namespace Password.Tests
         public void Cealup()
         {
             passwordHandler.RemoveEntry(ID);
+            god.clearDb();
             DataAccessDriver.UseStub = false;
         }
 
@@ -43,7 +47,7 @@ namespace Password.Tests
             {
                 Init();
                 bool res = passwordHandler.hashPassword(password, ID);
-                SaltesAndPepperEntry = passwordHandler.GetEntry(ID);
+                SaltesAndPepperEntry = passwordHandler.GetPasswordForMember(ID);
                 byte[] salt = SaltesAndPepperEntry.salt;
                 byte[] pepper = SaltesAndPepperEntry.pepper;
                 Assert.IsTrue(res);
