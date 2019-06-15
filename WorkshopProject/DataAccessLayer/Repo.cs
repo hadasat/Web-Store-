@@ -30,19 +30,43 @@ namespace WorkshopProject.DataAccessLayer
 
         public virtual IEntity Get<T>(int key) where T : IEntity
         {
-            return getContext().Set<T>().Find(key);
+            try
+            {
+                return getContext().Set<T>().Find(key);
+            }
+            catch(Exception e)
+            {
+                throw new WorkShopDbException(e.Message);
+            }
+
         }
 
         public virtual List<T> GetList<T>() where T : IEntity
         {
-            return getContext().Set<T>().ToList<T>();
+            try
+            {
+                return getContext().Set<T>().ToList<T>();
+            }
+            catch (Exception e)
+            {
+                throw new WorkShopDbException(e.Message);
+            }
+
         }
 
         public virtual void Update<T>(T entity) where T : IEntity
         {
-            WorkshopDBContext ctx = getContext();
-            ctx.Entry(entity).State = System.Data.Entity.EntityState.Modified;
-            SaveChanges();
+            try
+            {
+                WorkshopDBContext ctx = getContext();
+                ctx.Entry(entity).State = System.Data.Entity.EntityState.Modified;
+                SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new WorkShopDbException(e.Message);
+            }
+
         }
 
 
@@ -62,18 +86,36 @@ namespace WorkshopProject.DataAccessLayer
 
         public virtual void Add<T>(T entity) where T : IEntity
         {
-            WorkshopDBContext ctx = getContext();
-            ctx.Set<T>().Add(entity);
-            SaveChanges();
+            try
+            {
+                WorkshopDBContext ctx = getContext();
+                ctx.Set<T>().Add(entity);
+                SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new WorkShopDbException(e.Message);
+            }
+
         }
 
         public virtual void Remove<T>(T entity) where T : IEntity
         {
-            WorkshopDBContext ctx = getContext();
-            if(entity != null)
+            try
             {
-                ctx.Set<T>().Remove(entity);
+                WorkshopDBContext ctx = getContext();
+                if(entity != null)
+                {
+                    ctx.Set<T>().Remove(entity);
+                    SaveChanges();
+                }
             }
+            catch (Exception e)
+            {
+                throw new WorkShopDbException(e.Message);
+            }
+
+
         }
 
         /*
@@ -93,60 +135,78 @@ namespace WorkshopProject.DataAccessLayer
 
         public virtual void Delete()
         {
-            WorkshopDBContext ctx = getContext();
             try
             {
-                ctx.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                //do nothing
-            }
-            //ctx.Dispose();
-            //ctx = new WorkshopTestDBContext();
-            MurderAllConnections(ctx);
-
-            ctx.Database.Delete();
-            try
-            {
-                ctx.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                //do nothing
-            }
-
-            DataAccessDriver.resetContext();
-
-        }
-
-        public virtual void SaveChanges()
-        {
-            WorkshopDBContext ctx = getContext();
-            ctx.ChangeTracker.DetectChanges();
-
-            //use database wins
-            bool saveFailed;
-            do
-            {
-                saveFailed = false;
-
+                WorkshopDBContext ctx = getContext();
                 try
                 {
                     ctx.SaveChanges();
                 }
-                catch (DbUpdateConcurrencyException ex)
+                catch (Exception e)
                 {
-                    saveFailed = true;
+                    //do nothing
+                }
+                //ctx.Dispose();
+                //ctx = new WorkshopTestDBContext();
+                MurderAllConnections(ctx);
 
-                    // Update the values of the entity that failed to save from the store
-                    ex.Entries.Single().Reload();
+                ctx.Database.Delete();
+                try
+                {
+                    ctx.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    //do nothing
                 }
 
-            } while (saveFailed);
+                DataAccessDriver.resetContext();
+            }
+            catch (Exception e)
+            {
+                throw new WorkShopDbException(e.Message);
+            }        
+        }
 
+        public virtual void SaveChanges()
+        {
+            try
+            {
+                int maxTries = 10;
+                int counter = 0;
+                WorkshopDBContext ctx = getContext();
+                ctx.ChangeTracker.DetectChanges();
 
-           // ctx.SaveChanges();
+                //use database wins
+                bool saveFailed;
+                do
+                {
+                    saveFailed = false;
+
+                    try
+                    {
+                        ctx.SaveChanges();
+                    }
+                    catch (DbUpdateConcurrencyException ex)
+                    {
+                        counter++;
+                        if (counter >= maxTries)
+                        {
+                            throw new WorkShopDbException(ex.Message);
+                        }
+                        
+                        saveFailed = true;
+
+                        // Update the values of the entity that failed to save from the store
+                        ex.Entries.Single().Reload();
+                    }
+
+                } while (saveFailed);
+            }
+            catch (Exception e)
+            {
+                throw new WorkShopDbException(e.Message);
+            }
         }
 
         //https://www.axian.com/2015/06/24/entity-framework-6-taming-the-open-connection-conundrum/
@@ -180,6 +240,17 @@ namespace WorkshopProject.DataAccessLayer
                 throw new Exception("Hey, boss, the UnitTestInitializer failed. You want I should fix it?");
             }
         }
+    }
+
+
+
+    public class WorkShopDbException : Exception
+    {
+        public WorkShopDbException(string msg) : base(msg)
+        {
+
+        }
+
     }
 
 }
