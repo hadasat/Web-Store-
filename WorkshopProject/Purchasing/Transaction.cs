@@ -43,15 +43,26 @@ namespace TansactionsNameSpace
 
         public Transaction() { } //added for DB
 
-        public Transaction(User user, string cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip, IPayment payService,ISupply supplyService)
+        //public Transaction(User user, string cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip, IPayment payService,ISupply supplyService)
+        //{
+        //    //constructorCommon(user, cardNumber, month, year, holder, ccv, id, name, address, city, country, zip, payService, supplyService);
+        //}
+
+        //public Transaction(User user, string cardNumber, int month, int year, string holder, int ccv, int id,string name, string address, string city, string country, string zip)
+        //{
+        //    //ExternalSystemConnection extSytem = new ExternalSystemConnection();
+        //    //constructorCommon(user, cardNumber, month, year, holder, ccv, id, name, address, city, country, zip, (IPayment)extSytem, (ISupply)extSytem);
+        //}
+
+        public async Task doTransaction(User user, string cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip, IPayment payService, ISupply supplyService)
         {
-            constructorCommon(user, cardNumber, month, year, holder, ccv, id, name, address, city, country, zip, payService, supplyService);
+            await constructorCommon(user, cardNumber, month, year, holder, ccv, id, name, address, city, country, zip, payService, supplyService);
         }
 
-        public Transaction(User user, string cardNumber, int month, int year, string holder, int ccv, int id,string name, string address, string city, string country, string zip)
+        public async Task doTransaction(User user, string cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
         {
             ExternalSystemConnection extSytem = new ExternalSystemConnection();
-            constructorCommon(user, cardNumber, month, year, holder, ccv, id, name, address, city, country, zip, (IPayment)extSytem, (ISupply)extSytem);
+            await constructorCommon(user, cardNumber, month, year, holder, ccv, id, name, address, city, country, zip, (IPayment)extSytem, (ISupply)extSytem);
         }
 
         public override int GetKey()
@@ -64,7 +75,7 @@ namespace TansactionsNameSpace
         {
             id = key;
         }
-        private async void constructorCommon(User user, string cardNumber, int month, int year, string holder, int ccv, int userId, string name, string address, string city, string country, string zip, IPayment payService, ISupply supplyService)
+        private async Task constructorCommon(User user, string cardNumber, int month, int year, string holder, int ccv, int userId, string name, string address, string city, string country, string zip, IPayment payService, ISupply supplyService)
         {
             try
             {
@@ -122,6 +133,7 @@ namespace TansactionsNameSpace
                 {
                     ShoppingCartDeal failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Consistency);
                     fail.Add(failcartDeal);
+                    returnProducts(callbacks);
                     throw new Exception("The shopping basket has consistency error");
                 }
                 //check store policies  
@@ -129,6 +141,7 @@ namespace TansactionsNameSpace
                 {
                     ShoppingCartDeal failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Policies);
                     fail.Add(failcartDeal);
+                    returnProducts(callbacks);
                     throw new Exception("You don't pass all purchsing polices, please remove any problematic items");
                 }
 
@@ -164,8 +177,15 @@ namespace TansactionsNameSpace
                 int storeBankNum = currStore.storeBankNum;
                 int storeAccountNum = currStore.storeAccountNum;
                 string sourceAddress = currStore.storeAddress;
+                try
+                {
+                    transactionId = await pay(cardNumber, month, year, holder, ccv, id);
+                }catch (Exception e)
+                {
+                    returnProducts(callbacks);
+                    throw e;
+                }
 
-                transactionId = await pay(cardNumber, month, year, holder, ccv, id);
 
                 if (transactionId == -1)
                 {
@@ -174,34 +194,50 @@ namespace TansactionsNameSpace
                     fail.Add(failcartDeal);
                     throw new Exception("Payment was rejected by the payment service");
                 }
-                else if ((await supplySystem.supply(name,address,city,country,zip)) == -1) // supply system fails
+                else
                 {
-                    returnProducts(callbacks);
-                    ShoppingCartDeal failcartDeal;
-                    bool refudnAns = await paymentSystem.cancelPayment(transactionId);
-                    //double refound = PaymentStub.Refund(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate);
-                    if(!refudnAns)
-                        failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.ContactStoreForRefound);
-                    else
-                        failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Supply);
-                    fail.Add(failcartDeal);
-                    throw new Exception("Supply adress was rejected");
-                }
-                else // purches all cart products
-                {
-                    purchasedProducts.Concat(currStoreProducts);
-                    this.total += totalCart;
-                    ShoppingCartDeal sucessCartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, totalCart, currStore.id, status.Sucess);
-                    WorkshopProject.Log.Logger.Log("event", logLevel.INFO, $"user {user.id} buy cart {currShoppingCart.id} sucessfully");
-                    sucess.Add(sucessCartDeal);
-                }
+                    int supplyAns;
+                    try
+                    {
+                        supplyAns = await supplySystem.supply(name, address, city, country, zip);
+                    }
+                    catch (Exception e)
+                    {
+                        returnProducts(callbacks);
+                        throw e;
+                    }
+                    if ( supplyAns== -1) {// supply system fails
+                        returnProducts(callbacks);
+                        ShoppingCartDeal failcartDeal;
+                        bool refudnAns = await paymentSystem.cancelPayment(transactionId);
+                        //double refound = PaymentStub.Refund(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate);
+                        if (!refudnAns)
+                            failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.ContactStoreForRefound);
+                        else
+                            failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Supply);
+                        fail.Add(failcartDeal);
+                        throw new Exception("Supply adress was rejected");
+                    }
+                    else // purches all cart products
+                    {
+                        purchasedProducts.Concat(currStoreProducts);
+                        this.total += totalCart;
+                        ShoppingCartDeal sucessCartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, totalCart, currStore.id, status.Sucess);
+                        WorkshopProject.Log.Logger.Log("event", logLevel.INFO, $"user {user.id} buy cart {currShoppingCart.id} sucessfully");
+                        sucess.Add(sucessCartDeal);
+                    }
+                } 
             }
             //empty all bought products
             foreach (ProductAmountPrice p in purchasedProducts)
             {
                 Store store;
                 if ((store = WorkShop.getStore(p.product.storeId)) != null)
+                {
                     basket.setProductAmount(store, p.product, 0);
+                    string buyMessage = String.Format("the product {0}, was bought from the store {1}", p.product.name, store.name);
+                    Member.sendMessageToAllOwners(store.id, buyMessage);
+                }
             }
             return transactionId;
         }

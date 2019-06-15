@@ -134,7 +134,19 @@ namespace WorkshopProject.Communication
             string messageType = ((string)messageObj["info"]).ToLower();
             if (messageHandlers.ContainsKey(messageType))
             {
-                messageHandlers[messageType](messageObj, message);
+                
+                try
+                {
+                    messageHandlers[messageType](messageObj, message);
+                }
+                catch
+                {
+                    Logger.Log("error", logLevel.ERROR, "can't parse info from server");
+                    JsonResponse response;
+                    int requestId = (int)messageObj["id"];
+                    response = JsonResponse.generateActionError(requestId, "can't parse the input please check the legality of your input");
+                    sendMyselfAMessage(JsonHandler.SerializeObject(response));
+                }
             }
             else
             {
@@ -188,6 +200,13 @@ namespace WorkshopProject.Communication
         private void sendMyselfAMessage(string msg)
         {
             msgSender.sendMessageToUser(msg, id);
+        }
+        public void resubscribeObserver()
+        {
+            if (user.loggedIn)
+            {
+                user.subscribeAsObserver(this);
+            }
         }
 
         // ***************** handlers ****************
@@ -632,26 +651,38 @@ namespace WorkshopProject.Communication
         }
 
 
-        private void buyShoppingBasketHandler(JObject msgObj, string message)
+        private async void buyShoppingBasketHandler(JObject msgObj, string message)
         {
             JsonResponse response;
+            int month, year, ccv, id;
+            string cardNumber,holder, name, address, city, country, zip;
             int requestId = (int)msgObj["id"];
             //{int cardNumber, int month,int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip}
-            string cardNumber = (string)msgObj["data"]["cardNumber"];
-            int month = (int)msgObj["data"]["month"];
-            int year = (int)msgObj["data"]["year"];
-            string holder = (string)msgObj["data"]["holder"];
-            int ccv = (int)msgObj["data"]["cvv"];
-            int id = (int)msgObj["data"]["id"];
-            string name = (string)msgObj["data"]["name"];
-            string address = (string)msgObj["data"]["address"];
-            string city = (string)msgObj["data"]["city"];
-            string country = (string)msgObj["data"]["country"];
-            string zip = (string)msgObj["data"]["zip"];
+            try
+            {
+                cardNumber = (string)msgObj["data"]["cardNumber"];
+                month = (int)msgObj["data"]["month"];
+                year = (int)msgObj["data"]["year"];
+                holder = (string)msgObj["data"]["holder"];
+                ccv = (int)msgObj["data"]["cvv"];
+                id = (int)msgObj["data"]["id"];
+                name = (string)msgObj["data"]["name"];
+                address = (string)msgObj["data"]["address"];
+                city = (string)msgObj["data"]["city"];
+                country = (string)msgObj["data"]["country"];
+                zip = (string)msgObj["data"]["zip"];
+            }
+            catch
+            {
+                Logger.Log("error", logLevel.ERROR, "can't parse info from server");
+                response = JsonResponse.generateActionError(requestId, "can't parse the input please check the legality of your input");
+                sendMyselfAMessage(JsonHandler.SerializeObject(response));
+                return;
+            }
 
             try
             {
-                user.BuyShoppingBasket(cardNumber, month, year, holder, ccv, id, name, address, city, country, zip);
+                await user.BuyShoppingBasket(cardNumber, month, year, holder, ccv, id, name, address, city, country, zip);
                 response = JsonResponse.generateActionSucces(requestId);
             }catch (Exception e)
             {

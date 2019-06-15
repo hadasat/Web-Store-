@@ -107,6 +107,7 @@ namespace WorkshopProject.DataAccessLayer
                 if(entity != null)
                 {
                     ctx.Set<T>().Remove(entity);
+                    SaveChanges();
                 }
             }
             catch (Exception e)

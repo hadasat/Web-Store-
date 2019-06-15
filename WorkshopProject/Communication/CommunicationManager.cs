@@ -63,6 +63,10 @@ namespace WorkshopProject.Communication
             {
                 userConnection = new UserConnectionInfo(isSecureConnection, id, this);
             }
+            else
+            {
+                userConnection.resubscribeObserver();
+            }
             bool addAns = activeConnections.TryAdd(id, userConnection);
             if (!addAns)
             {
