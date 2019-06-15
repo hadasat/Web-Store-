@@ -239,6 +239,10 @@ namespace Users
                 {
                     candidate.GetStore(StoreID);
                 }
+                catch (WorkShopDbException dbExc)
+                {
+                    throw dbExc;
+                }
                 catch (Exception ex)
                 {
                     myStoreRoles.CreateNewManager(candidate, role);

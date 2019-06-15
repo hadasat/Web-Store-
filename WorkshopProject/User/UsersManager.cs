@@ -40,7 +40,11 @@ namespace Users
             {
                 registerNewUser("Admin", "Admin", DateTime.Today.AddYears(-120), "all");
             }
-            catch(Exception e)
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
+            catch (Exception e)
             {
                 //jonathan: i guess there already is an Admin
             }
@@ -62,6 +66,10 @@ namespace Users
                 //members.Remove(m.id);
                 //mapIDUsermane.Remove(m.username);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception ignore)
             {
                 throw new Exception("this should not happen, member doesn't exist");
@@ -75,6 +83,10 @@ namespace Users
             {
                 Remove(m.id);
                 //mapIDUsermane.Remove(m.username);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception ignore)
             {
@@ -94,6 +106,10 @@ namespace Users
                 //members.Add(m.id, m);
                 //mapIDUsermane.Add(m.username, m.id);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception ignore)
             {
                 throw new Exception("this should not happen, member couldn't be added");
@@ -107,6 +123,10 @@ namespace Users
                 //return members[id];
                 return GetMemberById(id);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception ignore)
             {
                 throw new Exception("this should not happen, member doesn't exist");
@@ -119,6 +139,10 @@ namespace Users
             {
                 return GetMemberByName(username);
                 //return members[(mapIDUsermane[username])];
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception ignore)
             {
@@ -145,6 +169,10 @@ namespace Users
                 int ID = GetMemberByName(username).id;
                 if (pHandler.IdentifyPassword(password, ID))
                     return ID;
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception ignore)
             {
