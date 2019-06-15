@@ -6,6 +6,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.Client;
 using WorkshopProject.Communication.Server;
 using WorkshopProject.Log;
 using WorkshopProject.System_Service;
@@ -793,6 +794,7 @@ namespace WorkshopProject.Communication
         #region stress
         public string stresshelp(string parameters, string commands)
         {
+            string ans ="";
             //create dictionary for parametres 
             Dictionary<string, string> paramDic = new Dictionary<string, string>();
             string[] rawParams = parameters.Split('&');
@@ -816,68 +818,74 @@ namespace WorkshopProject.Communication
                 switch (currCommand)
                 {
                     case "signin":
-                        signinStress(paramDic);
+                        ans = signinStress(paramDic);
                         break;
                     case "register":
-                        registerStress(paramDic);
+                        ans = registerStress(paramDic);
                         break;
                     case "addToBasket":
-                        addToBasketStress(paramDic);
+                        ans = addToBasketStress(paramDic);
                         break;
                     case "addNewStore":
-                        addNewStoreStress(paramDic);
+                        ans = addNewStoreStress(paramDic);
                         break;
                     case "purchaseSuccess":
-                        purchaseSuccessStress();
+                        ans = purchaseSuccessStress();
                         break;
                     case "purchaseFail":
-                        purchaseFailureStress();
+                        ans = purchaseFailureStress();
                         break;
                 }
             }
 
             
 
-            return "";
+            return ans;
         }
 
-        private void signinStress(Dictionary<string,string> parameters)
+        private string signinStress(Dictionary<string,string> parameters)
         {
             var reqInfo = new { name = parameters["sname"], password = parameters["spass"] };
             var dataObj = new { id = -10, data = reqInfo};
             signInHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
+            return HtmlPageManager.findPageByName("/wot/main");
         }
 
-        private void registerStress(Dictionary<string, string> parameters) {
+        private string registerStress(Dictionary<string, string> parameters) {
             var reqInfo = new { name = parameters["rname"], password = parameters["rpass"] ,birthdate="11-11-1999",country="asd"};
             var dataObj = new { id = -10, data = reqInfo };
             registerHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
+            return HtmlPageManager.findPageByName("/wot/main");
         }
 
-        private void addToBasketStress(Dictionary<string, string> parameters)
+        private string addToBasketStress(Dictionary<string, string> parameters)
         {
             var reqInfo = new { storeId = parameters["abStoreId"], productId =parameters["abProductId"], amount =parameters["abAmount"]};
             var dataObj = new { id = -10, data = reqInfo };
             addProductToBaksetHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
+            return HtmlPageManager.findPageByName("/wot/shoppingbasket");
         }
 
-        private void addNewStoreStress(Dictionary<string, string> parameters)
+        private string addNewStoreStress(Dictionary<string, string> parameters)
         {
             var dataObj = new { id = -10, data = parameters["nsName"] };
             addStoreHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
+            return HtmlPageManager.findPageByName("/wot/main");
         }
 
-        private void purchaseSuccessStress()
+        private string purchaseSuccessStress()
         {
             var reqInfo = new { cardNumber = "1",month="1",year="2020",holder="1",cvv="1",id="1",name="1",address="a",city="c",country="3",zip="1"};
             var dataObj = new { id = -10, data = reqInfo };
             buyShoppingBasketHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
+            return HtmlPageManager.findPageByName("/wot/shoppingbasket");
         }
-        private void purchaseFailureStress()
+        private string purchaseFailureStress()
         {
             var reqInfo = new { cardNumber = "1", month = "1", year = "2020", holder = "1", ccv = "1" };
             var dataObj = new { id = -10, data = reqInfo };
             buyShoppingBasketHandler(JObject.Parse(JsonHandler.SerializeObject(dataObj)), "");
+            return HtmlPageManager.findPageByName("/wot/shoppingbasket");
         }
 
             #endregion
