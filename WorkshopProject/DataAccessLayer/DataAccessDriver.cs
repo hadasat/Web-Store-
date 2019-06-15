@@ -9,14 +9,14 @@ namespace WorkshopProject.DataAccessLayer
 {
     public static class DataAccessDriver
     {
-        private static string remoteAdress = "Data Source=10.0.0.60;User ID = workshop; Password=********";
+        private static string remoteAdress = "Data Source=10.0.0.60;User ID = workshop; Password=********;";
         private static string localAdress = "Data Source=.\\SQLEXPRESS;";
         private static string TestDB = "Initial Catalog=WorkshopTestDB;";
         private static string ProductionDB = "Initial Catalog=WorkshopProductionDB;";
 
         private static bool Persistent = true;
         private static bool Local = true;
-        private static bool Production = false;
+        private static bool Production = true;
         public static bool UseStub = false;
 
         private static string connectionString = "Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
