@@ -139,6 +139,11 @@ namespace Password
         public void RemoveEntry(int ID)
         {
             Password toRemove = GetEntry(ID);
+            if (useStub())
+            {
+                DataAccessDriver.Passwords.Remove(ID);
+                return;
+            }
             repo.Remove<Password>(toRemove);
         }
 
@@ -147,6 +152,11 @@ namespace Password
             try
             {
                 Password toRemove = GetPasswordForMember(memberId);
+                if (useStub())
+                {
+                    DataAccessDriver.Passwords.Remove(toRemove.GetKey());
+                    return;
+                }
                 repo.Remove<Password>(toRemove);
             }
             catch
@@ -187,6 +197,14 @@ namespace Password
         public Password()
         {
 
+        }
+
+        //clone constructor
+        public Password(Password other)
+        {
+            this.memberId = other.memberId;
+            this.salt = other.salt.ToArray();
+            this.pepper = other.pepper.ToArray();
         }
 
 

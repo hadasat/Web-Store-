@@ -57,6 +57,7 @@ namespace Users
                 throw new Exception("don't remove Admin!");
             try
             {
+                pHandler.RemovePasswordFromMember(m.id);
                 Remove(m.id);
                 //members.Remove(m.id);
                 //mapIDUsermane.Remove(m.username);
@@ -81,12 +82,15 @@ namespace Users
             }
         }
 
-        public static void addMemberJustForExternalUsage(Member m)
+        public static void addMemberJustForExternalUsage(Member m, Password.Password pass)
         {
 
             try
             {
+                
                 AddMember(m);
+                pass.memberId = m.id;
+                pHandler.Add(pass);
                 //members.Add(m.id, m);
                 //mapIDUsermane.Add(m.username, m.id);
             }
@@ -331,7 +335,7 @@ namespace Users
         {
             foreach (Member m in GetMembers())
             {
-                if (m.username != null && m.username.Equals(username))
+                if (m.username != null && string.Compare(m.username, username) == 0)
                 {
                     return m;
                 }
