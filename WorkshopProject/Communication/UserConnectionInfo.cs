@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Users;
 using WorkshopProject.Client;
 using WorkshopProject.Communication.Server;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Log;
 using WorkshopProject.System_Service;
 
@@ -140,6 +141,10 @@ namespace WorkshopProject.Communication
                 {
                     messageHandlers[messageType](messageObj, message);
                 }
+                catch (WorkShopDbException dbExc)
+                {
+                    throw dbExc;
+                }
                 catch
                 {
                     Logger.Log("error", logLevel.ERROR, "can't parse info from server");
@@ -225,6 +230,10 @@ namespace WorkshopProject.Communication
                 bool jsonBoolean = user.IsManageStore(storeId);
                 response = JsonResponse.generateDataSuccess(requestId, JsonHandler.SerializeObject(jsonBoolean));
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateDataFailure(requestId, e.Message);
@@ -269,6 +278,10 @@ namespace WorkshopProject.Communication
                 string jsonShoppingBasket = user.GetShoppingBasket();
                 response = JsonResponse.generateDataSuccess(requestId, jsonShoppingBasket);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateDataFailure(requestId, e.Message);
@@ -291,6 +304,10 @@ namespace WorkshopProject.Communication
                     response = JsonResponse.generateActionError(requestId, "can't logout, due to unknow error. please contact support");
                 }
                 response = JsonResponse.generateActionSucces(requestId);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -325,10 +342,18 @@ namespace WorkshopProject.Communication
                     response =  outAns ?
                         JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "can't register due to an unknown reason");
                 }
+                catch (WorkShopDbException dbExc)
+                {
+                    throw dbExc;
+                }
                 catch (Exception e)
                 {
                     response = JsonResponse.generateActionError(requestId, e.Message);
                 }
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch
             {
@@ -355,6 +380,10 @@ namespace WorkshopProject.Communication
                 response = JsonResponse.generateActionSucces(requestId, ans.ToString());
                 outAns = true;
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
@@ -372,6 +401,10 @@ namespace WorkshopProject.Communication
                 string jsonStore = user.GetStore(storeId);
                 response = JsonResponse.generateDataSuccess(requestId, jsonStore);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateDataFailure(requestId, e.Message);
@@ -388,6 +421,10 @@ namespace WorkshopProject.Communication
             {
                 string jsonProduct = user.GetProductInfo(productId);
                 response = JsonResponse.generateDataSuccess(requestId, jsonProduct);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -409,6 +446,10 @@ namespace WorkshopProject.Communication
             {
                 int ans = user.AddProductToStore(storeId, productName, description, price, category);
                 response = JsonResponse.generateActionSucces(requestId, ans.ToString());
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -436,6 +477,10 @@ namespace WorkshopProject.Communication
                     response = JsonResponse.generateActionError(requestId, "can't add product to stock");
                 }
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
@@ -451,6 +496,10 @@ namespace WorkshopProject.Communication
             {
                 string allStoreJson = user.GetAllStores();
                 response = JsonResponse.generateDataSuccess(requestId, allStoreJson);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -488,6 +537,10 @@ namespace WorkshopProject.Communication
                 }
 
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
@@ -508,7 +561,12 @@ namespace WorkshopProject.Communication
             {
                 response = user.RemoveProductFromStore(storeId, productId) ?
                     JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "failed to remove product");
-            }catch (Exception e)
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
+            catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
             }
@@ -534,6 +592,10 @@ namespace WorkshopProject.Communication
                 response = user.ChangeProductInfo(storeId, productId, name, desc, price, category, amount) ?
                     JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "failed to change product info");
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
@@ -553,6 +615,10 @@ namespace WorkshopProject.Communication
             {
                 response = user.closeStore(storeId) ?
                     JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "failed to close store");
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -586,7 +652,12 @@ namespace WorkshopProject.Communication
             {
                 String data_ans = JsonHandler.SerializeObject(user.SearchProducts(name, category, keyword, startPrice, endPrice, productRank, storeRank));
                 response = JsonResponse.generateDataSuccess(requestId, data_ans);
-            }catch (Exception e)
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
+            catch (Exception e)
             {
                 response = JsonResponse.generateDataFailure(requestId, e.Message);
             }
@@ -603,6 +674,10 @@ namespace WorkshopProject.Communication
             {    
                 String data_ans = JsonHandler.SerializeObject(user.GetAllMembers());
                 response = JsonResponse.generateDataSuccess(requestId, data_ans);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -622,6 +697,10 @@ namespace WorkshopProject.Communication
             {
                 response = user.RemoveUser(userName) ?
                     JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId,"can't remove user");
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -643,6 +722,10 @@ namespace WorkshopProject.Communication
                 String data_ans = JsonHandler.SerializeObject(user.GetAllManagers(storeId));
                 response = JsonResponse.generateDataSuccess(requestId, data_ans);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateDataFailure(requestId, e.Message);
@@ -659,6 +742,10 @@ namespace WorkshopProject.Communication
             {
                 user.ApproveOwnershipRequest(ownerRequestId);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 Logger.Log("error", logLevel.ERROR, "from approve response " + e.Message);
@@ -672,6 +759,10 @@ namespace WorkshopProject.Communication
             try
             {
                 user.DisApproveOwnershipRequest(ownerRequestId);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -700,6 +791,10 @@ namespace WorkshopProject.Communication
                 country = (string)msgObj["data"]["country"];
                 zip = (string)msgObj["data"]["zip"];
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch
             {
                 Logger.Log("error", logLevel.ERROR, "can't parse info from server");
@@ -712,7 +807,12 @@ namespace WorkshopProject.Communication
             {
                 await user.BuyShoppingBasket(cardNumber, month, year, holder, ccv, id, name, address, city, country, zip);
                 response = JsonResponse.generateActionSucces(requestId);
-            }catch (Exception e)
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
+            catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
             }
@@ -731,6 +831,10 @@ namespace WorkshopProject.Communication
             {
                 String data_ans = JsonHandler.SerializeObject(user.getAllProductsForStore(storeId));
                 response = JsonResponse.generateDataSuccess(requestId, data_ans);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
@@ -753,6 +857,10 @@ namespace WorkshopProject.Communication
                 user.RemoveStoreManager(storeId, userName);
                 response = JsonResponse.generateActionSucces(requestId);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
@@ -773,6 +881,10 @@ namespace WorkshopProject.Communication
                 user.AddStoreManager(storeId, userName, roles);
                 response = JsonResponse.generateActionSucces(requestId);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
@@ -791,6 +903,10 @@ namespace WorkshopProject.Communication
             {
                 user.AddStoreOwner(storeId, userName);
                 response = JsonResponse.generateActionSucces(requestId);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception e)
             {
