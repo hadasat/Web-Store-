@@ -39,7 +39,6 @@ namespace WorkshopProject
         static void DataAccessSetup()
         {
             DataAccessDriver.setProduction(true);
-            DataAccessDriver.setLocal(true);
             DataAccessDriver.UseStub = false;
         }
 

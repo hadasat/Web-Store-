@@ -15,6 +15,8 @@ namespace TestingFramework
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext context)
         {
+            DataAccessDriver.setProduction(false);
+            DataAccessDriver.setLocal(true);
             new Repo().Delete();  
         
         }
