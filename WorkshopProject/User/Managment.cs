@@ -30,6 +30,11 @@ namespace Managment
         public bool AppointOwner { get; set; }
         public bool AppointManager { get; set; }
 
+        public Roles()
+        {
+
+        }
+
         public Roles(bool addRemoveProducts, 
                      bool addRemovePurchasing, 
                      bool addRemoveDiscountPolicy, 

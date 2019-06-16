@@ -46,6 +46,8 @@ namespace WorkshopProject.System_Service
             if (!store.addProductTostock(user, product, amount))
                 throw new Exception("User does not have permission");
 
+            WorkShop.Update(store);
+
             return true; //All Valid
         }
 
@@ -61,17 +63,8 @@ namespace WorkshopProject.System_Service
             int id = store.addProduct(user, name, desc, price, category);
             if (id == -1)
                 throw new Exception("User does not have permission");
-
-            //return successJason(); //All Valid
-            //jonathan - we need the id of the new store, not a message
-            //IdMessage idMsg = new IdMessage(id);
-            //return JsonConvert.SerializeObject(idMsg);
-
-            //WorkShop.repo.Add<Product>(store.getStockFromProductId(id).product);
-            //WorkShop.repo.Add<Stock>(store.getStockFromProductId(id));
+         
             WorkShop.Update(store);
-            Store s2 = WorkShop.getStore(storeId);
-
             return id;
         }
 
