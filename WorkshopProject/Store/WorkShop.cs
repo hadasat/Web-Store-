@@ -75,7 +75,7 @@ namespace WorkshopProject
             //id++;
             owner.addStore(store);
 
-            repo.Update<Member>(owner);
+           // repo.Update<Member>(owner);
 
             Logger.Log("event", logLevel.INFO,"store " + currID + " has added");
             return currID;
