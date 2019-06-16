@@ -125,6 +125,7 @@ namespace Managment
         public LinkedList<StoreManager> subManagers { get; set; }
         [Include][JsonIgnore]
         public StoreManager father { get; set; }
+        [Include]
         private bool storeOwner;
 
 

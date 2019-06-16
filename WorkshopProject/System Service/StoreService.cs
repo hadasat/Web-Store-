@@ -77,7 +77,6 @@ namespace WorkshopProject.System_Service
             //IdMessage idMsg = new IdMessage(id);
             //return JsonConvert.SerializeObject(idMsg);
 
-
             return id;
         }
 
@@ -99,8 +98,11 @@ namespace WorkshopProject.System_Service
 
         public static bool CloseStore(User user, int storeID)
         {
+            Store s = WorkShop.getStore(storeID);
             if (!WorkShop.closeStore(storeID, (Member)user))
                 throw new Exception("Error: User does not have permission");
+
+            WorkShop.Update(s);
 
             return true; //All Valid
         }
@@ -133,6 +135,8 @@ namespace WorkshopProject.System_Service
 
             if (!store.removeProductFromStore(user, product))
                 throw new Exception("Error: User does not have permission");
+
+            WorkShop.Update(store);
 
             return true; //All Valid
         }
