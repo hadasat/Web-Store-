@@ -123,10 +123,11 @@ namespace Managment
         public virtual Roles myRoles { get; set; }
         [Include]
         public LinkedList<StoreManager> subManagers { get; set; }
+        [Include]
+        public bool storeOwner { get; set; }
         [Include][JsonIgnore]
         public StoreManager father { get; set; }
-        [Include]
-        private bool storeOwner;
+       
 
 
         public StoreManager() {
