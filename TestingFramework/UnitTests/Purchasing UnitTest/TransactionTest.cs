@@ -37,10 +37,10 @@ namespace WorkshopProject.Tests
             user.shoppingBasket.addProduct(store2, pro[3], 20);
 
             //adding products to store
-            store1.GetStock().Add(pro[0].id, pro[0]);
-            store2.GetStock().Add(pro[1].id, pro[1]);
-            store1.GetStock().Add(pro[2].id, pro[2]);
-            store2.GetStock().Add(pro[3].id, pro[3]);
+            store1.GetStockAsDictionary().Add(pro[0].id, pro[0]);
+            store2.GetStockAsDictionary().Add(pro[1].id, pro[1]);
+            store1.GetStockAsDictionary().Add(pro[2].id, pro[2]);
+            store2.GetStockAsDictionary().Add(pro[3].id, pro[3]);
 
         }
 

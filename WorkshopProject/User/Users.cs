@@ -20,7 +20,7 @@ namespace Users
     {
         [Key]
         public int id { get; set; }
-        public ShoppingBasket shoppingBasket;
+        public virtual ShoppingBasket shoppingBasket { get; set; }
 
 
         public User()

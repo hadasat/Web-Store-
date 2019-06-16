@@ -30,6 +30,11 @@ namespace Managment
         public bool AppointOwner { get; set; }
         public bool AppointManager { get; set; }
 
+        public Roles()
+        {
+
+        }
+
         public Roles(bool addRemoveProducts, 
                      bool addRemovePurchasing, 
                      bool addRemoveDiscountPolicy, 
@@ -118,9 +123,11 @@ namespace Managment
         public virtual Roles myRoles { get; set; }
         [Include]
         public LinkedList<StoreManager> subManagers { get; set; }
+        [Include]
+        public bool storeOwner { get; set; }
         [Include][JsonIgnore]
         public StoreManager father { get; set; }
-        private bool storeOwner;
+       
 
 
         public StoreManager() {

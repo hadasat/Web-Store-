@@ -90,7 +90,7 @@
         var cat = $("#pCat").val();
         var amount = $("#pAmount").val();
         sendRequest('action','changeProductInfo',{storeId: storeId,productId: productId, name: name,
-        desc: desc,price: price, category : car, amount : amount }).then(()=>{
+        desc: desc,price: price, category : cat, amount : amount }).then(()=>{
             alert("product information change successfully");
             init();
         });
