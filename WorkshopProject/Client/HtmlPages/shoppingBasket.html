@@ -22,18 +22,36 @@
     <div class="container">
         <div class="grid"></div>
     </div>
+   
   
 
     
     <script>
-        onStart(function(){
+       
+
+        function init(){
+
             sendRequest("data", "getShoppingBasket", null).then(function (res) {
             displayStores(res);
         });
-        });
+        }
+
+        onStart(init);
+
+
+        function editAmount(storeId,pid){
+
+            var newAmount = $("#edit_amount").val();
+           sendRequest('action','editAmount',{storeId: storeId,productId: pid,amount: newAmount})
+           .then(function(res){
+               init();
+
+           });
+        }
         
 
         function displayStores(shoppingBasket) {
+            $(".grid").html('');
             var carts = shoppingBasket.cartsList.$values;
             if(carts.length===0)
              $(".grid").append(emptyBasketHtml());
@@ -72,10 +90,13 @@
                     `<h6 class="card-subtitle mb-2 text-muted">${product.price} $ </h6>
                     <h6 class="card-subtitle mb-2 text-muted"> ${amount} pieces </h6>
                     <p>Total Cost: <strong>${amount * product.price} </strong> </p>
-                     <a href="/wot/store/${product.storeId}/${product.id}" class="btn btn-primary">Edit</a>` +///need to work
-                ` </div>` +
-                `</div>` +
-                `</div>`;
+                     <hr>
+                    <h6>Edit Amount </h6>
+                    <p><input id="edit_amount" type="number"></p>
+                    <a id="btn_editAmount" href="javascript:editAmount(${product.storeId},${product.id});" class="btn btn-primary">Edit</a>
+                 </div>
+                </div>
+                </div>`;
 
         }
 
