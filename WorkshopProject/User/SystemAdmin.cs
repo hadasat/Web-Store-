@@ -9,6 +9,7 @@ using WorkshopProject;
 using Shopping;
 using WorkshopProject.Log;
 using WorkshopProject.Communication;
+using WorkshopProject.DataAccessLayer;
 
 namespace Users
 {
@@ -38,6 +39,10 @@ namespace Users
             try
             {
                 member = ConnectionStubTemp.getMember(userName);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
             }
             catch (Exception ex)
             {

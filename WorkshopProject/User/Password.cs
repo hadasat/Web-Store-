@@ -159,6 +159,10 @@ namespace Password
                 }
                 repo.Remove<Password>(toRemove);
             }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
             catch
             {
 
