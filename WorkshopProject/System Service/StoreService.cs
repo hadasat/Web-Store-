@@ -92,6 +92,8 @@ namespace WorkshopProject.System_Service
             if (!store.changeProductInfo(user, productId, name, desc, price, category, amount))
                 throw new Exception("Error: User does not have permission Or Product does not exist");
 
+            WorkShop.Update(store);
+
             return true; //All Valid
         }
 
