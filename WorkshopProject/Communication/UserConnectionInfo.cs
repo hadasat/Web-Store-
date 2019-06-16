@@ -284,7 +284,16 @@ namespace WorkshopProject.Communication
             string userName = (string)msgObj["data"]["name"];
             string password = (string)msgObj["data"]["password"];
             int requestId = (int)msgObj["id"];
-            string ans = user.login(userName, password);
+            string ans = LoginProxy.failureMsg;
+            try
+            {
+                ans = user.login(userName, password);
+            }catch (WorkShopDbException dbExc)
+            {
+                responseObj = JsonResponse.generateDataFailure(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
+                outAns = false;
+                
+            }
             if (ans == LoginProxy.successMsg)
             {
                 responseObj = JsonResponse.generateActionSucces(requestId);

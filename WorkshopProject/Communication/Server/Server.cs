@@ -260,12 +260,19 @@ namespace WorkshopProject.Communication.Server
                 string htmlPageToSend = newConnectionHandler.httpNewConnectionHandler(context);
                 //return the html page received
                 context.Response.ContentType = "text/html";
-                using (Stream output = context.Response.OutputStream)
+                try
                 {
-                    //convert the html page to bytes and send back
-                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes(htmlPageToSend);
-                    output.Write(buffer, 0, buffer.Length);
-                    output.Flush();
+                    using (Stream output = context.Response.OutputStream)
+                    {
+                        //convert the html page to bytes and send back
+                        byte[] buffer = System.Text.Encoding.UTF8.GetBytes(htmlPageToSend);
+                        output.Write(buffer, 0, buffer.Length);
+                        output.Flush();
+                    }
+                }
+                catch
+                {
+                    //ignore
                 }
             }
         }
