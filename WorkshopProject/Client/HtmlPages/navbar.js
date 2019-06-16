@@ -30,9 +30,6 @@ document.getElementById("navbar_header").innerHTML = `
 
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li  class="nav-item">
-                    <a class="nav-link"  href="#" >Notification <span class="badge badge-info">0</span></a>
-                </li>
                 <li id="nav_admin" class="nav-item">
                     <a class="nav-link" href="/wot/adminactions">Admin Actions</a>
                 </li>
@@ -44,12 +41,9 @@ document.getElementById("navbar_header").innerHTML = `
     </nav>
 `;
 
-$('#navbar_header').on('click','#nav_notification',function(){
-    console.log("test");
-});
-
 // <!-- NavBar  Script -->
  function setUpOptBtn(){
+     
      const userStatus = localStorage.getItem("user_status");
      const loggedIn = userStatus? JSON.parse(userStatus).loggedIn : false;
      const username = userStatus? JSON.parse(userStatus).username : '';
@@ -68,11 +62,6 @@ $('#navbar_header').on('click','#nav_notification',function(){
         $("#nav_opensStore").hide();
     }
 
-    if(username.toLowerCase()==='admin')
-        $("#nav_admin").show();
-    else
-        $("#nav_admin").hide();
-
 }
 
 $('#nav_signOut').on('click', ()=>{
@@ -85,6 +74,20 @@ function signOut(){
         setUpOptBtn();
         window.location.href = "/wot/main";
     })
+}
+
+
+function updateAdmin(){
+    
+    sendRequest('data','isAdmin',{}).then(function(isAdmin){
+        if(isAdmin)
+        $("#nav_admin").show();
+    else
+        $("#nav_admin").hide();
+
+    });
+
+
 }
 
 setUpOptBtn();
