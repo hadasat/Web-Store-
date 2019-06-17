@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -143,8 +143,9 @@
 
        $('#add_policy_btn').on('click',function(){
           
-        var policy = getPolicy(0);
-        sendRequest('data','addPurchsingPolicy',JSON.stringify(policy)).then(function(res){
+           var policy = getPolicy(0);
+           policy.storeId = storeId;
+        sendRequest('data','addPurchsingPolicy',policy).then(function(res){
             alert("policy added successfully");
         });
 

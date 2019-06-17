@@ -376,14 +376,14 @@ namespace WorkshopProject.System_Service
 
             switch (leafType)
             {
-                case "minAmount":
-                    return new MinAmount((int)info["info"],filter);
-                case "maxAmount":
-                    return new MaxAmount((int)info["info"], filter);
+                case "min":
+                    return new MinAmount((int)info["data"],filter);
+                case "max":
+                    return new MaxAmount((int)info["data"], filter);
                 case "country":
-                    return new UserCountry((string)info["info"], filter);
+                    return new UserCountry((string)info["data"], filter);
                 case "age":
-                    return new UserAge((int)info["info"], filter);
+                    return new UserAge((int)info["data"], filter);
                 default:
                     Logger.Log("error", logLevel.ERROR, "can't create leaf");
                     throw new Exception("can't create leaf");

@@ -1034,7 +1034,7 @@ namespace WorkshopProject.Communication
             int storeId = (int)msgObj["data"]["storeId"];
             try
             {
-                Policystatus ans = user.addPurchasingPolicy(storeId, user.createPurchasingPolicy(msgObj));
+                Policystatus ans = user.addPurchasingPolicy(storeId, user.createPurchasingPolicy((JObject)msgObj["data"]));
                 response = policyStatusHelper(ans,requestId);
             }
             catch (WorkShopDbException dbExc)
