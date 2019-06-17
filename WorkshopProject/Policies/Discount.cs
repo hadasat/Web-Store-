@@ -118,5 +118,10 @@ namespace WorkshopProject.Policies
             }
             return true;
         }
+
+        public override string ToString()
+        {
+            return "The Discount - if " + condition + " then "+ outcome;
+        }
     }
 }

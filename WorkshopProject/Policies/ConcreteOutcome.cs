@@ -28,6 +28,11 @@ namespace WorkshopProject.Policies
             return products;
         }
 
+        public override string ToString()
+        {
+            return "recieve " + amount + " "+productId + " for free";
+        }
+
     }
 
     public class Percentage : IOutcome
@@ -49,6 +54,11 @@ namespace WorkshopProject.Policies
         private double calcPrice(double oldPrice)
         {
             return (((100 - percentage) / 100) * oldPrice);
+        }
+
+        public override string ToString()
+        {
+            return "recieve " + percentage + "% discount";
         }
     }
 

@@ -1014,7 +1014,7 @@ namespace WorkshopProject.Communication
             {
                 // {Success, UnauthorizedUser, UnactiveStore, BadPolicy, InconsistPolicy};
                 case Policystatus.Success:
-                    return JsonResponse.generateActionSucces(requestId, "success adding policy");
+                    return JsonResponse.generateActionSucces(requestId, requestId.ToString());
                 case Policystatus.UnauthorizedUser:
                     return JsonResponse.generateActionError(requestId, "you don't have premissions");
                 case Policystatus.UnactiveStore:
@@ -1034,7 +1034,7 @@ namespace WorkshopProject.Communication
             int storeId = (int)msgObj["data"]["storeId"];
             try
             {
-                Policystatus ans = user.addPurchasingPolicy(storeId, user.createPurchasingPolicy(msgObj));
+                Policystatus ans = user.addPurchasingPolicy(storeId, user.createPurchasingPolicy((JObject)msgObj["data"]));
                 response = policyStatusHelper(ans,requestId);
             }
             catch (WorkShopDbException dbExc)

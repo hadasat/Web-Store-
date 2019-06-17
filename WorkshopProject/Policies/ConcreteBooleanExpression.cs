@@ -52,6 +52,11 @@ namespace WorkshopProject.Policies
             return id;
         }
 
+        public override string ToString()
+        {
+            return "Maximum amount: " + amount + "for products: "+ filter.ToString();
+        }
+
     }
 
     public class MinAmount : IBooleanExpression
@@ -89,6 +94,11 @@ namespace WorkshopProject.Policies
                     return false;
             }
             return true;
+        }
+
+        public override string ToString()
+        {
+            return "Minimum amount: " + amount + "for products: " + filter.ToString();
         }
     }
 
@@ -130,6 +140,12 @@ namespace WorkshopProject.Policies
         {
             return true;
         }
+
+        public override string ToString()
+        {
+            return "the user age should be: " + age + " for items: " + filter.ToString();
+        }
+
     }
     public class UserCountry : IBooleanExpression
     {
@@ -167,6 +183,11 @@ namespace WorkshopProject.Policies
         public override bool checkConsistent(IBooleanExpression exp)
         {
             return true;
+        }
+
+        public override string ToString()
+        {
+            return "the user country should be:" + country + " for items: "+ filter.ToString();
         }
 
     }
@@ -256,6 +277,11 @@ namespace WorkshopProject.Policies
             }
             return true;
         }
+
+        public override string ToString()
+        {
+            return getFirstChild().ToString() + " AND " + getSecondChild().ToString() + "for items: "+filter.ToString();
+        }
     }
 
     public class OrExpression : IBooleanExpression
@@ -276,6 +302,11 @@ namespace WorkshopProject.Policies
         public override bool checkConsistent(IBooleanExpression exp)
         {
             return true;
+        }
+
+        public override string ToString()
+        {
+            return getFirstChild().ToString() + " OR " + getSecondChild().ToString() + "for items: " + filter.ToString(); ;
         }
     }
 
@@ -300,6 +331,11 @@ namespace WorkshopProject.Policies
         public override bool checkConsistent(IBooleanExpression exp)
         {
             return true;
+        }
+
+        public override string ToString()
+        {
+            return getFirstChild().ToString() + " XOR " + getSecondChild().ToString() + "for items: " + filter.ToString(); ;
         }
     }
 }
