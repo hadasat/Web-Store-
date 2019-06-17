@@ -416,8 +416,8 @@ namespace WorkshopProject.Communication
             try
             {
                 int ans = user.AddStore(storeName);
-                response = JsonResponse.generateActionSucces(requestId, ans.ToString());
                 outAns = true;
+                response = JsonResponse.generateActionSucces(requestId, ans.ToString());
             }
             catch (WorkShopDbException dbExc)
             {
