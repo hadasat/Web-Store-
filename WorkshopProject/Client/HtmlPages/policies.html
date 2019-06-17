@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WorkShop</title>
+    <script type="text/javascript" src="/wot/communication.js"></script>
+
+
+    <!-- BOOTSTRAP FILES -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+
+
+    <!-- NAVBAR -->
+    <div id="navbar_header"></div>
+    <script type="text/javascript" src="/wot/navbar.js"></script> 
+</head>
+<body>
+    <div class="container">
+        <h1>add policy</h1>
+        <div id="main">
+           
+            <div id="node0">
+                <select class="form-control typeCond" id="typeOptions0">
+                    <option>xor</option>
+                    <option>and</option>
+                    <option>or</option>
+                    <option>leaf</option>
+                </select>
+                <a id="choose_type_0" href="javascript:handleChoosetype(0);"  class="btn btn-danger btn-sm">select</a>
+
+            </div>
+
+            <div id="node1">
+                    <select class="form-control typeCond" id="typeOptions1">
+                        <option>xor</option>
+                        <option>and</option>
+                        <option>or</option>
+                        <option>leaf</option>
+                    </select>
+                    <a id="choose_type_1" href="javascript:handleChoosetype(1);"  class="btn btn-danger btn-sm">select</a>
+    
+                </div>
+
+                <div id="node2">
+                        <select class="form-control typeCond" id="typeOptions2">
+                            <option>xor</option>
+                            <option>and</option>
+                            <option>or</option>
+                            <option>leaf</option>
+                        </select>
+                        <a id="choose_type_2" href="javascript:handleChoosetype(0);"  class="btn btn-danger btn-sm">select</a>
+        
+        
+                    </div>
+
+            <hr>
+        
+            
+            <div id="leaf1">
+                <h1>policy 1</h1>
+                <select class="form-control typeCond" id="select1">
+                    <option>min</option>
+                    <option>max</option>
+                    <option>age</option>
+                    <option>country</option>
+                </select>
+                <input  id= "data1" type="text" class="form-control" placeholder="number/string">
+                <div id="listProducts1"></div>
+            </div>
+            <hr>
+
+            <div id="leaf2">
+                    <h1>policy 2</h1>
+                    <select class="form-control typeCond" id="select2">
+                        <option>min</option>
+                        <option>max</option>
+                        <option>age</option>
+                        <option>country</option>
+                    </select>
+                    <input  id= "data2" type="text" class="form-control" placeholder="number/string">
+                    <div id="listProducts2"></div>
+                </div>
+                <hr>
+
+                <div id="leaf3">
+                        <h1>policy 3</h1>
+                        <select class="form-control typeCond" id="select3">
+                            <option>min</option>
+                            <option>max</option>
+                            <option>age</option>
+                            <option>country</option>
+                        </select>
+                        <input  id= "data3" type="text" class="form-control" placeholder="number/string">
+                        <div id="listProducts3"></div>
+                    </div>
+                    <hr>
+
+                    <div id="leaf4">
+                            <h1>policy 4</h1>
+                            <select class="form-control typeCond" id="select4">
+                                <option>min</option>
+                                <option>max</option>
+                                <option>age</option>
+                                <option>country</option>
+                            </select>
+                            <input  id= "data4" type="text" class="form-control" placeholder="number/string">
+                            <div id="listProducts4"></div>
+                        </div>
+                        <hr>
+
+                        <button id="add_policy_btn" type="button" class="btn btn-primary">Add Policy</button>
+
+
+        </div>
+    </div>
+        
+    <script>
+        var storeId;
+        var numOfProducts;
+        function getStoreIdFromUrl(){
+        var url = document.location.href;
+        var array = url.split('/');
+        return array[array.length-1];
+    }
+
+       function init(){
+           storeId = getStoreIdFromUrl();
+        sendRequest('date','getAllProductsForStore', storeId).then(function(res){
+            var products = res.$values;
+            numOfProducts = products.length;
+            for(var i=1;i<=4;i++){
+                products.map((p,index)=> $('#listProducts'+i).append(`<input id="${i}_${index}" type="checkbox"  value="${p.id}">${p.name}`));
+            }
+       });
+       }
+
+       onStart(init);
+
+       $('#add_policy_btn').on('click',function(){
+          
+        var policy = getPolicy(0);
+
+
+       });
+
+       function getPolicy(num){
+        var policy={};
+           var type0 = $('#typeOptions'+num).val();
+           policy.type=type0;
+            if(type0==='leaf'){
+                policy.data =  getleaf(num+1);
+            }
+            else{
+            //     policy.firstChild  = getPolicy(1);
+            //     policy.secondChild  = getPolicy(2);
+            //    //check first child;
+            //    var type1 = $('#typeOptions1').val();
+            //    var child1 = policy.firstChild;
+            //     child1.type = type1;
+            //     if(type0==='leaf'){
+            //         policy.data =  getleaf(1);
+            //     }else{
+                    
+            //     }
+
+
+            }
+
+            return policy;
+               
+
+
+       }
+
+
+       function getleaf(n){
+           var leaf={};
+           var type = $('#select'+n).val();
+           var data = $('#data'+n).val();
+           var productArr= [];
+           for(let i =0;i<numOfProducts;i++){
+               var id=n+"_"+i;
+               if($('#'+id).prop('checked')){
+                productArr.push($('#'+id).val());
+               }
+                
+           }
+           
+           leaf.type=type;
+           leaf.data=data;
+           productArr.length===numOfProducts? leaf.products=-1 : leaf.products = productArr.join(',');
+           return leaf;
+
+       }
+
+       
+
+
+        
+
+        
+        
+    </script>
+</body>
+</html>
