@@ -51,18 +51,28 @@ namespace Users
             }
             if (member.isStoresManagers())
             {
-                foreach (StoreManager st in storeManaging)
+                int count = member.storeManaging.Count-1;
+                StoreManager st = member.storeManaging.ElementAt(count);
+                try
                 {
-                    if (st.GetFather() == null)///change to super father
+
+
+                    for (; count > -1; count--, st = member.storeManaging.ElementAt(count))
                     {
-                        Store store = st.GetStore();
-                        WorkShop.closeStore(store.id, member);
+                        if (ConnectionStubTemp.getAllOwnersCount(st.store) == 1/*st.GetFather() == null*/)///change to super father
+                        {
+                            Store store = st.GetStore();
+                            WorkShop.closeStore(store.id, member);
+                        }
+                        else
+                        {
+                            StoreManager father = st.GetFather();
+                            father.removeManager(st);
+                        }
                     }
-                    else
-                    {
-                        StoreManager father = st.GetFather();
-                        father.removeManager(st);
-                    }
+                } catch (Exception ex)
+                {
+
                 }
                 ConnectionStubTemp.removeMember(member);
                 Logger.Log("event", logLevel.INFO, "Admin succesfully removed user: " + userName);
