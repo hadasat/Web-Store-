@@ -44,6 +44,8 @@ namespace TestingFramework.UnitTests.PoliciesJsonTests
             ItemFilter filter2 = new AllProductsFilter();
             IBooleanExpression leaf2 = new UserCountry("Wakanda forever", filter2);
             IBooleanExpression complex = new XorExpression();
+            leaf1.id = 1;
+            leaf2.id = 2;
             complex.addChildren(leaf1, leaf2);
 
             string json = JsonConvert.SerializeObject(complex, Formatting.Indented, new JsonSerializerSettings
@@ -70,6 +72,10 @@ namespace TestingFramework.UnitTests.PoliciesJsonTests
             ItemFilter filter2 = new AllProductsFilter();
             IBooleanExpression leaf2 = new UserCountry("Wakanda forever", filter2);
             IBooleanExpression complex = new XorExpression();
+            //we add manually ids for the leaves becuase there is no stub for them at the moment. 
+            //Not adding these ids will cause the json serializer to falsly think it has a loop (parent and children have the same id -> .Equals() = true)
+            leaf2.id = 10;
+            leaf1.id = 11;
             complex.addChildren(leaf1, leaf2);
 
             //TODO: when there are concrete Outcomes, we can test this

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TansactionsNameSpace;
 using Users;
-
+using WorkshopProject.DataAccessLayer;
 
 namespace WorkshopProject.System_Service
 {
@@ -17,6 +17,7 @@ namespace WorkshopProject.System_Service
 
     public static class TransactionService
     {
+        private static Repo DB = new Repo();
 
         public static bool AddProductToBasket(User user, int storeId, int productId, int amount)
         {
@@ -26,15 +27,20 @@ namespace WorkshopProject.System_Service
             Product product;
             if (store != null && (product = store.findProduct(productId)) != null)
             {
-                    bool sucss;
+                bool sucss;
                 sucss = userShoppingBasket.addProduct(store, product, amount);
                 if (sucss)
+                {
                     ret = true;
+                    Update(user);
+                }
                 else
                     ret = false;
             }
             else
+            {
                 throw new Exception("Illegal Product id");
+            }
             return ret;
         }
 
@@ -74,10 +80,27 @@ namespace WorkshopProject.System_Service
             if (store != null && (product = store.findProduct(productId)) != null)
             {
                 ret = userShoppingBasket.setProductAmount(store, product, amount);
+                Update(user);
             }
             else
                 throw new Exception("Illegal Product id");
             return ret;
+        }
+
+        public static void Update(User user)
+        {
+            if (useStub())
+            {
+                //do nothing
+                return;
+            }
+            if (user is Member)
+                DB.Update(user);
+        }
+
+        private static bool useStub()
+        {
+            return DataAccessDriver.UseStub;
         }
     }
 }
