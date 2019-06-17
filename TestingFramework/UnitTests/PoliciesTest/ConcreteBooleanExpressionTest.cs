@@ -42,6 +42,7 @@ namespace WorkshopProject.Policies
 
             max = new MaxAmount(15, filter);
             Assert.IsTrue(max.evaluate(list, user));
+
         }
 
         [TestMethod]
