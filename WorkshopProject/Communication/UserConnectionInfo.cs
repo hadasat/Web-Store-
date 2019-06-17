@@ -146,7 +146,10 @@ namespace WorkshopProject.Communication
                 }
                 catch (WorkShopDbException dbExc)
                 {
-                    throw dbExc;
+                    JsonResponse response;
+                    int requestId = (int)messageObj["id"];
+                    response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
+                    sendMyselfAMessage(JsonHandler.SerializeObject(response));
                 }
                 catch
                 {
@@ -265,7 +268,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateDataFailure(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -289,7 +292,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateDataFailure(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -310,7 +313,16 @@ namespace WorkshopProject.Communication
             string userName = (string)msgObj["data"]["name"];
             string password = (string)msgObj["data"]["password"];
             int requestId = (int)msgObj["id"];
-            string ans = user.login(userName, password);
+            string ans = LoginProxy.failureMsg;
+            try
+            {
+                ans = user.login(userName, password);
+            }catch (WorkShopDbException dbExc)
+            {
+                responseObj = JsonResponse.generateDataFailure(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
+                outAns = false;
+                
+            }
             if (ans == LoginProxy.successMsg)
             {
                 responseObj = JsonResponse.generateActionSucces(requestId);
@@ -336,7 +348,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateDataFailure(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -363,7 +375,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -400,7 +412,7 @@ namespace WorkshopProject.Communication
                 }
                 catch (WorkShopDbException dbExc)
                 {
-                    throw dbExc;
+                    response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
                 }
                 catch (Exception e)
                 {
@@ -409,7 +421,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch
             {
@@ -433,12 +445,12 @@ namespace WorkshopProject.Communication
             try
             {
                 int ans = user.AddStore(storeName);
-                response = JsonResponse.generateActionSucces(requestId, ans.ToString());
                 outAns = true;
+                response = JsonResponse.generateActionSucces(requestId, ans.ToString());
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -459,7 +471,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateDataFailure(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -480,7 +492,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateDataFailure(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -505,7 +517,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -535,7 +547,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -555,7 +567,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateDataFailure(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -595,7 +607,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n"+dbExc.Message);
             }
             catch (Exception e)
             {
@@ -620,7 +632,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n"+dbExc.Message);
             }
             catch (Exception e)
             {
@@ -650,7 +662,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -674,7 +686,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -711,7 +723,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateDataFailure(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -733,7 +745,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateDataFailure(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -756,7 +768,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -780,7 +792,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateDataFailure(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -800,7 +812,10 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                int requestId = (int)msgObj["id"];
+                JsonResponse response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
+                sendMyselfAMessage(JsonHandler.SerializeObject(response));
+
             }
             catch (Exception e)
             {
@@ -818,7 +833,9 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                int requestId = (int)msgObj["id"];
+                JsonResponse response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
+                sendMyselfAMessage(JsonHandler.SerializeObject(response));
             }
             catch (Exception e)
             {
@@ -829,8 +846,8 @@ namespace WorkshopProject.Communication
         private async void buyShoppingBasketHandler(JObject msgObj, string message)
         {
             JsonResponse response;
-            int month, year, ccv, id;
-            string cardNumber,holder, name, address, city, country, zip;
+            int month=-1, year=-1, ccv=-1, id=-1;
+            string cardNumber=null,holder = null, name = null, address = null, city = null, country = null, zip = null;
             int requestId = (int)msgObj["id"];
             //{int cardNumber, int month,int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip}
             try
@@ -849,7 +866,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+               response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch
             {
@@ -866,7 +883,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -890,7 +907,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateDataFailure(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -915,7 +932,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -939,7 +956,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
@@ -962,7 +979,7 @@ namespace WorkshopProject.Communication
             }
             catch (WorkShopDbException dbExc)
             {
-                throw dbExc;
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
             }
             catch (Exception e)
             {
