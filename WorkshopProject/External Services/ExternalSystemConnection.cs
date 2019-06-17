@@ -110,7 +110,7 @@ namespace WorkshopProject.External_Services
             }
             catch (Exception e)
             {
-                client.Dispose();
+                //client.Dispose();
                 string logMsg = string.Format("can't convert from string to int the server respones {0}\n request type:{1}", responseString, requestInfo["action_type"]);
                 Logger.Log("error", logLevel.ERROR, logMsg);
                 return -1;
