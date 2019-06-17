@@ -32,8 +32,7 @@ namespace WorkshopProject.Policies
 
         [Include]
         public virtual List<IBooleanExpression> children { get; set; } 
-
-
+        
         public static int Idcounter = 1;
 
         public IBooleanExpression()
@@ -62,10 +61,14 @@ namespace WorkshopProject.Policies
 
         public virtual void addChildren(IBooleanExpression firstChild, IBooleanExpression secondChild)
         {
-            if(firstChild.checkConsistent(this))
+            if (firstChild.checkConsistent(this))
                 children[0] = firstChild;
-            if(secondChild.checkConsistent(this))
+            else
+                return;
+            if (secondChild.checkConsistent(this))
                 children[1] = (secondChild);
+            else
+                children[0] = null;
         }
 
         public virtual IBooleanExpression getFirstChild()

@@ -177,6 +177,10 @@ namespace TestingFramework.AcceptanceTests.Requirement_5
             ItemFilter filter2 = new AllProductsFilter();
             IBooleanExpression leaf2 = new MinAmount(10, filter2);
             IBooleanExpression complex = new XorExpression();
+            //we add manually ids for the leaves becuase there is no stub for them at the moment. 
+            //Not adding these ids will cause the json serializer to falsly think it has a loop (parent and children have the same id -> .Equals() = true)
+            leaf2.id = 20;
+            leaf1.id = 21;
             complex.addChildren(leaf1, leaf2);
             IOutcome outcome = new FreeProduct(productId, 1);
             Discount discount = new Discount(complex, outcome);
