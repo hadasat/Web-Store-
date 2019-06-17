@@ -867,12 +867,14 @@ namespace WorkshopProject.Communication
             catch (WorkShopDbException dbExc)
             {
                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
+               //Console.WriteLine("F 5");
             }
-            catch
+            catch (Exception e)
             {
                 Logger.Log("error", logLevel.ERROR, "can't parse info from server");
                 response = JsonResponse.generateActionError(requestId, "can't parse the input please check the legality of your input");
                 sendMyselfAMessage(JsonHandler.SerializeObject(response));
+                Console.WriteLine("F 4" + e.Message);
                 return;
             }
 
@@ -880,14 +882,17 @@ namespace WorkshopProject.Communication
             {
                 await user.BuyShoppingBasket(cardNumber, month, year, holder, ccv, id, name, address, city, country, zip);
                 response = JsonResponse.generateActionSucces(requestId);
+                //Console.WriteLine("T");
             }
             catch (WorkShopDbException dbExc)
             {
                 response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
+                //Console.WriteLine("F 1");
             }
             catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
+                //Console.WriteLine("F 2");
             }
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
@@ -1022,7 +1027,7 @@ namespace WorkshopProject.Communication
             int sIdx = commands.IndexOf("/");
             string currCommand;
             commands = commands.Substring(sIdx + 1);
-            while (sIdx > -1)
+            while (sIdx > -1 && !ans.Contains("false"))
             {
                 //get command to run
                 sIdx = commands.IndexOf("/");
@@ -1095,7 +1100,7 @@ namespace WorkshopProject.Communication
             var dataObjGood = new { id = -10, data = reqInfoGood };
             if (parameters["purchaseType"] == "good")
             {
-                buyShoppingBasketHandler(JObject.Parse(JsonHandler.SerializeObject(dataObjBad)), "");
+                buyShoppingBasketHandler(JObject.Parse(JsonHandler.SerializeObject(dataObjGood)), "");
             }
             else
             {
