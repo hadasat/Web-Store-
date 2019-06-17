@@ -541,7 +541,23 @@ namespace WorkshopProject.System_Service
 
         }
 
+        public string getPoliciesDiscount(int storeId)
+        {
+            List<Discount> discounts = PolicyService.getAllDiscount(user, storeId);
+            List<IBooleanExpression> polices = PolicyService.getAllStorePolicies(user, storeId);
+            string ans = "";
+            foreach (Discount curr in discounts)
+            {
+                ans += curr.ToString() + "\n";
+            }
 
+            foreach (IBooleanExpression curr in polices)
+            {
+                ans += curr.ToString() + "\n";
+            }
+
+            return ans;
+        }
 
     }
 }
