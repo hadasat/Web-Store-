@@ -541,7 +541,7 @@ namespace WorkshopProject.System_Service
 
         }
 
-        public string getPoliciesDiscount(int storeId)
+        public string getPoliciesString(int storeId)
         {
             List<Discount> discounts = PolicyService.getAllDiscount(user, storeId);
             List<IBooleanExpression> polices = PolicyService.getAllStorePolicies(user, storeId);

@@ -114,7 +114,8 @@ namespace WorkshopProject.Communication
                 {"isadmin" ,isAdminHandler},
                 {"editamount" ,editAmountHandler},
                 {"addpurchsingpolicy",addPurchasingPolicyHandler},
-                {"adddiscountpolicy",addDiscountPolicyHandler}
+                {"adddiscountpolicy",addDiscountPolicyHandler},
+                {"getstorepolices",getAllPoliciesHandler } 
 
             };
         }
@@ -1014,7 +1015,7 @@ namespace WorkshopProject.Communication
             {
                 // {Success, UnauthorizedUser, UnactiveStore, BadPolicy, InconsistPolicy};
                 case Policystatus.Success:
-                    return JsonResponse.generateActionSucces(requestId, "success adding policy");
+                    return JsonResponse.generateActionSucces(requestId,requestId.ToString());
                 case Policystatus.UnauthorizedUser:
                     return JsonResponse.generateActionError(requestId, "you don't have premissions");
                 case Policystatus.UnactiveStore:
@@ -1070,6 +1071,26 @@ namespace WorkshopProject.Communication
             }
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        public void getAllPoliciesHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["storeId"];
+            try
+            {
+                string ans = user.getPoliciesString(storeId);
+                response = JsonResponse.generateDataSuccess(requestId, ans);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
+            }
+            catch
+            {
+                response = JsonResponse.generateDataFailure(requestId, "failed to get polices");
+            }
         }
 
             #endregion
