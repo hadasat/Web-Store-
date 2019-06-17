@@ -144,6 +144,9 @@
        $('#add_policy_btn').on('click',function(){
           
         var policy = getPolicy(0);
+        sendRequest('data','addPurchsingPolicy',JSON.stringify(policy)).then(function(res){
+            alert("policy added successfully");
+        });
 
 
        });
