@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.Log;
 
 namespace WorkshopProject.DataAccessLayer
 {
@@ -36,6 +37,7 @@ namespace WorkshopProject.DataAccessLayer
             }
             catch(Exception e)
             {
+                Logger.Log("error", logLevel.ERROR, e.Message);
                 throw new WorkShopDbException(e.Message);
             }
 
@@ -49,6 +51,7 @@ namespace WorkshopProject.DataAccessLayer
             }
             catch (Exception e)
             {
+                Logger.Log("error", logLevel.ERROR, e.Message);
                 throw new WorkShopDbException(e.Message);
             }
 
@@ -88,6 +91,7 @@ namespace WorkshopProject.DataAccessLayer
             }
             catch (Exception e)
             {
+                Logger.Log("error", logLevel.ERROR, e.Message);
                 throw new WorkShopDbException(e.Message);
             }
 
@@ -118,6 +122,7 @@ namespace WorkshopProject.DataAccessLayer
             }
             catch (Exception e)
             {
+                Logger.Log("error", logLevel.ERROR, e.Message);
                 throw new WorkShopDbException(e.Message);
             }
 
@@ -136,6 +141,7 @@ namespace WorkshopProject.DataAccessLayer
             }
             catch (Exception e)
             {
+                Logger.Log("error", logLevel.ERROR, e.Message);
                 throw new WorkShopDbException(e.Message);
             }
 
@@ -168,6 +174,7 @@ namespace WorkshopProject.DataAccessLayer
                 }
                 catch (Exception e)
                 {
+                    Logger.Log("error", logLevel.ERROR, e.Message);
                     //do nothing
                 }
                 //ctx.Dispose();
@@ -181,6 +188,7 @@ namespace WorkshopProject.DataAccessLayer
                 }
                 catch (Exception e)
                 {
+                    Logger.Log("error", logLevel.ERROR, e.Message);
                     //do nothing
                 }
 
@@ -188,6 +196,7 @@ namespace WorkshopProject.DataAccessLayer
             }
             catch (Exception e)
             {
+                Logger.Log("error", logLevel.ERROR, e.Message);
                 throw new WorkShopDbException(e.Message);
             }        
         }
@@ -234,6 +243,7 @@ namespace WorkshopProject.DataAccessLayer
             }
             catch (Exception e)
             {
+                Logger.Log("error", logLevel.ERROR, e.Message);
                 throw new WorkShopDbException(e.Message);
             }
         }
@@ -263,10 +273,11 @@ namespace WorkshopProject.DataAccessLayer
                     }
                 }
             }
-            catch
+            catch(Exception e)
             {
                 // Something bad happened.
-                throw new Exception("Hey, boss, the UnitTestInitializer failed. You want I should fix it?");
+                Logger.Log("error", logLevel.ERROR, e.Message);
+                throw new Exception(e.Message);
             }
         }
     }
