@@ -209,14 +209,30 @@ namespace TansactionsNameSpace
                     if ( supplyAns== -1) {// supply system fails
                         returnProducts(callbacks);
                         ShoppingCartDeal failcartDeal;
-                        bool refudnAns = await paymentSystem.cancelPayment(transactionId);
+                        bool refudnAns;
+                        try
+                        {
+                            refudnAns = await paymentSystem.cancelPayment(transactionId);
+                        }
+                        catch
+                        {
+                            refudnAns = false;
+                        }
+                        //paymentSystem.Dispose();
                         //double refound = PaymentStub.Refund(totalCart, storeBankNum, storeAccountNum, userCredit, userCsv, userExpiryDate);
                         if (!refudnAns)
                             failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.ContactStoreForRefound);
                         else
                             failcartDeal = new ShoppingCartDeal(currStoreProducts, currStore.name, 0, currStore.id, status.Supply);
                         fail.Add(failcartDeal);
-                        throw new Exception("Supply adress was rejected");
+                        if (refudnAns)
+                        {
+                            throw new Exception("Supply action was rejected - money was refunded");
+                        }
+                        else
+                        {
+                            throw new Exception("Supply action was rejected - money wasn't refunded please contact the store");
+                        }
                     }
                     else // purches all cart products
                     {

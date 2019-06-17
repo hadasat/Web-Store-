@@ -30,9 +30,23 @@ namespace WorkshopProject
             {
                 Console.WriteLine(e.Message);
             }
-            
+
+            /*var leaf1 = new { type = 1, data = 20, list = 1 };
+            var leaf2 = new { type = 2, data = "x", list = 1 };
+            int [] x = { 1, 3, 4 };
+            var complex = new { type =x, data = "", first = leaf1, second = leaf2 };
+
+            JObject messageObj = JObject.Parse(JsonHandler.SerializeObject(complex));
+            Console.WriteLine(messageObj);*/
+
+
             //Setup();
             CommunicationManager manager = new CommunicationManager();
+
+            
+
+
+
         }
 
 

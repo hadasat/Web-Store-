@@ -11,6 +11,7 @@ using WorkshopProject.Communication.Server;
 using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Log;
 using WorkshopProject.System_Service;
+using WorkshopProject.Policies;
 
 namespace WorkshopProject.Communication
 {
@@ -76,7 +77,7 @@ namespace WorkshopProject.Communication
 
         private Dictionary<string, Action<JObject, string>> messageHandlers;
 
-              public UserConnectionInfo(bool isSecureConnection, uint id, IWebSocketMessageSender msgSender)
+        public UserConnectionInfo(bool isSecureConnection, uint id, IWebSocketMessageSender msgSender)
         {
             this.isSecureConnection = isSecureConnection;
             this.id = id;
@@ -111,7 +112,9 @@ namespace WorkshopProject.Communication
                 {"ismanagestore" ,IsManageStoreHandler},
                 {"addstoreowner" ,addStoreOwnerHandler},
                 {"isadmin" ,isAdminHandler},
-                {"editamount" ,editAmountHandler}
+                {"editamount" ,editAmountHandler},
+                {"addpurchsingpolicy",addPurchasingPolicyHandler},
+                {"adddiscountpolicy",addDiscountPolicyHandler}
 
             };
         }
@@ -867,12 +870,14 @@ namespace WorkshopProject.Communication
             catch (WorkShopDbException dbExc)
             {
                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
+               //Console.WriteLine("F 5");
             }
-            catch
+            catch (Exception e)
             {
                 Logger.Log("error", logLevel.ERROR, "can't parse info from server");
                 response = JsonResponse.generateActionError(requestId, "can't parse the input please check the legality of your input");
                 sendMyselfAMessage(JsonHandler.SerializeObject(response));
+                Console.WriteLine("F 4" + e.Message);
                 return;
             }
 
@@ -880,14 +885,17 @@ namespace WorkshopProject.Communication
             {
                 await user.BuyShoppingBasket(cardNumber, month, year, holder, ccv, id, name, address, city, country, zip);
                 response = JsonResponse.generateActionSucces(requestId);
+                //Console.WriteLine("T");
             }
             catch (WorkShopDbException dbExc)
             {
                 response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
+                //Console.WriteLine("F 1");
             }
             catch (Exception e)
             {
                 response = JsonResponse.generateActionError(requestId, e.Message);
+                //Console.WriteLine("F 2");
             }
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
@@ -1000,8 +1008,71 @@ namespace WorkshopProject.Communication
          */
 
 
+        private JsonResponse policyStatusHelper (Policystatus status, int requestId)
+        {
+            switch (status)
+            {
+                // {Success, UnauthorizedUser, UnactiveStore, BadPolicy, InconsistPolicy};
+                case Policystatus.Success:
+                    return JsonResponse.generateActionSucces(requestId, "success adding policy");
+                case Policystatus.UnauthorizedUser:
+                    return JsonResponse.generateActionError(requestId, "you don't have premissions");
+                case Policystatus.UnactiveStore:
+                    return JsonResponse.generateActionError(requestId, "can't add policy to a closed store");
+                case Policystatus.BadPolicy:
+                    return JsonResponse.generateActionError(requestId, "the policy is illegal");
+                case Policystatus.InconsistPolicy:
+                    return JsonResponse.generateActionError(requestId, "the policy is incosisent");
+                default:
+                    throw new Exception("can't create policy");
+            }
+        }
+        private void addPurchasingPolicyHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            try
+            {
+                Policystatus ans = user.addPurchasingPolicy(storeId, user.createPurchasingPolicy(msgObj));
+                response = policyStatusHelper(ans,requestId);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
 
-        #endregion
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+        private void addDiscountPolicyHandler (JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+
+            try
+            {
+                Policystatus ans = user.addDiscountPolicy(storeId, user.createDiscount(msgObj));
+                response = policyStatusHelper(ans, requestId);
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                response = JsonResponse.generateActionError(requestId, "DB is down please try again in few minutes\n" + dbExc.Message);
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
+
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
+            #endregion
 
 
         #region stress
@@ -1022,7 +1093,7 @@ namespace WorkshopProject.Communication
             int sIdx = commands.IndexOf("/");
             string currCommand;
             commands = commands.Substring(sIdx + 1);
-            while (sIdx > -1)
+            while (sIdx > -1 && !ans.Contains("false"))
             {
                 //get command to run
                 sIdx = commands.IndexOf("/");
@@ -1095,7 +1166,7 @@ namespace WorkshopProject.Communication
             var dataObjGood = new { id = -10, data = reqInfoGood };
             if (parameters["purchaseType"] == "good")
             {
-                buyShoppingBasketHandler(JObject.Parse(JsonHandler.SerializeObject(dataObjBad)), "");
+                buyShoppingBasketHandler(JObject.Parse(JsonHandler.SerializeObject(dataObjGood)), "");
             }
             else
             {

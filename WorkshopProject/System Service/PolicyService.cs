@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.DataAccessLayer;
 using WorkshopProject.Policies;
 
 namespace WorkshopProject.System_Service
 {
     public static class PolicyService
     {
+        private static Repo DB = new Repo();
+
         private static void storeValidation(int storeId)
         {
             Store store = WorkShop.getStore(storeId);
@@ -32,12 +35,40 @@ namespace WorkshopProject.System_Service
             }
         }
 
+        public static void Update(Store store)
+        {
+            if (useStub())
+            {
+                //do nothing
+                return;
+            }
+           DB.Update(store);
+        }
+
+        private static bool useStub()
+        {
+            return DataAccessDriver.UseStub;
+        }
+
+        private static void updateStore(Store store)
+        {
+            if (useStub())
+            {
+                //do nothing
+                return;
+            }
+            DB.Update<Store>(store);
+        }
+
         //discount
         public static Policystatus addDiscountPolicy(User user, int storeId, Discount policies)
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            return store.AddDiscountPolicy(user, policies);
+            Policystatus status = store.AddDiscountPolicy(user, policies);
+            if (status == Policystatus.Success)
+                updateStore(store);
+            return status;
 
         }
 
@@ -45,7 +76,10 @@ namespace WorkshopProject.System_Service
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            return store.RemoveDiscountPolicy(user, policyId);
+            Policystatus status = store.RemoveDiscountPolicy(user, policyId);
+            if (status == Policystatus.Success)
+                updateStore(store);
+            return status;
 
         }
 
@@ -54,15 +88,21 @@ namespace WorkshopProject.System_Service
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            return store.AddPurchasPolicy(user, policies);
+            Policystatus status = store.AddPurchasPolicy(user, policies);
+            if (status == Policystatus.Success)
+                updateStore(store);
+            return status;
         }
 
         public static Policystatus removePurchasingPolicy(User user, int storeId, int policyId)
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            return store.RemovePurchasPolicy(user, policyId);
-          
+            Policystatus status = store.RemovePurchasPolicy(user, policyId);
+            if (status == Policystatus.Success)
+                updateStore(store);
+            return status;
+
         }
         
         //store
@@ -70,14 +110,20 @@ namespace WorkshopProject.System_Service
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-           return store.AddStorePolicy(user, policies);
+           Policystatus status = store.AddStorePolicy(user, policies);
+            if (status == Policystatus.Success)
+                updateStore(store);
+            return status;
         }
         
         public static Policystatus removeStorePolicy(User user, int storeId, int policyId)
         {
             storeValidation(storeId);
             Store store = WorkShop.getStore(storeId);
-            return store.RemoveStorePolicy(user, policyId);
+            Policystatus status = store.RemoveStorePolicy(user, policyId);
+            if (status == Policystatus.Success)
+                updateStore(store);
+            return status;
 
         }
         //System

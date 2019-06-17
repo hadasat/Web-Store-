@@ -20,7 +20,7 @@ namespace WorkshopProject.Policies
         {
             this.filter = filter;
             this.amount = amount;
-            this.id = Idcounter++;
+            
         }
 
         public override bool evaluate(List<ProductAmountPrice> products, User user)
@@ -65,7 +65,6 @@ namespace WorkshopProject.Policies
         {
             this.filter = filter;
             this.amount = amount;
-            this.id = Idcounter++;
         }
 
         public override bool evaluate(List<ProductAmountPrice> products, User user)
@@ -104,7 +103,6 @@ namespace WorkshopProject.Policies
         {
             this.filter = filter;
             this.age = age;
-            this.id = Idcounter++;
         }
 
         public override bool evaluate(List<ProductAmountPrice> products, User user)
@@ -144,7 +142,6 @@ namespace WorkshopProject.Policies
         {
             this.filter = filter;
             this.country = country;
-            this.id = Idcounter++;
         }
 
         public override bool evaluate(List<ProductAmountPrice> products, User user)
@@ -184,7 +181,6 @@ namespace WorkshopProject.Policies
 
         public TrueCondition(bool value)
         {
-            this.id = Idcounter++;
         }
 
         public override bool evaluate(List<ProductAmountPrice> products, User user)
@@ -215,7 +211,6 @@ namespace WorkshopProject.Policies
 
         public FalseCondition(bool value)
         {
-            this.id = Idcounter++;
         }
 
         public override bool evaluate(List<ProductAmountPrice> products, User user)
@@ -271,7 +266,6 @@ namespace WorkshopProject.Policies
 
         public OrExpression(bool value)
         {
-            this.id = Idcounter++;
         }
 
         public override bool evaluate(List<ProductAmountPrice> products, User user)
@@ -290,7 +284,6 @@ namespace WorkshopProject.Policies
         //public string name = "XorExpression";
         public XorExpression(bool value) : base()
         {
-            this.id = Idcounter++;
         }
 
 
