@@ -162,7 +162,7 @@ namespace Managment
                 Logger.Log("error", logLevel.INFO, "store:" + store.id + " failed add new manager beacuae he is already a manager: " + member.username);
                 throw new Exception("this member is already manager of this store");
             }
-            else if (this.storeOwner && myRoles.CompareRoles(roles))
+            else if (this.storeOwner || myRoles.CompareRoles(roles))
             {
                 StoreManager newSubStoreManager = new StoreManager(this.store, roles);
                 newSubStoreManager.setFather(this);
