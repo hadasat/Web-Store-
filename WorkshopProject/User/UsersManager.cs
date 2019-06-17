@@ -68,7 +68,7 @@ namespace Users
                         count++;
                 }
             }
-            return 0;
+            return count;
         }
 
         public static void removeMember(Member m)

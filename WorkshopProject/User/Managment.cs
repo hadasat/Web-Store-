@@ -169,6 +169,7 @@ namespace Managment
                 subManagers.AddFirst(newSubStoreManager);
                 member.addStoreToMe(newSubStoreManager);
                 Logger.Log("event", logLevel.INFO, "store:" + store.id + " succesfully add new manager: "+ member.username);
+                ConnectionStubTemp.Update(member);//SHIRA
                 return true;
             }
             else
@@ -176,6 +177,7 @@ namespace Managment
                 Logger.Log("error", logLevel.INFO, "store:" + store.id + " failed add new manager: " + member.username);
                 throw new Exception("this manager try to give more roles than he can");
             }
+
         }
 
 
