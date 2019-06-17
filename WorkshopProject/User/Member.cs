@@ -91,8 +91,7 @@ namespace Users
             StoreManager storeOwnerManager = new StoreManager(store, storeOwner);
             storeOwnerManager.SetStoreOwnerTrue();
             storeManaging.AddFirst(storeOwnerManager);
-            Repo repo = new Repo();
-            repo.Update(this);
+            ConnectionStubTemp.Update(this);
          
             Logger.Log("event", logLevel.INFO, "user: " + this.username + "created succesfully new store: " + store.id);
         }
