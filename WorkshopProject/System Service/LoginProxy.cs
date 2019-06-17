@@ -276,7 +276,26 @@ namespace WorkshopProject.System_Service
 
         public string GetAllStores()
         {
-            return JsonHandler.SerializeObject(StoreService.GetAllStores());
+            //Store s2 = StoreService.GetStore(2);
+            //foreach (Stock st in s2.Stocks)
+            //{
+            //    int i = st.id;
+            //}
+
+            /*
+            List<Store> ls = StoreService.GetAllStores();
+            //jonathan: i just wrote this for debug
+            foreach (Store s in ls)
+            {
+                foreach (Stock st in s.Stocks)
+                {
+                    int i = st.id;
+                }
+            }
+            */
+
+            List<Store> ls = StoreService.GetAllStores();
+            return JsonHandler.SerializeObject(ls);
         }
 
         //TODO wolf delete?

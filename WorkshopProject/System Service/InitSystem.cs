@@ -103,7 +103,7 @@ namespace WorkshopProject.System_Service
 
         public static Product getProduct(Store store, string name)
         {
-            foreach (KeyValuePair<int, Product> s in store.GetStock())
+            foreach (KeyValuePair<int, Product> s in store.GetStockAsDictionary())
             {
                 Product product = s.Value;
                 if (product.name.Equals(name))

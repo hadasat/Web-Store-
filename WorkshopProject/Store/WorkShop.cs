@@ -74,6 +74,9 @@ namespace WorkshopProject
             int currID = store.id;
             //id++;
             owner.addStore(store);
+
+           // repo.Update<Member>(owner);
+
             Logger.Log("event", logLevel.INFO,"store " + currID + " has added");
             return currID;
         }
@@ -103,8 +106,8 @@ namespace WorkshopProject
         {
             foreach(Store store in GetStores())
             {
-                if (store.GetStock().ContainsKey(productId))
-                    return store.GetStock()[productId];
+                if (store.GetStockAsDictionary().ContainsKey(productId))
+                    return store.GetStockAsDictionary()[productId];
             }
             return null;
         }
@@ -193,6 +196,16 @@ namespace WorkshopProject
                 return;
             }
             repo.Add<Store>(e);
+        }
+
+        public static void AddProductToDB(Product e)
+        {
+            if (useStub())
+            {
+               // getDbStub().Add(e);
+                return;
+            }
+            repo.Add<Product>(e);
         }
 
         public static void Update(Store store)

@@ -23,7 +23,7 @@ namespace Users
         public int id { get; set; }
         public string username { get; set; }
         [Include][JsonIgnore]
-        public LinkedList<StoreManager> storeManaging { get; set; }
+        public virtual LinkedList<StoreManager> storeManaging { get; set; }
         [Column(TypeName = "DateTime2")]
         public virtual DateTime birthdate { get; set; }
         public string country { get; set; }
@@ -238,6 +238,10 @@ namespace Users
                 try
                 {
                     candidate.GetStore(StoreID);
+                }
+                catch (WorkShopDbException dbExc)
+                {
+                    throw dbExc;
                 }
                 catch (Exception ex)
                 {

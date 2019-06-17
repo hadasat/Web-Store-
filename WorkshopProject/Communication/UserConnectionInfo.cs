@@ -110,12 +110,14 @@ namespace WorkshopProject.Communication
                 {"addstoremanager" ,addStoreManagerHandler},
                 {"ismanagestore" ,IsManageStoreHandler},
                 {"addstoreowner" ,addStoreOwnerHandler},
-                {"isadmin" ,isAdminHandler}
+                {"isadmin" ,isAdminHandler},
+                {"editamount" ,editAmountHandler}
 
             };
         }
 
       
+
 
         /// <summary>
         /// on message event activated when the user recieves message from server
@@ -226,6 +228,33 @@ namespace WorkshopProject.Communication
 
 
         #region requests handlers
+
+        private void editAmountHandler(JObject msgObj, string message)
+        {
+            JsonResponse response;
+            int requestId = (int)msgObj["id"];
+            int storeId = (int)msgObj["data"]["storeId"];
+            int productId = (int)msgObj["data"]["productId"];
+            int amount = (int)msgObj["data"]["amount"];
+       
+
+            try
+            {
+                response = user.SetProductAmountInBasket(storeId,productId,amount) ?
+                    JsonResponse.generateActionSucces(requestId) : JsonResponse.generateActionError(requestId, "failed to change product amount");
+            }
+            catch (WorkShopDbException dbExc)
+            {
+                throw dbExc;
+            }
+            catch (Exception e)
+            {
+                response = JsonResponse.generateActionError(requestId, e.Message);
+            }
+
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
+        }
+
 
         private void isAdminHandler(JObject msgObj, string message)
         {
