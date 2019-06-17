@@ -11,6 +11,7 @@ using WorkshopProject.Log;
 using WorkshopProject.Communication;
 using WorkshopProject.DataAccessLayer;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Users
 {
@@ -53,6 +54,21 @@ namespace Users
         static ConnectionStubTemp()
         {
             init();
+        }
+
+        public static int getAllOwnersCount(Store store)
+        {
+            int count = 0;
+            foreach(Member m in GetMembers())
+            {
+                LinkedList<StoreManager> stl = m.storeManaging;
+                foreach(StoreManager st in stl)
+                {
+                    if (st.store.id == store.id)
+                        count++;
+                }
+            }
+            return 0;
         }
 
         public static void removeMember(Member m)
@@ -476,15 +492,21 @@ namespace Users
         public virtual Member candidate { get; set; }
         //public static Dictionary<String, int> owners = new Dictionary<String, int>();
         //<ownerNames, approved>
-        public LinkedList<Decision> owners = new LinkedList<Decision>();
+        public virtual LinkedList<Decision> owners { get; set; }
+        [NotMapped]
         public readonly object OwnersLock;
-        public int counter = 0;
+        public int counter { get; set; }
+        [NotMapped]
         public readonly object CounterLock;
-        public bool done;
+        public bool done { get; set; }
+        [NotMapped]
         public readonly object doneLock;
 
         public OwnershipRequest()
         {
+            counter = 0;
+            done = false;
+            owners = new LinkedList<Decision>();
             OwnersLock = new object();
             CounterLock = new object();
             doneLock = new object();
@@ -492,11 +514,14 @@ namespace Users
 
          public OwnershipRequest(Store store, Member candidate, Member initiate)
         {
+            counter = 0;
+            done = false;
             this.store = store;
             this.candidate = candidate;
             this.initiate = initiate;
             this.counter = 0;
             this.done = false;
+            owners = new LinkedList<Decision>();
             OwnersLock = new object();
             CounterLock = new object();
             doneLock = new object();

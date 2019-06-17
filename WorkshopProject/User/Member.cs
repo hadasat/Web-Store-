@@ -91,6 +91,9 @@ namespace Users
             StoreManager storeOwnerManager = new StoreManager(store, storeOwner);
             storeOwnerManager.SetStoreOwnerTrue();
             storeManaging.AddFirst(storeOwnerManager);
+            Repo repo = new Repo();
+            repo.Update(this);
+         
             Logger.Log("event", logLevel.INFO, "user: " + this.username + "created succesfully new store: " + store.id);
         }
 
@@ -223,7 +226,8 @@ namespace Users
                 throw new Exception("You dont own this store! should not happen!!");
             }
             requestId = ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
-            ConnectionStubTemp.deleteOwnershipRequest(ConnectionStubTemp.GetOwnershipRequest(requestId));
+            if(ConnectionStubTemp.GetOwnershipRequest(requestId) != null)
+                ConnectionStubTemp.deleteOwnershipRequest(ConnectionStubTemp.GetOwnershipRequest(requestId));
             return -1;
         }
 
