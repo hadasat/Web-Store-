@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -143,7 +143,11 @@
 
        $('#add_policy_btn').on('click',function(){
           
-        var policy = getPolicy(0);
+           var policy = getPolicy(0);
+        policy.storeId = storeId;
+        sendRequest('data','addPurchsingPolicy',policy).then(function(res){
+            alert("policy added successfully");
+        });
 
 
        });
@@ -155,18 +159,32 @@
             if(type0==='leaf'){
                 policy.data =  getleaf(num+1);
             }
-            else{
-            //     policy.firstChild  = getPolicy(1);
-            //     policy.secondChild  = getPolicy(2);
-            //    //check first child;
-            //    var type1 = $('#typeOptions1').val();
-            //    var child1 = policy.firstChild;
-            //     child1.type = type1;
-            //     if(type0==='leaf'){
-            //         policy.data =  getleaf(1);
-            //     }else{
-                    
-            //     }
+            else{ 
+               //check first child;
+               var type1 = $('#typeOptions1').val();
+               policy.firstChild={};
+               var child1 = policy.firstChild;
+                child1.type = type1;
+                if(type1==='leaf'){
+                    child1.data =  getleaf(1);
+                }else{
+                    child1.firstChild = getleaf(1);
+                    child1.secondChild = getleaf(2);
+                }
+
+                 //check second child;
+               var type2 = $('#typeOptions2').val();
+               policy.secondChild={};
+               var child2 = policy.secondChild ;
+               child2.type = type2;
+                if(type2==='leaf'){
+                    child2.data =  getleaf(3);
+                }else{
+                    child2.firstChild = getleaf(3);
+                    child2.secondChild = getleaf(4);
+                }
+
+
 
 
             }

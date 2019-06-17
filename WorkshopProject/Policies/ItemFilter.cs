@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkshopProject;
 using WorkshopProject.DataAccessLayer;
+using WorkshopProject.System_Service;
 
 namespace WorkshopProject.Policies
 {
@@ -44,6 +45,11 @@ namespace WorkshopProject.Policies
         public AllProductsFilter() { }
 
         public override List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products) { return products; }
+
+        public override string ToString()
+        {
+            return "all products in store";
+        }
     }
    
 
@@ -66,6 +72,24 @@ namespace WorkshopProject.Policies
                 }
             }
             return ret;
+        }
+
+        public override string ToString()
+        {
+            string productsAns = "";
+            foreach (Store currStore in StoreService.GetAllStores())
+            {
+                foreach (int currProdId in productIds)
+                {
+                    Product inStore = currStore.getProduct(currProdId);
+                    if (inStore != null)
+                    {
+                        productsAns += inStore.name + " ";
+                    }
+                }
+            }
+
+            return "the prodcts: " + productsAns;
         }
     }
 

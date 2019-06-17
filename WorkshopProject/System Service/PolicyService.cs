@@ -138,5 +138,16 @@ namespace WorkshopProject.System_Service
 
         }
 
+        public static List<IBooleanExpression> getAllStorePolicies(User user, int storeId)
+        {
+            Store store = WorkShop.getStore(storeId);
+            return store.getAllPolicies();
+        }
+        public static List<Discount> getAllDiscount(User user, int storeId)
+        {
+            Store store = WorkShop.getStore(storeId);
+            return store.getAllDiscounts();
+        }
+
     }
 }

@@ -81,6 +81,17 @@ namespace WorkshopProject
 
         }
 
+        public List<IBooleanExpression> getAllPolicies()
+        {
+            List<IBooleanExpression> allPolicies = new List<IBooleanExpression>(purchasePolicies);
+            allPolicies.Concat(storePolicies);
+            return allPolicies;
+        }
+
+        public List<Discount> getAllDiscounts()
+        {
+            return discountPolicies;
+        }
         public override int GetKey()
         {
             return id;
