@@ -92,7 +92,6 @@ namespace Users
             storeOwnerManager.SetStoreOwnerTrue();
             storeManaging.AddFirst(storeOwnerManager);
             ConnectionStubTemp.Update(this);
-         
             Logger.Log("event", logLevel.INFO, "user: " + this.username + "created succesfully new store: " + store.id);
         }
 
@@ -200,7 +199,9 @@ namespace Users
         {
             Store store = GetStore(StoreID);
             StoreManager myStoreRoles = getStoreManagerOb(store);
-            return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
+            bool ret = myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
+            ConnectionStubTemp.Update(ConnectionStubTemp.getMember(username));
+            return ret;
         }
 
 
@@ -219,6 +220,7 @@ namespace Users
             if (numberOfOwners > 1)
             {
                 requestId = ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
+                ConnectionStubTemp.Update(ConnectionStubTemp.getMember(username));//shira
                 return requestId;
             } else if(numberOfOwners <= 0)
             {
@@ -227,6 +229,7 @@ namespace Users
             requestId = ConnectionStubTemp.createOwnershipRequest(store, this, ConnectionStubTemp.getMember(username));
             if(ConnectionStubTemp.GetOwnershipRequest(requestId) != null)
                 ConnectionStubTemp.deleteOwnershipRequest(ConnectionStubTemp.GetOwnershipRequest(requestId));
+            ConnectionStubTemp.Update(ConnectionStubTemp.getMember(username));//shira
             return -1;
         }
 
@@ -258,6 +261,7 @@ namespace Users
             }
             StoreManager candidateStoreManager = candidate.getStoreManagerOb(store);
             candidateStoreManager.SetStoreOwnerTrue();
+            ConnectionStubTemp.Update(ConnectionStubTemp.getMember(username));//shira
             return true;
 
         }
@@ -296,6 +300,7 @@ namespace Users
             Member memberToRemove = ConnectionStubTemp.getMember(username);
             bool res = myStoreRoles.removeManager(memberToRemove.getStoreManagerOb(store));
             memberToRemove.RemoveStoreFromMe(memberToRemove.getStoreManagerOb(store));
+            ConnectionStubTemp.Update(ConnectionStubTemp.getMember(username));//shira
             return res;
         }
 
@@ -307,22 +312,23 @@ namespace Users
             Member memberToRemove = ConnectionStubTemp.getMember(username);
             bool res = myStoreRoles.removeManager(memberToRemove.getStoreManagerOb(store));
             memberToRemove.RemoveStoreFromMe(memberToRemove.getStoreManagerOb(store));
+            ConnectionStubTemp.Update(ConnectionStubTemp.getMember(username));//shira
             return res;
         }
 
-        public override bool hasAddRemoveDiscountPermission(Store store)
+        public override bool hasAddRemoveDiscountPermission(Store store)//no need
         {
             Roles roles = getStoreManagerRoles(store);
             return roles != null && roles.AddRemoveDiscountPolicy;
         }
 
-        public override bool hasAddRemoveProductsPermission(Store store)
+        public override bool hasAddRemoveProductsPermission(Store store)//ok
         {
             Roles roles = getStoreManagerRoles(store);
             return roles != null && roles.AddRemoveProducts;
         }
 
-        public override bool hasAddRemovePurchasingPolicies(Store store)
+        public override bool hasAddRemovePurchasingPolicies(Store store)//ok
         {
             Roles roles = getStoreManagerRoles(store);
             return roles != null && roles.AddRemovePurchasing;
@@ -334,13 +340,13 @@ namespace Users
             return roles != null && roles.AddRemoveStorePolicy;
         }
 
-        public override bool hasAddRemoveStoreManagerPermission(Store store)
+        public override bool hasAddRemoveStoreManagerPermission(Store store)//no need!
         {
             Roles roles = getStoreManagerRoles(store);
             return roles != null && roles.AddRemoveStoreManger;
         }
 
-        public override bool hasAddRemoveDiscountPolicies(Store store)
+        public override bool hasAddRemoveDiscountPolicies(Store store)//ok
         {
             Roles roles = getStoreManagerRoles(store);
             return roles != null && roles.AddRemoveDiscountPolicy;

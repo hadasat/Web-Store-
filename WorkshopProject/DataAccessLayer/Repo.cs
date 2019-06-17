@@ -235,8 +235,17 @@ namespace WorkshopProject.DataAccessLayer
 
 
                         // Update original values from the database
-                        var entry = ex.Entries.Single();
-                        entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+
+                        //try
+                        //{
+                            var entry = ex.Entries.Single();
+                            entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+                        //}
+                        //catch(ArgumentNullException exx)
+                        //{
+                        //    ex.Entries.Single().Reload();
+                        //}
+                        
                     }
 
                 } while (saveFailed);

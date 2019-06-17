@@ -68,7 +68,7 @@ namespace Users
                         count++;
                 }
             }
-            return 0;
+            return count;
         }
 
         public static void removeMember(Member m)
@@ -320,6 +320,7 @@ namespace Users
         public static int createOwnershipRequest(Store store, Member memberThatOpenRequest, Member candidate)
         {
             OwnershipRequest newOwnership = new OwnershipRequest(store, candidate, memberThatOpenRequest);
+           
             //foreach (KeyValuePair<int, Member> entry in members)
             foreach (Member m in GetMembers())
             {
@@ -332,6 +333,7 @@ namespace Users
             AddOwnershipRequest(newOwnership);//add ownership request to list 
             newOwnership.sendRequestsToOwners(store, memberThatOpenRequest.id, candidate.username, newOwnership.getID());//should handle notifications
             newOwnership.approveOrDisapprovedOwnership(1, memberThatOpenRequest);//first approval of asker
+
             return newOwnership.getID();
         }
 
@@ -425,6 +427,35 @@ namespace Users
             repo.Update<Member>(member);
         }
 
+
+        //public static void AddOR(OwnershipRequest or)
+        //{
+        //    if (useStub())
+        //    {
+        //        return;
+        //    }
+        //    repo.Add<OwnershipRequest>(or);
+        //}
+
+
+        //public static void RemoveOR(OwnershipRequest or)
+        //{
+        //    if (useStub())
+        //    {
+        //        return;
+        //    }
+        //    repo.Remove<OwnershipRequest>(or);
+        //}
+
+        //public static void UpdateOR(OwnershipRequest or)
+        //{
+        //    if (useStub())
+        //    {
+        //        return;
+        //    }
+        //    repo.Update<OwnershipRequest>(or);
+        //}
+
         public static void Clear()
         {
             if (useStub())
@@ -488,7 +519,7 @@ namespace Users
         [Key]
         public int ID { get; set; }
         public virtual Store store { get; set; }
-        public virtual Member initiate { get; set; }
+        public virtual String initiate { get; set; }
         public virtual Member candidate { get; set; }
         //public static Dictionary<String, int> owners = new Dictionary<String, int>();
         //<ownerNames, approved>
@@ -518,7 +549,7 @@ namespace Users
             done = false;
             this.store = store;
             this.candidate = candidate;
-            this.initiate = initiate;
+            this.initiate = initiate.username;
             this.counter = 0;
             this.done = false;
             owners = new LinkedList<Decision>();
@@ -567,10 +598,17 @@ namespace Users
                     {
                         //needs to decide if somthing happens in case of
                         //unapproval
+                        lock (OwnersLock)
+                        {
+                            ConnectionStubTemp.UpdateOwnershipRequest(this);
+                        }
                     }
                     
                 }
             }
+
+
+
         }
 
         private bool isFullfielld()
@@ -610,8 +648,8 @@ namespace Users
 
         public void makeOwner()
         {
-            Roles roles = initiate.getStoreManagerRoles(store.id);
-            initiate.makeStoreOwner(candidate.username, roles, store.id);
+            Roles roles = ConnectionStubTemp.getMember(initiate).getStoreManagerRoles(store.id);
+            ConnectionStubTemp.getMember(initiate).makeStoreOwner(candidate.username, roles, store.id);
             ConnectionStubTemp.deleteOwnershipRequest(this);
         }
 
@@ -633,7 +671,7 @@ namespace Users
         public override void LoadMe()
         {
             store.LoadMe();
-            initiate.LoadMe();
+            //initiate.LoadMe();
             candidate.LoadMe();
         }
     }

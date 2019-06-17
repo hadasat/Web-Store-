@@ -1015,7 +1015,11 @@ namespace WorkshopProject.Communication
             {
                 // {Success, UnauthorizedUser, UnactiveStore, BadPolicy, InconsistPolicy};
                 case Policystatus.Success:
+<<<<<<< HEAD
+                    return JsonResponse.generateActionSucces(requestId,requestId.ToString());
+=======
                     return JsonResponse.generateActionSucces(requestId, requestId.ToString());
+>>>>>>> master
                 case Policystatus.UnauthorizedUser:
                     return JsonResponse.generateActionError(requestId, "you don't have premissions");
                 case Policystatus.UnactiveStore:
