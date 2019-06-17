@@ -1,4 +1,5 @@
 ﻿using Managment;
+using Newtonsoft.Json.Linq;
 using Shopping;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using TansactionsNameSpace;
 using Users;
 using WorkshopProject.Communication;
 using WorkshopProject.DataAccessLayer;
+using WorkshopProject.Log;
 using WorkshopProject.Policies;
 
 namespace WorkshopProject.System_Service
@@ -346,6 +348,121 @@ namespace WorkshopProject.System_Service
         //**********POLICIES*********************
 
         //policies
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="info">info ["data"]</param>
+        /// <returns></returns>
+        private IBooleanExpression createLeaf(JObject info)
+        {
+            string leafType = (string)info["type"];
+            //create products filter
+            string products = (string)info["products"];
+            ItemFilter filter;
+            if (products == "-1")
+            {
+                filter = new AllProductsFilter();
+            }
+            else
+            {
+                string[] productsArr = products.Split(',').ToArray();
+                List<int> productsList = new List<int>();
+                foreach (string curr in productsArr)
+                {
+                    productsList.Add(Convert.ToInt32(curr));
+                }
+                filter = new ProductListFilter(productsList);
+            }
+
+            switch (leafType)
+            {
+                case "minAmount":
+                    return new MinAmount((int)info["info"],filter);
+                case "maxAmount":
+                    return new MaxAmount((int)info["info"], filter);
+                case "country":
+                    return new UserCountry((string)info["info"], filter);
+                case "age":
+                    return new UserAge((int)info["info"], filter);
+                default:
+                    Logger.Log("error", logLevel.ERROR, "can't create leaf");
+                    throw new Exception("can't create leaf");
+            }
+        }
+
+        private IBooleanExpression createComplexExpression(JObject info)
+        {
+            string primeType = (string)info["type"];
+            IBooleanExpression firstChild = null, secondChild = null, toReturn;
+            switch (primeType)
+            {
+                case "leaf":
+                    return createLeaf((JObject)info["data"]);
+                case "and":
+                    firstChild = createComplexExpression((JObject)info["firstChild"]);
+                    secondChild = createComplexExpression((JObject)info["secondChild"]);
+                    toReturn = new AndExpression();
+                    break;
+                case "or":
+                    firstChild = createComplexExpression((JObject)info["firstChild"]);
+                    secondChild = createComplexExpression((JObject)info["secondChild"]);
+                    toReturn = new OrExpression();
+                    break;
+                case "xor":
+                    firstChild = createComplexExpression((JObject)info["firstChild"]);
+                    secondChild = createComplexExpression((JObject)info["secondChild"]);
+                    toReturn = new XorExpression();
+                    break;
+                default:
+                    throw new Exception("unknon purchasing type");
+            }
+            if (firstChild != null && secondChild != null)
+            {
+                toReturn.addChildren(firstChild, secondChild);
+                return toReturn;
+            }
+            else
+            {
+                throw new Exception("can't create children in policy type");
+            }
+        }
+
+        public IBooleanExpression createPurchasingPolicy(JObject info)
+        {
+            return createComplexExpression(info);
+        }
+
+        public Discount createDiscount(JObject info)
+        {
+            IBooleanExpression condition = createComplexExpression(info);
+            int productId = (int)info["outcome"]["product"];
+            IOutcome outcome;
+            if (productId == -1)
+            {
+                outcome = new Percentage((double)info["outcome"]["amount"]);
+            }
+            else
+            {
+                outcome = new FreeProduct(productId, (int)info["outcome"]["amount"]);
+            }
+
+            return new Discount(condition, outcome);
+        }
+
+        public Policystatus addDiscountPolicy (int storeId, Discount discount)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return PolicyService.addDiscountPolicy(user, storeId, discount);
+        }
+
+        public Policystatus addPurchasingPolicy(int storeId, IBooleanExpression toAdd)
+        {
+            if (!loggedIn)
+                notLoggedInException();
+            return PolicyService.addPurchasingPolicy(user, storeId, toAdd);
+        }
+
         public Policystatus addDiscountPolicy(int storeId, string policy)
         {
             if (!loggedIn)
