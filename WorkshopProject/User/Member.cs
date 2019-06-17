@@ -200,7 +200,9 @@ namespace Users
         {
             Store store = GetStore(StoreID);
             StoreManager myStoreRoles = getStoreManagerOb(store);
-            return myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
+            bool ret = myStoreRoles.CreateNewManager(ConnectionStubTemp.getMember(username), role);
+            ConnectionStubTemp.Update(ConnectionStubTemp.getMember(username));
+            return ret;
         }
 
 
