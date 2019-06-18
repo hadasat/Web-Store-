@@ -183,7 +183,7 @@ namespace WorkshopProject
             Dictionary<int, Product> products = GetStockAsDictionary();
             foreach (Product item in products.Values)
             {
-                if ((name == "" || item.name.Contains(name)) && (category == "" || item.category == category )
+                if ((name == "" || item.name.Contains(name)) && (category == "" || item.category.Contains(category) )
                     && (endPrice == -1 || endPrice >= item.getPrice()) && (startPrice == -1 || startPrice <= item.getPrice())
                     && (storeRanking == -1 || storeRanking <= rank) && (productRanking == -1 || productRanking <= item.rank))
                 {
