@@ -1,14 +1,8 @@
 describe('Store Page Tests', function() {
 
-    it('store has no products - nothing is showed', function(){
-        login()
-        addStore()
-        cy.visit('http://localhost:8080/wot/store/1')
-        cy.get('.grid').find('#noProduct_title')
-        })
-
+  
         it('store has products - shows all stores products with buy button', function(){
-            cy.visit('http://localhost:8080/wot/store/0')
+            cy.visit('http://localhost:8080/wot/store/1')
             cy.get('.grid').find('#product_card')
         
             })

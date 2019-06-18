@@ -18,6 +18,6 @@ describe('Shopping basket test', function() {
 
 
  function  addProductTobasket(){
-    cy.visit('http://localhost:8080/wot/store/0/0');
+    cy.visit('http://localhost:8080/wot/store/1/1');
     cy.get('#addToBasket').click()
   }
