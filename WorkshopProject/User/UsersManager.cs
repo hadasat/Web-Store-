@@ -64,7 +64,7 @@ namespace Users
                 LinkedList<StoreManager> stl = m.storeManaging;
                 foreach(StoreManager st in stl)
                 {
-                    if (st.store.id == store.id)
+                    if (st.store.id == store.id && st.isStoreOwner())
                         count++;
                 }
             }
