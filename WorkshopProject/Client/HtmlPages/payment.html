@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -107,8 +107,8 @@
 
            sendRequest('action','buyShoppingBasket',{cardNumber: creditNum , month: dateMonth,year: dateYear,
         holder: holder,cvv: cvv,id: id, name:name,address: add,city: city,
-        country: country ,zip: zip }).then(function(){
-            alert("Purchasing succeed!");
+        country: country ,zip: zip }).then(function(res){
+            alert(res.data);
             window.location.href = "/wot/main";
         });
 
