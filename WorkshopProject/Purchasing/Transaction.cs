@@ -250,16 +250,16 @@ namespace TansactionsNameSpace
                 } 
             }
             //empty all bought products
-            finalPurchaseInfo = "final Price: " + finalPrice +"\n products in you order:\n";
+            finalPurchaseInfo = "your order information: \nfinal Price: " + finalPrice +"\nproducts in you order:\n";
             foreach (ProductAmountPrice p in purchasedProducts)
             {
                 Store store;
                 if ((store = WorkShop.getStore(p.product.storeId)) != null)
                 {
                     basket.setProductAmount(store, p.product, 0);
-                    string buyMessage = String.Format("the product {0}, was bought from the store {1}", p.product.name, store.name);
+                    string buyMessage = String.Format("the product {0}, was bought from the store {1}, amount bought {2} purchase price: {3}", p.product.name, store.name,p.amount,p.price*p.amount);
                     Member.sendMessageToAllOwners(store.id, buyMessage);
-                    finalPurchaseInfo += p.amount + " - " + p.product.name + "\n";
+                    finalPurchaseInfo +="product: "+p.product.name + " , amount: "+p.amount +" "+ (p.price ==0 ? " recieved for free\n" : ",price: " + p.price * p.amount + "\n");
                 }
             }
             return transactionId;

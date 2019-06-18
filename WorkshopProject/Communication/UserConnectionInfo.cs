@@ -903,6 +903,7 @@ namespace WorkshopProject.Communication
             }
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
+            for (int i = 0; i < 10_000; i++) ;
             if (purchaseInfo != null)
                 sendMyselfAMessage(purchaseInfo);
 
