@@ -850,6 +850,7 @@ namespace WorkshopProject.Communication
         private async void buyShoppingBasketHandler(JObject msgObj, string message)
         {
             JsonResponse response;
+            string purchaseInfo = null;
             int month=-1, year=-1, ccv=-1, id=-1;
             string cardNumber=null,holder = null, name = null, address = null, city = null, country = null, zip = null;
             int requestId = (int)msgObj["id"];
@@ -878,14 +879,16 @@ namespace WorkshopProject.Communication
                 Logger.Log("error", logLevel.ERROR, "can't parse info from server");
                 response = JsonResponse.generateActionError(requestId, "can't parse the input please check the legality of your input");
                 sendMyselfAMessage(JsonHandler.SerializeObject(response));
-                Console.WriteLine("F 4" + e.Message);
+                //Console.WriteLine("F 4" + e.Message);
                 return;
             }
 
             try
             {
-                await user.BuyShoppingBasket(cardNumber, month, year, holder, ccv, id, name, address, city, country, zip);
+                purchaseInfo = await user.BuyShoppingBasket(cardNumber, month, year, holder, ccv, id, name, address, city, country, zip);
                 response = JsonResponse.generateActionSucces(requestId);
+                var purchaseInfoNotificaiton = new { type = "notification", info = "message", data = purchaseInfo, requestId = -1 };
+                purchaseInfo = JsonHandler.SerializeObject(purchaseInfoNotificaiton);
                 //Console.WriteLine("T");
             }
             catch (WorkShopDbException dbExc)
@@ -900,6 +903,9 @@ namespace WorkshopProject.Communication
             }
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
+            for (int i = 0; i < 10_000; i++) ;
+            if (purchaseInfo != null)
+                sendMyselfAMessage(purchaseInfo);
 
         }
 
@@ -1015,7 +1021,7 @@ namespace WorkshopProject.Communication
             {
                 // {Success, UnauthorizedUser, UnactiveStore, BadPolicy, InconsistPolicy};
                 case Policystatus.Success:
-                    return JsonResponse.generateActionSucces(requestId, requestId.ToString());
+                    return JsonResponse.generateActionSucces(requestId,requestId.ToString());
                 case Policystatus.UnauthorizedUser:
                     return JsonResponse.generateActionError(requestId, "you don't have premissions");
                 case Policystatus.UnactiveStore:
@@ -1058,7 +1064,7 @@ namespace WorkshopProject.Communication
 
             try
             {
-                Policystatus ans = user.addDiscountPolicy(storeId, user.createDiscount(msgObj));
+                Policystatus ans = user.addDiscountPolicy(storeId, user.createDiscount((JObject)msgObj["data"]));
                 response = policyStatusHelper(ans, requestId);
             }
             catch (WorkShopDbException dbExc)
@@ -1077,7 +1083,7 @@ namespace WorkshopProject.Communication
         {
             JsonResponse response;
             int requestId = (int)msgObj["id"];
-            int storeId = (int)msgObj["storeId"];
+            int storeId = (int)msgObj["data"];
             try
             {
                 string ans = user.getPoliciesString(storeId);
@@ -1091,6 +1097,8 @@ namespace WorkshopProject.Communication
             {
                 response = JsonResponse.generateDataFailure(requestId, "failed to get polices");
             }
+
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
 
             #endregion

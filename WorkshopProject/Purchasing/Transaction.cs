@@ -40,6 +40,8 @@ namespace TansactionsNameSpace
         private IPayment paymentSystem;
         [NotMapped]
         private ISupply supplySystem;
+        [NotMapped]
+        public string finalPurchaseInfo { get; set; }
 
         public Transaction() { } //added for DB
 
@@ -79,6 +81,7 @@ namespace TansactionsNameSpace
         {
             try
             {
+                finalPurchaseInfo = "";
                 this.user = user;
                 this.total = 0;
                 sucess = new List<ShoppingCartDeal>();
@@ -111,6 +114,7 @@ namespace TansactionsNameSpace
         public async Task<int> purchase(string cardNumber, int month, int year, string holder, int ccv, int id, string name, string address, string city, string country, string zip)
         {
             int transactionId = -1;
+            double finalPrice = 0;
             ShoppingBasket basket = user.shoppingBasket;
             //check the basket is empty
             if (basket.isEmpty())
@@ -177,6 +181,7 @@ namespace TansactionsNameSpace
                 int storeBankNum = currStore.storeBankNum;
                 int storeAccountNum = currStore.storeAccountNum;
                 string sourceAddress = currStore.storeAddress;
+                finalPrice += totalCart;
                 try
                 {
                     transactionId = await pay(cardNumber, month, year, holder, ccv, id);
@@ -245,14 +250,16 @@ namespace TansactionsNameSpace
                 } 
             }
             //empty all bought products
+            finalPurchaseInfo = "your order information: \nfinal Price: " + finalPrice +"\nproducts in you order:\n";
             foreach (ProductAmountPrice p in purchasedProducts)
             {
                 Store store;
                 if ((store = WorkShop.getStore(p.product.storeId)) != null)
                 {
                     basket.setProductAmount(store, p.product, 0);
-                    string buyMessage = String.Format("the product {0}, was bought from the store {1}", p.product.name, store.name);
+                    string buyMessage = String.Format("the product {0}, was bought from the store {1}, amount bought {2} purchase price: {3}", p.product.name, store.name,p.amount,p.price*p.amount);
                     Member.sendMessageToAllOwners(store.id, buyMessage);
+                    finalPurchaseInfo +="product: "+p.product.name + " , amount: "+p.amount +" "+ (p.price ==0 ? " recieved for free\n" : ",price: " + p.price * p.amount + "\n");
                 }
             }
             return transactionId;
