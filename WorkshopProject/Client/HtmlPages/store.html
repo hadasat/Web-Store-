@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -121,8 +121,7 @@
         
     function getPolicy(storeId){
             sendRequest('data','getStorePolices',storeId).then(function(res){
-                res==={}? alert('no discount or policy to show'):
-                alert(res);
+                alert(res.data);
             });
         }
      
