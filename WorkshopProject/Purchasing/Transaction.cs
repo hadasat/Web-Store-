@@ -250,7 +250,7 @@ namespace TansactionsNameSpace
                 } 
             }
             //empty all bought products
-            finalPurchaseInfo = "final Price: " + finalPrice +"\n products in order:\n";
+            finalPurchaseInfo = "final Price: " + finalPrice +"\n products in you order:\n";
             foreach (ProductAmountPrice p in purchasedProducts)
             {
                 Store store;
