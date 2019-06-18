@@ -19,7 +19,7 @@ namespace Shopping
 
         public ShoppingBasket()
         {
-            id = idBasketCounter++;
+         //   id = idBasketCounter++;
             cartsList = new List<ShoppingCartAndStore>();
         }
 

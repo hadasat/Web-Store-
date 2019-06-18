@@ -11,8 +11,7 @@ namespace WorkshopProject.Policies
     public class MaxAmount : IBooleanExpression
     {
         //public string name = "MaxAmount";
-        public int amount { get; set; }
-
+        public int amount { get; set;}
 
         public MaxAmount() : base() {/*for json*/ }
 

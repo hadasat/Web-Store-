@@ -20,6 +20,11 @@ namespace WorkshopProject.Policies
             this.amount = amount;
         }
 
+        public FreeProduct()
+        {
+           
+        }
+
         public override List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
         {
             Product product = WorkShop.findProduct(productId).Values.First();
@@ -42,6 +47,9 @@ namespace WorkshopProject.Policies
         public Percentage(double percentage)
         {
             this.percentage = percentage;
+        }
+        public Percentage()
+        {
         }
 
         public override List<ProductAmountPrice> Apply(List<ProductAmountPrice> products, User user)
