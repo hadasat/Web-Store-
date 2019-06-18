@@ -557,6 +557,8 @@ namespace WorkshopProject.System_Service
                 ans += curr.ToString() + "\n";
             }
 
+            if (ans =="") { ans = "no policeies for this store"; }
+
             return ans;
         }
 

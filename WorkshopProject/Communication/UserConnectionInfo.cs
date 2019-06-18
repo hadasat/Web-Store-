@@ -1087,7 +1087,8 @@ namespace WorkshopProject.Communication
             try
             {
                 string ans = user.getPoliciesString(storeId);
-                response = JsonResponse.generateDataSuccess(requestId, ans);
+                var x = new { data = ans };
+                response = JsonResponse.generateDataSuccess(requestId, JsonHandler.SerializeObject(x));
             }
             catch (WorkShopDbException dbExc)
             {
