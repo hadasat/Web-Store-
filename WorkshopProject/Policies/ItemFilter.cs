@@ -56,11 +56,13 @@ namespace WorkshopProject.Policies
     public class ProductListFilter : ItemFilter
     {
         public List<int> productIds { get; set; }
-        public ProductListFilter() {/*forJson*/ }
+        public ProductListFilter( ) { productIds = new List<int>(); }
 
         public ProductListFilter(List<int> productIds) {
             this.productIds = productIds;
         }
+
+
 
         public override List<ProductAmountPrice> getFilteredItems(List<ProductAmountPrice> products) {
             List<ProductAmountPrice> ret = new List<ProductAmountPrice>();
