@@ -255,6 +255,7 @@ namespace WorkshopProject
             {
                 if (GetStockAsDictionary().ContainsKey(p.getId()))
                     GetStockAsDictionary()[p.getId()].amount += amountToBuy;
+                WorkShop.Update(this);
             };
 
             if (!GetStockAsDictionary().ContainsKey(p.getId()) || removeFromStock(GetStockAsDictionary()[p.getId()], amountToBuy) == -1)
@@ -274,6 +275,7 @@ namespace WorkshopProject
                 return -1;
 
             p.amount -= amountToBuy;
+            WorkShop.Update(this);
             return p.amount;
         }
 
