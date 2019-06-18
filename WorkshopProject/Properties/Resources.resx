@@ -163,4 +163,7 @@
   <data name="policies" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Client\HtmlPages\policies.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1255</value>
   </data>
+  <data name="discount" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Client\HtmlPages\discount.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1255</value>
+  </data>
 </root>

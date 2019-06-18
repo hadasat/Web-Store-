@@ -150,6 +150,7 @@
   <ItemGroup>
     <None Include="Client\HtmlPages\adminActions.html" />
     <Content Include="Client\HtmlPages\communication.js" />
+    <None Include="Client\HtmlPages\discount.html" />
     <Content Include="Client\HtmlPages\index.html" />
     <Content Include="Client\HtmlPages\navbar.js" />
     <None Include="Client\HtmlPages\product.html" />
