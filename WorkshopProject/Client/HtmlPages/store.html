@@ -81,11 +81,7 @@
                         <input type="checkbox" value="" id="discounts_check">Add & Remove discount policy
                     </label>
                 </div>
-                <div>
-                    <label class="checkbox">
-                        <input type="checkbox" value="" id="communication_check">Customer communication
-                    </label>
-                </div>
+               
                 <div>
                     <label class="checkbox">
                         <input type="checkbox" value="" id="policy_check">Add & Remove store policy
@@ -162,7 +158,17 @@
              //set header
              var buttonhtml = isManager? `<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
                     edit <i class="far fa-edit"></i>
-                  </button>` : ``;
+                  </button>
+                  <a href="/wot/policies/${storeId}" class="btn btn-primary">
+                    add policy
+                  </a>
+                   
+                  <a href="/wot/discount/${storeId}" class="btn btn-primary">
+                    add discount
+                  </a>
+                  
+                  
+                  ` : ``;
         $("#page-header").html(`<h1>${store.name}</h1>
         <h5  style="color: rgb(0, 212, 0)">active</h5>`+
          buttonhtml );
@@ -242,7 +248,7 @@
             var appointmanager_check = false;
             var appointowners_check = false;
             var close_check = false;
-            var communication_check = $('#communication_check').prop('checked');
+            var communication_check = false;
             var discounts_check = $('#discounts_check').prop('checked');
             var managers_check = false;
             var policy_check = $('#policy_check').prop('checked');

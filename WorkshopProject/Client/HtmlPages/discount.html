@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -21,7 +21,9 @@
 </head>
 <body>
     <div class="container">
-        <h1>add policy</h1>
+        <h1>add Discount</h1>
+        <hr>
+        <p><h4>Choose condition</h4></p>
         <div id="main">
            
             <div id="node0">
@@ -115,13 +117,23 @@
                             <div id="listProducts4"></div>
                         </div>
                         <hr>
+                        <hr>
 
-                        <button id="add_policy_btn" type="button" class="btn btn-primary">Add Policy</button>
+                       <p><h4>Choose discount</h4></p>
+                        <select class="form-control typeCond" id="select_discount_type">
+                                <option>precentage</option>
+                                <option>free products</option>
+                            </select>
+                        
+                        <input  id= "data_precentage" type="text" class="form-control" placeholder="precentage">
+                        <div id="listProducts5"></div>
+                        <input  id= "data_amount" type="text" class="form-control" placeholder="number of free products">
+                       
+                       
+                        <button id="add_discount_btn" type="button" class="btn btn-primary">Add Discount</button>
 
 
         </div>
-
-
 
 
     </div>
@@ -140,7 +152,7 @@
         sendRequest('date','getAllProductsForStore', storeId).then(function(res){
             var products = res.$values;
             numOfProducts = products.length;
-            for(var i=1;i<=4;i++){
+            for(var i=1;i<=5;i++){
                 products.map((p,index)=> $('#listProducts'+i).append(`<input id="${i}_${index}" type="checkbox"  value="${p.id}">${p.name}`));
             }
        });
@@ -148,17 +160,41 @@
 
        onStart(init);
 
-       $('#add_policy_btn').on('click',function(){
+       $('#add_discount_btn').on('click',function(){
           
            var policy = getPolicy(0);
         policy.storeId = storeId;
-        sendRequest('data','addPurchsingPolicy',policy).then(function(res){
-            alert("policy added successfully");
+        policy.outcome = getDiscount();
+        sendRequest('data','addDiscountPolicy',policy).then(function(res){
+            alert("discount added successfully");
             window.location.href = "/wot/store/"+storeId;
         });
 
 
        });
+
+       function getDiscount(){
+           var discount={};
+          if($('#select_discount_type').val()==='precentage'){
+              discount.product = -1;
+              discount.amount = $('#data_precentage').val();
+          }else{
+            var productArr= [];
+           for(let i =0;i<numOfProducts;i++){
+               var id="5_"+i;
+               if($('#'+id).prop('checked')){
+                productArr.push($('#'+id).val());
+               }
+                
+           }
+
+           discount.product = productArr.join(',');
+           discount.amount = $('#data_amount').val();
+          }
+
+          return discount;
+
+       }
 
        function getPolicy(num){
         var policy={};
