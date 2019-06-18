@@ -219,6 +219,30 @@ namespace Managment
             }
         }
 
+        public bool removeManagerAsAdmin(StoreManager managerToRemove)
+        {
+            if (subManagers.Contains(managerToRemove))
+            {
+                recursiveCleanManager(managerToRemove);
+                Logger.Log("event", logLevel.INFO, "success remove");
+                return subManagers.Remove(managerToRemove);
+            }
+            else
+            {
+                Logger.Log("error", logLevel.INFO, "fail remove");
+                throw new Exception("The manager to remove is not below to this manager");
+            }
+        }
+
+        public bool removeManagerAsAdminOwner(StoreManager managerToRemove)
+        {
+
+            recursiveCleanManager(managerToRemove);
+            Logger.Log("event", logLevel.INFO, "success remove");
+            return true;
+
+        }
+
         public void removeAllManagers()
         {
             while(subManagers.Count > 0)

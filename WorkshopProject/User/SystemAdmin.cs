@@ -55,19 +55,18 @@ namespace Users
                 StoreManager st = member.storeManaging.ElementAt(count);
                 try
                 {
-
-
                     for (; count > -1; count--, st = member.storeManaging.ElementAt(count))
                     {
                         if (ConnectionStubTemp.getAllOwnersCount(st.store) == 1/*st.GetFather() == null*/)///change to super father
                         {
                             Store store = st.GetStore();
+                            st.removeManagerAsAdminOwner(st);
                             WorkShop.closeStore(store.id, member);
                         }
                         else
                         {
                             StoreManager father = st.GetFather();
-                            father.removeManager(st);
+                            father.removeManagerAsAdmin(st);
                         }
                     }
                 } catch (Exception ex)
