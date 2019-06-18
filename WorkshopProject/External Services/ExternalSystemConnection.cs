@@ -85,10 +85,21 @@ namespace WorkshopProject.External_Services
             Dictionary<string, string> handshakedDictionary = new Dictionary<string, string> {
                 {"action_type","handshake" }
             };
-
-            var handSahekecontent = new FormUrlEncodedContent(handshakedDictionary);
-            HttpResponseMessage handShakeResponse = await client.PostAsync("https://cs-bgu-wsep.herokuapp.com", handSahekecontent);
-            string handshakeResposeString = await handShakeResponse.Content.ReadAsStringAsync();
+            string handshakeResposeString ="";
+            try
+            {
+                var handSahekecontent = new FormUrlEncodedContent(handshakedDictionary);
+                HttpResponseMessage handShakeResponse = await client.PostAsync("https://cs-bgu-wsep.herokuapp.com", handSahekecontent);
+                handshakeResposeString = await handShakeResponse.Content.ReadAsStringAsync();
+            }
+            catch
+            {
+                if (handshakeResposeString != "OK")
+                {
+                    Logger.Log("event", logLevel.ERROR, "Can't handshake with external");
+                    throw new Exception("can't connect to external services, please try again in few minutes");
+                }
+            }
 
             if (handshakeResposeString != "OK")
             {
