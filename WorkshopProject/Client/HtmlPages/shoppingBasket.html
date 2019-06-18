@@ -45,7 +45,7 @@
 
         function editAmount(storeId,pid){
 
-            var newAmount = $("#edit_amount").val();
+            var newAmount = $(`#edit_${storeId}_${pid}`).val();
            sendRequest('action','editAmount',{storeId: storeId,productId: pid,amount: newAmount})
            .then(function(res){
                init();
@@ -98,7 +98,7 @@
                     <p>Total Cost: <strong>${amount * product.price} </strong> </p>
                      <hr>
                     <h6>Edit Amount </h6>
-                    <p><input id="edit_amount" type="number"></p>
+                    <p><input id="edit_${product.storeId}_${product.id}" type="number"></p>
                     <a id="btn_editAmount" href="javascript:editAmount(${product.storeId},${product.id});" class="btn btn-primary">Edit</a>
                  </div>
                 </div>
