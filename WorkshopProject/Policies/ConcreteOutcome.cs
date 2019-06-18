@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Users;
+using WorkshopProject.System_Service;
 
 namespace WorkshopProject.Policies
 {
@@ -35,7 +36,17 @@ namespace WorkshopProject.Policies
 
         public override string ToString()
         {
-            return "recieve " + amount + " "+productId + " for free";
+            string productName = "";
+            foreach (Store currStore in StoreService.GetAllStores())
+            {
+                Product inStore = currStore.getProduct(productId);
+                if (inStore != null)
+                {
+                    productName += inStore.name + " ";
+                }
+            }
+
+            return "recieve " + amount + " "+productName + " for free";
         }
 
     }

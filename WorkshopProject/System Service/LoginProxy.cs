@@ -546,15 +546,24 @@ namespace WorkshopProject.System_Service
         {
             List<Discount> discounts = PolicyService.getAllDiscount(user, storeId);
             List<IBooleanExpression> polices = PolicyService.getAllStorePolicies(user, storeId);
+            string discountsString = "", policiesString = ""; 
             string ans = "";
             foreach (Discount curr in discounts)
             {
-                ans += curr.ToString() + "\n";
+                discountsString += curr.ToString() + "\n";
             }
 
             foreach (IBooleanExpression curr in polices)
             {
-                ans += curr.ToString() + "\n";
+                policiesString += curr.ToString() + "\n";
+            }
+
+            if (discountsString =="" && policiesString == "") {
+                ans = "no policies for this store";
+            }
+            else
+            {
+                ans = "Discounts:\n" + discountsString + "\nPolicies:\n" + policiesString;
             }
 
             return ans;

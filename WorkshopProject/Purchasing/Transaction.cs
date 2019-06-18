@@ -259,7 +259,7 @@ namespace TansactionsNameSpace
                     basket.setProductAmount(store, p.product, 0);
                     string buyMessage = String.Format("the product {0}, was bought from the store {1}, amount bought {2} purchase price: {3}", p.product.name, store.name,p.amount,p.price*p.amount);
                     Member.sendMessageToAllOwners(store.id, buyMessage);
-                    finalPurchaseInfo +="product: "+p.product.name + " , amount: "+p.amount +" "+ (p.price ==0 ? " recieved for free\n" : ",price: " + p.price * p.amount + "\n");
+                    finalPurchaseInfo +=p.product.name + " , amount: "+p.amount +" "+ (p.price ==0 ? " recieved for free\n" : ",price: " + p.price * p.amount + "\n");
                 }
             }
             return transactionId;
