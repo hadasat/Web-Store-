@@ -416,7 +416,7 @@ namespace WorkshopProject
         {
             if (!isActive)
                 return Policystatus.UnactiveStore;
-            if (!user.hasAddRemovePurchasingPolicies(this))     //Verify Premission
+            if (!user.hasAddRemoveStorePolicies(this))     //Verify Premission
                 return Policystatus.UnauthorizedUser;
             if (newstorePolicy == null)
                 return Policystatus.BadPolicy;

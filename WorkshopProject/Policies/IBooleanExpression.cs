@@ -22,7 +22,7 @@ namespace WorkshopProject.Policies
         [Key]
         public int id { get; set; }
         [Include]
-        public ItemFilter filter { get; set; }
+        public virtual ItemFilter filter { get; set; }
 
         [NotMapped]
         public virtual IBooleanExpression firstChild { get { return children[0]; } set => children[0] = value; }
