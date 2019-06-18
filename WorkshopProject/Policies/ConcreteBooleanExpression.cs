@@ -38,8 +38,17 @@ namespace WorkshopProject.Policies
 
         public override bool checkConsistent(IBooleanExpression exp)
         {
+            
             if (exp is MinAmount)
             {
+                //check if the products are Intersect
+                if ((this.filter is ProductListFilter) && (exp.filter is ProductListFilter))
+                {
+                    List<int> this_list = ((ProductListFilter)this.filter).productIds;
+                    List<int> exp_list = ((ProductListFilter)exp.filter).productIds;
+                    if (!this_list.Intersect(exp_list).Any())
+                        return true;
+                }
                 MinAmount min = (MinAmount)exp;
                 if (this.amount < min.amount)
                     return false;
@@ -89,6 +98,13 @@ namespace WorkshopProject.Policies
         {
             if (exp is MaxAmount)
             {
+                if ((this.filter is ProductListFilter) && (exp.filter is ProductListFilter))
+                {
+                    List<int> this_list = ((ProductListFilter)this.filter).productIds;
+                    List<int> exp_list = ((ProductListFilter)exp.filter).productIds;
+                    if (!this_list.Intersect(exp_list).Any())
+                        return true;
+                }
                 MaxAmount max = (MaxAmount)exp;
                 if (this.amount > max.amount)
                     return false;
