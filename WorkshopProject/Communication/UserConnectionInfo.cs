@@ -1015,7 +1015,7 @@ namespace WorkshopProject.Communication
             {
                 // {Success, UnauthorizedUser, UnactiveStore, BadPolicy, InconsistPolicy};
                 case Policystatus.Success:
-                    return JsonResponse.generateActionSucces(requestId, requestId.ToString());
+                    return JsonResponse.generateActionSucces(requestId,requestId.ToString());
                 case Policystatus.UnauthorizedUser:
                     return JsonResponse.generateActionError(requestId, "you don't have premissions");
                 case Policystatus.UnactiveStore:
@@ -1058,7 +1058,7 @@ namespace WorkshopProject.Communication
 
             try
             {
-                Policystatus ans = user.addDiscountPolicy(storeId, user.createDiscount(msgObj));
+                Policystatus ans = user.addDiscountPolicy(storeId, user.createDiscount((JObject)msgObj["data"]));
                 response = policyStatusHelper(ans, requestId);
             }
             catch (WorkShopDbException dbExc)
@@ -1077,7 +1077,7 @@ namespace WorkshopProject.Communication
         {
             JsonResponse response;
             int requestId = (int)msgObj["id"];
-            int storeId = (int)msgObj["storeId"];
+            int storeId = (int)msgObj["data"];
             try
             {
                 string ans = user.getPoliciesString(storeId);
@@ -1091,6 +1091,8 @@ namespace WorkshopProject.Communication
             {
                 response = JsonResponse.generateDataFailure(requestId, "failed to get polices");
             }
+
+            sendMyselfAMessage(JsonHandler.SerializeObject(response));
         }
 
             #endregion
