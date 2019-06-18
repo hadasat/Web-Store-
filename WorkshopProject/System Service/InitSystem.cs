@@ -42,7 +42,10 @@ namespace WorkshopProject.System_Service
            
             string[] lines = System.IO.File.ReadAllLines(@filePath);
             if (lines == null)
+            {
+                Logger.Log("error", logLevel.ERROR, $"Init system: path \"{filePath}\" is empty or not exist");
                 return;
+            }
             foreach(string line in lines)
             {
                 Regex rgx = new Regex(commandSyntax);
@@ -123,7 +126,10 @@ namespace WorkshopProject.System_Service
                     string stringBirthdate = fullcommand[4];
                     DateTime birthdate = DateTime.Parse(stringBirthdate);
                     if (UserService.Register(username, password, birthdate, country))
+                    {
                         users.Add(username, password);
+                        Logger.Log("event", logLevel.INFO, $"user {username} add");
+                    }
                 }
                 catch (Exception e)
                 {
@@ -143,6 +149,7 @@ namespace WorkshopProject.System_Service
                     string userName = fullcommand[1];
                     User user = getUser(userName, users[userName]);
                     UserService.MakeAdmin(((Member)user).id);
+                    Logger.Log("event", logLevel.INFO, $"user {userName} is admin now");
                 }
                 catch (Exception e)
                 {
@@ -163,6 +170,8 @@ namespace WorkshopProject.System_Service
                 {
                     User user = getUser(username, users[username]);
                     StoreService.AddStore(user, storeName);
+                    Logger.Log("event", logLevel.INFO, $"Init system: user {username} open the store {storeName}");
+
                 }
                 catch (Exception e)
                 {
@@ -196,6 +205,7 @@ namespace WorkshopProject.System_Service
                     int productId = StoreService.AddProductToStore(user, storeId, productName, desc, price, category);
 
                     StoreService.AddProductToStock(user, storeId, productId, amount);
+                    Logger.Log("event", logLevel.INFO, $"Init system: product {productName} add to store {storeName}");
                 }
                 catch (Exception e)
                 {
@@ -225,6 +235,7 @@ namespace WorkshopProject.System_Service
                     string sushiRole = JsonHandler.SerializeObject(roles);
 
                     UserService.AddStoreManager(user, storeId, newManager, sushiRole);
+                    Logger.Log("event", logLevel.INFO, $"Init system: user {user} is now store owner of {storeName}");
                 }
                 catch(Exception e) {
                     Logger.Log("error", logLevel.ERROR,$"Init system: add store owner {e.Data}");
