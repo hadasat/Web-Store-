@@ -121,7 +121,7 @@ namespace WorkshopProject.Policies
 
         public override string ToString()
         {
-            return "The Discount - if " + condition + " then "+ outcome;
+            return "if " + condition + " then "+ outcome;
         }
     }
 }

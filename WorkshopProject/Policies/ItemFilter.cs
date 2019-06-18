@@ -89,7 +89,7 @@ namespace WorkshopProject.Policies
                 }
             }
 
-            return "the prodcts: " + productsAns;
+            return productsAns;
         }
     }
 

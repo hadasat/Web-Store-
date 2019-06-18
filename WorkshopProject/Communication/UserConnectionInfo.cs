@@ -886,9 +886,10 @@ namespace WorkshopProject.Communication
             try
             {
                 purchaseInfo = await user.BuyShoppingBasket(cardNumber, month, year, holder, ccv, id, name, address, city, country, zip);
-                response = JsonResponse.generateActionSucces(requestId);
-                var purchaseInfoNotificaiton = new { type = "notification", info = "message", data = purchaseInfo, requestId = -1 };
-                purchaseInfo = JsonHandler.SerializeObject(purchaseInfoNotificaiton);
+                var x = new { data = "purchase succeeded:\n" + purchaseInfo };
+                response = JsonResponse.generateActionSucces(requestId,JsonHandler.SerializeObject(x));
+                /*var purchaseInfoNotificaiton = new { type = "notification", info = "message", data = purchaseInfo, requestId = -1 };
+                purchaseInfo = JsonHandler.SerializeObject(purchaseInfoNotificaiton);*/
                 //Console.WriteLine("T");
             }
             catch (WorkShopDbException dbExc)
@@ -903,9 +904,9 @@ namespace WorkshopProject.Communication
             }
 
             sendMyselfAMessage(JsonHandler.SerializeObject(response));
-            for (int i = 0; i < 10_000; i++) ;
+           /* for (int i = 0; i < 10_000; i++) ;
             if (purchaseInfo != null)
-                sendMyselfAMessage(purchaseInfo);
+                sendMyselfAMessage(purchaseInfo);*/
 
         }
 
@@ -1087,7 +1088,8 @@ namespace WorkshopProject.Communication
             try
             {
                 string ans = user.getPoliciesString(storeId);
-                response = JsonResponse.generateDataSuccess(requestId, ans);
+                var x = new { data = ans };
+                response = JsonResponse.generateDataSuccess(requestId, JsonHandler.SerializeObject(x));
             }
             catch (WorkShopDbException dbExc)
             {
