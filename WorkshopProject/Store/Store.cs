@@ -183,7 +183,7 @@ namespace WorkshopProject
             Dictionary<int, Product> products = GetStockAsDictionary();
             foreach (Product item in products.Values)
             {
-                if ((name == "" || item.name.Contains(name)) && (category == "" || item.category == category )
+                if ((name == "" || item.name.Contains(name)) && (category == "" || item.category.Contains(category) )
                     && (endPrice == -1 || endPrice >= item.getPrice()) && (startPrice == -1 || startPrice <= item.getPrice())
                     && (storeRanking == -1 || storeRanking <= rank) && (productRanking == -1 || productRanking <= item.rank))
                 {
@@ -255,6 +255,7 @@ namespace WorkshopProject
             {
                 if (GetStockAsDictionary().ContainsKey(p.getId()))
                     GetStockAsDictionary()[p.getId()].amount += amountToBuy;
+                WorkShop.Update(this);
             };
 
             if (!GetStockAsDictionary().ContainsKey(p.getId()) || removeFromStock(GetStockAsDictionary()[p.getId()], amountToBuy) == -1)
@@ -274,6 +275,7 @@ namespace WorkshopProject
                 return -1;
 
             p.amount -= amountToBuy;
+            WorkShop.Update(this);
             return p.amount;
         }
 

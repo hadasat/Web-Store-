@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
   <Class Name="Managment.Roles">
-    <Position X="49.5" Y="33" Width="2.25" />
+    <Position X="57.75" Y="34.75" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>hAgAAAAAAAAQAAAAAAIAAAYCAwAAIAAAAAAAACAAAgA=</HashCode>
+      <HashCode>hAhAAAAAAAAQAAAAAAIAAAYCAwAAIAAAAAAAACAAAgA=</HashCode>
       <FileName>User\Managment.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Managment.StoreManager">
-    <Position X="41" Y="36.25" Width="3" />
+    <Position X="49.25" Y="38" Width="3" />
     <TypeIdentifier>
-      <HashCode>AEAAAAABAAABAAAAABBBgAQAAwAAAAUBACCAIBIAAwE=</HashCode>
+      <HashCode>AEBAAAABAAABAAAAABBBgAQAAwAAAAUBACCAIBIAAwE=</HashCode>
       <FileName>User\Managment.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -23,7 +23,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WorkshopProject.Client.HtmlPageManager">
-    <Position X="27.75" Y="6.75" Width="3.75" />
+    <Position X="27.75" Y="7.25" Width="3.75" />
     <NestedTypes>
       <Enum Name="WorkshopProject.Client.HtmlPageManager.PagesNames" Collapsed="true">
         <TypeIdentifier>
@@ -51,7 +51,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AACAAAAAAAAAAACAAAAAAAAQBAAAAQAEAAAAAEACgAI=</HashCode>
+      <HashCode>ACCAAAAAAAAAAACAAAAAAAAQBAAAAQAEAAAAAEACgAI=</HashCode>
       <FileName>Communication\CommunicationManager.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -73,9 +73,12 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>ABAEAAkBAAAQQAAAAAARAEAARAwAGQAIAMACAABmowA=</HashCode>
+      <HashCode>AJBEEAkBAAAQQCAAQABRCEAARQwAewAIAMgCAABmowg=</HashCode>
       <FileName>Communication\UserConnectionInfo.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="user" />
+    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="WorkshopProject.Communication.Server.Server" BaseTypeListCollapsed="true">
@@ -90,21 +93,21 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="WorkshopProject.JsonHandler">
-    <Position X="48.25" Y="13.25" Width="2" />
+    <Position X="48.25" Y="13.25" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAEAAAAAAAAAACAECAACAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>JsonHandler.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.Program">
-    <Position X="48.5" Y="11.5" Width="1.5" />
+    <Position X="46.75" Y="11.5" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAABAAAAABAAAAAA=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.Category">
-    <Position X="35.25" Y="32.25" Width="1.5" />
+    <Position X="34.75" Y="32.75" Width="1.5" />
     <NestedTypes>
       <Enum Name="WorkshopProject.Category.Categories" Collapsed="true">
         <TypeIdentifier>
@@ -118,9 +121,9 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.Product">
-    <Position X="34.75" Y="35.5" Width="2" />
+    <Position X="34.5" Y="34.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>AgABAAEAAQAAAAAAoAAAARQAAxAEgIAAAAAIAAAAAgA=</HashCode>
+      <HashCode>AgBBAAEAAQAAAAAAoAAAARQAAxAEgIAAAAAIAAAAAgA=</HashCode>
       <FileName>Store\Product.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -134,19 +137,22 @@
       </Delegate>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>QQGEiAAAgQAACgiAgRRAQhSEj0AEAAAAAIAgAAAAAgg=</HashCode>
+      <HashCode>QAHEiAAAgQAACgiAgRRIQhSEh0AEAADAAYBgAAAAAgg=</HashCode>
       <FileName>Store\Store.cs</FileName>
     </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Field Name="Stock" />
-    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WorkshopProject.WorkShop">
-    <Position X="37" Y="29.5" Width="1.5" />
+    <Position X="37" Y="29.5" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>AAUAAAABAAAAAAQAkAEABAAgAgAAAAAAACAAECAAAAg=</HashCode>
+      <HashCode>IAUAAAQBAAAAACQAkAEABAAgAgAAAAEAACAAECAAIAg=</HashCode>
       <FileName>Store\WorkShop.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="repo" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="SystemPolicies" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WorkshopProject.Examples.LogExample">
     <Position X="46.5" Y="16.25" Width="1.5" />
@@ -156,14 +162,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.External_Services.ConsistencyStub">
-    <Position X="48.75" Y="8" Width="1.75" />
+    <Position X="48.25" Y="8" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAgIAAAABAAAAAAAAAAAAIAAAAAA=</HashCode>
       <FileName>External Services\ConsistencyStub.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.External_Services.PaymentStub">
-    <Position X="51" Y="8" Width="1.5" />
+    <Position X="51" Y="8" Width="3" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAAAAgIAAACAAAAgAAAAAAAAIAAAAAA=</HashCode>
       <FileName>External Services\PaymentStub.cs</FileName>
@@ -171,7 +177,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="WorkshopProject.External_Services.SupplyStub">
-    <Position X="46.75" Y="8" Width="1.5" />
+    <Position X="46.25" Y="8" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEQAAAAAAAAAAAAgIAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
       <FileName>External Services\SupplyStub.cs</FileName>
@@ -188,28 +194,28 @@
   <Class Name="WorkshopProject.Policies.MaxAmount">
     <Position X="19.5" Y="37.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAIAAAAAAAAAAQAAAIAgAIAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAIAAAEAAAAAAQAAAIAgAIAAAAAAAAAAAA=</HashCode>
       <FileName>Policies\ConcreteBooleanExpression.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.Policies.MinAmount">
     <Position X="22.5" Y="37.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAIAgAIAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAIAAAEAAAAAAAAAAIAgAIAAAAAAAAAAAA=</HashCode>
       <FileName>Policies\ConcreteBooleanExpression.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.Policies.UserAge">
     <Position X="25.5" Y="37.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAIQAAAAAAAAAAAAAIAAAIAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAIQAAEAAAAAAAAAAIAAAIAAAAAAAAAAAA=</HashCode>
       <FileName>Policies\ConcreteBooleanExpression.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.Policies.UserCountry">
     <Position X="2.25" Y="37.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAIAAAICAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAIAAAEAAAAAAAAAAIAAAICAAAAAAAAAAA=</HashCode>
       <FileName>Policies\ConcreteBooleanExpression.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -230,51 +236,52 @@
   <Class Name="WorkshopProject.Policies.AndExpression">
     <Position X="11.25" Y="37.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAIAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAIAAAIAAAAAAAAAAAA=</HashCode>
       <FileName>Policies\ConcreteBooleanExpression.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.Policies.OrExpression">
     <Position X="13.5" Y="37.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAIAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAIAAAIAAAAAAAAAAAA=</HashCode>
       <FileName>Policies\ConcreteBooleanExpression.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.Policies.XorExpression">
     <Position X="16.5" Y="37.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAIAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAIAAAIAAAAAAAAAAAA=</HashCode>
       <FileName>Policies\ConcreteBooleanExpression.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.Policies.FreeProduct" BaseTypeListCollapsed="true">
-    <Position X="2" Y="35" Width="1.5" />
+    <Position X="0.5" Y="34.75" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAABAAABAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAABAAABAAAAAEAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
       <FileName>Policies\ConcreteOutcome.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.Policies.Percentage" BaseTypeListCollapsed="true">
-    <Position X="3.75" Y="35" Width="1.5" />
+    <Position X="3.5" Y="34.75" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAACAAAIAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAABAAAAAEAAAAAAAAAAACAAAIAAAAAAAAAAA=</HashCode>
       <FileName>Policies\ConcreteOutcome.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.Policies.Discount">
     <Position X="14.5" Y="30.25" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AABAAIAAABQAAAAAgAAAAAQAAwAAAIAiAAEACAAAAgA=</HashCode>
+      <HashCode>AABAAIAAABQAAAAEgAAAAAQAAwAAAIAiAAEACAAAAgA=</HashCode>
       <FileName>Policies\Discount.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="successor" />
       <Property Name="condition" />
+      <Property Name="outcome" />
     </ShowAsAssociation>
   </Class>
   <Class Name="WorkshopProject.Policies.IBooleanExpression">
-    <Position X="15.5" Y="41.25" Width="1.5" />
+    <Position X="15.5" Y="41.25" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AABAAAAAAIAIAAQAgAAAEAQAAwIAkJIgAAAAAAEAAgA=</HashCode>
       <FileName>Policies\IBooleanExpression.cs</FileName>
@@ -282,19 +289,23 @@
     <ShowAsAssociation>
       <Property Name="firstChild" />
       <Property Name="secondChild" />
+      <Property Name="filter" />
     </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="children" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WorkshopProject.Policies.AllProductsFilter" BaseTypeListCollapsed="true">
-    <Position X="6.75" Y="35.25" Width="1.5" />
+    <Position X="6.5" Y="35.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
       <FileName>Policies\ItemFilter.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.Policies.ProductListFilter" BaseTypeListCollapsed="true">
     <Position X="9" Y="35" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <HashCode>AAAAAAAgAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
       <FileName>Policies\ItemFilter.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -306,9 +317,9 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.Policies.ProductAmountPrice">
-    <Position X="64.75" Y="34" Width="2.75" />
+    <Position X="71.75" Y="36" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AACBAAAAAkAAAAAAgAAAAAQAAwAAgAAAAAAAAAAAAgA=</HashCode>
+      <HashCode>AADBAAAAAkAAAAAAgAAAAAQAAwAAgAAAAAAAAAAAAgA=</HashCode>
       <FileName>Policies\ProductAmountPrice.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -318,54 +329,66 @@
   <Class Name="WorkshopProject.Properties.Resources">
     <Position X="19.75" Y="7.75" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AgAAQACAAgAABAAAAAABEAiAAQgAAAABAgQAAAQhAIA=</HashCode>
+      <HashCode>AgAAQACAAgAABAAAIAABEAiAAQgAAAABAgQAAAYhAIA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Shopping.ShoppingBasket">
-    <Position X="57.75" Y="29.5" Width="2.5" />
+    <Position X="64.75" Y="31.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>IAAQAAAAAgAAgAAAQAAAAAYBA2AAAQAAAAAAAAAAQgA=</HashCode>
+      <HashCode>IABQAAAAAgAAgAAAQAAAAAYBA2AAAQAAAAAAAAAAQgA=</HashCode>
       <FileName>Purchasing\ShoppingBasket.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="cartsList" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Shopping.ShoppingCart">
-    <Position X="61" Y="29.5" Width="3" />
+    <Position X="68" Y="31.5" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAQAAAAAAIAAAAAAAAAAAQBCwBIABAAAAAABAAAAgg=</HashCode>
+      <HashCode>AABQAAAAAAIAAAAAAAAAAAQBCwBIABAAAAAABAAAAgg=</HashCode>
       <FileName>Purchasing\ShoppingCart.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="products" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WorkshopProject.System_Service.GodObject" BaseTypeListCollapsed="true">
     <Position X="28.75" Y="17.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>MBAgAAAAQAQAAgAAAAABAACAAgAAAAAAAAAAQBAAAAA=</HashCode>
+      <HashCode>MBAgAAAAQAQAAgAAAAABAACAAgAAAAAAABAAQBAAAAA=</HashCode>
       <FileName>System Service\IGodObject.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="WorkshopProject.System_Service.LoginProxy">
-    <Position X="21.5" Y="14.25" Width="2.25" />
+    <Position X="17.5" Y="13.25" Width="3.75" />
     <TypeIdentifier>
-      <HashCode>qhEAAACbRAIAAAPAEDYAjABgAkgjBEQAAAAKAgCAOQQ=</HashCode>
+      <HashCode>qhFAAACfRAIAAAPIEDYAjABgCkgjBGQAAEAKAgCAOQQ=</HashCode>
       <FileName>System Service\LoginProxy.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="user" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="WorkshopProject.System_Service.PolicyService">
-    <Position X="13.5" Y="25.75" Width="2" />
+    <Position X="13.5" Y="25.75" Width="4.25" />
     <TypeIdentifier>
-      <HashCode>AgAAAACABAAAAADAEAAAAABEAgAAAAAAAAAAAACAAAA=</HashCode>
+      <HashCode>AgQAAACABAAAACDAEAAAAAFEAgAAAAAAAQgAAACAABA=</HashCode>
       <FileName>System Service\PolicyService.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="DB" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="WorkshopProject.System_Service.StoreService">
-    <Position X="34.75" Y="24.75" Width="2.25" />
+    <Position X="33.75" Y="27.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>IgAAAAAbBAAAAAAAAAIAAABAAAAAIAAgAAACBBCAKAA=</HashCode>
       <FileName>System Service\StoreService.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.System_Service.IdMessage">
-    <Position X="33.5" Y="32.25" Width="1.5" />
+    <Position X="32.25" Y="32" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
       <FileName>System Service\StoreService.cs</FileName>
@@ -377,6 +400,9 @@
       <HashCode>LhEAAACbRAIIACJAASYAjABgAAgjBEAAAAACAACEOQQ=</HashCode>
       <FileName>System Service\SystemServiceImpl.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="user" />
+    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="WorkshopProject.System_Service.Message">
@@ -387,175 +413,256 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WorkshopProject.System_Service.TransactionService">
-    <Position X="61" Y="26.75" Width="2.25" />
+    <Position X="65.75" Y="27.75" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>CAAAAAAAAAAAAAIAAAQAAAAAAAAgAAAAAAAAAAAAAAQ=</HashCode>
+      <HashCode>CAQAAAAAAAAAACIAAAQAAAAAAAAgAAAAAAAAAAAAABQ=</HashCode>
       <FileName>System Service\TransactionService.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="DB" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="WorkshopProject.System_Service.UserService">
-    <Position X="45.75" Y="24.75" Width="2" />
+    <Position X="56.75" Y="27" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAAQAAAEAAAACAAiAAAAUgDFAAQAAAIAAAAEAA=</HashCode>
+      <HashCode>AAEAAAAAQAAAEAAAACAAiAAAIUgDFAgQAAAIAAAAEAA=</HashCode>
       <FileName>System Service\UserService.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Password.PasswordHandler">
-    <Position X="52.25" Y="33" Width="1.75" />
+    <Position X="60.25" Y="30.75" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>ACAABAAAAAAAAQAABAAAAABAAAAAAAAAABAEAAAAQAA=</HashCode>
+      <HashCode>ACIABAAAIAAAAyAABAEAAABAAAAAAAAAABAAAAAAQAI=</HashCode>
       <FileName>User\Password.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="repo" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Users.ConnectionStubTemp">
     <Position X="6.75" Y="6.75" Width="3" />
     <TypeIdentifier>
-      <HashCode>IIQEAAAAEAAAEAAIAAEABBIBAQA2EQIBAACIAQAgBAA=</HashCode>
+      <HashCode>IAQEAAAAEQACECIIAAEARBIBAQA2QQIBAAwIAQBgBAA=</HashCode>
       <FileName>User\UsersManager.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="pHandler" />
+      <Field Name="repo" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Users.User">
-    <Position X="45.75" Y="31" Width="3" />
+    <Position X="54" Y="32.75" Width="3" />
     <TypeIdentifier>
-      <HashCode>IAAAAAAAEAQAAAAAAEAAAAwBAwAAQAACAAAAAAIAAgA=</HashCode>
+      <HashCode>IABAAAAAEAQAAAAAAEAAAAwBAwAAQAgCAAAAAAIAAgA=</HashCode>
       <FileName>User\Users.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="shoppingBasket" />
+      <Property Name="shoppingBasket" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Users.Member">
-    <Position X="45.5" Y="35.75" Width="3.5" />
+    <Position X="53.75" Y="37.5" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>IAEpAGQBAAQgAEhQDEBAAQMhAIAIQAMiAgQAQIIAGgA=</HashCode>
+      <HashCode>IAFpAGQBAAQgAEhQDEBAAQchIIAIQAsiAgQAQIIAGgA=</HashCode>
       <FileName>User\Member.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="storeManaging" />
+      <Property Name="notifications" />
+      <Property Name="observers" />
     </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Users.SystemAdmin">
-    <Position X="39.5" Y="33.75" Width="2.25" />
+    <Position X="47.75" Y="35.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
       <FileName>User\SystemAdmin.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WorkshopProject.ClassForTestExample">
-    <Position X="50.5" Y="13.25" Width="1.75" />
+  <Class Name="WorkshopProject.Policies.IOutcome">
+    <Position X="2.75" Y="31.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
-      <FileName>Examples\ClassForTestExample.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="WorkshopProject.Policies.IOutcome" Collapsed="true">
-    <Position X="2.75" Y="33.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAABAAAAAAAAAAAAQAAwAAAAAAAAAAAAAAAgA=</HashCode>
+      <HashCode>AABAAAAAABAAAAAAAAAAAAQAAwAAAAAAAAAAAAAAAgA=</HashCode>
       <FileName>Policies\IOutcome.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WorkshopProject.Policies.ItemFilter" Collapsed="true">
-    <Position X="10" Y="33.5" Width="1.5" />
+  <Class Name="WorkshopProject.Policies.ItemFilter">
+    <Position X="10" Y="32" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAwAAAAAAAAAAAAAgAgA=</HashCode>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAQAAwAAAAAAAAAAAAAgAgA=</HashCode>
       <FileName>Policies\ItemFilter.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WorkshopProject.DataAccessLayer.IEntity" Collapsed="true">
-    <Position X="62.75" Y="13.25" Width="1.5" />
+  <Class Name="WorkshopProject.DataAccessLayer.IEntity">
+    <Position X="14" Y="53.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAwAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAQAAwAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>DataAccessLayer\IEntity.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WorkshopProject.DataAccessLayer.DataAccessDriver" Collapsed="true">
-    <Position X="65.25" Y="12" Width="1.5" />
+  <Class Name="WorkshopProject.DataAccessLayer.DataAccessDriver">
+    <Position X="16.25" Y="52.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAACBACAAAAAIAAABAAABAIAAAAAAAAEA=</HashCode>
+      <HashCode>BABAAAAEAAAAAChACABgAgAAAABAAABCJAAEAQAgQEA=</HashCode>
       <FileName>DataAccessLayer\DataAccessDriver.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="ctx" />
+      <Field Name="Members" />
+      <Field Name="Passwords" />
+      <Field Name="OwnershipRequests" />
+      <Field Name="Stores" />
+    </ShowAsAssociation>
   </Class>
-  <Class Name="WorkshopProject.DataAccessLayer.WorkshopDBContext" Collapsed="true">
-    <Position X="66.75" Y="13" Width="1.5" />
+  <Class Name="WorkshopProject.DataAccessLayer.WorkshopDBContext">
+    <Position X="20" Y="52.75" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>AACAQBAAQAAgAAAACAgAAAAQkgEAAAAAQgAEAQAAgAQ=</HashCode>
+      <HashCode>AACAQBAAQAAgAAAACAhAAAAQkgEAAQACQgAEAQAAgAQ=</HashCode>
       <FileName>DataAccessLayer\WorkshopDBContext.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WorkshopProject.DataAccessLayer.WorkshopProductionDBContext" Collapsed="true">
-    <Position X="67.75" Y="14.5" Width="1.5" />
+  <Class Name="WorkshopProject.DataAccessLayer.WorkshopTestDBContext">
+    <Position X="20.25" Y="58.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>DataAccessLayer\WorkshopDBContext.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WorkshopProject.DataAccessLayer.WorkshopTestDBContext" Collapsed="true">
-    <Position X="65.5" Y="14.5" Width="1.5" />
+  <Class Name="WorkshopProject.DataAccessLayer.Repo">
+    <Position X="24.5" Y="53.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DataAccessLayer\WorkshopDBContext.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="WorkshopProject.DataAccessLayer.Repo" Collapsed="true">
-    <Position X="66.75" Y="16" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>gAYAAAAAAAAAAABAAAAABAAAAAEAAAACIAAAAAAAAAI=</HashCode>
+      <HashCode>gAYAAAAAAAAAAABAAAAABAAAAAEAAAACAAAAAAAgAAI=</HashCode>
       <FileName>DataAccessLayer\Repo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Shopping.ProductAmount" Collapsed="true">
-    <Position X="63.75" Y="27" Width="1.5" />
+  <Class Name="Shopping.ProductAmount">
+    <Position X="72" Y="29.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAAAAAAAAAAQAAwAAgAAAAAAAAAAAAgA=</HashCode>
+      <HashCode>AABAAAAAAgAAAAAAAAAAAAQAAwAAgAAAAAAAAAAAAgA=</HashCode>
       <FileName>Purchasing\ShoppingCart.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="product" />
+    </ShowAsAssociation>
   </Class>
-  <Class Name="TansactionsNameSpace.Transaction" Collapsed="true">
-    <Position X="66.25" Y="27" Width="1.5" />
+  <Class Name="TansactionsNameSpace.Transaction">
+    <Position X="75.5" Y="29" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAABAAAGAQAEAAAAAEAAAAUBA4AKAAAACEgIAAAAAwA=</HashCode>
+      <HashCode>AABBAAAGAQAEAAAAAEAAAAUBA4AKAAAICEoIAAAAAwA=</HashCode>
       <FileName>Purchasing\Transaction.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="paymentSystem" />
+      <Field Name="supplySystem" />
+    </ShowAsAssociation>
   </Class>
-  <Class Name="TansactionsNameSpace.ShoppingCartDeal" Collapsed="true">
-    <Position X="69" Y="27" Width="1.5" />
+  <Class Name="TansactionsNameSpace.ShoppingCartDeal">
+    <Position X="78.75" Y="29.5" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>AAAQAAAAAEAAAAAAAAAAABRAAwAAAAAAAAAABAAAAgA=</HashCode>
+      <HashCode>AABQAAAAAEAAAAAAAAAAABRAAwAAAAAAAAAABAAAAgA=</HashCode>
       <FileName>Purchasing\Transaction.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="transStatus" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="products" />
+    </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="Shopping.ShoppingCartAndStore" Collapsed="true">
-    <Position X="64.75" Y="25" Width="1.5" />
+  <Class Name="Shopping.ShoppingCartAndStore">
+    <Position X="70" Y="24.75" Width="3.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAABAAAAAAAAAAAQAAwAAAAABAAAAAAAAAgA=</HashCode>
+      <HashCode>AABAAAAAAABAAAAAAAAAAAQAAwAAAAABAAAAAAAAAgA=</HashCode>
       <FileName>Purchasing\ShoppingBasket.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="cart" />
+      <Property Name="store" />
+    </ShowAsAssociation>
   </Class>
-  <Class Name="Users.OwnershipRequest" Collapsed="true">
-    <Position X="60" Y="39.75" Width="1.5" />
+  <Class Name="Users.OwnershipRequest">
+    <Position X="58.5" Y="40.5" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>AggAAAAAQAAEgACAAKEAAAAABAAAAgEBAQQAAEAAAAA=</HashCode>
+      <HashCode>AghAAAAAQAAEgACAAKEAAAQABQAAAgEBAQQAAEAAAAA=</HashCode>
+      <FileName>User\UsersManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="candidate" />
+      <Property Name="store" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="owners" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WorkshopProject.Stock">
+    <Position X="37" Y="35.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAgAAAAAAAAAAAAQAAwAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Store\Store.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="product" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Users.Notification">
+    <Position X="44" Y="35" Width="2.75" />
+    <NestedTypes>
+      <Enum Name="Users.Notification.NotificationType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>User\Member.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAQAAwAAEAAAAAQAAAEAAgA=</HashCode>
+      <FileName>User\Member.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Users.Decision">
+    <Position X="45" Y="31.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IABAAAAAAAAAAAAAAAACAAUAAQAAAAAAAAAAAAABAgA=</HashCode>
       <FileName>User\UsersManager.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WorkshopProject.Stock" Collapsed="true">
-    <Position X="35" Y="34.25" Width="1.5" />
+  <Class Name="Password.Password">
+    <Position X="47.5" Y="31.5" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAAAAAAAAAAQAAwAAgAAAAAAAAAAAAgA=</HashCode>
-      <FileName>Store\Store.cs</FileName>
+      <HashCode>AABAQAAAQAAAAAABAAAAAAQAAQAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>User\Password.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Struct Name="System.Int32" Collapsed="true">
-    <Position X="67.5" Y="31.25" Width="1.5" />
-    <TypeIdentifier />
-    <Lollipop Position="0.2" />
-  </Struct>
+  <Class Name="WorkshopProject.System_Service.InitSystem">
+    <Position X="38.75" Y="16.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>IAMCAAABEAAAAEAAAEAEAAQAABBAAEAIAAAAARBIAAg=</HashCode>
+      <FileName>System Service\InitSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WorkshopProject.External_Services.ExternalSystemConnection" BaseTypeListCollapsed="true">
+    <Position X="43.5" Y="12" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAEQAAAECAAAAAAAAAAAACAAAAgAAAAAAAABAAAAAA=</HashCode>
+      <FileName>External Services\ExternalSystemConnection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WorkshopProject.DataAccessLayer.WorkShopDbException">
+    <Position X="16.5" Y="60.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataAccessLayer\Repo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WorkshopProject.DataAccessLayer.DbListStub&lt;T&gt;">
+    <Position X="25" Y="57.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>gAIAAAAAAAAQAABAAAAABAAAEAEAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>DataAccessLayer\DbListStub.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Interface Name="WorkshopProject.Communication.IObserver">
     <Position X="24.25" Y="5" Width="1.5" />
     <TypeIdentifier>
@@ -564,7 +671,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="WorkshopProject.Communication.IObserverSubject">
-    <Position X="43.25" Y="33.75" Width="2" />
+    <Position X="51.5" Y="35.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAQAAAAAAAAAAAIAAAAAAAAAAAQAAAAAAAA=</HashCode>
       <FileName>Communication\IObserverSubject.cs</FileName>
@@ -601,7 +708,7 @@
   <Interface Name="WorkshopProject.System_Service.IGodObject">
     <Position X="28.75" Y="13.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>MBAgAAAAQAQAAAAAAAABAACAAgAAAAAAAAAAQBAAAAA=</HashCode>
+      <HashCode>MBAgAAAAQAQAAAAAAAABAACAAgAAAAAAABAAQBAAAAA=</HashCode>
       <FileName>System Service\IGodObject.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -613,10 +720,24 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Users.Permissions">
-    <Position X="44.75" Y="28.75" Width="3" />
+    <Position X="53" Y="29.75" Width="3" />
     <TypeIdentifier>
-      <HashCode>IAAAAAAAAAQAAAAAAEAAAAAAAAAAQAAAAAAAAAIAAAA=</HashCode>
+      <HashCode>IAAAAAAAAAQAAAAAAEAAAAAAAAAAQAgAAAAAAAIAAAA=</HashCode>
       <FileName>User\Users.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WorkshopProject.External_Services.IPayment">
+    <Position X="54.5" Y="8" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>External Services\IPayment.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WorkshopProject.External_Services.ISupply">
+    <Position X="54.75" Y="10" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAEQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>External Services\ISupply.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="WorkshopProject.Log.logLevel">
@@ -626,11 +747,18 @@
       <FileName>Logger\Log.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="TansactionsNameSpace.status" Collapsed="true">
-    <Position X="71.5" Y="27" Width="1.5" />
+  <Enum Name="TansactionsNameSpace.status">
+    <Position X="83" Y="29.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAQAAAAgAAAAAIAAAAgCAAACAAAAAAAAAAAABBA=</HashCode>
       <FileName>Purchasing\Transaction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WorkshopProject.Policies.Policystatus">
+    <Position X="17" Y="35.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAEAIAAAAAAAAAAAAAgBAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Policies\IBooleanExpression.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />
