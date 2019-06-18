@@ -167,6 +167,7 @@
         policy.outcome = getDiscount();
         sendRequest('data','addDiscountPolicy',policy).then(function(res){
             alert("discount added successfully");
+            window.location.href = "/wot/store/"+storeId;
         });
 
 

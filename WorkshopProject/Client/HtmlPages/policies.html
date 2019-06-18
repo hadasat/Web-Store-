@@ -122,34 +122,6 @@
         </div>
 
 
-<!-- Discount!! -->
-
-<h1>add Discount</h1>
-<div id="main">
-   
-    <h7>choose condition</h7>
-    <div id="node0">
-        <select class="form-control typeCond" id="select_discount_condition">
-            <option>min</option>
-            <option>max</option>
-            <option>age</option>
-            <option>country</option>
-        </select>
-        <input  id= "data_discount" type="text" class="form-control" placeholder="number/string">
-        <div id="listProducts_discount"></div>
-
-        <h7>choose discount</h7>
-        <select class="form-control typeCond" id="select_discount_type">
-            <option>precentage</option>
-            <option>Free products</option>
-            <option>age</option>
-            <option>country</option>
-        </select>
-
-
-
-    </div>
-
 
 
     </div>
@@ -182,6 +154,7 @@
         policy.storeId = storeId;
         sendRequest('data','addPurchsingPolicy',policy).then(function(res){
             alert("policy added successfully");
+            window.location.href = "/wot/store/"+storeId;
         });
 
 

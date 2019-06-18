@@ -158,7 +158,17 @@
              //set header
              var buttonhtml = isManager? `<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
                     edit <i class="far fa-edit"></i>
-                  </button>` : ``;
+                  </button>
+                  <a href="/wot/policies/${storeId}" class="btn btn-primary">
+                    add policy
+                  </a>
+                   
+                  <a href="/wot/discount/${storeId}" class="btn btn-primary">
+                    add discount
+                  </a>
+                  
+                  
+                  ` : ``;
         $("#page-header").html(`<h1>${store.name}</h1>
         <h5  style="color: rgb(0, 212, 0)">active</h5>`+
          buttonhtml );
