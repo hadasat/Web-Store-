@@ -22,7 +22,7 @@ namespace Shopping
 
         public ShoppingCart()
         {
-            id = ++idCartCounter;
+           // id = ++idCartCounter;
             if (products == null)
             {
                 products = new List<ProductAmount>();
