@@ -44,7 +44,7 @@ document.getElementById("navbar_header").innerHTML = `
 // <!-- NavBar  Script -->
  function setUpOptBtn(){
      
-     const userStatus = localStorage.getItem("user_status");
+     const userStatus = sessionStorage.getItem("user_status");
      const loggedIn = userStatus? JSON.parse(userStatus).loggedIn : false;
      const username = userStatus? JSON.parse(userStatus).username : '';
     if(loggedIn){
@@ -70,7 +70,7 @@ $('#nav_signOut').on('click', ()=>{
 
 function signOut(){
     sendRequest("action","signOut",{}).then(function(msg){
-        localStorage.setItem("user_status",JSON.stringify({loggedIn : false, username: ''}));
+        sessionStorage.setItem("user_status",JSON.stringify({loggedIn : false, username: ''}));
         setUpOptBtn();
         window.location.href = "/wot/main";
     })

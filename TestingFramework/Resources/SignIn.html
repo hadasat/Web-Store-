@@ -212,7 +212,7 @@
             function signin(){
                 sendRequest("action","signin",{name: $("#inputUserame").val(),
                   password: $("#inputPassword").val()}).then(function(res){
-                    localStorage.setItem("user_status",JSON.stringify({loggedIn : true,
+                    sessionStorage.setItem("user_status",JSON.stringify({loggedIn : true,
                          username: $("#inputUserame").val()}));
                     window.location.href = "/wot/main";
                   })
